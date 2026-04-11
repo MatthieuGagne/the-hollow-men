@@ -7,7 +7,7 @@
 
 ## The Pitch
 
-A turn-based JRPG set in a rain-soaked, perpetually-night cyberpunk metropolis where magic is real, technology is older than it should be, everyone is complicit, and something beneath the city has been listening to every confession ever made in the dark.
+A turn-based JRPG set in **NOX** — a rain-soaked, perpetually-night cyberpunk metropolis where magic is real, technology is older than it should be, everyone is complicit, and something beneath the city has been listening to every confession ever made in the dark.
 
 **Hardboiled Cthulhu.** Chinatown meets At the Mountains of Madness meets Neuromancer, directed by the man who made a game where you carry dead people across a collapsed America while Norman Reedus cries in the rain.
 
@@ -82,6 +82,30 @@ Magic and technology coexist. Both are real. Both are controlled. Both are lies.
 - The entity predates the city, the tech, and possibly the concept of either. It did not simply wait — it *built*, slowly, through human proxies, across generations. The city is the machine it made.
 - **The entity exists in two registers simultaneously** — it has a physical presence beneath the Meridian *and* it is an information structure that the deep grid is resonant with. This is not two separate aspects; it is one thing that predates the human distinction between meatspace and cyberspace. Going deep enough into the Grid does not bring you *near* the entity — it brings you to a layer that *is* the entity. Two entrances to the same place. The wrong geometry of the city and the wrong behavior of the deep grid are the same phenomenon: its body, pressing through.
 
+### Navigation & Encounter Model
+
+**Two modes. The line between them moves as the story moves.**
+
+**Investigation Mode** — Reid moves through the city between story beats. Shops, NPCs, dialogue, environmental detail. Encounter rate is zero or near-zero. The city breathes. This is NOX as it presents itself.
+
+**Hot Zone Mode** — The investigation takes Reid somewhere he shouldn't be. A Bureau secure floor. A megacorp server room. A contested block in the Sprawl. The Meridian at the wrong hour. Encounter logic activates. The city stops pretending.
+
+Hot zones are telegraphed — the player feels the shift before it happens. Wrong geometry intensifies. The ambient sound changes. Reid's internal monologue goes quieter, then stops.
+
+**The Ruins are the exception.** They are always a dungeon. There is no investigation mode in the Ruins — the moment you descend, encounter logic is live and does not turn off. The Ruins are the game's pure dungeon space: the entity's oldest physical presence, the place first contact was made, the bottom of the vertical stack. Every other hot zone in the city is temporary. The Ruins are permanent. The Ruins are what the whole city is built on top of, and they do not care that you are there.
+
+Encounter density escalates by depth:
+
+| Layer | Encounter Type | Frequency |
+|-------|---------------|-----------|
+| The Heights | Human — Bureau enforcers, corp security, licensed practitioners pushed too far | Rare, hot zones only |
+| The Sprawl | Mixed — gangs, unlicensed practitioners, corp mercs, things that followed someone home from the Meridian | Moderate, contested zones |
+| The Meridian | Wrong — entities from adjacent registers, people who went in and came back changed | Frequent, always active |
+| The Warrens | Mechanical / ley-based — infrastructure that defends itself, constructs the Bureau built and forgot | Dense |
+| The Ruins | Pure — what lives down here has no name in any language Reid speaks | Constant |
+
+---
+
 ### Final Fantasy DNA (FF4 / FF5 / FF6 / FF7)
 - Fixed party members with defined archetypes — their role IS their identity; each broken in a specific way (FF4 / FF6 ensemble weight)
 - The signature **tonal shift**: starts as a personal detective story, ends as something that cannot be fully described
@@ -118,7 +142,7 @@ Magic and technology coexist. Both are real. Both are controlled. Both are lies.
 
 ## The Central Mystery
 
-The protagonist — a disgraced enforcer turned unlicensed private investigator — is hired to find a missing Summoner.
+The protagonist — **Reid**, a disgraced enforcer turned unlicensed private investigator — is hired to find a missing Summoner.
 
 Summoners are rare, Bureau-monitored, and feared. When one goes missing, it means someone powerful wanted her gone. The investigation pulls the protagonist into:
 
@@ -133,6 +157,113 @@ Summoners are rare, Bureau-monitored, and feared. When one goes missing, it mean
 **Midpoint:** The Summoner is found. What she's become is not what anyone expected. The villain's plan is revealed — and it's already working. The party breaks.  
 **Act 2:** Each character descends into their own version of the horror. The truth about magic surfaces — not all at once, but in pieces, each one reframing what came before. Reunion is not triumphant — it's survival.  
 **Act 3:** The city is the dungeon. The final revelation: magic was always human. The ley architecture is a pipeline. The Bureau is the pump. The entity is almost through. The entity makes an offer. The player decides what "winning" means — but winning does not mean the entity is destroyed. It means the manifestation stops short. It means people keep what was always theirs.
+
+---
+
+## The City: NOX
+
+**NOX** — officially backronymed by the Bureau as *Neural Output eXchange* in the founding charter. Nobody uses the full name. Nobody reads the founding charter. The confession has been in plain sight for as long as the city has existed.
+
+Latin for *night*. The perpetual dark is not atmospheric. It was engineered — or encouraged. The entity finds the night useful.
+
+The acronym is a Kojima-tier reveal: somewhere in Act 3, the player finds the original Bureau documentation. The city's official designation has always been an accurate description of its function. The Bureau didn't hide what Nox was. They just named it correctly and trusted that nobody would look.
+
+> *"Neural Output eXchange. Right there on the charter. Stamped and certified. I always thought it was bureaucrat nonsense. Turns out it was the most honest thing they ever wrote."*
+
+### Structure
+
+NOX is built around a contact point, not on top of one. The city didn't discover the entity — the entity drew settlement. It wanted to be built around. The vertical stack is the history of that process made physical.
+
+| Layer | Name | What it is |
+|-------|------|------------|
+| Top | **The Heights** | Bureau command, licensed zones, megacorp towers. Clean. Wrong in ways you feel before you can name. |
+| Middle | **The Sprawl** | The bulk of the city. Megacorp territories carving it up — brand wars, turf disputes, the visible competition. Where people live. |
+| Transitional | **The Meridian** | A district you go to, not live in. Wrong geometry visible to the naked eye. Porous Bureau cordon. The membrane is thinnest here. |
+| Below | **The Warrens** | Infrastructure, old foundations, ley architecture made physical. The pipes. |
+| Bottom | **The Ruins** | Pre-city. First contact. The entity's oldest presence in the physical register. Not somewhere you go by accident. |
+
+### Power Structure
+
+Three concentric layers of knowledge — each one managing the layer below it, none knowing who manages them:
+
+| Layer | Who | What they know |
+|-------|-----|----------------|
+| **WARDEN** | Ancient. Small. Hidden. | Everything. |
+| **The Bureau / Megacorps** | Administrators. Executives. | They run the machine without knowing what it's for. |
+| **Everyone else** | The city. The fuel. | Nothing. That's the point. |
+
+The megacorps compete visibly — territory, licensing disputes, propaganda, corporate warfare. That conflict keeps the Sprawl divided and distracted. It is engineered. WARDEN engineers it.
+
+### WARDEN
+
+*Welfare Authority for Resource Development and Exchange Networks.*
+
+They are the inheritors of the first expedition that discovered the Ruins. Whatever was found down there, they found it first — and kept it. The Bureau was built by them as a management layer. The megacorps were seeded by them as a distraction layer. The ley architecture was designed by them as a collection layer.
+
+Wardens keep order. Wardens serve the institution, not the inmates. The city is the prison.
+
+WARDEN has no public face. It has no office. It has no acronym on any door. The name exists only in documents so old and so buried that finding one is itself suspicious. They are not a conspiracy — conspiracies can be exposed. They are infrastructure.
+
+The villain is not one of them. He found them. He wants what they have. He does not understand that what they have is not power — it is a leash.
+
+### The Heights
+
+The first district. The face NOX puts on.
+
+The Heights is clean, ordered, prosperous. Licensed practitioners move through wide streets with purpose. Cyberware gleams under neon. Ley architecture terminals line the boulevards like metro stations or public charging points — civic infrastructure, nobody questions what they're for. Bureau enforcers patrol in pressed uniforms. Everything works exactly as intended. That is the horror.
+
+There is no overt wrongness in the Heights. No geometry that breaks. No rain falling sideways. The wrongness is a vibe — the absence of friction, of dirt, of the human mess that lives everywhere else in NOX. People here are content in a way that looks like something was quietly removed. They don't know they're missing it. That's the point.
+
+**Bureau HQ** dominates the skyline the way a cathedral dominates a medieval city. Monolithic. Deliberate. Impossible to ignore. The Heights was built around it — every street, every sight line eventually leads back to it. It is not the tallest building in the Heights. It doesn't need to be. It has a gravity that the towers don't.
+
+#### Reid in the Heights
+
+The Heights is Reid's whole life. He was born here, trained here, worked these streets as an enforcer for two decades. He knows which noodle stand opens at 3am and which Bureau clerk takes bribes in the form of good whisky.
+
+His disgrace didn't erase him. It complicated him. Some people still grab his arm and ask how he's holding up. Old colleagues cross the street. He navigates both in the same block. The ones who avoid him are worse than the ones who stopped recognizing him — because their discomfort means they remember exactly what he did, and they made a different choice, and they'd rather not think about that.
+
+#### Key Locations
+
+- **Bureau HQ** — the cathedral. Central. Unavoidable. The building the whole district orbits.
+- **The Promenade** — the Heights' licensed commerce plaza. Open-air storefronts, Bureau-certified vendors, neon on wet stone. Everything is above board. Which means everything is metered. (See below.)
+- **The Exchange Floor** — official ley architecture terminal hub, presented as a civic energy exchange. Stylish. Public. The most efficient harvest node in the city, hiding as a transit hub.
+- **Reid's old precinct** — still operating. His replacement sits at his old desk. He's walked past the door twice since his disgrace. Hasn't gone in.
+
+#### The Promenade — Shop Directory
+
+The Heights' official commerce district. Surveilled, licensed, Bureau-compliant. Everything you can buy here is registered to your name. The gear is real. So is the monitoring.
+
+| Shop | Name | What it sells |
+|------|------|---------------|
+| Inn | **The Nocturne** | Boutique hotel. Black marble, filtered light, a bar that stays open as long as the city does. The name treats perpetual night as aesthetic rather than engineered. Reid used to drink here on long cases. |
+| Weapons & Cyberware | **Halloway Arms & Augmentations** | Steel on the left counter, chrome on the right. Ballistic weapons, blades, offensive implants, reflex boosters. Bureau compliance certificate framed on the wall like a diploma. Buying here puts your name in two registries. |
+| Armor & Protective Gear | **Carapace** | Subdermal plating, ballistic weave, neural shielding, licensed defensive cyberware. Clean showroom. The fitter doesn't ask what you're expecting to need it for. |
+| Sigils | **Aether & Co.** | Upscale sigil boutique. Branded packaging, premium amplification, a practitioner on staff. The Heights buys the expensive ones — better output, sleeker design, higher harvest rates the Bureau doesn't print on the label. |
+| Items | **The Dispensary** | Medical supplies, stimulants, psychic stabilizers, utility consumables. Megacorp pharmacy chain. The clerk is helpful and does not know what half of what she sells is actually for. |
+
+#### The Case Entry
+
+**Crane** — retired Bureau enforcer, former mentor. The closest thing Reid has to a father. They still share a drink when the city allows it, trading old case stories across a table that's seen better decades.
+
+Crane reaches out off the record. His daughter is missing. The Bureau knows. The Bureau is not looking. He doesn't know why — he's been out too long to have that kind of access — but he knows the silence is wrong.
+
+He knows more than he admits. Before she disappeared, Vesper warned him — not with speeches, with instructions. Retire the Bureau pension into a private account. Stop using his licensed sigil. Stay out of the Heights for a while. He thought she was being paranoid. Then she disappeared.
+
+Now he sits with the fact that every instruction she gave him made perfect sense — and he didn't follow any of them. His sigil is still registered. His pension is still in the Bureau system. He still lives in the Heights.
+
+He doesn't tell Reid any of this in their first meeting. He gives him the missing person case and nothing else. He needs to know Reid is in before he hands him the weight of what he knows. If Reid understood from the first conversation what Vesper had been close to, Crane isn't sure he'd take it.
+
+He doesn't come to Reid because he has no one else. He comes to Reid because Reid saved Vesper once before — an act that may have cost Reid everything — and Crane never forgot. He's calling in something that was never framed as a debt. It always was one.
+
+The gap between knowing and not looking — that's where the case lives.
+
+---
+
+### TBD
+- District structure and named neighborhoods within the Sprawl
+- The Meridian's spatial relationship to the rest of NOX
+- What wrong geometry looks like at street level vs. deep grid
+- WARDEN membership: how many, how they recruit (or whether they do), what the entity gives them in return
 
 ---
 
@@ -158,7 +289,19 @@ There is more than one presence in her now. The being is still there, underneath
 
 Every scene with Vesper is a question of which one is speaking.
 
-Reid knew almost nothing about any of this when he helped her escape. He had a read on a stranger and acted on it. That's who he is.
+Reid knew almost nothing about any of this when he helped her escape. He had a read on a stranger — and she was Crane's daughter, and Crane was the closest thing Reid ever had to a father. He acted on both. That's who he is.
+
+### Reid's Disgrace
+
+A few years back. The wound has edges but Reid has rebuilt something around it.
+
+The Bureau sent a team to silence Vesper — not arrest, not process. Disappear. She'd found something she wasn't supposed to find, and the order that came down wasn't a warrant. Reid was on that team. He filed a false report and let her walk. No fight, no scene, no dramatic gesture. He just didn't do it.
+
+The Bureau can't forgive that — not because of what he did, but because of what it proved. He saw the order clearly and chose wrong. That's not a man you rehabilitate. That's a man you strip and watch.
+
+Crane was already retired when it happened. He found out later — pieced it together from what Vesper told him and what he knew of Reid. He reached out anyway. Some things you don't leave alone.
+
+What Vesper had found at that point — the thing that warranted silencing — connects directly to what she found later. She didn't stumble into the truth all at once. She followed a thread. The Bureau tried to cut it. Reid gave her enough time to pull it further.
 
 ### TBD
 - Party Summoner arc
@@ -168,16 +311,15 @@ Reid knew almost nothing about any of this when he helped her escape. He had a r
 
 ## Immediate Questions to Develop
 
-- [ ] How exactly does the License Bureau control both magic and tech — what does a "license" look like in this world? What does the bureaucratic interface of harvest actually look like day to day?
-- [ ] What is the relationship between cyberware and magic — can they interfere with each other? Amplify each other? Can cyberware be used to suppress or redirect psychic output?
-- [ ] Who built the Bureau — true believers who discovered the entity and chose to serve it, or something more banal: a system that accumulated purpose across generations until nobody inside it knew the original sin?
-- [ ] Protagonist Reid's specific backstory / what crime got them stripped of their license? Did Reid have latent psychic ability that the Bureau was harvesting through his enforcer work — and does he know?
-- [ ] Do the displaced beings know about the tithe arrangement? All of them, some of them, or only the ones who made older arrangements? What does Vesper's being know, and when did it decide to show her the truth?
-- [ ] Who are the party members, what are their archetypes, and what does each breaking point look like at its worst? How does each one relate to the revelation that their power was always their own?
-- [ ] What is the villain's name, ideology, and their relationship to the entity — are they a true believer, or just a bureaucrat who climbed far enough to see what the machine actually does?
-- [ ] What is the city's name and its geography — the districts, the underworld, the geometry that doesn't add up?
-- [ ] What tone does the music take — jazz noir? orchestral dread? ambient industrial? synthwave with something wrong underneath?
-- [ ] What does the entity's offer actually say? What does it understand about humans, if anything?
+- [ ] Was his psychic output being metered through his Bureau-issued equipment — does he have any suspicion of this, or is the revelation entirely new?
+- [ ] Who are the party members and what are their archetypes? What is each person's relationship to the revelation that their power was always their own — and what does their breaking point look like at its worst?
+- [ ] The villain: name, rank within the Bureau, and how far they've climbed. Did they discover what the machine does and choose it, or were they already a believer before they climbed high enough to see? What do they want that the entity can give them?
+- [ ] District structure: where is the Meridian in relation to the rest — is it a place you go to, a district, an underworld layer? What does wrong geometry look like street-level vs. deep grid?
+- [ ] Cyberware and psychic output: can implants suppress or redirect output? Is this why some people get Bureau-issued cyberware as part of their license — involuntary metering built into the hardware? Does jailbreaking cyberware have the same politics as jailbreaking Sigils?
+- [ ] What does "stranding the entity between registers" actually look like as an ending? What choice does the player make, and what is lost in making it? Why is this not a victory?
+- [ ] What does the entity's offer say? What, if anything, does it understand about humans — or does it communicate in something that only maps to language after the fact?
+- [ ] The Kojima twist: what is the reframe that hits differently on a second playthrough, and what question in the post-credits scene is *wrong* in a way you won't catch the first time?
+- [ ] Music: jazz noir / orchestral dread / ambient industrial / synthwave with something wrong underneath — or some combination that shifts register as the game does?
 
 ---
 
