@@ -70,6 +70,46 @@ For the Black Mage, swapping mid-game *is* their arc — the moment they defect 
 
 ---
 
+## Combat Loop
+
+### Structure
+- **ATB** — every unit has a gauge that fills based on SPD. When full, they act. No pause when in menus.
+- **4 active party members** at a time.
+- **Command menu** — uniform across all characters: Attack / Abilities / Item / Limit. Differentiation lives inside the Abilities list.
+
+### Physical Attack
+- Damage formula: **(STR - enemy DEF) × random(0.9–1.1)**
+- **Critical hits** — derived stat, not raw RNG. Crit rate is class-specific, modified by equipment and Sigils.
+  - **Attack crits** draw from whichever is higher between STR and SPD.
+  - **Ability crits** draw from the ability's defined stat (hardcoded per ability).
+- Enemies use the same formula.
+
+---
+
+## Character Abilities
+
+### Reid — Fighter
+Pure single-target damage dealer. Crit stat: STR (or SPD if higher).
+
+| Ability | PP Cost | Effect | Unlock |
+|---------|---------|--------|--------|
+| **Piercing Strike** | Low | Single target, ignores enemy DEF | Level 1 |
+| **Heavy Blow** | Mid | Single target, high STR multiplier | TBD |
+| **Brutal Strike** | High | Single target, maximum STR multiplier | TBD |
+| **TBD** | TBD | Bonus damage against specific enemy state | TBD |
+
+### Mara — Thief (high PSY)
+Hybrid: fast physical hits that apply psychic marks on contact. Crit stat: SPD (abilities crit off PSY).
+
+| Ability | PP Cost | Effect | Unlock |
+|---------|---------|--------|--------|
+| **Static Touch** | Low | Single target physical hit, applies Disorientation (enemy SPD down) | Level 1 |
+| **Psychic Bleed** | Mid | Single target physical hit, siphons PP from enemy | TBD |
+| **Overload** | High | Single target psychic burst, bypasses DEF, applies Vulnerability (enemy takes increased PSY damage) | TBD |
+| **TBD** | TBD | Conditional damage | TBD |
+
+---
+
 ## Lovecraftian Combat — Psychic Drain
 
 Entity-type enemies deal **PP damage** (Psychic Drain) instead of HP damage. No extra bar or stat — just a damage type that targets a different resource.
