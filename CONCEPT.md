@@ -60,7 +60,7 @@ Magic and technology coexist. Both are real. Both are controlled.
 - Fixed party members with defined archetypes — their role IS their identity (FF4)
 - **Sigils** — weird, occult objects of unknown origin that predate the city. Slot into equipment, cyberware, and flesh. Anyone can use them regardless of license. The Bureau classifies them as controlled substances. Their nature intersects with the entity question. (FF7 materia equivalent, but stranger.)
 - **Limit Breaks** triggered by emotional/psychological breaking points, not just HP loss
-- **Summons** are not majestic — they are *wrong*. Contracted beings from outside the known order. They answer because they find it amusing. For now. (TBD mechanically.)
+- **Summons** are not majestic — they are *wrong*. Displaced exiles, unmoored from wherever they came from. They answer because the contract is an anchor — without it, they go back to nowhere. The Summoner needs them. They need the Summoner. Neither knows the entity is the real beneficiary of every call. (Visuals and mechanics TBD.)
 - Party of deeply distinct characters, each a different archetype, each broken in a specific way (FF6 ensemble weight)
 - The signature **tonal shift**: starts as a personal detective story, ends as something that cannot be fully described
 
@@ -115,6 +115,42 @@ Summoners are rare, Bureau-monitored, and feared. When one goes missing, it mean
 
 ---
 
+## Summoners
+
+### What They Are
+Summoners are people *selected* by displaced beings — exiles unmoored from wherever they came from, existing in the gap between registers. A future Summoner doesn't seek out their being; the being finds them first. Intrusions begin: a presence at the edge of vision, dreams with wrong geometry, a voice at a frequency nobody else can hear. The Bureau runs a dragnet to intercept these people before unauthorized contact is made. That dragnet has been quietly shaped by the entity from below for decades. The entity wants Summoners found, registered, and feeding the tithe through proper channels.
+
+### The Contract
+The contract is an anchor. The being needs the Summoner as much as the Summoner needs the being — without the tether, the exile returns to nowhere. They answer when called because for the duration of the summon, they get to *exist* again in a way that feels like existing.
+
+The Summoner pays a debt with every call. What they pay is **possibility space** — alternate selves, roads not taken. A heavily-used Summoner doesn't age visibly or forget things. They become *singular*. They lose the ability to imagine themselves differently. By the end, there is only one possible version of them: the one that kept summoning.
+
+**The twist:** The summoned being is not the creditor. It is the payment processor. Every summon routes the debt to the entity — not the being. Both the Summoner and the being are being harvested without knowing it. The Bureau's licensing system, built for control and shaped from below by something patient, optimizes this extraction. The Bureau is not an evil conspiracy. It is an institution that has been quietly trained, over decades, to do exactly what the entity needs.
+
+### The License
+A licensed Summoner is a monitored freelancer. They register their contracts, report their summons, submit to audits. The Bureau doesn't control who they anchor. It controls when and how often. The leverage the Bureau holds is not over the Summoner — it is over the being. Revoke the license and the anchor breaks. The exile goes back to nowhere. That is why Summoners comply. Not for themselves. For the thing they are keeping alive.
+
+### The Black Market
+Unlicensed summoning runs through the Meridian. Contract brokers facilitate first contact between unregistered Summoners and displaced beings — they don't summon themselves, they create conditions. The Meridian's wrong geometry makes the membrane thinner. The Bureau knows the brokers exist. Catching them is harder than it sounds because the beings don't register on any scan.
+
+### Vesper
+Vesper's contracted being was an older exile — unmoored longer than most, from somewhere closer to the entity's layer. It could perceive things other beings couldn't. The Bureau found this useful and assigned it to her. But the being started showing her things it wasn't supposed to. Not maliciously — it was trying to warn her. The incriminating document she found wasn't discovered through investigation. Her being led her to it. Then the entity noticed.
+
+Vesper didn't run because she knew too much. She ran because something she trusted took her somewhere she couldn't come back from.
+
+The entity now speaks through her. But the being is still there, underneath — still trying to reach her. Three things in one body. Every scene with Vesper is a question of which one is speaking. The being is the thread Reid can pull.
+
+Reid knew almost nothing about any of this when he helped her escape. He had a read on a stranger and acted on it. That's who he is.
+
+### TBD
+- Party Summoner arc
+- Contract ceiling (one contract or multiple)
+- Summon visuals and combat presence
+- Vesper's being's appearance and register
+- What the tithe specifically collects
+
+---
+
 ## Immediate Questions to Develop
 
 - [ ] How exactly does the License Bureau control both magic and tech — what does a "license" look like in this world?
@@ -128,7 +164,7 @@ Summoners are rare, Bureau-monitored, and feared. When one goes missing, it mean
 - [ ] What is the city's name and its geography — the districts, the underworld, the geometry that doesn't add up?
 - [ ] What tone does the music take — jazz noir? orchestral dread? ambient industrial? synthwave with something wrong underneath?
 - [ ] What is the entity — and what does it actually want, if "want" is even the right word?
-- [ ] What is the Summoner's contract, and what did she agree to?
+- [x] What is the Summoner's contract, and what did she agree to? — see Summoners section
 
 ---
 
