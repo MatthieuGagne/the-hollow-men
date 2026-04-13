@@ -1,0 +1,16 @@
+# Godot 4 build artifacts
+.godot/
+*.translation
+
+# Godot export templates (large binaries)
+export_presets.cfg
+
+# Imported assets cache (regenerated on import)
+.import/
+
+# Editor logs
+logs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
