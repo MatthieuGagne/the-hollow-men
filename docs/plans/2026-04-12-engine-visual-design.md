@@ -174,9 +174,69 @@ FF6 homage. Implemented as a single shader. No additional art required.
 
 ---
 
+## Section 4: Typography
+
+Two-font system. Bureau UI and Reid's narration are different worlds of text — they should read that way.
+
+| Role | Font | Rationale |
+|---|---|---|
+| UI / menus / battle HUD | **Monogram** (datagoblin, CC0) | Narrow, institutional — reads as Bureau terminal output |
+| Dialogue / narration / internal monologue | **m5x7** (Daniel Linssen, CC0) | Warmer, rounder, humanist — Reid's voice against the machine |
+
+Both fonts are CC0 licensed and proven readable at sub-400px resolutions.
+
+---
+
+## Section 5: Battle Backgrounds
+
+**Gradient + foreground props** per district. No full painted scenes at this stage.
+
+Each district background consists of:
+- A solid color gradient matching the district's palette identity (reuses `CanvasModulate` values already defined)
+- 1–3 hand-drawn foreground prop silhouettes to establish location
+
+| District | Gradient Direction | Key Props |
+|---|---|---|
+| The Heights | Dark top → cold blue bottom | Corporate signage, glass panel |
+| The Sprawl | Mid-gray → warm neon glow | Neon tube, chain-link |
+| The Meridian | Deep purple → wrong green | Wrong geometry fragment, ley node |
+| The Warrens | Dark amber → rust | Pipe cluster, exposed conduit |
+| The Ruins | Near-black → deep crimson | Ancient stone, bone fragment |
+
+Painted full backgrounds are the intended upgrade path once the battle system is shipped.
+
+---
+
+## Section 6: NPC Animation
+
+**2-directional walk cycles, horizontally mirrored.**
+
+- Left-facing cycle drawn; right-facing is a horizontal flip
+- No up/down walk animation — FF early-era approach
+- 4-frame walk cycle per NPC (2 frames minimum acceptable for background characters)
+- Idle: 2-frame breathing only
+
+---
+
+## Section 7: Dialogue Box
+
+**Opaque dark panel with portrait, anchored bottom.**
+
+```
+┌─────────────────────────────────────────────────┐
+│ [48×48 portrait] │ Dialogue text here...         │
+│                  │ Second line of text.           │
+└─────────────────────────────────────────────────┘
+```
+
+- Panel: solid dark fill (near-black, matches district darkness palette)
+- Portrait: left-anchored, 48×48px, character-specific
+- Text: m5x7 for dialogue/narration, Monogram for speaker name label
+- Panel height: ~40px of the 180px total (leaves world visible above)
+- No translucency — readability over cinematics at this resolution
+
+---
+
 ## Open Questions
 
-- Font choice for UI — pixel font to match aesthetic (suggest looking at fonts in the style of FF6's menu font)
-- Battle background art per district — static painted backgrounds or parallax tile layers?
-- NPC animation budget — 2-frame idle only, or directional walk cycles?
-- Dialogue box style — opaque dark panel with portrait, or translucent overlay?
+*(none — all engine/visual decisions resolved)*
