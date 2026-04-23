@@ -12,6 +12,14 @@ Former Bureau enforcer turned unlicensed private investigator. Born, trained, an
 
 He was never a practitioner — no Grade, no sigil, no Academy. He worked beside Grade II and III colleagues for twenty years and knows exactly what the system looks like from outside it. He also knows the Grays from that outside: seconded to Assessment Division operations occasionally, enough to know their protocols, their culture, the chain of command that doesn't appear on any regular Bureau org chart. The night he let Vesper walk, the operation was theirs. He was muscle on loan. That distinction is the only reason he's still breathing.
 
+### Appearance
+Lean, mid-height, pale Irish-Scottish skin — the pallor of a life lived at night in the rain. Dark brown hair, slight widow's peak, going grey at the temples. Dark grey eyes. Long dark olive coat, worn lighter at the edges, Bureau insignia scratched off the breast — the ghost of it still visible. Plain dark shirt, no tie. Resoled leather boots. A tarnished Bureau lighter he kept and shouldn't have. Dominant color: **amber/tobacco brown**.
+
+### Psychology
+**Core wound:** He did the right thing, it cost him everything, and he'd do it again. The certainty is the problem — not the regret.
+**Coping:** Dark humor is one layer among others. Not his defining register — to be fleshed out in dialogue.
+**Won't examine:** Whether the life he's built since the disgrace is actually living.
+
 ### Reid's Disgrace
 
 A few years back. The wound has edges but Reid has rebuilt something around it.
@@ -46,6 +54,14 @@ He doesn't come to Reid because he has no one else. He comes to Reid because Rei
 
 The gap between knowing and not looking — that's where the case lives.
 
+### Appearance
+Mixed Black and white heritage, medium-dark weathered skin. White close-cropped hair — the Bureau regulation cut, thirty years after retirement, still maintained. Short grey beard. Warm brown eyes, tired in a specific way. Dark charcoal long coat, still pressed. Warm grey-brown sweater underneath. Dominant color: **charcoal grey / ash**.
+
+### Psychology
+**Core wound:** He taught Reid everything, and Reid is the only one who actually acted on it.
+**Coping:** Retrospection — parcels out what he knows based on what he thinks people can carry.
+**Won't examine:** Whether protecting people from the truth is care or control. He loses this argument. There is a scene where Reid discovers Crane was managing him from the start. The mentor who couldn't stop being a handler.
+
 ---
 
 ## Iris — Grey-Market Fixer
@@ -73,6 +89,15 @@ The gap between knowing and not looking — that's where the case lives.
 **What she doesn't know:** Anything about WARDEN, the entity, or the ley architecture's actual function. She comes into the main mystery clean — outside perspective. Asks the questions an outsider would ask. When she says she doesn't know what she walked into, she says so.
 
 **Arc and breaking point:** TBD
+
+### Appearance
+Southeast Asian heritage, warm medium skin tone — looks younger than she is. Short asymmetrical red hair, longer on one side, shorter on the other. Dark eyes with a slight iridescent quality in certain light — a subtle augmentation she doesn't mention. Deep teal close-fitted jacket, all internal pockets, dark layered underlayers. Flat boots. Nothing external that could be grabbed. No jewelry, no accessories, nothing reflective. Dominant color: **deep teal / dark grey-green**.
+
+### Psychology
+**Core wound:** She's run so many covers for so long she doesn't know what's underneath. The question exists. She doesn't ask it.
+**Coping:** Pure competence. If she keeps moving she doesn't have to stop and look.
+**Won't examine:** Why she stayed for the kid.
+**Dynamic:** Friction with Margot before alliance — Iris distrusts ideology because she's never needed one. Margot rebuilt herself around one. That gap closes slowly.
 
 ---
 
@@ -102,6 +127,15 @@ Every scene with Vesper is a question of which one is speaking.
 
 Reid knew almost nothing about any of this when he helped her escape. He had a read on a stranger — and she was Crane's daughter, and Crane was the closest thing Reid ever had to a father. He acted on both. That's who he is.
 
+### Appearance
+Medium brown skin — Crane's daughter, the heritage visible but sitting differently. Platinum white hair, loose natural texture, congenital — she was always marked this way. In motion it reacts to air that isn't there. Eyes dark brown in most light; in violet neon the color shifts in a way the lighting cannot explain. Near-black coat with a deep violet undertone that only appears in neon light. Multiple dark layers that don't hang quite right. She was dressing to disappear before she disappeared. The softest silhouette in the cast — the only soft outline against the city's hard geometry. Dominant color: **deep violet / near-black**.
+
+### Psychology
+**Core wound:** She followed a thread because she trusted something, and it led somewhere she can't come back from.
+**Coping:** Compartmentalization — the original Vesper kept things separate. The entity doesn't cope. It simply is.
+**Won't examine:** N/A. She found the truth. That's the problem.
+**Note:** Two presences, one face. Every scene with Vesper is a question of which one is speaking.
+
 ### TBD
 - Party Summoner arc
 - Vesper's being's appearance and register
@@ -116,7 +150,13 @@ Reid knew almost nothing about any of this when he helped her escape. He had a r
 
 **Grade:** IV (former). No active license. The Bureau considers her an asset gone dark.
 
-**Appearance:** Polished, sharp, expensive taste that hasn't been abandoned with the license. She looks like she belongs in the Heights. She just doesn't answer to it anymore. The jailbroken sigil sits exactly where the licensed one used to — the only visible sign of what she's done, if you know what you're looking at.
+**Appearance:** Fair skin, Northern European. Long straight blonde hair, loose, falling on both sides of her face — the lightest hair in the cast, high contrast against the dark coat. Pale grey eyes. Deep burgundy high-collared structured coat, fitted. The jailbroken sigil at her collarbone where the licensed one was — a faint cold glow, the one point of light on her. A worn leather document case. She looks like she belongs in the Heights. She just doesn't answer to it anymore. The Academy posture is in her bones — everything she wears reads more formal than intended. Dominant color: **deep burgundy / wine**.
+
+### Psychology
+**Core wound:** She was the instrument of her own loss. She filed the form correctly.
+**Coping:** Intellectual framework — she rebuilt ideology around the grief. Genuine, and also a way of not sitting with the guilt directly.
+**Won't examine:** Whether the jailbreak was justice or self-punishment.
+**Dynamic:** Friction with Iris before alliance — Margot rebuilt herself around ideology; Iris has never needed one. The gap closes slowly.
 
 Academy-trained from early detection, Grade IV by graduation. The Bureau's best placement, most attentive instructors, mandatory reporting, non-Bureau employment requiring approval. She was not just trained by the institution — she was claimed by it. Its future ran through her.
 
@@ -152,7 +192,13 @@ When they meet in Reid's group, neither speaks first.
 
 **Grade:** Solid III. Field-tested. The Bureau has opinions about his career but he has never given them cause to act on them.
 
-**Appearance:** Broad, field-worn, built for enforcement rather than ceremony. Scarred in places the uniform covers. A face that has seen difficult work up close and decided the system was still worth it. He doesn't look like a poster. He looks like someone who has done the hard thing and would do it again. The Bureau dress code sits on him like a choice, not a requirement — because for him it is.
+**Appearance:** Deep brown skin, rich dark complexion. Close-cropped fade, short maintained beard — Bureau-regulation, never changed. Dark brown eyes, warm but with threat assessment running underneath. The widest, tallest silhouette in the cast — when he enters a room, the room adjusts. Bureau slate-blue long coat, field-worn but cleaned after every operation. Gold Bureau badge on his chest. Neural interface at his temple, Bureau-standard cyberware, uncovered. Heavy polished field boots. Scar on his jaw. The Bureau dress code sits on him like a choice, not a requirement — because for him it is. Dominant color: **Bureau blue / slate**.
+
+### Psychology
+**Core wound:** His entire identity is organized around an institution that doesn't deserve it.
+**Coping:** Procedure. The report, the protocol, the form. Not bureaucracy — faith.
+**Won't examine:** What his silence about Margot's report makes him.
+**Dynamic:** True Detective spine with Reid — two men with radically different relationships to truth working the same case.
 
 Former Academy graduate, career enforcer, occasionally seconded to Assessment Division operations when numbers were needed. He came up through the system and found it gave him something real: structure, purpose, a framework for justice in a city that otherwise has none. The Bureau worked for him at the level he was given access to. He is not wrong that it did.
 
