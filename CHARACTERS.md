@@ -48,7 +48,7 @@ The gap between knowing and not looking — that's where the case lives.
 
 ---
 
-## Mara — Grey-Market Fixer
+## Iris — Grey-Market Fixer
 
 **Class:** Thief (high PSY)
 
@@ -56,7 +56,7 @@ The gap between knowing and not looking — that's where the case lives.
 
 **Grade:** None. Bureau instruments return an error before a number.
 
-**Handle:** Mara. Not her real name. She's had it long enough that she doesn't remember when she stopped thinking of it as a cover. Real name unknown.
+**Handle:** Iris. Not her real name. She's had it long enough that she doesn't remember when she stopped thinking of it as a cover. Real name unknown.
 
 **First encounter:** Beat 3 of the opening sequence — already in the building, already working, already done before Reid knows who she is. She takes the jailbroken sigils and ghosts clean. No name. No thread. Just the sound of a panel sliding back into place.
 
@@ -185,7 +185,7 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 | Class | Character | Bureau Status |
 |-------|-----------|---------------|
 | Fighter | Reid | Disgraced — stripped |
-| Thief (high PSY) | Mara | Never registered |
+| Thief (high PSY) | Iris | Never registered |
 | Summoner | TBD | Unlicensed — Meridian |
 | Black Mage | Margot | Fugitive — jailbroken |
 | White Mage | TBD | TBD |
