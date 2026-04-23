@@ -224,6 +224,58 @@ His entry into the party — voluntary defection or pushed out — is TBD, conti
 
 ---
 
+## Paz — Bard
+
+**Class:** Bard
+
+**Bureau status:** Uncategorized — no file. Ley terminals register something; the assessment protocol returns an error before a number.
+
+### Appearance
+Latina, warm brown skin. Long bright orange braids — loose, they move when she performs. Dark expressive eyes. A battered long leather jacket, dark and Sprawl-worn on the outside, vivid red lining when it opens. Dark fitted underlayers, worn boots. A heavily modified electric guitar — the body predates her, salvaged or passed down; the modifications are hers. The instrument is present, not displayed. Dominant color: **burnt orange / deep red**.
+
+### Background
+Grew up in the Meridian — wrong geometry from birth, Bureau cordon always porous. Now lives and performs in the Sprawl. Against the whole system: Bureau, megacorps, WARDEN. Not a political position she arrived at — a conclusion she reached at twelve years old.
+
+### Core Wound — The Regularization
+When Paz was young, the Bureau ran an administrative sweep through the Meridian. They processed it. Assigned ley terminal reference numbers to buildings, families, people. Anyone with detectable output got assessed. Several didn't come back. No arrests, no scenes. Just forms, filed correctly. The bureaucracy didn't hate the Meridian. It *administrated* it. Paz watched people she grew up with become output readings in a system that didn't know their names. The anger isn't personal. It's structural. It's been there since she was twelve.
+
+### Psychology
+**Coping:** Performing, fighting, looking outward. Suspects her own power does something beyond ordinary performance — doesn't dwell on it. There's work to do.
+**Won't examine:** That she moves people without their consent — ally and enemy simultaneously — the same way the Bureau harvests output without consent. She tells herself it's different because her cause is right. That's the Bureau's logic too.
+
+### Relationships
+- **Iris**: Iris has clocked Paz from operating in the same Sprawl underground. Paz doesn't know Iris exists. The asymmetry is the dynamic.
+- Investigation entry: TBD — she follows a thread from the Regularization that leads to the same place as the Vesper case. She arrives independently.
+
+---
+
+## Doc Karim — White Mage
+
+**Class:** White Mage
+
+**Bureau status:** Unlicensed — tolerated. The Sprawl needs healers. That arrangement ends the moment he associates with Reid's group. He knows this. He joins anyway.
+
+**Handle:** Doc. Everyone calls him this. Karim is his actual name — on no file anywhere.
+
+### Appearance
+South Asian heritage (Pakistani or Bengali), warm medium-dark skin. Mid-50s, stocky build — the kind of man who looks like he's been carrying things for a long time. Dark hair going fully grey, worn loose and slightly unkempt. Dark warm eyes. A worn dark green utility jacket, heavily pocketed, patched in places. Medical supplies visible on his person. Dominant color: **deep worn green**.
+
+### Background
+Sprawl-born, Sprawl-stayed. Unlicensed community healer for decades — megacorp workers with industrial injuries, people who can't afford Bureau-licensed care, practitioners who've been calibrated and lost more than just their output. No Academy, no license, no Grade on file. The Bureau tolerates him because the Sprawl needs healers and he stays in his lane. He's never stayed in his lane. He's just never been worth the paperwork.
+
+### Psychology
+Core wound, coping, won't examine: all TBD — deliberately open for story design.
+
+What is known: he joins the investigation knowing exactly what it costs. He sees something in a patient's wounds that has no medical category, and he needs to understand what's doing this to people. That need is stronger than the cost of burning the arrangement that's kept him safe. That's who he is before we know his wound.
+
+### Investigation Entry
+Someone from Reid's group arrives badly hurt. He treats them, asks no questions — the way he always does. What he sees during treatment is entity-adjacent: injuries that follow no pattern, something wrong at the tissue level that his decades of Sprawl medicine have no category for. He needs to understand it. He's in.
+
+### Relationships
+Stranger to everyone in the party at entry. No prior relationships — the group forms a read on him fresh.
+
+---
+
 ## Party Roster
 
 Ten-character ensemble. Each character has a different relationship to the Bureau's system and to the revelation that their power was always their own.
@@ -234,9 +286,9 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 | Thief (high PSY) | Iris | Never registered |
 | Summoner | TBD | Unlicensed — Meridian |
 | Black Mage | Margot | Fugitive — jailbroken |
-| White Mage | TBD | TBD |
+| White Mage | Doc Karim | Unlicensed — tolerated |
 | Hacker | TBD | TBD |
-| Bard | TBD | Uncategorized — Bureau has no file |
+| Bard | Paz | Uncategorized — Bureau has no file |
 | Martial Artist | TBD | Unmeterable — output loops inward |
 | Occultist | TBD | Classified |
 | Paladin | Gideon | Bureau — true believer |
@@ -245,7 +297,7 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 
 **Black Mage (Margot)** — Grade IV. Academy-trained; the Bureau's claimed asset. Jailbroke after filing a welfare referral that triggered the calibration of someone she loved. The swap was not preemptive self-preservation — it was the only response she had to something she couldn't undo. The ideology came after, built around the guilt. Her Bureau limit break is proper, sanctioned technique. Her jailbroken limit break is who she actually is underneath it.
 
-**Bard** — psychic output expresses through performance. The Bureau never thought to meter that channel, which means no Grade on file — the ley terminals register something but the assessment protocol doesn't know what to do with it. Anti-establishment by structural accident as much as intent. Abilities affect the whole battlefield simultaneously — ally buffs and enemy debuffs at once.
+**Bard (Paz)** — psychic output expresses through performance — specifically a heavily modified electric guitar. The Bureau never thought to meter that channel, which means no Grade on file — the ley terminals register something but the assessment protocol doesn't know what to do with it. Anti-establishment against the whole system (Bureau, megacorps, WARDEN) by structural experience as much as intent. Abilities affect the whole battlefield simultaneously — ally buffs and enemy debuffs at once.
 
 **Martial Artist** — no Sigils, no cyberware, on principle. Output loops inward as physical enhancement. The Bureau's assessment protocol requires outward resonance to function — their reading comes back zero, filed as "non-practitioner," forgotten. They counted on this. Nothing to scan, nothing to meter, no Grade on file.
 
