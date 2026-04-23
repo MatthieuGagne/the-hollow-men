@@ -108,7 +108,7 @@ Reid knew almost nothing about any of this when he helped her escape. He had a r
 
 ---
 
-## Clara — Black Mage
+## Margot — Black Mage
 
 **Class:** Black Mage
 
@@ -124,19 +124,19 @@ For years she was a good practitioner in every sense the Bureau meant. Precise, 
 
 ### The Break
 
-A junior practitioner under her supervision — Grade II, irregular output patterns — was referred by Clara through standard protocol. She thought it was a welfare referral. She did not know what the referral triggered. She didn't know what Output Calibration actually was, not in the way that mattered — she knew the procedure code, the official framing, the Bureau's language. She had not understood it as a thing that happened to a person.
+A junior practitioner under her supervision — Grade II, irregular output patterns — was referred by Margot through standard protocol. She thought it was a welfare referral. She did not know what the referral triggered. She didn't know what Output Calibration actually was, not in the way that mattered — she knew the procedure code, the official framing, the Bureau's language. She had not understood it as a thing that happened to a person.
 
-They were lovers. Clara filed the report anyway, because the protocol felt like care, because twelve years of Academy formation had made the correct response feel like the responsible one. She was being a good practitioner. She was being exactly what she had been made to be.
+They were lovers. Margot filed the report anyway, because the protocol felt like care, because twelve years of Academy formation had made the correct response feel like the responsible one. She was being a good practitioner. She was being exactly what she had been made to be.
 
-By the time she understood what she'd triggered, it was done. The junior practitioner returned to work. Did their job fine. Was polite when Clara tried to speak to them. Said there was nothing to apologize for. Whatever had lived in them that *wanted* things — the excess, the friction, the reaching — was gone. Clara had known them for years. She was looking at a copy.
+By the time she understood what she'd triggered, it was done. The junior practitioner returned to work. Did their job fine. Was polite when Margot tried to speak to them. Said there was nothing to apologize for. Whatever had lived in them that *wanted* things — the excess, the friction, the reaching — was gone. Margot had known them for years. She was looking at a copy.
 
-They were transferred shortly after. Clara doesn't know where. That is its own wound.
+They were transferred shortly after. Margot doesn't know where. That is its own wound.
 
 ### The Jailbreak
 
 She didn't swap sigils out of ideology. She swapped because she finally understood, completely and technically, what she had handed someone she loved to. The ideology came after — rebuilt around what she couldn't undo. Her Bureau limit break is proper, sanctioned technique: precise, efficient, everything the Academy taught her to be. Her jailbroken limit break is who she actually is underneath that. She is still learning what that looks like.
 
-### Clara and Gideon
+### Margot and Gideon
 
 Academy classmates. He knows what she did — the report, the relationship, the calibration that followed. He said nothing at the time, filed it under *the institution requires difficult tools*, and held the line. She jailbroke. He stayed. Neither knows where the other is when the game begins.
 
@@ -162,7 +162,7 @@ Gideon has been present for Bureau operations that were not clean. He knows what
 
 He is not corrupt. He is not cruel. He is loyal to something that was always a machine, and his loyalty is genuine, and that is the most heartbreaking thing about him.
 
-### Clara and Gideon
+### Margot and Gideon
 
 They were Academy classmates. He knew about her relationship with the junior practitioner she referred. He watched her break after the calibration. He said nothing because the institution requires difficult tools. When she jailbroke, she didn't say goodbye — and he didn't try to find her, because finding her would have meant deciding what to do about her, and he wasn't ready for that question.
 
@@ -187,7 +187,7 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 | Fighter | Reid | Disgraced — stripped |
 | Thief (high PSY) | Mara | Never registered |
 | Summoner | TBD | Unlicensed — Meridian |
-| Black Mage | Clara | Fugitive — jailbroken |
+| Black Mage | Margot | Fugitive — jailbroken |
 | White Mage | TBD | TBD |
 | Hacker | TBD | TBD |
 | Bard | TBD | Uncategorized — Bureau has no file |
@@ -197,7 +197,7 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 
 ### Class Notes
 
-**Black Mage (Clara)** — Grade IV. Academy-trained; the Bureau's claimed asset. Jailbroke after filing a welfare referral that triggered the calibration of someone she loved. The swap was not preemptive self-preservation — it was the only response she had to something she couldn't undo. The ideology came after, built around the guilt. Her Bureau limit break is proper, sanctioned technique. Her jailbroken limit break is who she actually is underneath it.
+**Black Mage (Margot)** — Grade IV. Academy-trained; the Bureau's claimed asset. Jailbroke after filing a welfare referral that triggered the calibration of someone she loved. The swap was not preemptive self-preservation — it was the only response she had to something she couldn't undo. The ideology came after, built around the guilt. Her Bureau limit break is proper, sanctioned technique. Her jailbroken limit break is who she actually is underneath it.
 
 **Bard** — psychic output expresses through performance. The Bureau never thought to meter that channel, which means no Grade on file — the ley terminals register something but the assessment protocol doesn't know what to do with it. Anti-establishment by structural accident as much as intent. Abilities affect the whole battlefield simultaneously — ally buffs and enemy debuffs at once.
 
@@ -205,7 +205,7 @@ Ten-character ensemble. Each character has a different relationship to the Burea
 
 **Occultist** — entity-touched. Learns abilities from entity and entity-adjacent attacks only. Starts with almost nothing. Becomes the most terrifying fighter in the party by Act 3. Every ability is something that was done to them first. Bureau status: classified. There's a file. What's in it: an Output Calibration that didn't take the way it was supposed to. The Bureau's documentation has no category for what happened instead. They'd rather not discuss any of it.
 
-**Paladin (Gideon)** — Grade III. Fighter/healer hybrid. Field enforcer, occasionally Assessment Division. Academy-trained; the institution worked for him at the level he was given access to. Not corrupt — loyal to something that was always a machine. Has witnessed calibrations and rationalized them. Clara's Academy classmate; knew what her report triggered and said nothing. The most heartbreaking arc because he is not wrong to believe in justice. He just put it in the wrong institution.
+**Paladin (Gideon)** — Grade III. Fighter/healer hybrid. Field enforcer, occasionally Assessment Division. Academy-trained; the institution worked for him at the level he was given access to. Not corrupt — loyal to something that was always a machine. Has witnessed calibrations and rationalized them. Margot's Academy classmate; knew what her report triggered and said nothing. The most heartbreaking arc because he is not wrong to believe in justice. He just put it in the wrong institution.
 
 **Summoner** — unique mechanic: shares turns with their being. Every turn can be split between Summoner and being. The being acts on borrowed output. Unlicensed — operating through the Meridian.
 
