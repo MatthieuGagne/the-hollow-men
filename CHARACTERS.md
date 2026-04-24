@@ -362,11 +362,77 @@ Core wound, coping, won't examine: all TBD — deliberately open for story desig
 
 What is known: he joins the investigation knowing exactly what it costs. He sees something in a patient's wounds that has no medical category, and he needs to understand what's doing this to people. That need is stronger than the cost of burning the arrangement that's kept him safe. That's who he is before we know his wound.
 
-### Investigation Entry
-Someone from Reid's group arrives badly hurt. He treats them, asks no questions — the way he always does. What he sees during treatment is entity-adjacent: injuries that follow no pattern, something wrong at the tissue level that his decades of Sprawl medicine have no category for. He needs to understand it. He's in.
+### Investigation Entry (Case 1)
+Reid brings Casimir Gemini to Karim's clinic — badly hurt from a Sprawl confrontation. Karim treats the surface injuries, but recognizes something underneath: entity-contact scarring from years of Bureau service. Not from the fight. Systemic. Decades of ley exposure written into tissue.
+
+Karim has treated other Sprawl patients with similar scarring. Sees the pattern suddenly. Realizes this is not random, not medical — something about the Bureau's apparatus is doing this at a level his decades of unlicensed practice have no category for. He needs to understand it. Joins Reid.
 
 ### Relationships
-Stranger to everyone in the party at entry. No prior relationships — the group forms a read on him fresh.
+Meets Reid in Case 1 through Casimir. Stranger to everyone at entry. No prior connections — the party forms around him fresh. First to join Reid after the opening sequence.
+
+---
+
+## Vera Gemini — Catalyst
+
+**Class:** N/A — does not join the party (at least not immediately)
+
+**Bureau status:** AWOL — fugitive
+
+**Grade:** II (standard practitioner)
+
+Background-character in Case 1. Multi-generational Bureau service family (mother before her, father Casimir continuing the legacy). Her sigil began draining faster than normal because of generational bloodline saturation with ley exposure — the more a family is integrated with the Bureau apparatus, the worse the drain becomes.
+
+Unable to work due to the drain, she took on medical debt to Suzy to pay for her father Casimir's treatment (for entity-contact scarring from his own Bureau service). When Holloway (Assessment Division) wanted her for reinstatement, she panicked and went AWOL.
+
+She reaches out to Iris (the fixer from the opening) who offers her shelter and options. During Case 1, Reid is hired to locate her and bring her in. After a confrontation in the Sprawl, Reid secures the sigil and brings Vera to Holloway for payment. But before handing her over, Vera begs Reid to help her father first.
+
+### Appearance
+Grade II practitioner, Heights-trained. Fair skin, straight dark hair, professional bearing. The Academy posture is subtle but visible. She looks like someone raised for success who suddenly found herself falling. Dominant color: **charcoal grey / white accent**.
+
+### Psychology
+**Core wound:** She was supposed to continue the family legacy. Instead she's destroying it.
+**Coping:** Panic and desperation. Action without planning.
+**Won't examine:** That the Bureau system itself is what's draining her — easier to blame herself.
+
+---
+
+## Casimir Gemini — Catalyst
+
+**Class:** N/A — does not join the party
+
+**Bureau status:** Former enforcer (retired or ongoing — TBD)
+
+Multi-generational Bureau service. His mother was a Bureau hero. He followed her into service. He wanted the same path for Vera. When her sigil began failing and she accumulated debt, his family shame became unbearable.
+
+He's already sick with entity-contact scarring from decades of Bureau work — ley exposure at the cellular level. When Vera goes AWOL, he tries to recover her sigil himself to "save face" and help her get reinstated. Tracks her to the Sprawl where she's hiding with Iris.
+
+During a confrontation (Sprawl territory enforcers arrive), Casimir is badly hurt. Reid brings him to Doc Karim for treatment. Karim's recognition of entity-contact scarring in Casimir's injuries is what hooks Karim into the investigation — he realizes the pattern is systemic, not random.
+
+### Appearance
+Late 50s/early 60s, warm brown skin (mixed heritage), dark hair going grey, weathered face. The Bureau bearing is in his posture and manner — someone who carried authority for decades. Looks like he's been carrying weight longer than is healthy. Dominant color: **grey / charcoal**.
+
+### Psychology
+**Core wound:** Loyalty to an institution that doesn't deserve it. Service that cost him everything.
+**Coping:** Pride, anger, refusal to examine.
+**Won't examine:** That the Bureau system itself destroyed his family — easier to blame Vera for her weakness.
+
+### Key Relationship
+Father to Vera Gemini. His decades of Bureau service is what's poisoning her (generational ley exposure). Neither of them understands this yet. The tragedy: he did everything the Bureau asked, and it cost his daughter everything.
+
+---
+
+## Holloway — Bureau Contact
+
+**Class:** N/A — does not join the party
+
+**Bureau status:** Assessment Division Gray (enforcer)
+
+Former colleague of Reid's. Was present (or knows the details of) the night Reid let Vesper walk. Uses this as leverage without naming it directly — veiled threat rather than coercion.
+
+Professional, cold, no wasted words. Holloway's job in Case 1: hire Reid to locate Vera Gemini and bring her in. Official story is sigil reinstatement. Real interest is unknown (connects to larger Bureau machinery — TBD).
+
+### Psychology
+Institutionalist. Sees the system as just. Doesn't question orders, doesn't examine consequences. Not cruel — functional.
 
 ---
 

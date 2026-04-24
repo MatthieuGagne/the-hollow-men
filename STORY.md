@@ -66,13 +66,29 @@ She's gone before he can ask. No name. No frequency. Just the sound of a panel s
 *Reid, to the practitioner: "What did it feel like exactly?"*
 *Practitioner: "Like something was taking notes."*
 
-**BEAT 6 — THE NOCTURNE**
+**BEAT 6 — THE FOUR WINDS BAR**
 Usual table. The drink tastes like the building felt. The ley terminal going dark replays once. He doesn't know where to file it.
+
+No calls yet. Just the weight of something he can't name.
+
+---
+
+**Client for the opening case:** A Heights merchant owed fees by the practitioner — locate and confirm, nothing more. Reid took it because it paid.
+
+---
+
+## Case 1 — The Recovery Job (TBD)
+
+See `docs/plans/2026-04-23-case-1-recovery-job-design.md` for full structure.
+
+After Case 1 resolves and Doc Karim joins the investigation, Crane reaches out.
+
+---
+
+## After Case 1
 
 His comm activates. Old Bureau routing. Encrypted.
 
 **Crane:** *"Reid. It's Crane. She's gone. I need you."*
 
----
-
-**Client for the opening case:** A Heights merchant owed fees by the practitioner — locate and confirm, nothing more. Reid took it because it paid.
+The Vesper case begins.

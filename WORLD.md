@@ -134,7 +134,7 @@ The Heights' official commerce district. Surveilled, licensed, Bureau-compliant.
 
 | Shop | Name | What it sells |
 |------|------|---------------|
-| Inn | **The Nocturne** | Boutique hotel. Black marble, filtered light, a bar that stays open as long as the city does. The name treats perpetual night as aesthetic rather than engineered. Reid used to drink here on long cases. |
+| Inn | **Four Winds Bar** | Boutique hotel. Black marble, filtered light, a bar that stays open as long as the city does. Reid's usual table. Where he drinks on long cases. Where Holloway finds him for Case 1. |
 | Weapons & Cyberware | **Halloway Arms & Augmentations** | Steel on the left counter, chrome on the right. Ballistic weapons, blades, offensive implants, reflex boosters. Bureau compliance certificate framed on the wall like a diploma. Buying here puts your name in two registries. |
 | Armor & Protective Gear | **Carapace** | Subdermal plating, ballistic weave, neural shielding, licensed defensive cyberware. Clean showroom. The fitter doesn't ask what you're expecting to need it for. |
 | Sigils | **Aether & Co.** | Upscale sigil boutique. Branded packaging, premium amplification, a Grade III practitioner on staff for consultations. Sigils here are tiered by Grade — walk in with a II, you're sold a II. Walk in with a IV license, the good cases come out from behind the counter. Better output, sleeker design, higher harvest rates the Bureau doesn't print on the label. |

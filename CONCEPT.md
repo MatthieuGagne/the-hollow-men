@@ -1,4 +1,4 @@
-# FINAL NOIRE
+# THE HOLLOW MEN
 ### *A cyberpunk noir horror JRPG in the style of Hideo Kojima*
 
 > "In this city, everyone's got a license. The problem is nobody chose what they're licensed for."
@@ -84,19 +84,9 @@ Magic and technology coexist. Both are real. Both are controlled. Both are lies.
 
 ---
 
-## Working Title Options
+## Title
 
-| Title | Vibe |
-|-------|------|
-| **FINAL NOIRE** | Clean, obvious, works |
-| **THE JOB** | Double meaning — perfect |
-| **DARK FANTASIA** | More poetic |
-| **PHANTOM CITY** | Evocative |
-| **NOCTIS PERPETUA** | Latin noir pretension |
-| **NO LICENSE** | Punchy, about the license system |
-| **WHAT LIES LICENSED** | Horror-inflected wordplay |
-
-**Current frontrunner: FINAL NOIRE** (but THE JOB has legs)
+**THE HOLLOW MEN** — Final. Evokes the T.S. Eliot poem, the emptiness at the heart of the institution, the space where human will used to be before it was harvested. Matches the tone perfectly.
 
 ---
 
@@ -109,6 +99,8 @@ Magic and technology coexist. Both are real. Both are controlled. Both are lies.
 **Television:** Babylon 5 (the Psi-Corps as institutional model for the Bureau — the total institution, the Grade system, the enforcement arm, the true believers), Twin Peaks (the missing woman who is more than she seems; the entity in a between-space; the gap between surface and what lies beneath — Vesper as Laura Palmer; the detective drawn into something cosmic), True Detective S1 (Rust/Marty dynamic as template for Reid/Gideon — two men with radically different relationships to truth; Ligottian nihilism alongside institutional faith)
 
 **Literature:** Raymond Chandler, Dashiell Hammett, H.P. Lovecraft, Thomas Ligotti, William Gibson, Paul Auster (meta-noir), Haruki Murakami, Jeff VanderMeer (*Annihilation*), N.K. Jemisin (*The Broken Earth* trilogy — the orogene licensing system as direct parallel to the Grade system; power detected young, controlled, harvested), Walter Mosley (Easy Rawlins — Black detective navigating institutions not built for him; relevant for Gideon specifically), Kafka (*The Trial*, *The Castle* — the institution that cannot be understood or appealed to)
+
+**Music:** Blue Öyster Cult (prog-rock mysticism, cosmic horror, the uncanny meeting the mundane)
 
 ---
 
