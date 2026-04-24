@@ -106,7 +106,89 @@ She's in.
 
 ---
 
+### BEAT 10 — THE CONVERGENCE (Four Winds — story beat)
+
+Margot reads Vesper's apartment logs — she has the Academy formation to parse the notation. What they reveal: all three data sets are tracking the same anomalous output signature.
+
+- **Vesper's logs:** ley terminal output readings from across NOX, with one cluster of anomalous consumption in the Meridian that doesn't match any registered practitioner. Vesper circled it. No annotation — just the circle. She noticed it and didn't know what to make of it.
+- **Margot's records:** the same geographic cluster appears as a consumption spike her disappearance cohort accounting can't assign to any calibration case. The output is being drawn toward that pocket but it isn't coming from a Bureau-registered source. A gap in her ledger she couldn't explain.
+- **Karim's files:** a patient who lived near the Meridian border described symptoms consistent with proximity to a sustained output source — headaches, disorientation, geometry shifting. Karim noted it as environmental exposure, filed the location. Same pocket.
+
+Three instruments, same signal. One pocket in the Meridian. The geometry there has been degrading for months.
+
+*[Story beat. Opens the Meridian thread.]*
+
+---
+
+### BEAT 11 — THE THRESHOLD (Meridian entry — exploration + first encounter)
+
+First time the party enters the Meridian. Wrong geometry is immediate and real: streets that don't connect the way they should, a doorway opening onto a room that can't exist behind the wall, rain falling at an angle the wind doesn't explain. Not surreal — wrong in a way that has a logic to it that resists being named.
+
+Investigation Mode works differently here. The environment doesn't read the way a room reads. Things leave impressions that don't match their physical form.
+
+First entity-adjacent enemies introduced. Not Bureau, not enforcers. Phenomena — things from between-space bleeding through where the membrane is thinnest. The encounter is jarring by design: different logic, nothing the party's Bureau experience prepared them for.
+
+*[ATB combat: Reid + Karim + Margot vs. entity-adjacent phenomena. Tutorial encounter for a new enemy category. Enemy design TBD.]*
+
+---
+
+### BEAT 12 — GOING DEEPER (Meridian interior — dungeon escalation)
+
+The geometry worsens as they approach the signature. The wrong architecture is directional now — the space resists being moved through. Entity-adjacent encounters escalate.
+
+Karim reads the walls. The entity-contact scarring he's seen in Casimir's body, in his patients — but in the building material. Architecture that's been ley-exposed long enough that the damage is structural. He has a category for what he's looking at. Having the category is worse than not having one.
+
+*[ATB combat: multi-encounter escalation. Wrong geometry as environmental hazard — rooms that have shifted, paths that require reading the wrong logic to navigate.]*
+
+---
+
+### BEAT 13 — FINDING IRIS (Meridian pocket — story beat)
+
+The party finds the kid first: a teenager, androgynous, Sprawl-born, sitting in the eye of the anomaly. Name TBD — street-given, not registered. Their unregistered output is why the geometry has been worsening — resonating with the between-space without them knowing, pulling the membrane thinner every week. They don't know what they're doing. They've been here for weeks. Every attempt to leave makes it worse. Wrong geometry follows them visibly in small tells — a shadow that doesn't match, a reflection slightly out of sync.
+
+Iris is between the kid and the party. Not waiting — managing. She's been holding the escalation alone, and it's been winning.
+
+She clocks Reid. Assessment (threat?) then recognition (twice before — the opening, Case 1). She lets them through. Says nothing about it.
+
+---
+
+### BEAT 14 — THE BREAK (Meridian pocket — major encounter)
+
+The party's presence tips the balance — four people, three unmetered practitioners, enough output in the pocket to trigger a larger phenomenon. Something from the between-space fully crosses. The biggest encounter of Case 2.
+
+Iris fights as a full guest party member for the first time — not the controlled chaos of the opening or the safehouse. Her element.
+
+*[ATB combat: Reid + Karim + Margot + Iris (guest) vs. major entity-adjacent phenomenon. Encounter design TBD. First full demonstration of Iris's combat class.]*
+
+---
+
+### BEAT 15 — THE RECRUITMENT (Meridian pocket — aftermath)
+
+The geometry is quiet. Temporarily. The kid is stable. Temporarily.
+
+Iris could move them now. She could ghost for a fourth time. Instead she starts talking — not about joining, about the situation: what she's seen the geometry do, what the kid's output has been doing, what Vesper's logs mean in the context of what she's watched happen here for eighteen months.
+
+The key: the anomaly has a *direction*. Not just worsening — pulling toward something specific, deeper in the Meridian. She's been resisting following it for six months. The party's three data sets explain what the anomaly is. Iris tells them where it's going.
+
+*"I've been watching it pull that way for six months. I didn't follow it because I didn't want to know what was at the end. You're going to find out anyway."*
+
+She secures the kid at Karim's clinic — handing them to a stranger on Reid's word alone. The first thing she trusts him with.
+
+She stays because the investigation is inside her problem and there's no separating them. She hates that. She doesn't say so. The party can tell.
+
+*[Story beat — Iris joins the party. Party is now Reid + Karim + Margot + Iris.]*
+
+---
+
 ## Characters
+
+### Iris — Grey-Market Fixer
+See `CHARACTERS.md` for full entry.
+
+Joins at Beat 15. Has been sheltering a young unregistered practitioner (the kid) in the Meridian for eighteen months — the reason she's still in NOX. The kid's anomalous output has been resonating with the between-space, worsening the wrong geometry. Iris has been managing the escalation alone. When the party's investigation converges on the same pocket, she can no longer separate her situation from theirs. Her contribution to the investigation: the anomaly has a direction — pulling toward something specific deeper in the Meridian. She's been watching it for six months without following it. Secures the kid at Karim's clinic before joining — the first thing she trusts Reid with.
+
+### The Kid
+Young teenager, androgynous, Sprawl-born. Name TBD (street-given, not registered). A young unregistered practitioner whose output the Bureau has never metered or categorized. Their anomalous output resonates with the between-space, pulling the Meridian's wrong geometry worse each week. Wrong geometry follows them in small tells — a shadow that doesn't match, a reflection slightly out of sync. Not dangerous by intent. They don't have a frame of reference for what they are. After Beat 15 they stay at Karim's clinic — Iris's off-screen stake.
 
 ### Kurtz — Gold Coat
 See `CHARACTERS.md` for full entry.
@@ -136,14 +218,18 @@ Joins at Beat 9. Brings the document case: calibration records, disappearance co
 
 - **Kurtz's gold coat** — first appearance of a WARDEN designation in the physical world. The player doesn't know what it means yet. Karim notices the ley terminal pulse during Beat 6. The two things are connected.
 - **Margot's document case** — the ledger of the disappearance cohort will become a key investigation tool. The gaps in her records (cases she can't access) are what the party will fill across Act 1.
-- **Vesper's apartment logs** — Margot can read them. What they contain drives the next thread.
+- **Vesper's apartment logs** — Margot can read them. Together with Margot's records and Karim's files they converge on the Meridian pocket — the same anomalous signature from three angles.
+- **The anomaly's direction** — Iris has been watching the geometry pull toward something deeper in the Meridian for six months. What's at the end of that direction is the next investigation thread.
 - **The face Reid files** — Kurtz, unrecognized, at the Four Winds. A gold coat, a scar through the left brow. Reid put that scar there the night Vesper walked. When the recognition comes later — the distance finally closing, the scar finally placing the face — it reframes everything in Case 2 retroactively. The man he's been fighting through Gray teams is the peer he marked twenty years ago. The gold coat is what happened to that scar in the time since.
 
 ---
 
 ## Deferred
 
-- Case 2 ending / convergence hook — what the three data sets together point toward (location, name, or timeline): TBD
+- What is at the end of the direction the anomaly pulls toward — the next investigation thread from Beat 15: TBD
+- Entity-adjacent enemy design and mechanics: TBD
+- Beat 14 major encounter specifics: TBD
 - Whether Kurtz knows what Vesper has become: TBD
 - Margot acknowledging Karim — she visited his clinic once. Does she say so when they meet? TBD
 - The disappearance cohort's specific ley architecture mechanism: TBD
+- The kid's name: TBD

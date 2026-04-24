@@ -107,4 +107,6 @@ Both threads converge. Margot arrives at the Four Winds before Reid can find her
 
 **Kurtz** is introduced in this case — unrecognized. A Gold Coat running the Gray operation, present at the Four Winds bar fight, observed from a distance. Reid sees a face. Doesn't place it yet. The recognition comes later and costs something.
 
-After Case 2, the party has three data sets — Vesper's apartment logs, Margot's disappearance cohort records, Karim's patient files — all mapping the same machine from different angles. What they point toward is TBD.
+The three data sets together — Vesper's logs, Margot's records, Karim's files — all independently point to the same anomalous output signature in a pocket of the Meridian. The party enters the Meridian for the first time. Inside: a young unregistered practitioner whose output has been warping the wrong geometry for months, sheltered by Iris — the fixer from the opening and Case 1. Iris has been managing the escalation alone. The party's arrival tips the balance. They fight together. Iris joins. Her contribution: the anomaly has a direction — pulling toward something deeper in the Meridian that she's been watching for six months without following.
+
+After Case 2, the party is Reid + Karim + Margot + Iris. The next thread is what the anomaly is being pulled toward.
