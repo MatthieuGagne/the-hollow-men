@@ -125,35 +125,33 @@ Karim's clinic. Jury-rigged, clean enough, filled with people too poor or too br
 
 Karim begins treating Casimir's injuries. Surface wounds from the fight. But as he works, he sees something underneath.
 
-**Entity-contact scarring.** Not from the fight. From years of Bureau service. From being exposed to ley architecture, from whatever contact Casimir had during Assessment Division operations.
+**Entity-contact scarring.** Not from the fight. From years of Bureau service. Systemic ley exposure at the cellular level — something about the Bureau's apparatus changing tissue at a level medical science doesn't have categories for.
 
-**What Karim recognizes:**
-- He's treated other Sprawl patients with similar scarring
-- People who ended up in the Sprawl after Bureau service
-- People whose bodies show signs of prolonged ley exposure
-- The scarring is systemic, not accidental — something about the exposure is changing tissue at a level medical science doesn't have categories for
+But Karim has seen this before. Not in Bureau enforcers. In a patient who came back to his clinic again and again across years, each visit a little worse than the last. A Summoner. The same damage, different vector: she got there fast where Casimir got there slow.
 
-**Karim's realization:**
-- This isn't random. This isn't medical.
-- Something about the Bureau's apparatus is doing this.
-- And Casimir's been exposed for *years*. His daughter is being drained by the same system.
-- This is bigger than an individual healer can treat.
+He keeps working. Thinking out loud:
+
+**Karim:** *"I've been treating someone with this same pattern. For years. Name was Vesper."*
+
+Reid's comm rings. Old Bureau routing. Encrypted.
+
+**Crane:** *"Reid. It's Crane. Vesper's gone. I need you."*
+
+The player has heard that name twice in ten seconds — from a Sprawl healer following a medical thread, and from an encrypted call on old Bureau routing. Karim doesn't hear the call. He's still working.
 
 ---
 
 ### BEAT 8 — THE HOOK
 
-Reid is there with Casimir. Karim looks up from the work, asks Reid directly:
+Reid ends the call. Turns back. Tells Karim enough:
 
-**Karim:** "What kind of work was he doing?"
+**Reid:** *"The woman you just named. She's missing. Someone I know needs me to find her."*
 
-Reid explains: Bureau service. Assessment Division operations. Years of it.
+Karim stops working. Stands up. Makes his case — verbose, urgent, slightly over the top:
 
-Karim sits back. Recognition. Anger. Need.
+**Karim:** *"That woman — Vesper — I've been treating her for years. Years. The tissue presentations, the pattern in this man's body — it's the same thing, do you understand? I have been watching this happen and I have had no category for it. No category. I need to understand what I've been looking at. I need to understand what happened to her. Take me with you."*
 
-**Karim:** "I need to understand what's doing this. And I can't do it alone. Not anymore."
-
-He's in. Whatever Reid's investigating, whatever this is, Karim needs answers.
+He's in. Whatever it costs — the Bureau's tolerance, the arrangement that's kept him safe for decades — he's already decided.
 
 ---
 

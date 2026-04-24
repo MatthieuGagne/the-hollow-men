@@ -45,24 +45,30 @@ Abilities affect the whole battlefield simultaneously — ally buffs and enemy d
 Sprawl-born, Sprawl-stayed. South Asian heritage (Pakistani or Bengali). Mid-50s, unlicensed community healer. He's been patching up Sprawl residents for decades — megacorp workers with industrial injuries, people who can't afford Bureau-licensed medical care, practitioners who've been calibrated and lost more than just their output. No Academy, no license, no Grade on file. The Bureau tolerates him because the Sprawl needs healers and he stays in his lane. He's never stayed in his lane. He's just never been worth the paperwork.
 
 ### Core Wound / Psychology
-TBD — deliberately open for story design. His psychology will be fleshed out in narrative context.
-
-What is known: he joins the investigation knowing exactly what it costs — his Bureau tolerance, his ability to operate in the Sprawl, the arrangement that's kept him safe for decades. He sees something in a patient's wounds that has no medical category, and he needs to understand what's doing this to people. That need is stronger than the cost. That's who he is before we know his wound.
+**Core wound:** He has been the cleanup crew for a machine he couldn't name for decades — treating the Bureau's damage one patient at a time, patching the aftermath, never touching the cause. Vesper is the crystallizing instance: he watched her change across years, gave her everything his medicine could offer, and lost her anyway.
+**Coping:** Verbose, slightly over the top. He processes through talking. When something lands, he doesn't go quiet — he argues with it until it makes sense.
+**Won't examine:** Whether staying in the Sprawl — taking anyone, asking no questions, working with what he has — was wisdom or a way of not having to fight the thing doing the damage.
 
 ### Investigation Entry
-Someone from Reid's group arrives badly hurt. He treats them, asks no questions — the way he always does. But what he sees during treatment is entity-adjacent: injuries that follow no pattern he recognizes, something wrong at the tissue level that his decades of Sprawl medicine have no category for. He needs to understand it. He's in.
+Reid brings Casimir Gemini to Karim's clinic. Karim treats the surface injuries and recognizes entity-contact scarring underneath — the same phenomenon he's been watching accumulate in a Summoner patient of his for years, just arriving through a different vector. Casimir got there slowly through Bureau service; his patient got there fast.
+
+While working, he names her: *"I've been treating someone with this same pattern. For years. Name was Vesper."*
+
+Reid's comm rings. Crane: *"Vesper's gone."* Karim doesn't hear the call. When Reid tells him enough — the woman he just named is missing — Karim makes his case to join, verbose and urgent. He's been watching something happen without a category for it. He needs to understand what he was looking at.
 
 ### Appearance
 South Asian heritage, warm medium-dark skin. Mid-50s, stocky build — the kind of man who looks like he's been carrying things for a long time. Dark hair going fully grey, worn loose and slightly unkempt — not regulation, not styled, just not prioritized. Dark warm eyes. A worn dark green utility jacket, heavily pocketed, patched in places. Medical supplies visible on his person. He looks like what he is: someone who works with his hands in difficult conditions for decades. Dominant color: **deep worn green**.
 
 ### Relationships
-- Stranger to everyone in the party at entry
-- No prior relationships to navigate — the group forms a read on him fresh
+**Vesper:** Prior connection — treated her multiple times over years, beginning after Reid let her walk. Ordinary injuries first, then presentations he couldn't categorize. She gave him pieces of what she was following. He didn't push for more. She stopped coming. The verbal fragments she gave him surface as investigative leads later in the act.
+
+Stranger to Reid and to everyone in the active party at entry.
 
 ---
 
 ## Deferred
 
 - Paz's investigation entry details — TBD in story design
-- Doc Karim's core wound, coping mechanism, won't examine — TBD in story design
-- Doc Karim's party relationships beyond initial stranger dynamic — TBD
+- Karim's last visit with Vesper — what the final presentation was, what she said — TBD
+- Karim as reader of entity-touched Vesper — whether his medical baseline makes him best-placed to detect which presence is speaking — TBD
+- Crane learning about Karim's history with Vesper — TBD

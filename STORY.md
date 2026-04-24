@@ -87,8 +87,8 @@ After Case 1 resolves and Doc Karim joins the investigation, Crane reaches out.
 
 ## After Case 1
 
-His comm activates. Old Bureau routing. Encrypted.
+At Karim's clinic, while treating Casimir, Karim names her — *"I've been treating someone with this same pattern. For years. Name was Vesper"* — and Reid's comm activates. Old Bureau routing. Encrypted.
 
-**Crane:** *"Reid. It's Crane. She's gone. I need you."*
+**Crane:** *"Reid. It's Crane. Vesper's gone. I need you."*
 
-The Vesper case begins.
+The player has heard the name twice in ten seconds — from a Sprawl healer following a medical thread, and from an encrypted call on old Bureau routing. The Vesper case begins.
