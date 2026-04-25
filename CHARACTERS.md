@@ -329,8 +329,15 @@ Core wound, coping, won't examine: TBD — deliberately open for story design.
 - **Vesper**: both entity-touched. They sense each other — wrongness recognizing wrongness. Whatever is using Vesper notices what came through during Kos's calibration. The party's first real confirmation that Kos is more than a Bureau escapee.
 - **Paz**: Paz noticed Kos living in the Meridian's deeper wrong geometry — somewhere she wouldn't go even growing up there. She filed it and left it alone. When he surfaces in Reid's group, she recognizes him before he recognizes her.
 
-### Investigation Entry
-TBD.
+### Investigation Entry (Case 3)
+
+Introduced in the deep Meridian during the party's first dungeon descent. He has been living in the deeper wrong geometry — the only place in the city where what came through during his calibration is quiet. He knows the Meridian better than anyone in the party.
+
+He encounters the party in Zone 3 of the descent and moves first — Bureau escapee, everyone who finds him is a threat. A brief forced fight ends when Iris reads him (not Bureau, not enforcement, same machine) and talks through it. He survives things he shouldn't in the fight. The entity-touch is visible in how he moves through the wrong geometry. The party notices. Nobody says anything yet.
+
+He tells them enough to find the wound ("There's a place where the walls go wrong in a specific way. Don't touch the architecture.") and disappears back into the geometry. He does not join. He is an open thread.
+
+His mechanic means the entity-adjacent encounters in the dungeon have already begun changing him. Neither the party nor Kos knows this yet.
 
 ---
 

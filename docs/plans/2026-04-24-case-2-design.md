@@ -246,7 +246,7 @@ Joins at Beat 9. Brings the document case: calibration records, disappearance co
 
 ## Deferred
 
-- What is at the end of the direction the anomaly pulls toward — the next investigation thread from Beat 15: TBD
+- What is at the end of the direction the anomaly pulls toward — resolved in Case 3: a ley architecture wound (Bureau conduit lines running through the between-space, harvest mechanism physically exposed) and a Vesper glimpse. See `docs/plans/2026-04-24-case-3-design.md`.
 - Entity-adjacent enemy design and mechanics: TBD
 - Beat 14 major encounter specifics: TBD
 - Whether Kurtz knows what Vesper has become: TBD

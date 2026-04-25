@@ -113,6 +113,20 @@ After Case 2, the party is Reid + Karim + Margot + Iris. The next thread is what
 
 ---
 
+## Case 3 — The Wound (working title)
+
+See `docs/plans/2026-04-24-case-3-design.md` for full structure.
+
+The party descends into the deeper Meridian following the direction Iris identified. A hub prologue reveals the kid is not the source of the anomaly — only a compass needle pointing at something further in. The kid's geometry spikes and forces the descent.
+
+The dungeon runs four zones of escalating wrong geometry. In the deep Meridian the party encounters **Kos** — a Bureau escapee hiding there because it's the only place in the city where what came through during his failed Output Calibration is quiet. A brief forced fight; Iris talks through it. He tells them enough to find what they're looking for and disappears. He does not join.
+
+The dungeon ends at a ley architecture wound: Bureau conduit lines running through the between-space, the harvest mechanism physically exposed. Margot's document case numbers close here. A major entity-adjacent phenomenon guards the wound. After the fight: Vesper, glimpsed at the far edge. The whole party sees her. Reid tries to cross. The geometry won't close. Whatever looks back is aware. She's gone.
+
+The party returns to the hub. The wound is locatable and disrupted. The kid's geometry stabilizes temporarily. Kos and Vesper are both open threads.
+
+---
+
 ## The Hub — Iris's Apartment
 
 After Case 2, Iris invites the party to her apartment. One line. Flat, practical: *"You can use my place."*
