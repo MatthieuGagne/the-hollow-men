@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://maps/room_poc.tmx" id="1_map"]
+[ext_resource type="Script" path="res://scripts/world/player.gd" id="2_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(12.0, 12.0)
+
+[node name="RoomPOC" type="Node2D"]
+
+[node name="room_poc" parent="." instance=ExtResource("1_map")]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(200.0, 112.0)
+script = ExtResource("2_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0.0, -6.0)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Sprite" type="ColorRect" parent="Player"]
+offset_left = -8.0
+offset_top = -24.0
+offset_right = 8.0
+offset_bottom = 0.0
+color = Color(0.8, 0.3, 0.3, 1.0)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+limit_left = 0
+limit_top = 0
+limit_right = 400
+limit_bottom = 240
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
