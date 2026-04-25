@@ -12,7 +12,7 @@ The party descends into the deeper Meridian following the direction of the anoma
 
 The party has arrived. Character positions are established through exploration and first-impression dialogue: Margot at the kitchen table, document case open. Karim in his corner — he has opinions about the lighting. Iris in the workshop, door open now. Reid with no fixed spot.
 
-The kid's wrong geometry tells are present. A shadow that doesn't match. A reflection slightly out of sync. Iris manages this matter-of-factly — she's been doing it alone for eighteen months. Nothing in her manner suggests it's alarming. It is alarming.
+The kid's entity-touch tells are present. Pallor that shouldn't be there — too young to look this drained. Eyes that catch the neon strangely, the glow faint but there. A small forgetting in the first conversation, smoothed over, retrieved a beat late. Iris manages this matter-of-factly — she's been doing it alone for eighteen months. Nothing in her manner suggests it's alarming. It is alarming.
 
 *[Hub — player has full control. Rest/Save and Party Management active. First hub exploration and first-impression dialogue.]*
 
@@ -22,7 +22,7 @@ The kid's wrong geometry tells are present. A shadow that doesn't match. A refle
 
 Margot, Karim, and Iris cross-reference at the kitchen table. The three data sets converged on the Meridian pocket in Case 2 — but the pocket was the kid's resonance responding to something deeper, not generating it. Vesper's logs, Margot's records, Karim's files all pointed to a symptom. The source is further in.
 
-The key discovery: Karim notices the kid's wrong geometry tells have been worsening since the party arrived. More unmetered practitioners in the apartment, more output in the space, stronger resonance. The kid is a compass needle — pointing at the source, not being it.
+The key discovery: Karim notices the kid's entity-touch symptoms have been worsening since the party arrived. More unmetered practitioners in the apartment, more output in the space, stronger pull from whatever is deeper in the Meridian. The pallor is deeper than a week ago. The forgettings are longer. The kid is a compass needle — pointing at the source, not being it.
 
 *[Investigation mode at the hub — scripted dialogue with light player interaction. Player selects topics (Vesper's logs, Margot's records, Karim's files, the kid's tells). The compass needle discovery is the payoff beat once all topics are exhausted.]*
 
@@ -30,7 +30,7 @@ The key discovery: Karim notices the kid's wrong geometry tells have been worsen
 
 ### BEAT 3 — THE TRIGGER (Iris's apartment)
 
-The kid's geometry spikes — worst it's been. Something deeper in the Meridian is pulling harder. Iris reads it immediately: it's been building since the party arrived. It won't stop building.
+The kid's symptoms spike — worst they've been. Pallor visibly deeper, the eye glow brighter, a longer gap before the next sentence. Something deeper in the Meridian is pulling harder. Iris reads it immediately: it's been building since the party arrived. It won't stop building.
 
 They can't wait.
 
@@ -62,7 +62,7 @@ Wrong geometry is aggressive. Rooms have rotated. Corridors loop. Loot caches �
 
 **KOS ENCOUNTER:** The party rounds a corner and Kos is there. Not hiding — he knew they were coming. Thin, pale, carrying something he can't name. He's been in the deep geometry long enough that it doesn't bother him. For him, it's the only place in the city where something inside him is quiet.
 
-He moves first — Bureau escapee, everyone who finds him is a threat. A brief forced fight. Iris talks through it before anyone is badly hurt: she reads him immediately (not Bureau, not enforcement, running from the same machine). He survives things he shouldn't. The entity-touch is visible in how he moves through the wrong geometry. The party notices. Nobody says anything yet.
+He moves first — Bureau escapee, everyone who finds him is a threat. A brief forced fight. Iris talks through it before anyone is badly hurt: she reads him immediately (not Bureau, not enforcement, running from the same machine). He survives things he shouldn't. The entity-touch is visible — the pallor past human, the eyes tracking something nobody else can see, a quality to his stillness that isn't stillness. The party notices. Nobody says anything yet.
 
 What follows: wariness, not warmth. He knows what's at the end of the direction. He won't say what it is — not because he's cagey, but because he doesn't have language for it. Felt knowledge, not theoretical. He gives them enough:
 
@@ -94,7 +94,7 @@ The wound has interactive points where the ley conduit lines can be examined up 
 
 **THE GLIMPSE:** After the fight. The party is catching its breath.
 
-A figure at the far edge of the wound. The wrong geometry bends around her — not with her, around. In motion it reacts to air that isn't there. Platinum white hair. Near-black coat with a deep violet undertone.
+A figure at the far edge of the wound. The wrong geometry bends around her — not with her, around. Platinum white hair. Near-black coat with a deep violet undertone. At this distance: the pallor of her skin carries green in it. When she turns toward them, the eyes are not brown.
 
 The whole party sees her. Karim reads the entity-contact signature. Margot recognizes the description from her records. Iris sees someone wrong in a wrong place.
 
@@ -112,7 +112,7 @@ She's gone before anyone crosses.
 
 The party makes it back. The wound is real, locatable, and disrupted. The harvest has a physical address. Margot's document case has somewhere to point.
 
-The kid's geometry has stabilized slightly — the boss fight disrupted the pull temporarily. It won't hold. It bought them time.
+The kid's symptoms have stabilized slightly — the boss fight disrupted the pull temporarily. Color almost back to normal. The eye glow quieter. It won't hold. It bought them time.
 
 Kos is still out there in the deep geometry. He helped without agreeing to. He's an open thread.
 
@@ -135,7 +135,7 @@ His refusal to join is not hostility after the fight — it's the defensive logi
 
 **The machine made visible.** The harvest mechanism was always abstract — Margot's ledger, Karim's patients, Vesper's logs. The wound makes it physical. The party stands next to it and sees where the output goes. The horror stops being a theory.
 
-**The compass needle and the source.** The kid's wrong geometry — what the party spent Case 2 managing — is revealed to be a symptom of something deeper, not its own cause. The party has been treating the response while the cause continued unopposed.
+**The compass needle and the source.** The kid's entity-touch symptoms — what the party spent Case 2 managing — are revealed to be a symptom of something deeper, not their own cause. The party has been treating the response while the cause continued unopposed.
 
 **Iris following the direction.** She identified this pull in Case 2 and refused to follow it alone for six months. Walking into it with the party is the arc's first movement — she chose this rather than being pushed. One brief beat acknowledges it. She doesn't make it a moment. It is one anyway.
 
@@ -174,7 +174,7 @@ His refusal to join is not hostility after the fight — it's the defensive logi
 ## Deferred
 
 - Entity/enemy design for all encounters including the Zone 4 boss: TBD — separate design session
-- What specifically triggers the kid's geometry spike in Beat 3: TBD
+- What specifically triggers the kid's symptom spike in Beat 3: TBD
 - Kurtz noticing the wound disruption and its feed into Case 4: TBD
 - Zone 3 loot narrative weight and specific flavor text: TBD — item flavor text is a confirmed design direction
 - Equipment design broadly: TBD — separate design session

@@ -144,7 +144,7 @@ Karim reads the walls. The entity-contact scarring he's seen in Casimir's body, 
 
 ### BEAT 13 — FINDING IRIS (Meridian pocket — story beat)
 
-The party finds the kid first: a teenager, androgynous, Sprawl-born, sitting in the eye of the anomaly. Name TBD — street-given, not registered. Their unregistered output is why the geometry has been worsening — resonating with the between-space without them knowing, pulling the membrane thinner every week. They don't know what they're doing. They've been here for weeks. Every attempt to leave makes it worse. Wrong geometry follows them visibly in small tells — a shadow that doesn't match, a reflection slightly out of sync.
+The party finds the kid first: a teenager, androgynous, Sprawl-born, sitting in the eye of the anomaly. Name TBD — street-given, not registered. Entity-touched — early stage, the consumption slow but ongoing. Their unmetered output resonates with the between-space as the entity draws at them, which is why the geometry has been worsening. They've been here for weeks. Every attempt to leave makes it worse. The entity-touch is already visible if you know what you're looking at: the pallor starting, the eyes catching the neon strangely, small things forgotten in conversation and retrieved a beat late.
 
 Iris is between the kid and the party. Not waiting — managing. She's been holding the escalation alone, and it's been winning.
 
@@ -205,10 +205,10 @@ The kid's room is off the corridor. Their name — street-given, not registered 
 ### Iris — Grey-Market Fixer
 See `CHARACTERS.md` for full entry.
 
-Joins at Beat 15. Has been sheltering a young unregistered practitioner (the kid) in the Meridian for eighteen months — the reason she's still in NOX. The kid's anomalous output has been resonating with the between-space, worsening the wrong geometry. Iris has been managing the escalation alone. When the party's investigation converges on the same pocket, she can no longer separate her situation from theirs. Her contribution to the investigation: the anomaly has a direction — pulling toward something specific deeper in the Meridian. She's been watching it for six months without following it. Takes the kid to her apartment — the address she's never given anyone — then invites the party. The invitation and the kid's location are the same act of trust.
+Joins at Beat 15. Has been sheltering a young unregistered practitioner (the kid) in the Meridian for eighteen months — the reason she's still in NOX. The kid is entity-touched — early stage, the consumption ongoing but slow. Their unmetered output resonates with the between-space as the entity draws at them, worsening the surrounding geometry. Iris has been managing the escalation alone — both the kid's condition and the environmental deterioration it produces. When the party's investigation converges on the same pocket, she can no longer separate her situation from theirs. Her contribution to the investigation: the anomaly has a direction — pulling toward something specific deeper in the Meridian. She's been watching it for six months without following it. Takes the kid to her apartment — the address she's never given anyone — then invites the party. The invitation and the kid's location are the same act of trust.
 
 ### The Kid
-Young teenager, androgynous, Sprawl-born. Name TBD (street-given, not registered). A young unregistered practitioner whose output the Bureau has never metered or categorized. Their anomalous output resonates with the between-space, pulling the Meridian's wrong geometry worse each week. Wrong geometry follows them in small tells — a shadow that doesn't match, a reflection slightly out of sync. Not dangerous by intent. They don't have a frame of reference for what they are. After Beat 15 they stay at Iris's apartment — Iris's off-screen stake.
+Young teenager, androgynous, Sprawl-born. Name TBD (street-given, not registered). A young unregistered practitioner whose output the Bureau has never metered or categorized. Entity-touched — early stage: pallor starting, eyes that catch the neon strangely, small things forgotten and retrieved a beat late. Their unmetered output resonates with the between-space as the entity draws at them, worsening the surrounding geometry as a secondary effect. Not dangerous by intent. They don't have a frame of reference for what's happening to them. After Beat 15 they stay at Iris's apartment — Iris's off-screen stake.
 
 ### Kurtz — Gold Coat
 See `CHARACTERS.md` for full entry.
@@ -276,7 +276,7 @@ Joins at Beat 9. Brings the document case: calibration records, disappearance co
 - The kid's name: TBD (street-given, not registered; revealed at hub introduction in Beat 16)
 - Whether the hub visually evolves across Act 1: TBD
 - Gideon's entry into the hub — trust crisis TBD
-- The kid's wrong geometry tells in the hub environment: TBD
+- The kid's entity-touch tells in the hub environment: TBD (early stage — faint pallor, eyes catching light strangely, occasional small forgettings)
 - How Rest works narratively (mechanical vs. atmospheric): TBD
 - Party management trigger point: TBD
 - Hub services beyond Rest/Save and Party Management: TBD
