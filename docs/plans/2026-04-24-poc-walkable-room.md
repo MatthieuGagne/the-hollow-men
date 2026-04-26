@@ -4,14 +4,9 @@
 
 **Goal:** Build the first playable scene — a player character moving tile-by-tile through a small room — and establish the Tiled → Godot map import pipeline for all future maps.
 
-**Architecture:** `RoomPOC.tscn` (Node2D root) hosts (1) the legacy `TileMap` imported from `maps/room_poc.tmx` via the naddys_tiled_maps addon, named `room_poc`; (2) a `Player` (CharacterBody2D) that does a tile-data lookup on the "Walls" TileMap layer before each step; (3) a `Camera2D` child of the player for automatic following. No physics engine — wall detection is a pure `get_cell_source_id()` check.
+**Architecture:** `RoomPOC.tscn` (Node2D root) hosts (1) a `TileMapLayer` imported from `maps/room_poc.tmx` via YATI, named `room_poc`; (2) a `Player` (CharacterBody2D) that does a tile-data lookup on the "Walls" TileMapLayer before each step; (3) a `Camera2D` child of the player for automatic following. No physics engine — wall detection is a pure `get_cell_source_id()` check.
 
-**Tech Stack:** GDScript 4.6, legacy `TileMap` node (naddys_tiled_maps addon produces this, not `TileMapLayer`), GUT v9.x for TDD, Python 3 stdlib (no external packages) for asset generation.
-
-**Addon notes:**
-- `tilemap_creator.gd` creates a `TileMap` (with layers), named after the `.tmx` basename. For `maps/room_poc.tmx`, the node name is `room_poc`.
-- Tile-layer collision shapes from `.tsx` are **commented out** in `tileset_creator.gd`. Do NOT use `contains_collisions` import option for wall detection — use tile data lookup instead.
-- Object layers in Tiled auto-generate `StaticBody2D` children, but this plan does not use object layers.
+**Tech Stack:** GDScript 4.6, `TileMapLayer` node (YATI produces this), GUT v9.x for TDD, Python 3 stdlib (no external packages) for asset generation.
 
 ## Open questions (must resolve before starting)
 
@@ -51,14 +46,9 @@ Expected: `addons/gut/gut_cmdln.gd` exists.
 
 **Step 3: Enable GUT plugin in project.godot**
 
-In `project.godot`, find:
+In `project.godot`, find the `[editor_plugins]` section and add GUT to the enabled list alongside YATI:
 ```
-enabled=PackedStringArray("res://addons/naddys_tiled_maps/plugin.cfg")
-```
-
-Replace with:
-```
-enabled=PackedStringArray("res://addons/naddys_tiled_maps/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plugin.cfg")
 ```
 
 **Step 4: Verify GUT starts**
@@ -375,8 +365,7 @@ const MOVE_DURATION: float = 0.1
 var _moving: bool = false
 var _walls_layer: int = -1
 
-# Assumes TileMap sibling named "room_poc" (set by naddys_tiled_maps from filename)
-@onready var _tilemap: TileMap = $"../room_poc"
+@onready var _tilemap: TileMapLayer = $"../room_poc"
 
 
 func _ready() -> void:

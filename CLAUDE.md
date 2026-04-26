@@ -31,7 +31,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - See skills: writing-plans, executing-plans, finishing-a-development-branch
 
 ## Skills & Agents
-**Skills:** brainstorming, prd, writing-plans, executing-plans, finishing-a-development-branch, run, tiled-map
+**Skills:** brainstorming, prd, writing-plans, executing-plans, finishing-a-development-branch, run, tiled-map, story-lore
 **Agents:** godot-expert (GDScript TDD), yarnspinner (global — dialogue scripting)
 
 ## Key Conventions
