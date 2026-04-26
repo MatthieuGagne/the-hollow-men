@@ -154,9 +154,35 @@ The Heights' official commerce district. Surveilled, licensed, Bureau-compliant.
 
 ## The Sprawl
 
-The bulk of the city. Megacorp territories carving it up — brand wars, turf disputes, the visible competition. Where people live.
+The bulk of the city. Megacorp territories carving it up — brand wars, turf disputes, the visible competition. Where people live. Three distinct districts:
 
-### Key Locations
+### The Market
+
+The economic engine of the Sprawl. Dense street-level commerce — licensed vendors beside grey-market stalls, food, information, everything at a price that doesn't appear on a Bureau form. The Bureau is reactive here, not present: called when needed, not patrolling. Where the city's underside does business openly.
+
+**Key locations:**
+- **Karim's Clinic** — unlicensed community healer, no questions asked. Takes anyone. Has been treating the Bureau's damage one patient at a time for decades. The party's first Sprawl contact point.
+- **Suzy's operation** — money-lending network, Heights-adjacent. Professional, no sympathy.
+
+### The Lowline
+
+The industrial-residential belt. Named for the low-slung megacorp infrastructure buildings that dominate its skyline: server farms, power substations, data exchanges. Workers' housing grew up around the megacorp facilities decades ago and never moved on. Bureau instruments read the Lowline as stable. That stability is the lie.
+
+The ley terminals here are embedded in the megacorp power infrastructure, indistinguishable from electrical junction boxes. Nobody questions them. They have been there longer than the current megacorp has. The entity's information layer has been bleeding through them for forty years. The residents of the Lowline have been sleeping next to a pipeline their whole lives.
+
+**Key locations:**
+- **Junction 9** — the Lowline's oldest power exchange node. A ley terminal embedded in the substation infrastructure, operating since before the current megacorp's ownership. The harvest pipeline running through it has been saturated by Kurtz's acceleration — broadcasting as well as receiving. The dungeon location for Case 4.
+
+### The Fringe
+
+Where the Sprawl meets the Meridian. Buildings that predate the Bureau's current architecture. Streets that run slightly wrong at certain corners without reaching full Meridian geometry. Bureau enforcement patrols less here — the instruments give unreliable readings, the paperwork harder to justify.
+
+Where people who don't want to be found end up. Where the Bureau's administrative reach goes thin.
+
+**Key locations:**
+- **Āio's Dojo** — a fighting tradition that predates the Bureau's entire framework, practiced in the one part of the city where Bureau instruments already struggle. Built from grief. Grief made functional. *(First visited: TBD — Case 5 or later.)*
+
+### Key Locations (Sprawl-wide)
 
 - **Iris's Apartment** — a residential floor in a dense Sprawl block. Looks like one apartment among hundreds from the hallway; Bureau instruments pass over it. One of the city's only genuinely off-grid residential spaces — Iris built the infrastructure herself over years, piece by piece. The party's hub from the end of Case 2. The kid lives here. No registry entry, no ley terminal signature. The address has never been given to anyone until Iris gave it to Reid.
 
@@ -164,7 +190,6 @@ The bulk of the city. Megacorp territories carving it up — brand wars, turf di
 
 ## TBD
 
-- District structure and named neighborhoods within the Sprawl
 - The Meridian's spatial relationship to the rest of NOX
 - What wrong geometry looks like at street level vs. deep grid
 - WARDEN membership: how many, how they recruit (or whether they do), what the entity gives them in return

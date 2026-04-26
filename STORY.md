@@ -127,6 +127,24 @@ The party returns to the hub. The wound is locatable and disrupted. The kid's ge
 
 ---
 
+## Case 4 — Dead Signal
+
+See `docs/plans/2026-04-26-dead-signal-game-design-doc.md` for full structure. Full design: GitHub issue #9.
+
+After Case 3, Kurtz's response to the wound disruption tightens Bureau enforcement across the Sprawl. A Lowline resident with no Bureau file is brought to Karim's clinic — latent output activating in a body that has never expressed it, triggered by forty years of proximity to Junction 9, the Lowline's oldest ley terminal node.
+
+The party goes to the Lowline. So does **Gideon** — Grade III Bureau enforcer, on his own initiative, doing the investigation the Bureau's blunt sweep isn't doing. He and Reid's party work the same blocks from opposite ends of the city's trust hierarchy. In Zone 2 he sees Margot. Neither speaks first.
+
+The dungeon runs four zones through the Lowline, ending at Junction 9 substation. New enemy types introduced: Bureau Regulars (formation-dependent, contrast with Grays), Echoes (mirror practitioner output; Reid's physical attacks bypass the mechanic entirely), The Hollow (data constructs — remnant output signatures of fully-harvested practitioners running as processes in the entity's information layer; Margot reads a case number pre-combat), and The Node (boss; Phase 2 hijacks Gideon's neural interface, redirecting his healing output as self-regeneration).
+
+Post-boss: Margot reads the terminal's output log and finds a message from someone who found Junction 9 from the Grid side. *"I have mapped forty-seven terminals exhibiting this pattern across NOX. I have the map. — S."* No location. No frequency. Open thread.
+
+Gideon fights as a guest in Zone 4. He is cracked by what he sees. He files his report — *investigation ongoing* — and goes back to Bureau blue. He does not join.
+
+After Case 4, the party is still Reid + Karim + Margot + Iris. Four open threads: Kos (deep Meridian), Vesper (glimpsed at the wound), Gideon (Bureau, filing open investigations), and Soraya (47 terminals, Grid-layer map).
+
+---
+
 ## The Hub — Iris's Apartment
 
 After Case 2, Iris invites the party to her apartment. One line. Flat, practical: *"You can use my place."*

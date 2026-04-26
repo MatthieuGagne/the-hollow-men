@@ -236,7 +236,21 @@ Neither speaks first.
 
 Gideon's arc is the most heartbreaking in the party because he is not wrong to believe in justice. He has simply put it in the wrong institution — and the institution has shaped him so thoroughly that dismantling one means dismantling the other. The question his arc asks: *when the thing you served reveals what it actually is, who are you without it?*
 
-His entry into the party — voluntary defection or pushed out — is TBD, contingent on the broader Act structure.
+### Investigation Entry (Case 4 — Dead Signal)
+
+Gideon is in the Lowline on his own initiative — not assigned. He saw the incident report for Junction 9 (involuntary output activity, unregistered practitioners), recognized Assessment Division jurisdiction being bypassed by Kurtz's blunt Bureau sweep, and came to do the investigation correctly. He is doing real police work. He believes in the institution's stated purpose, even when the institution isn't following it.
+
+He and Reid's party work the same blocks in Zone 2. He sees Margot. Neither speaks first. The silence is sustained through the entire dungeon.
+
+In Zone 4 he fights alongside the party as a guest — the only option when The Node uses his Bureau-standard neural interface as a relay. Phase 2: The Node hijacks his Paladin healing output as self-regeneration. The party breaks the relay. He survives. His kit is introduced here: Fighter/Healer hybrid, battlefield positioning, the cyberware that connects him to a machine he still trusts.
+
+Post-boss: one practical exchange with Margot. Neither names what they're carrying.
+
+He files his report. Writes what he can write. *Investigation ongoing.* Puts his badge on — takes a beat longer than usual — and goes back. He does not join.
+
+**Why he stays Bureau:** He can still write the report. After Dead Signal, his framework has a container for what he saw. The container is a stretch. He knows it is a stretch. The moment Gideon can no longer write a report that makes sense to himself is the moment he stops being Bureau. That moment is not here.
+
+**His arc break** — the last report he can't file — is TBD, contingent on act structure. Kurtz will eventually notice the *investigation ongoing* flag.
 
 ---
 
@@ -265,8 +279,17 @@ Core wound, coping, won't examine: TBD. Wonders if decades of deep Grid exposure
 - **Kos**: both have the deepest entity relationships in the party — she through the Grid's information layer, he through his body. Whether she recognizes his entity signature immediately is TBD.
 - **Reid**: she has the map of what his investigation is uncovering. How she deploys that knowledge is TBD.
 
-### Investigation Entry
-TBD.
+### Investigation Entry (Case 4 — Dead Signal, partial)
+
+First contact is indirect. After the party defeats The Node at Junction 9, Margot reads the terminal's output log and finds Soraya's notation — advanced Grid-layer analysis syntax, a format beyond Bureau standard that Margot has never encountered. The message:
+
+*"This terminal has been broadcasting for 94 days. You disrupted the activation but the pipeline is intact. I have mapped forty-seven terminals exhibiting this pattern across NOX. This is the first one that tried to push back. If you're reading this, you found it from the physical side. I found it from the other direction. I have the map. You have the investigation. — S."*
+
+No location. No frequency. No meeting offered.
+
+Soraya has been monitoring Junction 9 from the Grid side for months. She knows the party found it from the physical register. She has the Grid-layer map of the entity's information architecture across NOX — forty-seven terminals, decades of mapping. She does not join. She is an open thread.
+
+**Full investigation entry** — how she joins the party — TBD.
 
 ---
 
