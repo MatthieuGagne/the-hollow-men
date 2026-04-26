@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Final Noire"
+config/name="The Hollow Men"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 run/main_scene="res://scenes/world/RoomPOC.tscn"
@@ -25,7 +25,7 @@ window/stretch/mode="canvas_items"
 
 [dotnet]
 
-project/assembly_name="Final Noire"
+project/assembly_name="TheHollowMen"
 
 [editor_plugins]
 
