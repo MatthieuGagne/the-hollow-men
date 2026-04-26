@@ -4,7 +4,7 @@ Turn-based cyberpunk noir horror JRPG. Protagonist Reid investigates a missing p
 NOX — a perpetually rain-soaked city — uncovering an ancient non-Euclidean entity.
 Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun influence).
 
-**Engine:** Godot 4.6 / GDScript (no C#)
+**Engine:** Godot 4.6 / GDScript — runtime is GDScript only; C# used for editor tooling (YATI importer)
 **Renderer:** Mobile (GL Compatibility)
 **Resolution:** 320×180 → upscaled to 1280×720 (4:3)
 
@@ -14,8 +14,13 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 ## Architecture
 - Scenes: `scenes/` — battle, world, UI
 - Scripts: `scripts/` — GDScript; `scripts/autoload/` for singletons
-- Dialogue: YarnSpinner planned (C# integration TBD — open architectural question)
-- Maps: Tiled integration via `naddys_tiled_maps` addon
+- Dialogue: YarnSpinner planned (C# runtime bridge TBD)
+- Maps: Tiled → YATI importer (`addons/YATI`); tileset PNG at `assets/tilesets/`
+  - Define tile types via `class=` attribute on tiles in the `.tsx` (e.g. `class="wall"`)
+  - After first import, set `add_class_as_metadata=true` in the generated `.tmx.import` file
+  - Single-layer TMX → YATI produces one root `TileMapLayer` named after the file (e.g. `room_poc`)
+  - Reimport after changing a TMX: `DISPLAY=:0 godot --headless --editor --quit --path .`
+  - Runtime wall check: `tilemap.get_cell_tile_data(cell).get_meta("class", "") == "wall"`
 
 ## Dev Workflow
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
