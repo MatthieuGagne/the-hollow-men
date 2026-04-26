@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="PackedScene" path="res://maps/room_poc.tmx" id="1_map"]
 [ext_resource type="Script" path="res://scripts/world/player.gd" id="2_player"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/16x24rpgdb.png" id="3_sprites"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(12.0, 12.0)
@@ -18,12 +19,12 @@ script = ExtResource("2_player")
 position = Vector2(0.0, -6.0)
 shape = SubResource("RectangleShape2D_1")
 
-[node name="Sprite" type="ColorRect" parent="Player"]
-offset_left = -8.0
-offset_top = -24.0
-offset_right = 8.0
-offset_bottom = 0.0
-color = Color(0.8, 0.3, 0.3, 1.0)
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("3_sprites")
+hframes = 12
+vframes = 6
+frame = 0
+offset = Vector2(0, -12)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 limit_left = 0
