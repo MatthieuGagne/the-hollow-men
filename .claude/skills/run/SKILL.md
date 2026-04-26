@@ -9,21 +9,28 @@ Determine whether you are running inside a git worktree or the main repo:
 pwd
 ```
 
-**If inside a worktree** (path contains `worktrees/`):
-
-1. Kill any running Godot instance (ignore errors if none running):
-   ```sh
-   pkill -f godot || true
-   ```
-2. Launch the game from the worktree:
-   ```sh
-   godot --path <worktree_path> &
-   ```
-
-**If in the main repo**:
+**Kill any running Godot instance first** (exit 144 from pkill means no process was running — that is normal, not an error):
 
 ```sh
-cd /home/mathdaman/code/noir-fantasy-rpg && godot &
+pkill -f godot; true
 ```
+
+**If inside a worktree** (path contains `worktrees/`), launch from the worktree path:
+
+```sh
+DISPLAY=:0 godot --path <worktree_path> 2>&1 &
+echo "PID: $!"
+sleep 3 && ps aux | grep godot | grep -v grep
+```
+
+**If in the main repo**, launch from the project root:
+
+```sh
+DISPLAY=:0 godot --path /home/mathdaman/code/the-hollow-men 2>&1 &
+echo "PID: $!"
+sleep 3 && ps aux | grep godot | grep -v grep
+```
+
+Verify the PID still appears in the `ps` output. If it does not, Godot exited silently — report the failure. Do not rely on the `pkill` exit code to determine whether a prior instance was running.
 
 Report to the user that the game is launching.

@@ -72,7 +72,7 @@ Unrestricted per sprite. Area-level palettes serve as **design guidelines** for 
 
 ### Tilemap
 
-Maps authored in **Tiled**, imported to Godot 4 via the **naddys_tiled_maps** plugin (installed at `addons/naddys_tiled_maps/`).
+Maps authored in **Tiled**, imported to Godot 4 via the **YATI** plugin (installed at `addons/YATI/`).
 
 Tiled layer conventions:
 
@@ -169,7 +169,7 @@ FF6 homage. Implemented as a single shader. No additional art required.
 | `scripts/battle/battle_scene.gd` — ATB loop, turn queue, win/loss detection | Done |
 | `scripts/ui/hud.gd` — HP/PP/ATB/Limit bars with correct colors | Done |
 | `scripts/world/world.gd` — Investigation/Hot Zone/Ruins modes | Done |
-| naddys_tiled_maps plugin — installed and enabled | Done |
+| YATI plugin — installed and enabled | Done |
 | Asset folders — sprites, tilesets, audio, maps, addons | Done |
 
 ---
