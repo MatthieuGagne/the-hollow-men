@@ -104,8 +104,7 @@ static func direction_to_offset(action: String) -> Vector2i:
 
 
 static func snap_to_grid(pos: Vector2, tile_size: int) -> Vector2:
-	var half: float = tile_size * 0.5
 	return Vector2(
-		floorf(pos.x / tile_size) * tile_size + half,
-		floorf(pos.y / tile_size) * tile_size + half,
+		roundf(pos.x / tile_size) * tile_size,
+		roundf(pos.y / tile_size) * tile_size,
 	)
