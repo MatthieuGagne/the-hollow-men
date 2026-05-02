@@ -18,7 +18,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - Maps: Tiled → YATI importer (`addons/YATI`); tileset PNG at `assets/tilesets/`
   - Art sources in `art/tilesets/` (`.xcf` + third-party PNGs — all committed)
   - `assets/tilesets/` is a build artifact dir (gitignored PNGs, not committed)
-  - Build pipeline: `make` → export XCF → copy PNGs → Godot reimport
+  - Build pipeline: export XCF manually in GIMP → `make` (copies PNGs → Godot reimport)
   - Define tile types via `class=` attribute on tiles in the `.tsx` (e.g. `class="wall"`)
   - After first import, set `add_class_as_metadata=true` in the generated `.tmx.import` file
   - Single-layer TMX → YATI produces one root `TileMapLayer` named after the file (e.g. `room_poc`)
@@ -36,9 +36,6 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 ## Skills & Agents
 **Skills:** brainstorming, prd, writing-plans, executing-plans, finishing-a-development-branch, run, tiled-map, story-lore
 **Agents:** godot-expert (GDScript TDD), yarnspinner (global — dialogue scripting)
-
-## Dev Dependencies
-- `xcftools` (`xcf2png`) — GIMP XCF → PNG export; install with `sudo apt install xcftools`
 
 ## Key Conventions
 - Signal-driven UI: UI connects to autoload signals, never polls
