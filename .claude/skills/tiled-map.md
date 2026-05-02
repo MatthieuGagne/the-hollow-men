@@ -516,7 +516,28 @@ YATI caches import results. If you edit a `.tmx` or `.tsx` outside of Godot, the
 
 Or from the command line (headless):
 ```bash
-godot --headless --import
+DISPLAY=:0 godot --headless --editor --quit --path .
 ```
 
 To reimport a specific file via the editor, you can also delete its `.import` sidecar file (e.g. `maps/room_poc.tmx.import`) and restart Godot — it will re-import from scratch on startup.
+
+### Updating a tileset image (PNG)
+
+When a tileset PNG changes (e.g. updated in `art/tilesets/` and copied to `assets/tilesets/`), follow this exact order — **sequence matters**:
+
+1. **Copy** the updated PNG from `art/tilesets/<name>.png` to `assets/tilesets/<name>.png`
+2. **Kill Godot** before touching the cache — if Godot is running when you delete cache files, it will recreate them from memory with stale content:
+   ```bash
+   pkill -f godot; sleep 2
+   ```
+3. **Delete the import cache** for the PNG:
+   ```bash
+   rm .godot/imported/<name>.png-*.ctex .godot/imported/<name>.png-*.md5
+   ```
+4. **Run the headless reimport** to regenerate the cache from the new PNG:
+   ```bash
+   DISPLAY=:0 godot --headless --editor --quit --path .
+   ```
+5. **Relaunch the editor** normally.
+
+**Verify the reimport worked:** compare `source_md5` in the regenerated `.md5` file against `md5sum assets/tilesets/<name>.png` — they must match. If they differ, Godot imported a stale version (likely because step 2 was skipped).
