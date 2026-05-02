@@ -1,55 +1,54 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://bnfn12dyfatem"]
 
-[ext_resource type="PackedScene" path="res://maps/room_poc.tmx" id="1_map"]
-[ext_resource type="Script" path="res://scripts/world/player.gd" id="2_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/16x24rpgdb.png" id="3_sprites"]
-[ext_resource type="Script" path="res://scripts/world/flickering_light.gd" id="4_flickering_light"]
+[ext_resource type="PackedScene" uid="uid://cqsd50e1c7p52" path="res://maps/room_poc.tmx" id="1_map"]
+[ext_resource type="Script" uid="uid://ca5qhatfft1dg" path="res://scripts/world/player.gd" id="2_player"]
+[ext_resource type="Texture2D" uid="uid://c5op625rrwmo1" path="res://assets/sprites/characters/16x24rpgdb.png" id="3_sprites"]
+[ext_resource type="Script" uid="uid://b21dbg1d6q6kx" path="res://scripts/world/flickering_light.gd" id="4_flickering_light"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(12.0, 12.0)
+size = Vector2(12, 12)
 
 [sub_resource type="Gradient" id="Gradient_1"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_1"]
 gradient = SubResource("Gradient_1")
-fill = 1
 width = 128
 height = 128
+fill = 1
 
-[node name="RoomPOC" type="Node2D"]
+[node name="RoomPOC" type="Node2D" unique_id=1386551592]
 
-[node name="room_poc" parent="." instance=ExtResource("1_map")]
+[node name="room_poc" parent="." unique_id=132474473 instance=ExtResource("1_map")]
 
-[node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(120.0, 88.0)
+[node name="Player" type="CharacterBody2D" parent="." unique_id=2048465967]
+position = Vector2(120, 88)
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(0.0, -6.0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1067896986]
+position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=1179398990]
 texture = ExtResource("3_sprites")
+offset = Vector2(0, -12)
 hframes = 12
 vframes = 6
-frame = 0
-offset = Vector2(0, -12)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1391117161]
 limit_left = 0
 limit_top = 0
 limit_right = 240
 limit_bottom = 176
 position_smoothing_enabled = true
-position_smoothing_speed = 5.0
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.08, 0.08, 0.12, 1.0)
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=571783545]
+color = Color(0.08, 0.08, 0.12, 1)
 
-[node name="FlickeringLight" type="PointLight2D" parent="."]
-position = Vector2(80.0, 56.0)
+[node name="FlickeringLight" type="PointLight2D" parent="." unique_id=120148832]
+position = Vector2(119, 82)
+energy = 3.28
 texture = SubResource("GradientTexture2D_1")
-texture_scale = 4.0
-energy = 1.2
+texture_scale = 26.68
+height = 306.0
 script = ExtResource("4_flickering_light")
