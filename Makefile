@@ -5,7 +5,7 @@
 assets: copy-art import
 
 copy-art:
-	rsync -a --include="*.png" --exclude="*" art/tilesets/ assets/tilesets/
+	rsync -a --include="*/" --include="*.png" --exclude="*" art/tilesets/ assets/tilesets/
 
 import:
 	DISPLAY=:0 godot --headless --editor --quit --path .

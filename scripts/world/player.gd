@@ -105,6 +105,6 @@ static func direction_to_offset(action: String) -> Vector2i:
 
 static func snap_to_grid(pos: Vector2, tile_size: int) -> Vector2:
 	return Vector2(
-		roundf(pos.x / tile_size) * tile_size,
-		roundf(pos.y / tile_size) * tile_size,
+		floorf(pos.x / tile_size) * tile_size + tile_size * 0.5,
+		floorf(pos.y / tile_size) * tile_size + tile_size * 0.5,
 	)

@@ -16,6 +16,9 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - Scripts: `scripts/` — GDScript; `scripts/autoload/` for singletons
 - Dialogue: YarnSpinner planned (C# runtime bridge TBD)
 - Maps: Tiled → YATI importer (`addons/YATI`); tileset PNG at `assets/tilesets/`
+  - Art sources in `art/tilesets/` (`.xcf` + third-party PNGs — all committed)
+  - `assets/tilesets/` is a build artifact dir (gitignored PNGs, not committed)
+  - Build pipeline: export XCF manually in GIMP → `make` (copies PNGs → Godot reimport)
   - Define tile types via `class=` attribute on tiles in the `.tsx` (e.g. `class="wall"`)
   - After first import, set `add_class_as_metadata=true` in the generated `.tmx.import` file
   - Single-layer TMX → YATI produces one root `TileMapLayer` named after the file (e.g. `room_poc`)
@@ -26,7 +29,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
 - Worktree base: `/home/mathdaman/code/worktrees/`
 - TDD for all GDScript logic: write failing GUT test first
-- Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd`
+- Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - PR-only integration — never merge locally to master
 - See skills: writing-plans, executing-plans, finishing-a-development-branch
 
