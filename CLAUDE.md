@@ -29,7 +29,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
 - Worktree base: `/home/mathdaman/code/worktrees/`
 - TDD for all GDScript logic: write failing GUT test first
-- Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd`
+- Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - PR-only integration — never merge locally to master
 - See skills: writing-plans, executing-plans, finishing-a-development-branch
 
