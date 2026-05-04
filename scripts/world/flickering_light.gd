@@ -1,10 +1,10 @@
 class_name FlickeringLight
 extends PointLight2D
 
-@export var min_energy: float = 0.4
+@export var min_energy: float = 0.05
 @export var max_energy: float = 1.0
-@export var flicker_min_duration: float = 0.04
-@export var flicker_max_duration: float = 0.15
+@export var flicker_min_duration: float = 0.02
+@export var flicker_max_duration: float = 0.5
 
 
 func _ready() -> void:

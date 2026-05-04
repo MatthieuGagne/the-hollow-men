@@ -16,6 +16,8 @@ gradient = SubResource("Gradient_1")
 width = 128
 height = 128
 fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.0, 0.5)
 
 [node name="RoomPOC" type="Node2D" unique_id=1386551592]
 
@@ -46,9 +48,10 @@ position_smoothing_enabled = true
 color = Color(0.08, 0.08, 0.12, 1)
 
 [node name="FlickeringLight" type="PointLight2D" parent="." unique_id=120148832]
-position = Vector2(119, 82)
+position = Vector2(120, 88)
+color = Color(1.0, 0.88, 0.45, 1)
 energy = 3.28
 texture = SubResource("GradientTexture2D_1")
-texture_scale = 26.68
+texture_scale = 8.0
 height = 306.0
 script = ExtResource("4_flickering_light")
