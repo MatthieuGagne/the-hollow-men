@@ -9,6 +9,14 @@ Determine whether you are running inside a git worktree or the main repo:
 pwd
 ```
 
+**If inside a worktree**, check initialization before doing anything else:
+
+```sh
+ls <worktree_path>/.godot 2>/dev/null && ls <worktree_path>/assets/tilesets/placeholder.png 2>/dev/null || echo "NEEDS_INIT"
+```
+
+If either path is missing, run `make worktree-init` from the worktree root first. This copies gitignored build artifacts from the main repo and runs a full headless reimport. Without it the map scene will load empty and sprites may be missing. Wait for it to complete before continuing.
+
 **Kill any running Godot instance first** (exit 144 from pkill means no process was running — that is normal, not an error):
 
 ```sh

@@ -28,6 +28,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 ## Dev Workflow
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
 - Worktree base: `/home/mathdaman/code/worktrees/`
+- **After creating a new worktree**, run `make worktree-init` before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
 - TDD for all GDScript logic: write failing GUT test first
 - Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - PR-only integration — never merge locally to master
