@@ -2,6 +2,7 @@ class_name DialogueBox
 extends Control
 
 const CHAR_INTERVAL: float = 0.05
+const _FONT: FontFile = preload("res://assets/fonts/Monocraft.ttc")
 
 signal opened
 signal closed
@@ -57,6 +58,8 @@ func show_choices(options: Array) -> void:
 		var lbl := Label.new()
 		lbl.text = ("> " if i == 0 else "  ") + options[i]
 		lbl.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+		lbl.add_theme_font_override("font", _FONT)
+		lbl.add_theme_font_size_override("font_size", 8)
 		choice_list.add_child(lbl)
 	choice_list.visible = true
 
