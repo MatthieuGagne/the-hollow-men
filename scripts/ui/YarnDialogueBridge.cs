@@ -10,7 +10,7 @@ public partial class YarnDialogueBridge : Node, DialoguePresenterBase
     [Signal] public delegate void OptionsPresentedEventHandler(string[] options);
     [Signal] public delegate void DialogueCompleteEventHandler();
 
-    [Export] public DialogueRunner Runner { get; set; }
+    [Export] public DialogueRunner runner;
 
     public List<IActionMarkupHandler> ActionMarkupHandlers { get; } = new();
 
@@ -58,6 +58,6 @@ public partial class YarnDialogueBridge : Node, DialoguePresenterBase
 
     public void StartDialogue(string nodeId)
     {
-        Runner?.StartDialogue(nodeId);
+        runner?.StartDialogue(nodeId);
     }
 }
