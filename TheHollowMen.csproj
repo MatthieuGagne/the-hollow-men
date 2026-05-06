@@ -8,4 +8,6 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);CS0618</NoWarn>
   </PropertyGroup>
+  <!-- YarnSpinner-Godot plugin NuGet dependencies -->
+  <Import Project="addons\YarnSpinner-Godot\YarnSpinner-Godot.props" />
 </Project>

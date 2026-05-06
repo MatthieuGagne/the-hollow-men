@@ -29,7 +29,7 @@ project/assembly_name="TheHollowMen"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plugin.cfg")
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plugin.cfg", "res://addons/YarnSpinner-Godot/plugin.cfg")
 
 [autoload]
 
