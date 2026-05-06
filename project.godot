@@ -31,6 +31,10 @@ project/assembly_name="TheHollowMen"
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plugin.cfg")
 
+[autoload]
+
+CellRegistry="*res://scripts/autoload/cell_registry.gd"
+
 [input]
 
 move_up={
