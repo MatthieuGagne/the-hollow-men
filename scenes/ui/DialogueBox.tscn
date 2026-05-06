@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/Monocraft.ttc" id="2_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_box"]
 bg_color = Color(0, 0, 0, 1)
@@ -24,21 +25,44 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -60
+offset_top = -80
 offset_bottom = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_box")
 
+[node name="SpeakerLabel" type="Label" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 6.0
+offset_right = -10.0
+offset_bottom = 20.0
+text = ""
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
-offset_top = 8.0
+offset_top = 22.0
 offset_right = -10.0
 offset_bottom = -8.0
 text = ""
 autowrap_mode = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 8
+
+[node name="ChoiceList" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 22.0
+offset_right = -10.0
+offset_bottom = -8.0
+theme_override_constants/separation = 2
