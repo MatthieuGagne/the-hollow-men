@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="2">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="3">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <layer id="1" name="World" width="15" height="11">
   <data encoding="csv">
@@ -18,6 +18,15 @@
  </layer>
  <objectgroup id="2" name="Objects">
   <object id="1" type="instance" x="80" y="64" width="16" height="16">
+   <properties>
+    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
+    <property name="examine_text" type="string" value="A cluttered desk covered in papers."/>
+    <property name="object_name" type="string" value="Desk"/>
+    <property name="sprite_frame" type="int" value="0"/>
+    <property name="blocks_movement" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="2" type="instance" x="96" y="64" width="16" height="16">
    <properties>
     <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
     <property name="examine_text" type="string" value="A cluttered desk covered in papers."/>
