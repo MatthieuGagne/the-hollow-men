@@ -25,7 +25,7 @@ func on_dialogue_complete_async() -> void:
 
 
 func start_dialogue(node_id: String) -> void:
-	_runner.start_dialogue(node_id)
+	_runner.start_dialogue_forget(node_id)
 
 
 func _get_speaker(line: Dictionary) -> String:
