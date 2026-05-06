@@ -23,3 +23,8 @@ func _exit_tree() -> void:
 
 func get_cell() -> Vector2i:
 	return Vector2i(int(position.x) / TILE_SIZE, int(position.y) / TILE_SIZE)
+
+
+func interact(dialogue_box: Node, _yarn_bridge: Node) -> void:
+	if examine_text != "":
+		dialogue_box.show_text(examine_text)
