@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b21dbg1d6q6kx" path="res://scripts/world/flickering_light.gd" id="4_flickering_light"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DialogueBox.tscn" id="5_dialoguebox"]
 [ext_resource type="Script" uid="uid://budnld4qd513n" path="res://addons/YarnSpinner-Godot/Runtime/DialogueRunner.cs" id="6_dialoguerunner"]
-[ext_resource type="Script" uid="uid://b8tiow58b2hfy" path="res://scripts/ui/YarnDialogueBridge.cs" id="7_bridge"]
+[ext_resource type="Script" path="res://scripts/ui/yarn_dialogue_bridge.gd" id="7_bridge"]
 [ext_resource type="Resource" path="res://dialogue/iris.yarnproject" id="8_yarnproject"]
 [ext_resource type="Script" uid="uid://2lcwhdvmfftq" path="res://scripts/world/npc.gd" id="9_npc"]
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/iris.png" id="10_iris"]
@@ -62,11 +62,10 @@ layer = 10
 mouse_filter = 2
 script = ExtResource("6_dialoguerunner")
 yarnProject = ExtResource("8_yarnproject")
-dialoguePresenters = [NodePath("YarnDialogueBridge")]
+dialoguePresenters = [NodePath("../YarnDialogueBridge")]
 
-[node name="YarnDialogueBridge" type="Node" parent="UILayer" node_paths=PackedStringArray("runner")]
+[node name="YarnDialogueBridge" type="Node" parent="UILayer"]
 script = ExtResource("7_bridge")
-runner = NodePath("../DialogueRunner")
 
 [node name="FlickeringLight" type="PointLight2D" parent="." unique_id=120148832]
 position = Vector2(120, 88)
