@@ -10,6 +10,7 @@ var _input_blocked: bool = false
 
 @onready var _world_layer: TileMapLayer = $"../room_poc/World"
 @onready var _dialogue_box: DialogueBox = $"../UILayer/DialogueBox"
+@onready var _yarn_bridge: Node = get_node_or_null("../UILayer/YarnDialogueBridge")
 
 var _dbg_target_offset: Vector2 = Vector2.ZERO
 var _dbg_is_wall: bool = false
@@ -19,6 +20,12 @@ var _dbg_label: Label
 
 func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
+	if _yarn_bridge != null:
+		_yarn_bridge.connect("line_delivered", _dialogue_box.show_line)
+		_yarn_bridge.connect("options_presented", _dialogue_box.show_choices)
+		_yarn_bridge.connect("dialogue_complete", _dialogue_box.dismiss)
+		_dialogue_box.connect("line_advanced", _yarn_bridge.continue_line)
+		_dialogue_box.connect("option_selected", _yarn_bridge.select_option)
 	_setup_debug_overlay()
 
 
@@ -82,10 +89,7 @@ func _try_interact() -> void:
 	var occupant: Node = CellRegistry.get_occupant(cell)
 	if occupant == null:
 		return
-	var text: String = occupant.get_meta("examine_text", "")
-	if text == "":
-		return
-	_dialogue_box.show_text(text)
+	occupant.interact(_dialogue_box, _yarn_bridge)
 
 
 func _try_move(action: String) -> void:
