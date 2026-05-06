@@ -54,6 +54,17 @@ func test_is_blocked_true_via_registry_after_ready() -> void:
 	assert_true(CellRegistry.is_blocked(Vector2i(5, 4)))
 
 
+func test_is_blocked_true_from_export_property_without_preset_meta() -> void:
+	# Simulates a manually-placed NPC: export property set, no node metadata pre-set.
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/world_object.gd"))
+	obj.position = Vector2(80.0, 64.0)
+	obj.blocks_movement = true  # export property, not metadata
+	add_child(obj)
+	assert_true(CellRegistry.is_blocked(Vector2i(5, 4)))
+	obj.free()
+
+
 func test_interact_with_examine_text_calls_show_text() -> void:
 	var obj := WorldObject.new()
 	obj.examine_text = "A dusty shelf."
