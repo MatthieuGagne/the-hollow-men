@@ -77,14 +77,14 @@ height = 306.0
 script = ExtResource("4_flickering_light")
 
 [node name="Iris" type="Node2D" parent="."]
-position = Vector2(200, 144)
+position = Vector2(200, 136)
 script = ExtResource("9_npc")
 yarn_node_id = "iris_intro"
 blocks_movement = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Iris"]
 texture = ExtResource("10_iris")
-offset = Vector2(0, -12)
+offset = Vector2(0, -4)
 hframes = 1
 vframes = 6
 
