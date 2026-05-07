@@ -34,6 +34,7 @@ enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plug
 [autoload]
 
 CellRegistry="*res://scripts/autoload/cell_registry.gd"
+SceneManager="*res://scripts/autoload/scene_manager.gd"
 
 [input]
 
