@@ -72,34 +72,9 @@ Mixed Black and white heritage, medium-dark weathered skin. White close-cropped 
 
 **Bureau status:** Never registered
 
-**Grade:** None. Bureau instruments return an error before a number.
+Sharp, funny, perpetually in motion. Moves jailbroken sigils to people who need to stop being metered. Protecting Lain — a 14-year-old street kid she found being attacked by a gang eighteen months ago and can't stop thinking about.
 
-**Handle:** Iris. Not her real name. She's had it long enough that she doesn't remember when she stopped thinking of it as a cover. Real name unknown.
-
-**First encounter:** Beat 3 of the opening sequence — already in the building, already working, already done before Reid knows who she is. She takes the jailbroken sigils and ghosts clean. No name. No thread. Just the sound of a panel sliding back into place.
-
-**What she is:** Moves jailbroken sigils — Bureau-registered hardware with the ley return channel cut — to people who need to stop being metered. Off-grid from birth. No license, no file, no record. The Bureau has nothing on her because it has nothing *of* her.
-
-**Why she's stronger than licensed practitioners:** She was never metered. Her psychic output has never been split — the Bureau's harvest system never got installed. She has no Grade because no ley terminal ever got a clean read on her; she was never near one long enough, never enrolled, never processed. She's been operating at full output her whole life without knowing the gap exists. She doesn't have a theory about it. She's never needed one. When the revelation comes, she'll understand the system she's been fighting without knowing what it was.
-
-**Why she's still in NOX:** There's a kid. A young unregistered practitioner — someone she found in the wrong place and didn't walk past. She doesn't do charity. Except for this one. She hasn't examined why. She's been staying for eighteen months waiting for the situation to resolve. The kid's anomalous unregistered output resonates with the between-space, pulling the Meridian's wrong geometry worse each week. Iris has been managing the escalation alone.
-
-**Her code:** She screens every client. Not about the sigil — about what they'll do with the freed output. She asks. She listens. She's been wrong twice. She carries that.
-
-**How she enters the investigation (Case 2 — Beats 10–15):** Reid's investigation doesn't connect to Iris through the kid's history — it connects through the anomaly the kid is generating. All three data sets (Vesper's apartment logs, Margot's disappearance cohort records, Karim's patient files) independently point to the same pocket in the Meridian. Reid's party arrives during an escalation Iris can no longer manage alone. She joins because the investigation is already inside her problem and there's no separating them. She hates that. Her contribution: the anomaly has a direction, pulling toward something specific deeper in the Meridian — she's been watching it for six months without following it. Before joining, she takes the kid to her apartment — the address she's never given anyone. Then she invites the party. The invitation and the kid's location are the same act of trust.
-
-**What she doesn't know:** Anything about WARDEN, the entity, or the ley architecture's actual function. She comes into the main mystery clean — outside perspective. Asks the questions an outsider would ask. When she says she doesn't know what she walked into, she says so.
-
-**Arc and breaking point:** TBD
-
-### Appearance
-Southeast Asian heritage, warm medium skin tone — looks younger than she is. Short asymmetric hair, bright red — vivid, not dark — dramatically cut: jaw-length on one side, nearly shaved on the other. Dark eyes with a striking iridescent quality in neon light — clearly artificial, beautiful, like oil on dark water or a cephalopod's eye catching color — a permanent augmentation she can't remove and has made peace with. The one tell she cannot erase. A matte deep teal catsuit, form-fitting, high collar, hood worn down at the neck — the hidden pockets visible only as faint panel seam lines along the torso. Copper accent at seam piping, collar edge, and pocket panel borders — warm metallic against cool teal. Flat-soled integrated boots, one continuous silhouette. Nothing external that could be grabbed. No jewelry, no accessories, nothing reflective. Dominant color: **deep teal / copper accent**.
-
-### Psychology
-**Core wound:** She's run so many covers for so long she doesn't know what's underneath. The question exists. She doesn't ask it.
-**Coping:** Pure competence. If she keeps moving she doesn't have to stop and look.
-**Won't examine:** Why she stayed for the kid.
-**Dynamic:** Friction with Margot before alliance — Iris distrusts ideology because she's never needed one. Margot rebuilt herself around one. That gap closes slowly.
+Full profile: [`docs/characters/iris.md`](docs/characters/iris.md)
 
 ---
 
