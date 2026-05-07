@@ -10,6 +10,7 @@
 [ext_resource type="Resource" path="res://dialogue/iris.yarnproject" id="8_yarnproject"]
 [ext_resource type="Script" uid="uid://2lcwhdvmfftq" path="res://scripts/world/npc.gd" id="9_npc"]
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/iris.png" id="10_iris"]
+[ext_resource type="Script" path="res://scripts/world/room_poc.gd" id="11_room_poc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(12, 12)
@@ -26,6 +27,7 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1.0, 0.5)
 
 [node name="RoomPOC" type="Node2D" unique_id=1386551592]
+script = ExtResource("11_room_poc")
 y_sort_enabled = true
 
 [node name="room_poc" parent="." unique_id=132474473 instance=ExtResource("1_map")]

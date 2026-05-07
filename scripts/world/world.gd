@@ -48,4 +48,4 @@ func _trigger_encounter() -> void:
 
 func _load_battle_scene() -> void:
 	# TODO: pass current enemy table to BattleScene
-	get_tree().change_scene_to_file("res://scenes/battle/BattleScene.tscn")
+	SceneManager.change_scene("res://scenes/battle/BattleScene.tscn")
