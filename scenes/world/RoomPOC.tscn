@@ -5,6 +5,11 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/reid.png" id="3_sprites"]
 [ext_resource type="Script" uid="uid://b21dbg1d6q6kx" path="res://scripts/world/flickering_light.gd" id="4_flickering_light"]
 [ext_resource type="PackedScene" path="res://scenes/ui/DialogueBox.tscn" id="5_dialoguebox"]
+[ext_resource type="Script" uid="uid://budnld4qd513n" path="res://addons/YarnSpinner-Godot/Runtime/DialogueRunner.cs" id="6_dialoguerunner"]
+[ext_resource type="Script" path="res://scripts/ui/yarn_dialogue_bridge.gd" id="7_bridge"]
+[ext_resource type="Resource" path="res://dialogue/iris.yarnproject" id="8_yarnproject"]
+[ext_resource type="Script" uid="uid://2lcwhdvmfftq" path="res://scripts/world/npc.gd" id="9_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/iris.png" id="10_iris"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(12, 12)
@@ -53,6 +58,15 @@ layer = 10
 
 [node name="DialogueBox" parent="UILayer" instance=ExtResource("5_dialoguebox")]
 
+[node name="DialogueRunner" type="Control" parent="UILayer" node_paths=PackedStringArray("dialoguePresenters")]
+mouse_filter = 2
+script = ExtResource("6_dialoguerunner")
+yarnProject = ExtResource("8_yarnproject")
+dialoguePresenters = [NodePath("../YarnDialogueBridge")]
+
+[node name="YarnDialogueBridge" type="Node" parent="UILayer"]
+script = ExtResource("7_bridge")
+
 [node name="FlickeringLight" type="PointLight2D" parent="." unique_id=120148832]
 position = Vector2(120, 88)
 color = Color(1.0, 0.88, 0.45, 1)
@@ -61,6 +75,18 @@ texture = SubResource("GradientTexture2D_1")
 texture_scale = 8.0
 height = 306.0
 script = ExtResource("4_flickering_light")
+
+[node name="Iris" type="Node2D" parent="."]
+position = Vector2(200, 136)
+script = ExtResource("9_npc")
+yarn_node_id = "iris_intro"
+blocks_movement = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Iris"]
+texture = ExtResource("10_iris")
+offset = Vector2(0, -4)
+hframes = 1
+vframes = 6
 
 [connection signal="opened" from="UILayer/DialogueBox" to="Player" method="_on_dialogue_opened"]
 [connection signal="closed" from="UILayer/DialogueBox" to="Player" method="_on_dialogue_closed"]

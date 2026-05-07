@@ -10,6 +10,7 @@ var _input_blocked: bool = false
 
 @onready var _world_layer: TileMapLayer = $"../room_poc/World"
 @onready var _dialogue_box: DialogueBox = $"../UILayer/DialogueBox"
+@onready var _yarn_bridge: Node = $"../UILayer/YarnDialogueBridge"
 
 var _dbg_target_offset: Vector2 = Vector2.ZERO
 var _dbg_is_wall: bool = false
@@ -82,10 +83,7 @@ func _try_interact() -> void:
 	var occupant: Node = CellRegistry.get_occupant(cell)
 	if occupant == null:
 		return
-	var text: String = occupant.get_meta("examine_text", "")
-	if text == "":
-		return
-	_dialogue_box.show_text(text)
+	occupant.interact(_dialogue_box, _yarn_bridge)
 
 
 func _try_move(action: String) -> void:
