@@ -26,11 +26,13 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1.0, 0.5)
 
 [node name="RoomPOC" type="Node2D" unique_id=1386551592]
+y_sort_enabled = true
 
 [node name="room_poc" parent="." unique_id=132474473 instance=ExtResource("1_map")]
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=2048465967]
 position = Vector2(120, 88)
+y_sort_origin = 8
 script = ExtResource("2_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1067896986]
@@ -39,7 +41,7 @@ shape = SubResource("RectangleShape2D_1")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=1179398990]
 texture = ExtResource("3_sprites")
-offset = Vector2(0, -12)
+offset = Vector2(0, -4)
 hframes = 1
 vframes = 6
 
@@ -78,6 +80,7 @@ script = ExtResource("4_flickering_light")
 
 [node name="Iris" type="Node2D" parent="."]
 position = Vector2(200, 136)
+y_sort_origin = 8
 script = ExtResource("9_npc")
 yarn_node_id = "iris_intro"
 blocks_movement = true
