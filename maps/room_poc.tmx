@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
  <tileset firstgid="1" source="placeholder.tsx"/>
- <tileset firstgid="9" source="objects.tsx"/>
+ <tileset firstgid="11" source="objects.tsx"/>
  <layer id="1" name="World" width="15" height="11">
   <data encoding="csv">
-7,4,2,2147483651,3,4,2,2147483651,3,2147483651,3,2,4,2,7,
-7,8,6,6,6,8,6,6,6,6,6,6,8,6,7,
-7,1,5,5,5,5,5,5,5,3758096385,5,5,5,1,7,
-7,5,5,5,1610612737,5,5,5,5,5,5,5,1610612737,5,7,
-7,5,5,5,5,5,5,5,5,5,5,5,5,5,7,
-7,5,1,5,5,5,5,3758096385,1610612737,5,5,5,5,1,7,
-7,5,5,5,5,5,5,2684354561,5,5,5,5,5,5,7,
-7,5,5,5,5,5,5,5,5,5,5,5,5,5,7,
-7,5,5,2147483649,5,5,5,5,5,5,5,536870913,5,5,7,
-7,5,5,5,5,5,5,5,1,5,5,5,5,5,7,
-7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+2147483656,10,2,3,4,4,5,10,10,2,3,4,5,10,8,
+2147483656,7,9,7,7,7,7,7,7,9,7,7,7,7,8,
+2147483656,6,6,6,6,1,6,6,6,6,3221225473,6,6,1,8,
+2147483656,6,1,6,6,6,6,6,6,2147483649,6,6,6,6,8,
+2147483656,2147483649,6,6,6,6,6,6,6,6,6,1,6,6,8,
+2147483656,6,6,1073741825,6,6,6,6,6,3221225473,6,6,6,6,8,
+2147483656,6,1,6,6,6,6,6,6,6,6,6,6,6,8,
+2147483656,6,6,6,6,2147483649,6,2147483649,6,1,6,6,6,6,8,
+2147483656,6,6,6,6,1,6,1,6,6,6,1,6,2147483649,8,
+2147483656,6,6,6,3221225473,6,6,6,6,6,1073741825,6,6,6,8,
+2147483656,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,8
 </data>
  </layer>
  <layer id="3" name="Objects" width="15" height="11">
@@ -23,7 +23,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,9,10,0,0,0,0,0,0,0,0,
+0,0,0,0,0,11,12,13,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -35,18 +35,26 @@
  <objectgroup id="2" name="Interactions">
   <object id="1" type="instance" x="80" y="64" width="16" height="16">
    <properties>
-    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
-    <property name="examine_text" type="string" value="A cluttered desk covered in papers."/>
-    <property name="object_name" type="string" value="Desk"/>
     <property name="blocks_movement" type="bool" value="true"/>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="object_name" value="Desk"/>
+    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
    </properties>
   </object>
   <object id="2" type="instance" x="96" y="64" width="16" height="16">
    <properties>
-    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
-    <property name="examine_text" type="string" value="A cluttered desk covered in papers."/>
-    <property name="object_name" type="string" value="Desk"/>
     <property name="blocks_movement" type="bool" value="true"/>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="object_name" value="Desk"/>
+    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
+   </properties>
+  </object>
+  <object id="3" type="instance" x="112" y="64" width="16" height="16">
+   <properties>
+    <property name="blocks_movement" type="bool" value="true"/>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="object_name" value="Desk"/>
+    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
    </properties>
   </object>
  </objectgroup>
