@@ -1,6 +1,7 @@
 # Godot 4 build artifacts
 .godot/
 *.translation
+*.uid
 
 # Godot export templates (large binaries)
 export_presets.cfg
