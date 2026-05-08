@@ -2,13 +2,17 @@
 
 MAIN_REPO := $(shell git worktree list --porcelain | head -1 | awk '{print $$2}')
 
-.PHONY: assets copy-art import worktree-init
+.PHONY: assets copy-art sync-tsx import worktree-init
 
-assets: copy-art import
+assets: copy-art sync-tsx import
 
 copy-art:
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/tilesets/ assets/tilesets/
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/objects/ assets/objects/
+
+# Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
+sync-tsx:
+	python3 scripts/sync_tsx.py
 
 import:
 	DISPLAY=:0 godot --headless --editor --quit --path .
