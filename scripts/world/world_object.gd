@@ -21,6 +21,8 @@ func _ready() -> void:
 	tile_cols       = get_meta("tile_cols",       tile_cols)
 	tile_rows       = get_meta("tile_rows",       tile_rows)
 	set_meta("blocks_movement", blocks_movement)
+	z_as_relative = false
+	z_index = int(global_position.y) + tile_rows * TILE_SIZE
 
 	if sprite_texture != "":
 		$Sprite2D.texture = load(sprite_texture)

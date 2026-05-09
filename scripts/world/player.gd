@@ -20,6 +20,7 @@ var _dbg_label: Label
 
 func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
+	z_as_relative = false
 	_setup_debug_overlay()
 
 
@@ -35,6 +36,7 @@ func _setup_debug_overlay() -> void:
 
 
 func _process(_delta: float) -> void:
+	z_index = int(position.y) + TILE_SIZE / 2
 	if not _moving and not _input_blocked:
 		for action: String in ["move_up", "move_down", "move_left", "move_right"]:
 			if Input.is_action_pressed(action):
