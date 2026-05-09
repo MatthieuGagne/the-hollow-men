@@ -13,6 +13,9 @@ func before_each() -> void:
 	_obj.set_meta("sprite_texture", "res://assets/objects/desk_placeholder.png")
 	_obj.set_meta("blocks_movement", true)
 	# tile_cols/tile_rows not set → defaults to 1×1
+	var sprite := Sprite2D.new()
+	sprite.name = "Sprite2D"
+	_obj.add_child(sprite)
 
 
 func after_each() -> void:
