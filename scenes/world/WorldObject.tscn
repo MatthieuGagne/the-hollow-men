@@ -4,3 +4,6 @@
 
 [node name="WorldObject" type="Node2D"]
 script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+centered = false

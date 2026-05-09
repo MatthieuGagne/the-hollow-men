@@ -9,7 +9,6 @@ var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
 
 @onready var _world_layer: TileMapLayer = $"../room_poc/World"
-@onready var _objects_layer: TileMapLayer = $"../room_poc/Objects"
 @onready var _dialogue_box: DialogueBox = $"../UILayer/DialogueBox"
 @onready var _yarn_bridge: Node = $"../UILayer/YarnDialogueBridge"
 
@@ -21,6 +20,7 @@ var _dbg_label: Label
 
 func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
+	z_as_relative = false
 	_setup_debug_overlay()
 
 
@@ -36,6 +36,7 @@ func _setup_debug_overlay() -> void:
 
 
 func _process(_delta: float) -> void:
+	z_index = int(position.y) + TILE_SIZE / 2
 	if not _moving and not _input_blocked:
 		for action: String in ["move_up", "move_down", "move_left", "move_right"]:
 			if Input.is_action_pressed(action):
@@ -108,10 +109,7 @@ func _is_wall(world_pos: Vector2) -> bool:
 	var td: TileData = _world_layer.get_cell_tile_data(cell)
 	if td == null:
 		return true
-	if td.get_meta("class", "") == "wall":
-		return true
-	var obj_td: TileData = _objects_layer.get_cell_tile_data(cell)
-	return obj_td != null and obj_td.get_meta("class", "") == "wall"
+	return td.get_meta("class", "") == "wall"
 
 
 func get_facing_cell() -> Vector2i:

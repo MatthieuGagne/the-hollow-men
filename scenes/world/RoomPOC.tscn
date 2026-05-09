@@ -8,8 +8,6 @@
 [ext_resource type="Script" uid="uid://budnld4qd513n" path="res://addons/YarnSpinner-Godot/Runtime/DialogueRunner.cs" id="6_dialoguerunner"]
 [ext_resource type="Script" path="res://scripts/ui/yarn_dialogue_bridge.gd" id="7_bridge"]
 [ext_resource type="Resource" path="res://dialogue/iris.yarnproject" id="8_yarnproject"]
-[ext_resource type="Script" uid="uid://2lcwhdvmfftq" path="res://scripts/world/npc.gd" id="9_npc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/characters/iris.png" id="10_iris"]
 [ext_resource type="Script" path="res://scripts/world/room_poc.gd" id="11_room_poc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
@@ -79,19 +77,6 @@ texture = SubResource("GradientTexture2D_1")
 texture_scale = 8.0
 height = 306.0
 script = ExtResource("4_flickering_light")
-
-[node name="Iris" type="Node2D" parent="."]
-position = Vector2(200, 136)
-y_sort_origin = 8
-script = ExtResource("9_npc")
-yarn_node_id = "iris_intro"
-blocks_movement = true
-
-[node name="Sprite2D" type="Sprite2D" parent="Iris"]
-texture = ExtResource("10_iris")
-offset = Vector2(0, -4)
-hframes = 1
-vframes = 6
 
 [connection signal="opened" from="UILayer/DialogueBox" to="Player" method="_on_dialogue_opened"]
 [connection signal="closed" from="UILayer/DialogueBox" to="Player" method="_on_dialogue_closed"]

@@ -10,6 +10,10 @@ ROOT = Path(".")
 
 def sync(tsx: Path) -> None:
     text = tsx.read_text()
+    # Collection tilesets (columns="0") manage their own tiles; skip patching.
+    if re.search(r'columns="0"', text):
+        print(f"  skip {tsx.name}: collection tileset")
+        return
     m = re.search(r'<image source="([^"]+)"', text)
     if not m:
         return

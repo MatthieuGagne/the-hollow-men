@@ -49,3 +49,12 @@ func test_interact_does_nothing_when_node_id_empty() -> void:
 	_npc.interact(null, mock_bridge)
 	pass_test("no crash with empty yarn_node_id")
 	mock_bridge.free()
+
+
+func test_yarn_node_id_read_from_meta_on_ready() -> void:
+	var npc := Node2D.new()
+	npc.set_script(load("res://scripts/world/npc.gd"))
+	npc.set_meta("yarn_node_id", "iris_intro")
+	add_child(npc)
+	assert_eq(npc.yarn_node_id, "iris_intro")
+	npc.free()

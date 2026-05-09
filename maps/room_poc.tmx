@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <tileset firstgid="11" source="objects.tsx"/>
  <layer id="1" name="World" width="15" height="11">
@@ -15,46 +15,17 @@
 2147483656,6,6,6,6,1,6,1,6,6,6,1,6,2147483649,8,
 2147483656,6,6,6,3221225473,6,6,6,6,6,1073741825,6,6,6,8,
 2147483656,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,8
-</data>
- </layer>
- <layer id="3" name="Objects" width="15" height="11">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,11,12,13,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-</data>
+  </data>
  </layer>
  <objectgroup id="2" name="Interactions">
-  <object id="1" type="instance" x="80" y="64" width="16" height="16">
+  <object id="1" gid="11" x="80" y="64" width="48" height="16">
    <properties>
-    <property name="blocks_movement" type="bool" value="true"/>
     <property name="examine_text" value="A cluttered desk covered in papers."/>
-    <property name="object_name" value="Desk"/>
-    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
    </properties>
   </object>
-  <object id="2" type="instance" x="96" y="64" width="16" height="16">
+  <object id="2" gid="12" x="192" y="128" width="16" height="24">
    <properties>
-    <property name="blocks_movement" type="bool" value="true"/>
-    <property name="examine_text" value="A cluttered desk covered in papers."/>
-    <property name="object_name" value="Desk"/>
-    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
-   </properties>
-  </object>
-  <object id="3" type="instance" x="112" y="64" width="16" height="16">
-   <properties>
-    <property name="blocks_movement" type="bool" value="true"/>
-    <property name="examine_text" value="A cluttered desk covered in papers."/>
-    <property name="object_name" value="Desk"/>
-    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
+    <property name="yarn_node_id" value="iris_intro"/>
    </properties>
   </object>
  </objectgroup>
