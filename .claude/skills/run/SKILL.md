@@ -31,19 +31,23 @@ ls <project_path>/.godot/mono/temp/bin/Debug/TheHollowMen.dll 2>/dev/null || ech
 
 If `NEEDS_BUILD`, run `dotnet build` from the project root and wait for it to complete (expected: "0 Error(s)"). This is required for YarnSpinner and any other C# scripts to instantiate correctly.
 
-**Ensure assets are imported.** Spot-check for a few key import files that are commonly missing after a fresh clone, pull, or worktree creation:
+**Ensure assets are up to date.** Always run the full asset pipeline — copy PNGs from `art/` into `assets/`, sync TSX dimensions from the PNG on disk, then reimport. This ensures the tileset and map match what is on disk.
 
 ```sh
-ls <project_path>/.godot/imported/ 2>/dev/null | grep -cE "reid|iris|Monocraft|desk"
+make copy-art sync-tsx 2>&1
 ```
 
-If the count is less than 4, run a headless reimport and wait for it to finish:
+If the output contains the word "updated" (sync-tsx patched one or more `.tsx` files), the tileset dimensions changed. Clear the stale TMX import cache so the map reimports correctly:
 
 ```sh
-DISPLAY=:0 godot --headless --editor --quit --path <project_path> 2>&1 | tail -5
+rm -f <project_path>/.godot/imported/*.tmx-*.md5 <project_path>/.godot/imported/*.tmx-*.tscn
 ```
 
-Also run `make copy-art` first if any art source files in `art/` are newer than their counterparts in `assets/` — this copies PNGs from the art pipeline into the asset directories before importing.
+Then run the headless import and wait for it to finish:
+
+```sh
+DISPLAY=:0 godot --headless --editor --quit --path <project_path> 2>&1 | tail -10
+```
 
 **Determine the mode** from the user's request:
 - "open editor", "open in editor", "edit" → use `--editor` flag
