@@ -7,3 +7,4 @@ script = ExtResource("1_script")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 centered = false
+offset = Vector2(0, -8)
