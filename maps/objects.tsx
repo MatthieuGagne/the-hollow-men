@@ -17,10 +17,10 @@
    <property name="blocks_movement" type="bool" value="true"/>
    <property name="object_name" value="Iris"/>
    <property name="res_path" type="file" value="res://scenes/world/NPC.tscn"/>
-   <property name="sprite_texture" type="file" value="res://assets/sprites/characters/iris.png"/>
+   <property name="sprite_texture" type="file" value="res://assets/objects/iris.png"/>
    <property name="tile_cols" type="int" value="1"/>
    <property name="tile_rows" type="int" value="1"/>
   </properties>
-  <image source="../assets/sprites/characters/iris.png" width="16" height="24"/>
+  <image source="../assets/objects/iris.png" width="16" height="24"/>
  </tile>
 </tileset>
