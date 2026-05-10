@@ -4,14 +4,17 @@ var _npc: Node
 
 
 func before_each() -> void:
+	CellRegistry.clear()
 	_npc = Node2D.new()
 	_npc.set_script(load("res://scripts/world/npc.gd"))
+	_npc.position = Vector2(0.0, 0.0)  # tile (0, 0)
 	add_child(_npc)
 
 
 func after_each() -> void:
 	if is_instance_valid(_npc):
 		_npc.free()
+	CellRegistry.clear()
 
 
 func test_interact_calls_start_dialogue_on_bridge() -> void:
@@ -58,3 +61,22 @@ func test_yarn_node_id_read_from_meta_on_ready() -> void:
 	add_child(npc)
 	assert_eq(npc.yarn_node_id, "iris_intro")
 	npc.free()
+
+
+func test_registers_blocking_on_ready() -> void:
+	assert_true(CellRegistry.is_blocked(Vector2i(0, 0)))
+
+
+func test_registers_interactable_on_ready() -> void:
+	assert_eq(CellRegistry.get_interactable(Vector2i(0, 0)), _npc)
+
+
+func test_dual_registration_same_cell() -> void:
+	assert_true(CellRegistry.is_blocked(Vector2i(0, 0)))
+	assert_eq(CellRegistry.get_interactable(Vector2i(0, 0)), _npc)
+
+
+func test_unregisters_interactable_on_exit() -> void:
+	_npc.queue_free()
+	await get_tree().process_frame
+	assert_null(CellRegistry.get_interactable(Vector2i(0, 0)))
