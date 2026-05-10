@@ -82,10 +82,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _try_interact() -> void:
 	var cell: Vector2i = get_facing_cell()
-	var occupant: Node = CellRegistry.get_occupant(cell)
-	if occupant == null:
+	var interactable: Node = CellRegistry.get_interactable(cell)
+	if interactable == null:
 		return
-	occupant.interact(_dialogue_box, _yarn_bridge)
+	interactable.interact(_dialogue_box, _yarn_bridge)
 
 
 func _try_move(action: String) -> void:
