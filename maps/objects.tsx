@@ -3,7 +3,6 @@
  <tile id="0" type="instance">
   <properties>
    <property name="blocks_movement" type="bool" value="true"/>
-   <property name="examine_text" value=""/>
    <property name="object_name" value="Desk"/>
    <property name="res_path" type="file" value="res://scenes/world/WorldObject.tscn"/>
    <property name="sprite_texture" type="file" value="res://assets/objects/desk_placeholder.png"/>
