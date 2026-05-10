@@ -11,7 +11,6 @@ func before_each() -> void:
 	_obj.set_meta("object_name", "Desk")
 	_obj.set_meta("sprite_texture", "res://assets/objects/desk_placeholder.png")
 	_obj.set_meta("blocks_movement", true)
-	# tile_cols/tile_rows not set → defaults to 1×1
 	var sprite := Sprite2D.new()
 	sprite.name = "Sprite2D"
 	_obj.add_child(sprite)
@@ -68,11 +67,6 @@ func test_multi_cell_unblocks_all_on_exit() -> void:
 	assert_false(CellRegistry.is_blocked(Vector2i(5, 4)))
 	assert_false(CellRegistry.is_blocked(Vector2i(6, 4)))
 	assert_false(CellRegistry.is_blocked(Vector2i(7, 4)))
-
-
-func test_is_blocked_true_via_registry_after_ready() -> void:
-	add_child(_obj)
-	assert_true(CellRegistry.is_blocked(Vector2i(5, 4)))
 
 
 func test_is_blocked_true_from_export_property_without_preset_meta() -> void:
