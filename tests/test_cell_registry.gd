@@ -5,49 +5,18 @@ func before_each() -> void:
 	CellRegistry.clear()
 
 
-func test_register_and_query_occupied() -> void:
+func test_register_blocking_makes_cell_blocked() -> void:
 	var node := Node.new()
-	CellRegistry.register(Vector2i(3, 4), node)
-	assert_true(CellRegistry.has(Vector2i(3, 4)))
+	CellRegistry.register_blocking(Vector2i(1, 1), node)
+	assert_true(CellRegistry.is_blocked(Vector2i(1, 1)))
 	node.free()
 
 
-func test_unregistered_cell_is_empty() -> void:
-	assert_false(CellRegistry.has(Vector2i(0, 0)))
-
-
-func test_get_occupant_returns_node() -> void:
+func test_unregister_blocking_removes_block() -> void:
 	var node := Node.new()
-	CellRegistry.register(Vector2i(1, 2), node)
-	assert_eq(CellRegistry.get_occupant(Vector2i(1, 2)), node)
-	node.free()
-
-
-func test_get_occupant_returns_null_when_empty() -> void:
-	assert_null(CellRegistry.get_occupant(Vector2i(99, 99)))
-
-
-func test_unregister_removes_cell() -> void:
-	var node := Node.new()
-	CellRegistry.register(Vector2i(5, 6), node)
-	CellRegistry.unregister(Vector2i(5, 6))
-	assert_false(CellRegistry.has(Vector2i(5, 6)))
-	node.free()
-
-
-func test_is_blocked_true_when_occupant_blocks_movement() -> void:
-	var node := Node.new()
-	node.set_meta("blocks_movement", true)
-	CellRegistry.register(Vector2i(2, 2), node)
-	assert_true(CellRegistry.is_blocked(Vector2i(2, 2)))
-	node.free()
-
-
-func test_is_blocked_false_when_occupant_does_not_block() -> void:
-	var node := Node.new()
-	node.set_meta("blocks_movement", false)
-	CellRegistry.register(Vector2i(2, 3), node)
-	assert_false(CellRegistry.is_blocked(Vector2i(2, 3)))
+	CellRegistry.register_blocking(Vector2i(2, 2), node)
+	CellRegistry.unregister_blocking(Vector2i(2, 2))
+	assert_false(CellRegistry.is_blocked(Vector2i(2, 2)))
 	node.free()
 
 
@@ -55,9 +24,62 @@ func test_is_blocked_false_when_empty() -> void:
 	assert_false(CellRegistry.is_blocked(Vector2i(0, 0)))
 
 
-func test_clear_empties_registry() -> void:
+func test_register_interactable_can_be_retrieved() -> void:
 	var node := Node.new()
-	CellRegistry.register(Vector2i(1, 1), node)
+	CellRegistry.register_interactable(Vector2i(3, 3), node)
+	assert_eq(CellRegistry.get_interactable(Vector2i(3, 3)), node)
+	node.free()
+
+
+func test_unregister_interactable_removes_entry() -> void:
+	var node := Node.new()
+	CellRegistry.register_interactable(Vector2i(4, 4), node)
+	CellRegistry.unregister_interactable(Vector2i(4, 4))
+	assert_null(CellRegistry.get_interactable(Vector2i(4, 4)))
+	node.free()
+
+
+func test_get_interactable_returns_null_when_empty() -> void:
+	assert_null(CellRegistry.get_interactable(Vector2i(9, 9)))
+
+
+func test_dual_registration_same_cell_both_present() -> void:
+	var node := Node.new()
+	CellRegistry.register_blocking(Vector2i(5, 5), node)
+	CellRegistry.register_interactable(Vector2i(5, 5), node)
+	assert_true(CellRegistry.is_blocked(Vector2i(5, 5)))
+	assert_eq(CellRegistry.get_interactable(Vector2i(5, 5)), node)
+	node.free()
+
+
+func test_blocking_and_interactable_are_independent() -> void:
+	var blocker := Node.new()
+	var trigger := Node.new()
+	CellRegistry.register_blocking(Vector2i(6, 6), blocker)
+	CellRegistry.register_interactable(Vector2i(7, 7), trigger)
+	assert_true(CellRegistry.is_blocked(Vector2i(6, 6)))
+	assert_false(CellRegistry.is_blocked(Vector2i(7, 7)))
+	assert_null(CellRegistry.get_interactable(Vector2i(6, 6)))
+	assert_eq(CellRegistry.get_interactable(Vector2i(7, 7)), trigger)
+	blocker.free()
+	trigger.free()
+
+
+func test_unregister_blocking_does_not_affect_interactable() -> void:
+	var node := Node.new()
+	CellRegistry.register_blocking(Vector2i(8, 8), node)
+	CellRegistry.register_interactable(Vector2i(8, 8), node)
+	CellRegistry.unregister_blocking(Vector2i(8, 8))
+	assert_false(CellRegistry.is_blocked(Vector2i(8, 8)))
+	assert_eq(CellRegistry.get_interactable(Vector2i(8, 8)), node)
+	node.free()
+
+
+func test_clear_resets_both_dictionaries() -> void:
+	var node := Node.new()
+	CellRegistry.register_blocking(Vector2i(1, 1), node)
+	CellRegistry.register_interactable(Vector2i(2, 2), node)
 	CellRegistry.clear()
-	assert_false(CellRegistry.has(Vector2i(1, 1)))
+	assert_false(CellRegistry.is_blocked(Vector2i(1, 1)))
+	assert_null(CellRegistry.get_interactable(Vector2i(2, 2)))
 	node.free()
