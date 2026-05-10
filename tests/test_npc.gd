@@ -1,6 +1,6 @@
 extends GutTest
 
-var _npc: Node
+var _npc: Node2D
 
 
 func before_each() -> void:
@@ -23,7 +23,7 @@ func test_interact_calls_start_dialogue_on_bridge() -> void:
 	var scr := GDScript.new()
 	scr.source_code = """
 extends Node
-var _calls: Array = []
+var _calls: Array[String] = []
 func start_dialogue(node_id: String) -> void:
 	_calls.append(node_id)
 """
@@ -71,12 +71,8 @@ func test_registers_interactable_on_ready() -> void:
 	assert_eq(CellRegistry.get_interactable(Vector2i(0, 0)), _npc)
 
 
-func test_dual_registration_same_cell() -> void:
-	assert_true(CellRegistry.is_blocked(Vector2i(0, 0)))
-	assert_eq(CellRegistry.get_interactable(Vector2i(0, 0)), _npc)
-
-
-func test_unregisters_interactable_on_exit() -> void:
+func test_unregisters_both_on_exit() -> void:
 	_npc.queue_free()
 	await get_tree().process_frame
 	assert_null(CellRegistry.get_interactable(Vector2i(0, 0)))
+	assert_false(CellRegistry.is_blocked(Vector2i(0, 0)))
