@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="6">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <tileset firstgid="13" source="objects.tsx"/>
  <layer id="1" name="World" width="10" height="10">
@@ -16,15 +16,31 @@
 2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569
 </data>
  </layer>
- <objectgroup id="2" name="Interactions">
-  <object id="1" gid="13" x="48" y="64" width="48" height="16">
-   <properties>
-    <property name="examine_text" value="A cluttered desk covered in papers."/>
-   </properties>
-  </object>
+ <objectgroup id="2" name="Objects">
+  <object id="1" gid="13" x="48" y="64" width="48" height="16"/>
   <object id="2" gid="14" x="112" y="96" width="16" height="24">
    <properties>
     <property name="yarn_node_id" value="iris_intro"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Interactions">
+  <object id="3" type="instance" x="48" y="64" width="16" height="16">
+   <properties>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="res_path" type="file" value="res://scenes/world/ExamineObject.tscn"/>
+   </properties>
+  </object>
+  <object id="4" type="instance" x="64" y="64" width="16" height="16">
+   <properties>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="res_path" type="file" value="res://scenes/world/ExamineObject.tscn"/>
+   </properties>
+  </object>
+  <object id="5" type="instance" x="80" y="64" width="16" height="16">
+   <properties>
+    <property name="examine_text" value="A cluttered desk covered in papers."/>
+    <property name="res_path" type="file" value="res://scenes/world/ExamineObject.tscn"/>
    </properties>
   </object>
  </objectgroup>
