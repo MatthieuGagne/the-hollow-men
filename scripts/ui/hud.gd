@@ -1,50 +1,77 @@
-extends CanvasLayer
+extends Control
 
-# Bar colors per the design spec
-const COLOR_HP_FULL  := Color(0.25, 0.85, 0.35)   # green
-const COLOR_HP_LOW   := Color(0.85, 0.20, 0.20)   # red  (lerped as HP drops)
-const COLOR_PP       := Color(0.55, 0.20, 0.85)   # purple
-const COLOR_ATB      := Color(1.00, 1.00, 1.00)   # white
-const COLOR_LIMIT_BUREAU     := Color(0.55, 0.55, 0.55)   # gray — metered
-const COLOR_LIMIT_JAILBROKEN := Color(1.00, 0.80, 0.10)   # gold  — uncapped
-
-# One entry per party slot (up to 4)
-@export var party_panels: Array[Control] = []
+const PANEL_WIDTH: int = 76
+const COLOR_HP_FULL          := Color(0.25, 0.85, 0.35)
+const COLOR_HP_LOW           := Color(0.85, 0.20, 0.20)
+const COLOR_PP               := Color(0.55, 0.20, 0.85)
+const COLOR_ATB              := Color(1.00, 1.00, 1.00)
+const COLOR_LIMIT_BUREAU     := Color(0.55, 0.55, 0.55)
+const COLOR_LIMIT_JAILBROKEN := Color(1.00, 0.80, 0.10)
 
 var _party: Array[Combatant] = []
+var _panels: Array[Control] = []
 
 
-func bind_party(party: Array[Combatant]) -> void:
+func setup(party: Array[Combatant], battle: Node) -> void:
 	_party = party
+	battle.combatant_updated.connect(_on_combatant_updated)
+	_build_panels()
 
 
-func _process(_delta: float) -> void:
-	for i in mini(_party.size(), party_panels.size()):
-		_update_panel(party_panels[i], _party[i])
+func _build_panels() -> void:
+	var container: HBoxContainer = $PartyPanel
+	for combatant in _party:
+		var panel := _make_panel(combatant)
+		container.add_child(panel)
+		_panels.append(panel)
+
+
+func _make_panel(combatant: Combatant) -> VBoxContainer:
+	var panel := VBoxContainer.new()
+	panel.name = combatant.character_name + "Panel"
+	panel.custom_minimum_size = Vector2(PANEL_WIDTH, 0)
+
+	var name_label := Label.new()
+	name_label.name = "NameLabel"
+	name_label.text = combatant.character_name
+	panel.add_child(name_label)
+
+	for bar_name: String in ["HPBar", "PPBar", "ATBBar", "LimitBar"]:
+		var bar := ProgressBar.new()
+		bar.name = bar_name
+		bar.max_value = 100.0
+		bar.value = 100.0
+		bar.show_percentage = false
+		panel.add_child(bar)
+
+	return panel
+
+
+func _on_combatant_updated(combatant: Combatant) -> void:
+	var i := _party.find(combatant)
+	if i < 0 or i >= _panels.size():
+		return
+	_update_panel(_panels[i], combatant)
 
 
 func _update_panel(panel: Control, combatant: Combatant) -> void:
-	var hp_bar: ProgressBar  = panel.get_node("HPBar")
-	var pp_bar: ProgressBar  = panel.get_node("PPBar")
-	var atb_bar: ProgressBar = panel.get_node("ATBBar")
+	var hp_bar: ProgressBar    = panel.get_node("HPBar")
+	var pp_bar: ProgressBar    = panel.get_node("PPBar")
+	var atb_bar: ProgressBar   = panel.get_node("ATBBar")
 	var limit_bar: ProgressBar = panel.get_node("LimitBar")
-	var name_label: Label    = panel.get_node("NameLabel")
+	var name_label: Label      = panel.get_node("NameLabel")
 
 	name_label.text = combatant.character_name
 
-	# HP — lerp color green → red as HP falls
 	hp_bar.value = combatant.hp_ratio() * 100.0
 	hp_bar.modulate = COLOR_HP_FULL.lerp(COLOR_HP_LOW, 1.0 - combatant.hp_ratio())
 
-	# PP — always purple
 	pp_bar.value = combatant.pp_ratio() * 100.0
 	pp_bar.modulate = COLOR_PP
 
-	# ATB — white fill
 	atb_bar.value = combatant.atb_ratio() * 100.0
 	atb_bar.modulate = COLOR_ATB
 
-	# Limit — gray if Bureau, gold if Jailbroken; max value reflects the cap
 	limit_bar.max_value = combatant.limit_cap()
 	limit_bar.value = combatant.limit_gauge
 	match combatant.sigil_type:
@@ -55,6 +82,5 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 		_:
 			limit_bar.modulate = COLOR_ATB
 
-	# Pulse name label when ATB is full and awaiting input
 	name_label.modulate.a = 1.0 if not combatant.atb_full() else \
 		(0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.006))
