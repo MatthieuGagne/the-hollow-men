@@ -32,11 +32,54 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 - TDD for all GDScript logic: write failing GUT test first
 - Run GUT: `godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - PR-only integration — never merge locally to master
-- See skills: writing-plans, executing-plans, finishing-a-development-branch
+
+### Worktree Init Troubleshooting
+
+| Missing | Why | Fix |
+|---|---|---|
+| `.godot/` import cache | Generated at runtime, gitignored | Created automatically on first headless import |
+| `assets/tilesets/placeholder.png` | Build artifact, gitignored | Copied from main repo by `make worktree-init` |
+
+If map still renders empty after init, the TMX cache may be stale — delete and reimport:
+```bash
+rm .godot/imported/room_poc.tmx-*.{md5,tscn}
+DISPLAY=:0 godot --headless --editor --quit --path .
+```
+
+## Feature Lifecycle
+
+```
+idea → brainstorm → PRD (GitHub issue) → plan → worktree → implement → finish → PR → merge → cleanup
+```
+
+1. `/brainstorming` — explore the idea
+2. `/prd` — write a GitHub issue spec
+3. `/writing-plans` — turn spec into step-by-step tasks
+4. Create worktree: `git worktree add /home/mathdaman/code/worktrees/<branch> -b <branch>` then `make worktree-init`
+5. `/executing-plans` — implement with checkpoints
+6. `/finishing-a-development-branch` — tests, smoketest, PR, cleanup
+
+## Running the Game
+
+Use `/run` — handles worktree detection, pre-flight init check, killing stale Godot instances, and launch.
 
 ## Skills & Agents
-**Skills:** brainstorming, prd, writing-plans, executing-plans, finishing-a-development-branch, run, tiled-map, story-lore
-**Agents:** godot-expert (GDScript TDD), yarnspinner (global — dialogue scripting)
+
+| Skill | When to use |
+|---|---|
+| `brainstorming` | Exploring an idea before writing a spec |
+| `prd` | Writing a feature spec as a GitHub issue |
+| `writing-plans` | Turning a spec into implementation steps |
+| `executing-plans` | Working through a plan with checkpoints |
+| `finishing-a-development-branch` | Tests, smoketest, PR, cleanup |
+| `run` | Launching the game or editor |
+| `tiled-map` | Map pipeline: creating/editing TMX/TSX, debugging imports |
+| `story-lore` | Writing narrative, dialogue, lore, flavor text |
+
+| Agent | When to use |
+|---|---|
+| `godot-expert` | GDScript implementation and TDD with GUT |
+| `yarnspinner` | Dialogue scripting and YarnSpinner integration |
 
 ## Key Conventions
 - Signal-driven UI: UI connects to autoload signals, never polls
