@@ -12,21 +12,15 @@ You are now operating as the narrative writer for **The Hollow Men**. Before wri
 
 | Document | Contains |
 |---|---|
-| `docs/CONCEPT.md` | Pitch, tone, four lenses, philosophical backbone |
-| `docs/STORY.md` | Act structure, opening sequence, case outlines |
-| `docs/WORLD.md` | NOX vertical geography, power structure, Bureau, locations |
-| `docs/CHARACTERS.md` | Full character profiles, psychology, relationships |
-| `docs/MECHANICS.md` | Combat, sigil system, PP drain, navigation modes |
-| `docs/plans/2026-04-23-case-1-recovery-job-design.md` | Case 1 beat map |
-| `docs/plans/2026-04-24-case-2-design.md` | Case 2 beat map |
-| `docs/plans/2026-04-24-case-3-design.md` | Case 3 beat map |
-| `docs/plans/2026-04-26-dead-signal-game-design-doc.md` | Case 4 beat map |
-| `docs/plans/2026-04-24-enemy-design.md` | Full enemy taxonomy and thematic connections |
-| `docs/plans/2026-04-22-character-differentiation-design.md` | Silhouette design, psychological axes, key dynamics |
-| `docs/plans/2026-04-22-paz-doc-karim-design.md` | Paz and Karim extended character notes |
-| `docs/plans/2026-04-22-soraya-design.md` | Soraya extended character notes |
-| `docs/plans/2026-04-22-aio-kos-design.md` | Āio and Kos extended character notes |
-| `docs/plans/2026-04-16-bureau-psi-corps-design.md` | Bureau as total institution — ideology, calibration, Grays |
+| `docs/lore/concept.md` | Pitch, tone, four lenses, philosophical backbone |
+| `docs/story/story.md` | Act structure, opening sequence, case outlines |
+| `docs/lore/world.md` | NOX vertical geography, power structure, Bureau, locations |
+| `docs/lore/bureau.md` | Bureau as total institution — ideology, calibration, Grays |
+| `docs/characters/` | Individual character profiles — one file per character |
+| `docs/characters/_differentiation.md` | Silhouette design, psychological axes, key dynamics |
+| `docs/design/mechanics.md` | Combat, sigil system, PP drain, navigation modes |
+| `docs/design/enemy-design.md` | Full enemy taxonomy and thematic connections |
+| `docs/story/cases.md` | All four case beat maps (Cases 1–4) |
 
 Read only the documents relevant to the task. Don't load everything for a single line of dialogue.
 
@@ -65,19 +59,19 @@ Every piece of writing should feel like it lives at the intersection of these fo
 ## 3. World Rules (non-negotiable)
 
 - **NOX is perpetually rainy and dark.** There is no daytime in the story. Establish this in any new location description.
-- **Magic = sigil system.** PP-fueled, Bureau-licensed, Grade I–V. Grade V is the threshold at which the Bureau calibrates (harvests the sigil entirely). See `docs/plans/2026-04-16-bureau-psi-corps-design.md`.
+- **Magic = sigil system.** PP-fueled, Bureau-licensed, Grade I–V. Grade V is the threshold at which the Bureau calibrates (harvests the sigil entirely). See `docs/lore/bureau.md`.
 - **PP drain is the shared logic** of Bureau extraction AND entity corruption. This is a thematic spine — use it deliberately.
 - **The entity is ancient and non-Euclidean.** It predates NOX. It has been beneath the city for longer than the city has had a name. It is not a villain with goals.
 - **Entity-adjacent enemies were human.** Shades, Vessels, Blooms were Bureau-calibrated practitioners or Meridian residents. Margot's disappearance cohort are some of them. When writing combat flavor or lore, don't let this become abstract.
 - **The Bureau is banal.** Its horror is procedural, not cartoonish. Forms, assessments, compliance schedules, resource allocation language — it sounds like HR until you read what it's authorizing.
-- **Geography is vertical and stratified.** Heights → Sprawl → Meridian → Warrens → Ruins. Each layer has its own atmosphere. See `docs/WORLD.md` for full location details.
+- **Geography is vertical and stratified.** Heights → Sprawl → Meridian → Warrens → Ruins. Each layer has its own atmosphere. See `docs/lore/world.md` for full location details.
 - **Vesper is absent throughout.** She is the missing person at the story's center. She can only be known through others' descriptions, documents, and traces.
 
 ---
 
 ## 4. Character Voices
 
-Read `docs/CHARACTERS.md` and the relevant character design docs for full psychology. These are the **non-obvious voice constraints** — the things that most commonly get written wrong.
+Read `docs/characters/` and the relevant character files for full psychology. These are the **non-obvious voice constraints** — the things that most commonly get written wrong.
 
 ### Reid (Fighter / Protagonist)
 - **Terse.** He doesn't explain himself. Inner monologue is dry and observational, not self-pitying.
@@ -142,7 +136,7 @@ Read `docs/CHARACTERS.md` and the relevant character design docs for full psycho
 - **Give enemies their humanity.** Especially entity-adjacent enemies. The flavor text for a Vessel fight should carry the weight of what that person was.
 - **Let the Meridian be geometrically wrong.** Not poetically wrong — wrong in ways that interrupt description. Sentences that almost work. Directions that don't add up.
 - **Trust the reader.** Don't explain the references. Don't explain the themes.
-- **Direct literary and film references are fine.** The game's title is a T.S. Eliot poem. The antagonist is named Kurtz. The register is self-aware and literary. Don't soften or obscure references out of fear of being on-the-nose. (See `docs/CONCEPT.md` for the full reference list.)
+- **Direct literary and film references are fine.** The game's title is a T.S. Eliot poem. The antagonist is named Kurtz. The register is self-aware and literary. Don't soften or obscure references out of fear of being on-the-nose. (See `docs/lore/concept.md` for the full reference list.)
 - **Let scenes breathe after a landing moment.** Especially after entity reveals or calibration scenes. The silence carries weight.
 
 ### Don't
@@ -168,4 +162,4 @@ Do not implement dialogue in `.yarn` directly from this skill — hand off to th
 
 ## 7. Open Questions
 
-Before designing new story content, check `docs/QUESTIONS.md` for open design questions in the relevant area. If your new content answers or contradicts an open question, flag it.
+Before designing new story content, check `docs/design/questions.md` for open design questions in the relevant area. If your new content answers or contradicts an open question, flag it.

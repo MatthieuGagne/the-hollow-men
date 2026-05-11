@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="7">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <tileset firstgid="13" source="objects.tsx"/>
  <layer id="1" name="World" width="10" height="10">
@@ -41,6 +41,12 @@
    <properties>
     <property name="examine_text" value="A cluttered desk covered in papers."/>
     <property name="res_path" type="file" value="res://scenes/world/ExamineObject.tscn"/>
+   </properties>
+  </object>
+  <object id="6" type="instance" x="112" y="96" width="16" height="16">
+   <properties>
+    <property name="yarn_node_id" value="iris_intro"/>
+    <property name="res_path" type="file" value="res://scenes/world/NPC.tscn"/>
    </properties>
   </object>
  </objectgroup>

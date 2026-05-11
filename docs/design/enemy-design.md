@@ -1,6 +1,5 @@
-# Enemy Design — Overview
+# Enemy Design
 
-**Session date:** 2026-04-24
 **Scope:** All enemy archetypes for Act 1. Appearance, stat profile (qualitative), and signature actions per entry. Numerical balance and deep-dive mechanics are deferred to implementation sessions.
 
 ---
@@ -353,7 +352,7 @@ Full creature bosses. Alien and deeply wrong — but readable as creatures. Stro
 - Numerical stat balancing for all entries — separate implementation session
 - Specific ability costs (PP spend, ATB weight) — separate implementation session
 - Kurtz recognition scene: mechanical beat coinciding with narrative moment — story/dialogue design session
-- Margot recognizes a disappearance cohort member in a Vessel's face — story/dialogue design session (see memory)
+- Margot recognizes a disappearance cohort member in a Vessel's face — story/dialogue design session
 - Additional entity-adjacent enemy variants if Act 1 encounter density requires them
 - Megacorp boss (corp division head) — not designed this session; placeholder for corp-heavy missions
 - Entity boss for Acts 2–3 beyond the Wound-Feeder — TBD in later design sessions

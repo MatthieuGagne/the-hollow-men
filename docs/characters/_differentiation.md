@@ -1,10 +1,9 @@
-# Character Differentiation Design
+# Character Differentiation
 
-**Session date:** 2026-04-22
 **Scope:** Reid, Iris, Margot, Gideon, Crane, Vesper
 **Axes:** Physical (appearance, clothing, 16-bit silhouette), Psychological (wound, coping, blind spot), Naming
 
-Additional inspirations confirmed this session: Twin Peaks, Control, Brazil, Akira, True Detective S1, N.K. Jemisin (Broken Earth), Walter Mosley, Kafka. See CONCEPT.md for full reference list.
+Additional inspirations confirmed this session: Twin Peaks, Control, Brazil, Akira, True Detective S1, N.K. Jemisin (Broken Earth), Walter Mosley, Kafka. See `docs/lore/concept.md` for full reference list.
 
 ---
 
