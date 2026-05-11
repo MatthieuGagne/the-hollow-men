@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+
+[resource]
+script = ExtResource("1_combatant")
+character_name = "Reid"
+is_player_controlled = true
+max_hp = 350
+max_pp = 20
+str_stat = 45
+def_stat = 30
+psy_stat = 15
+res_stat = 25
+spd_stat = 30
+sigil_type = 0
