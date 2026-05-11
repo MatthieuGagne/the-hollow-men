@@ -39,6 +39,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 |---|---|---|
 | `.godot/` import cache | Generated at runtime, gitignored | Created automatically on first headless import |
 | `assets/tilesets/placeholder.png` | Build artifact, gitignored | Copied from main repo by `make worktree-init` |
+| `iris.yarnproject` fails to import | C# YarnSpinner importer not compiled yet | Run `dotnet build` before `make import` |
 
 If map still renders empty after init, the TMX cache may be stale — delete and reimport:
 ```bash

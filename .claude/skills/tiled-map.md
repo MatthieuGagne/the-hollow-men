@@ -486,6 +486,7 @@ Saving tileset returned error 7
 | Godot freezes during import | Multiple `.tmx` files with "Use multiple threads" enabled | Disable "Use multiple threads" in Project Settings → Advanced → Editor → Import |
 | Scene tree has wrong structure (single layer but expecting Node2D wrapper) | TMX had only 1 child after cleanup — YATI skips wrapping Node2D | Either add a second layer (even empty) or update your scene references |
 | TSX image not found error | `<image source>` accidentally written as absolute or `res://` path | Rewrite as a relative path from the TSX file's directory |
+| NPC sprite visible but interact does nothing | NPC properties (e.g. `yarn_node_id`) placed on a tile object (gid) in the Objects layer — tile objects are visual only; YATI never reads their custom properties into script | Add a second `type="instance"` object in the Interactions layer at the same cell with `res_path` pointing to `NPC.tscn` and the actual custom properties there |
 
 ### YATI warning/error messages reference
 
