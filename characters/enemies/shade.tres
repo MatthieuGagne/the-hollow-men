@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+
+[resource]
+script = ExtResource("1_combatant")
+character_name = "Shade"
+is_player_controlled = false
+max_hp = 200
+max_pp = 0
+str_stat = 28
+def_stat = 15
+psy_stat = 10
+res_stat = 10
+spd_stat = 25
+sigil_type = 0

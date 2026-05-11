@@ -36,6 +36,13 @@ func _init() -> void:
 	current_pp = max_pp
 
 
+func reset_runtime_state() -> void:
+	current_hp = max_hp
+	current_pp = max_pp
+	atb = 0.0
+	limit_gauge = 0.0
+
+
 func tick_atb(delta: float) -> void:
 	if is_dead():
 		return
