@@ -113,9 +113,25 @@ Medium brown skin — Crane's daughter, the heritage visible but sitting differe
 **Won't examine:** N/A. She found the truth. That's the problem.
 **Note:** Two presences, one face. Every scene with Vesper is a question of which one is speaking.
 
+### Battle Mechanics
+
+Vesper occupies a single party slot shared with the being — the sprite changes to show which is acting.
+
+**Alternating turns:** Vesper and the being take turns 1-1. Vesper's actions spend PP; the being's turns are PP-free. The being acts on its own register at no cost to Vesper. The being is trying to keep her alive.
+
+- **Vesper's role:** Control/utility — slowing enemies, disrupting entity-adjacent foes, protecting ally PP.
+- **The being's role:** Damage — no PP cost, no tether to Vesper's resource.
+
+**Transformation:** When Vesper's PP bottoms out, she transforms into the entity. The player retains control but the command set changes — the entity's powers are stronger. PP does not regenerate in entity mode. When the entity burns through the remaining PP, Vesper snaps back empty: no abilities available until PP is restored. The resource and the horror are the same thing.
+
+**Entity mode abilities:** PP drain from allies. The entity feeds the way the Bureau feeds. The parallel is mechanical, not metaphorical.
+
+**Sigil:** Vesper joins sigil-less — the Bureau revoked her anchor when she went dark. Revoking the anchor also removed the licensed tithe mechanism and partially opened the door for the entity. Her arc is forging a jailbroken sigil on her own terms.
+
 ### TBD
-- Party Summoner arc
-- Vesper's being's appearance and register
+- Party Summoner arc (join timing, arc resolution)
+- The being's appearance and register
+- Limit break (sigil arc endpoint)
 
 ---
 

@@ -126,6 +126,31 @@ Pure single-target damage dealer. Crit stat: STR (or SPD if higher).
 | **Brutal Strike** | High | Single target, maximum STR multiplier | TBD |
 | **TBD** | TBD | Bonus damage against specific enemy state | TBD |
 
+### Vesper — Summoner
+
+Single party slot shared between Vesper and the being. Turns alternate 1-1; the sprite changes to show which is acting.
+
+**Vesper's turns (PP cost):** Control/utility. Her actions spend her own PP — the power was always hers, never the being's. Spending it moves her toward transformation.
+
+**The being's turns (PP-free):** Damage. Acts on its own register at no cost to Vesper's pool. The being is trying to keep her alive.
+
+**Transformation — entity mode:** When PP bottoms out, Vesper becomes the entity. Player retains control; command set changes to the entity's abilities.
+
+| State | PP cost | Role |
+|-------|---------|------|
+| Vesper | Spends PP | Control/utility |
+| The being | Free | Damage |
+| Entity (PP = 0) | Drains remaining PP | PP drain from allies |
+
+**Entity mode rules:**
+- PP does not regenerate while in entity mode
+- When entity burns the last PP, Vesper snaps back with empty PP — no abilities until restored
+- Entity abilities: PP drain from allies (the entity feeds the way the Bureau feeds)
+
+**Sigil:** Vesper joins sigil-less. Bureau revoked her anchor when she went dark; her arc is forging a jailbroken sigil on her own terms. Limit break TBD.
+
+---
+
 ### Mara — Thief (high PSY)
 Hybrid: fast physical hits that apply psychic marks on contact. Crit stat: SPD (abilities crit off PSY).
 
@@ -145,7 +170,7 @@ Entity-type enemies deal **PP damage** (Psychic Drain) instead of HP damage. No 
 Running low on PP:
 - Abilities go dark — only basic attacks available
 - Limit break gauge is unreachable without PP to fuel it
-- The Summoner's being destabilizes — summon commands go offline
+- For Vesper: low PP means proximity to transformation — the entity is close
 
 Recovery items are split:
 
