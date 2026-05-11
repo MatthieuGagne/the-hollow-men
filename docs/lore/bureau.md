@@ -1,5 +1,4 @@
-# The Bureau as Total Institution
-### Design Document — 2026-04-16
+# The Bureau
 
 Inspired by the Babylon 5 Psi-Corps, filtered through the world's noir/cyberpunk/Lovecraftian DNA. The Bureau doesn't feel like the Psi-Corps — it feels like what would grow in *this* soil. Corporate-regulatory, not military. The indoctrination is professional formation, not chanting. The mechanisms route through sigils and ley architecture. The ideology is embedded in career structure, not cult.
 
