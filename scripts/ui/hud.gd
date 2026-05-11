@@ -15,14 +15,20 @@ var _party: Array[Combatant] = []
 var _panels: Array[Control] = []
 
 
-func setup(party: Array[Combatant], battle: Node) -> void:
+func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> void:
 	_party = party
 	battle.combatant_updated.connect(_on_combatant_updated)
+	_build_enemy_label(enemies)
 	_build_panels()
 
 
+func _build_enemy_label(enemies: Array[Combatant]) -> void:
+	var label: Label = $EnemyWindow/EnemyLabel
+	label.text = "\n".join(enemies.map(func(e): return e.character_name))
+
+
 func _build_panels() -> void:
-	var container: VBoxContainer = $PartyPanel
+	var container: VBoxContainer = $PartyWindow/PartyRows
 	for combatant in _party:
 		var panel := _make_panel(combatant)
 		container.add_child(panel)
