@@ -1,12 +1,15 @@
 extends Control
 
-const PANEL_WIDTH: int = 76
 const COLOR_HP_FULL          := Color(0.25, 0.85, 0.35)
 const COLOR_HP_LOW           := Color(0.85, 0.20, 0.20)
 const COLOR_PP               := Color(0.55, 0.20, 0.85)
 const COLOR_ATB              := Color(1.00, 1.00, 1.00)
 const COLOR_LIMIT_BUREAU     := Color(0.55, 0.55, 0.55)
 const COLOR_LIMIT_JAILBROKEN := Color(1.00, 0.80, 0.10)
+
+const NAME_MIN_WIDTH: int = 36
+const STAT_NUM_WIDTH: int = 26
+const ATB_MIN_WIDTH: int  = 44
 
 var _party: Array[Combatant] = []
 var _panels: Array[Control] = []
@@ -19,32 +22,49 @@ func setup(party: Array[Combatant], battle: Node) -> void:
 
 
 func _build_panels() -> void:
-	var container: HBoxContainer = $PartyPanel
+	var container: VBoxContainer = $PartyPanel
 	for combatant in _party:
 		var panel := _make_panel(combatant)
 		container.add_child(panel)
 		_panels.append(panel)
 
 
-func _make_panel(combatant: Combatant) -> VBoxContainer:
-	var panel := VBoxContainer.new()
-	panel.name = combatant.character_name + "Panel"
-	panel.custom_minimum_size = Vector2(PANEL_WIDTH, 0)
+func _make_panel(combatant: Combatant) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = combatant.character_name + "Panel"
+	row.add_theme_constant_override("separation", 3)
 
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
-	name_label.text = combatant.character_name
-	panel.add_child(name_label)
+	name_label.text = combatant.character_name.to_upper()
+	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	row.add_child(name_label)
 
-	for bar_name: String in ["HPBar", "PPBar", "ATBBar", "LimitBar"]:
-		var bar := ProgressBar.new()
-		bar.name = bar_name
-		bar.max_value = 100.0
-		bar.value = 100.0
-		bar.show_percentage = false
-		panel.add_child(bar)
+	var hp_label := Label.new()
+	hp_label.name = "HPLabel"
+	hp_label.text = str(combatant.max_hp)
+	hp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
+	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	row.add_child(hp_label)
 
-	return panel
+	var pp_label := Label.new()
+	pp_label.name = "PPLabel"
+	pp_label.text = str(combatant.max_pp)
+	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
+	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	pp_label.modulate = COLOR_PP
+	row.add_child(pp_label)
+
+	var atb_bar := ProgressBar.new()
+	atb_bar.name = "ATBBar"
+	atb_bar.max_value = 100.0
+	atb_bar.value = 0.0
+	atb_bar.show_percentage = false
+	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 6)
+	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(atb_bar)
+
+	return row
 
 
 func _on_combatant_updated(combatant: Combatant) -> void:
@@ -55,32 +75,20 @@ func _on_combatant_updated(combatant: Combatant) -> void:
 
 
 func _update_panel(panel: Control, combatant: Combatant) -> void:
-	var hp_bar: ProgressBar    = panel.get_node("HPBar")
-	var pp_bar: ProgressBar    = panel.get_node("PPBar")
-	var atb_bar: ProgressBar   = panel.get_node("ATBBar")
-	var limit_bar: ProgressBar = panel.get_node("LimitBar")
-	var name_label: Label      = panel.get_node("NameLabel")
+	var name_label: Label    = panel.get_node("NameLabel")
+	var hp_label: Label      = panel.get_node("HPLabel")
+	var pp_label: Label      = panel.get_node("PPLabel")
+	var atb_bar: ProgressBar = panel.get_node("ATBBar")
 
-	name_label.text = combatant.character_name
+	name_label.text = combatant.character_name.to_upper()
+	name_label.modulate.a = 1.0 if not combatant.atb_full() else \
+		(0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.006))
 
-	hp_bar.value = combatant.hp_ratio() * 100.0
-	hp_bar.modulate = COLOR_HP_FULL.lerp(COLOR_HP_LOW, 1.0 - combatant.hp_ratio())
+	hp_label.text = str(combatant.current_hp)
+	hp_label.modulate = COLOR_HP_FULL.lerp(COLOR_HP_LOW, 1.0 - combatant.hp_ratio())
 
-	pp_bar.value = combatant.pp_ratio() * 100.0
-	pp_bar.modulate = COLOR_PP
+	pp_label.text = str(combatant.current_pp)
+	pp_label.modulate = COLOR_PP
 
 	atb_bar.value = combatant.atb_ratio() * 100.0
 	atb_bar.modulate = COLOR_ATB
-
-	limit_bar.max_value = combatant.limit_cap()
-	limit_bar.value = combatant.limit_gauge
-	match combatant.sigil_type:
-		Combatant.SigilType.BUREAU:
-			limit_bar.modulate = COLOR_LIMIT_BUREAU
-		Combatant.SigilType.JAILBROKEN:
-			limit_bar.modulate = COLOR_LIMIT_JAILBROKEN
-		_:
-			limit_bar.modulate = COLOR_ATB
-
-	name_label.modulate.a = 1.0 if not combatant.atb_full() else \
-		(0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.006))

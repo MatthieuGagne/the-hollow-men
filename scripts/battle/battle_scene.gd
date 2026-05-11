@@ -37,12 +37,16 @@ func _ready() -> void:
 func _setup_sprites() -> void:
 	var reid_sprite := Sprite2D.new()
 	reid_sprite.texture = load(REID_TEX)
+	reid_sprite.vframes = 6
+	reid_sprite.frame = 0
 	reid_sprite.flip_h = true
 	reid_sprite.position = Vector2(0, -16)
 	$PartyContainer.add_child(reid_sprite)
 
 	var iris_sprite := Sprite2D.new()
 	iris_sprite.texture = load(IRIS_TEX)
+	iris_sprite.vframes = 6
+	iris_sprite.frame = 0
 	iris_sprite.flip_h = true
 	iris_sprite.position = Vector2(0, 16)
 	$PartyContainer.add_child(iris_sprite)
@@ -55,7 +59,7 @@ func _setup_sprites() -> void:
 
 	var shade_label := Label.new()
 	shade_label.text = "Shade"
-	shade_label.position = Vector2(-16, 18)
+	shade_label.position = Vector2(-16, -12)
 	$EnemyContainer.add_child(shade_label)
 
 

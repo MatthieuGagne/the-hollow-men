@@ -25,14 +25,13 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="PartyPanel" type="HBoxContainer" parent="UI/HUD"]
+[node name="PartyPanel" type="VBoxContainer" parent="UI/HUD"]
 layout_mode = 1
-anchors_preset = 12
-anchor_left = 0.0
+anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -72.0
+offset_top = -44.0
 
 [node name="FlashOverlay" type="ColorRect" parent="UI"]
 layout_mode = 3
