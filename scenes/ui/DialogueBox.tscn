@@ -1,23 +1,7 @@
-[gd_scene format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="1_script"]
-[ext_resource type="FontFile" path="res://assets/fonts/Monocraft.ttc" id="2_font"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_box"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
+[ext_resource type="Theme" path="res://assets/themes/nox_window.tres" id="2_theme"]
 
 [node name="DialogueBox" type="Panel"]
 script = ExtResource("1_script")
@@ -28,7 +12,7 @@ anchor_bottom = 1.0
 offset_top = -80
 offset_bottom = 0
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_box")
+theme = ExtResource("2_theme")
 
 [node name="SpeakerLabel" type="Label" parent="."]
 layout_mode = 1
@@ -38,9 +22,6 @@ offset_top = 6.0
 offset_right = -10.0
 offset_bottom = 20.0
 text = ""
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 8
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -52,9 +33,6 @@ offset_right = -10.0
 offset_bottom = -8.0
 text = ""
 autowrap_mode = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 8
 
 [node name="ChoiceList" type="VBoxContainer" parent="."]
 visible = false
