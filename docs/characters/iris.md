@@ -1,4 +1,4 @@
-# Iris
+# Iris — Grey-Market Fixer
 
 **Class:** Thief (high PSY)
 **Bureau status:** Never registered
