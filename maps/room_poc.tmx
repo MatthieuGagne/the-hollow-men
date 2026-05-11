@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="15" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
  <tileset firstgid="1" source="placeholder.tsx"/>
- <tileset firstgid="11" source="objects.tsx"/>
- <layer id="1" name="World" width="15" height="11">
+ <tileset firstgid="13" source="objects.tsx"/>
+ <layer id="1" name="World" width="10" height="10">
   <data encoding="csv">
-2147483656,10,2,3,4,4,5,10,10,2,3,4,5,10,8,
-2147483656,7,9,7,7,7,7,7,7,9,7,7,7,7,8,
-2147483656,6,6,6,6,1,6,6,6,6,3221225473,6,6,1,8,
-2147483656,6,1,6,6,6,6,6,6,2147483649,6,6,6,6,8,
-2147483656,2147483649,6,6,6,6,6,6,6,6,6,1,6,6,8,
-2147483656,6,6,1073741825,6,6,6,6,6,3221225473,6,6,6,6,8,
-2147483656,6,1,6,6,6,6,6,6,6,6,6,6,6,8,
-2147483656,6,6,6,6,2147483649,6,2147483649,6,1,6,6,6,6,8,
-2147483656,6,6,6,6,1,6,1,6,6,6,1,6,2147483649,8,
-2147483656,6,6,6,3221225473,6,6,6,6,6,1073741825,6,6,6,8,
-2147483656,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,1610612744,8
-  </data>
+2147483657,11,6,3,4,4,5,2,6,9,
+2147483657,12,8,8,8,12,8,10,12,9,
+2147483657,2147483649,7,7,7,7,2147483649,7,7,9,
+2147483657,7,1,7,1073741825,7,7,7,7,9,
+2147483657,7,7,7,7,7,1073741825,7,7,9,
+2147483657,1073741825,7,7,7,7,7,7,7,9,
+2147483657,7,7,7,7,1,7,7,7,9,
+2147483657,7,7,7,7,7,7,7,7,9,
+3221225481,7,7,7,7,7,7,7,7,9,
+2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569,2684354569
+</data>
  </layer>
  <objectgroup id="2" name="Interactions">
-  <object id="1" gid="11" x="80" y="64" width="48" height="16">
+  <object id="1" gid="13" x="48" y="64" width="48" height="16">
    <properties>
     <property name="examine_text" value="A cluttered desk covered in papers."/>
    </properties>
   </object>
-  <object id="2" gid="12" x="192" y="128" width="16" height="24">
+  <object id="2" gid="14" x="112" y="96" width="16" height="24">
    <properties>
     <property name="yarn_node_id" value="iris_intro"/>
    </properties>
