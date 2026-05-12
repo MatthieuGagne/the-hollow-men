@@ -31,32 +31,41 @@ theme = ExtResource("3_theme")
 layout_mode = 1
 anchor_left = 0.0
 anchor_top = 1.0
-anchor_right = 0.38
+anchor_right = 0.375
 anchor_bottom = 1.0
-offset_top = -32.0
+offset_top = -76.0
 
 [node name="EnemyLabel" type="Label" parent="UI/HUD/EnemyWindow"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
 text = ""
 horizontal_alignment = 0
 
 [node name="PartyWindow" type="Panel" parent="UI/HUD"]
 theme = ExtResource("3_theme")
 layout_mode = 1
-anchor_left = 0.4
+anchor_left = 0.375
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -56.0
+offset_top = -76.0
 
 [node name="PartyRows" type="VBoxContainer" parent="UI/HUD/PartyWindow"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+theme_override_constants/separation = 1
 
 [node name="FlashOverlay" type="ColorRect" parent="UI"]
 layout_mode = 3
