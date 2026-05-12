@@ -24,6 +24,7 @@ var _active: Combatant = null
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
+@onready var _victory_label: Label = $UI/VictoryLabel
 
 
 func _ready() -> void:
@@ -42,6 +43,7 @@ func _ready() -> void:
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
+	battle_ended.connect(_on_battle_ended)
 
 
 func _setup_sprites() -> void:
@@ -146,3 +148,8 @@ func _spawn_damage_number(amount: int) -> void:
 		DAMAGE_NUMBER_SPAWN_OFFSET.y - DAMAGE_NUMBER_FLOAT_DIST, DAMAGE_NUMBER_DURATION)
 	tween.tween_property(label, "modulate:a", 0.0, DAMAGE_NUMBER_DURATION)
 	tween.finished.connect(label.queue_free)
+
+
+func _on_battle_ended(victory: bool) -> void:
+	if victory:
+		_victory_label.show()
