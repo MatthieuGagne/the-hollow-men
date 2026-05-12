@@ -1,3 +1,4 @@
+class_name ActionMenu
 extends Control
 
 signal action_selected(action_name: String)
