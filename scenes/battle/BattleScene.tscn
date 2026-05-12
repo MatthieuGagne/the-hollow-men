@@ -34,7 +34,7 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 0.375
 anchor_bottom = 1.0
-offset_top = -56.0
+offset_top = -40.0
 
 [node name="EnemyLabel" type="Label" parent="UI/HUD/EnemyWindow"]
 layout_mode = 1
@@ -58,7 +58,7 @@ anchor_left = 0.375
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -56.0
+offset_top = -40.0
 
 [node name="PartyRows" type="VBoxContainer" parent="UI/HUD/PartyWindow"]
 layout_mode = 1
