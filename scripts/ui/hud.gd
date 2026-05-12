@@ -49,6 +49,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	name_label.name = "NameLabel"
 	name_label.text = combatant.character_name.to_upper()
 	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	name_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(name_label)
 
 	var hp_label := Label.new()
@@ -56,6 +57,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	hp_label.text = str(combatant.max_hp)
 	hp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	hp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(hp_label)
 
 	var pp_label := Label.new()
@@ -64,6 +66,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	pp_label.modulate = COLOR_PP
+	pp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(pp_label)
 
 	var atb_bar := ProgressBar.new()
@@ -89,6 +92,7 @@ func _make_placeholder_panel() -> HBoxContainer:
 	name_label.name = "NameLabel"
 	name_label.text = "---"
 	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	name_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(name_label)
 
 	var hp_label := Label.new()
@@ -96,6 +100,7 @@ func _make_placeholder_panel() -> HBoxContainer:
 	hp_label.text = "0"
 	hp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	hp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(hp_label)
 
 	var pp_label := Label.new()
@@ -104,6 +109,7 @@ func _make_placeholder_panel() -> HBoxContainer:
 	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	pp_label.modulate = COLOR_PP
+	pp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(pp_label)
 
 	var atb_bar := ProgressBar.new()

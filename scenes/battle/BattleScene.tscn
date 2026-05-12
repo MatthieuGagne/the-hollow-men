@@ -65,7 +65,7 @@ offset_left = 6.0
 offset_top = 6.0
 offset_right = -6.0
 offset_bottom = -6.0
-theme_override_constants/separation = 1
+theme_override_constants/separation = 0
 
 [node name="FlashOverlay" type="ColorRect" parent="UI"]
 layout_mode = 3
