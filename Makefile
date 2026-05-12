@@ -22,5 +22,7 @@ import:
 # Deletes stale TMX import cache so the map reimports with the correct tileset PNG.
 worktree-init:
 	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
+	cp $(MAIN_REPO)/dialogue/*.import dialogue/
+	cp $(MAIN_REPO)/.godot/imported/iris.yarnproject-* .godot/imported/
 	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
 	$(MAKE) assets

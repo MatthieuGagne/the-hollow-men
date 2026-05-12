@@ -12,11 +12,19 @@ const REID_TEX  := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX  := "res://assets/sprites/characters/iris.png"
 const SLOT_POSITIONS: Array[int] = [-50, -25, 0, 25, 50]
 const PLACEHOLDER_MODULATE := Color(0.4, 0.4, 0.4, 0.5)
+const DAMAGE_NUMBER_FONT_SIZE:    int     = 8
+const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
+const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
+const DAMAGE_NUMBER_DURATION:     float   = 1.0
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
+
+@onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
+@onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
+@onready var _victory_label: Label = $UI/VictoryLabel
 
 
 func _ready() -> void:
@@ -34,6 +42,8 @@ func _ready() -> void:
 
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
+	_action_menu.action_selected.connect(execute_action)
+	battle_ended.connect(_on_battle_ended)
 
 
 func _setup_sprites() -> void:
@@ -85,6 +95,8 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
+	_enemy_window.hide()
+	_action_menu.show()
 
 
 func _begin_enemy_turn(combatant: Combatant) -> void:
@@ -93,9 +105,16 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 	_end_turn()
 
 
-func execute_action(action: Dictionary) -> void:
-	_state = BattleState.ANIMATING
+func execute_action(action_name: String) -> void:
+	_action_menu.hide()
+	_enemy_window.show()
+	if action_name == "attack" and not enemies.is_empty():
+		var target: Combatant = enemies[0]
+		var damage: int = Combatant.calculate_damage(_active, target)
+		target.take_damage(damage)
+		_spawn_damage_number(damage)
 	_end_turn()
+	_check_win_loss()
 
 
 func _end_turn() -> void:
@@ -115,3 +134,22 @@ func _check_win_loss() -> void:
 	elif all_party_dead:
 		_state = BattleState.ENDED
 		battle_ended.emit(false)
+
+
+func _spawn_damage_number(amount: int) -> void:
+	var label := Label.new()
+	label.text = str(amount)
+	label.position = DAMAGE_NUMBER_SPAWN_OFFSET
+	label.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
+	$EnemyContainer.add_child(label)
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(label, "position:y",
+		DAMAGE_NUMBER_SPAWN_OFFSET.y - DAMAGE_NUMBER_FLOAT_DIST, DAMAGE_NUMBER_DURATION)
+	tween.tween_property(label, "modulate:a", 0.0, DAMAGE_NUMBER_DURATION)
+	tween.finished.connect(label.queue_free)
+
+
+func _on_battle_ended(victory: bool) -> void:
+	if victory:
+		_victory_label.show()
