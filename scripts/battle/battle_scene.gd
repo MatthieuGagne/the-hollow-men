@@ -10,7 +10,7 @@ const IRIS_RES  := "res://characters/iris.tres"
 const SHADE_RES := "res://characters/enemies/shade.tres"
 const REID_TEX  := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX  := "res://assets/sprites/characters/iris.png"
-const SLOT_POSITIONS: Array[int] = [-64, -32, 0, 32, 64]
+const SLOT_POSITIONS: Array[int] = [-50, -25, 0, 25, 50]
 const PLACEHOLDER_MODULATE := Color(0.4, 0.4, 0.4, 0.5)
 
 var party: Array[Combatant] = []

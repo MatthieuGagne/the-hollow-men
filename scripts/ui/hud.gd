@@ -43,7 +43,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.name = combatant.character_name + "Panel"
 	row.add_theme_constant_override("separation", 3)
-	row.custom_minimum_size = Vector2(0, 12)
+	row.custom_minimum_size = Vector2(0, 8)
 
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
@@ -84,7 +84,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 func _make_placeholder_panel() -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.name = "PlaceholderPanel"
-	row.custom_minimum_size = Vector2(0, 12)
+	row.custom_minimum_size = Vector2(0, 8)
 	row.add_theme_constant_override("separation", 3)
 	row.modulate = Color(0.5, 0.5, 0.5, 0.5)
 
