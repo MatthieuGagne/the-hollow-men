@@ -10,6 +10,8 @@ const IRIS_RES  := "res://characters/iris.tres"
 const SHADE_RES := "res://characters/enemies/shade.tres"
 const REID_TEX  := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX  := "res://assets/sprites/characters/iris.png"
+const SLOT_POSITIONS: Array[int] = [-50, -25, 0, 25, 50]
+const PLACEHOLDER_MODULATE := Color(0.4, 0.4, 0.4, 0.5)
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
@@ -35,21 +37,20 @@ func _ready() -> void:
 
 
 func _setup_sprites() -> void:
-	var reid_sprite := Sprite2D.new()
-	reid_sprite.texture = load(REID_TEX)
-	reid_sprite.vframes = 6
-	reid_sprite.frame = 0
-	reid_sprite.flip_h = true
-	reid_sprite.position = Vector2(0, -16)
-	$PartyContainer.add_child(reid_sprite)
+	var party_textures: Array = [load(REID_TEX), load(IRIS_TEX)]
 
-	var iris_sprite := Sprite2D.new()
-	iris_sprite.texture = load(IRIS_TEX)
-	iris_sprite.vframes = 6
-	iris_sprite.frame = 0
-	iris_sprite.flip_h = true
-	iris_sprite.position = Vector2(0, 16)
-	$PartyContainer.add_child(iris_sprite)
+	for i in range(5):
+		var sprite := Sprite2D.new()
+		sprite.vframes = 6
+		sprite.frame = 0
+		sprite.flip_h = true
+		sprite.position = Vector2(0, SLOT_POSITIONS[i])
+		if i < party_textures.size():
+			sprite.texture = party_textures[i]
+		else:
+			sprite.texture = load(REID_TEX)
+			sprite.modulate = PLACEHOLDER_MODULATE
+		$PartyContainer.add_child(sprite)
 
 	var shade_rect := ColorRect.new()
 	shade_rect.color = Color(0.5, 0.5, 0.5)

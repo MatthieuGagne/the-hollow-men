@@ -29,8 +29,12 @@ func _build_enemy_label(enemies: Array[Combatant]) -> void:
 
 func _build_panels() -> void:
 	var container: VBoxContainer = $PartyWindow/PartyRows
-	for combatant in _party:
-		var panel := _make_panel(combatant)
+	for i in range(5):
+		var panel: Control
+		if i < _party.size():
+			panel = _make_panel(_party[i])
+		else:
+			panel = _make_placeholder_panel()
 		container.add_child(panel)
 		_panels.append(panel)
 
@@ -39,11 +43,13 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.name = combatant.character_name + "Panel"
 	row.add_theme_constant_override("separation", 3)
+	row.custom_minimum_size = Vector2(0, 8)
 
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
 	name_label.text = combatant.character_name.to_upper()
 	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	name_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(name_label)
 
 	var hp_label := Label.new()
@@ -51,6 +57,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	hp_label.text = str(combatant.max_hp)
 	hp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	hp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(hp_label)
 
 	var pp_label := Label.new()
@@ -59,6 +66,50 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	pp_label.modulate = COLOR_PP
+	pp_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(pp_label)
+
+	var atb_bar := ProgressBar.new()
+	atb_bar.name = "ATBBar"
+	atb_bar.max_value = 100.0
+	atb_bar.value = 0.0
+	atb_bar.show_percentage = false
+	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 6)
+	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(atb_bar)
+
+	return row
+
+
+func _make_placeholder_panel() -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = "PlaceholderPanel"
+	row.custom_minimum_size = Vector2(0, 8)
+	row.add_theme_constant_override("separation", 3)
+	row.modulate = Color(0.5, 0.5, 0.5, 0.5)
+
+	var name_label := Label.new()
+	name_label.name = "NameLabel"
+	name_label.text = "---"
+	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	name_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(name_label)
+
+	var hp_label := Label.new()
+	hp_label.name = "HPLabel"
+	hp_label.text = "0"
+	hp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
+	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	hp_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(hp_label)
+
+	var pp_label := Label.new()
+	pp_label.name = "PPLabel"
+	pp_label.text = "0"
+	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
+	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	pp_label.modulate = COLOR_PP
+	pp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(pp_label)
 
 	var atb_bar := ProgressBar.new()
