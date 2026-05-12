@@ -31,7 +31,7 @@ func _ready() -> void:
 	enemies = [shade]
 
 	_setup_sprites()
-	$UI/HUD.setup(party, self)
+	$UI/HUD.setup(party, enemies, self)
 
 
 func _setup_sprites() -> void:
@@ -56,11 +56,6 @@ func _setup_sprites() -> void:
 	shade_rect.size = Vector2(32, 32)
 	shade_rect.position = Vector2(-16, -16)
 	$EnemyContainer.add_child(shade_rect)
-
-	var shade_label := Label.new()
-	shade_label.text = "Shade"
-	shade_label.position = Vector2(-16, -12)
-	$EnemyContainer.add_child(shade_label)
 
 
 func _process(delta: float) -> void:
