@@ -18,7 +18,7 @@ var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 
-@onready var _action_menu: Control = $UI/HUD/ActionMenu
+@onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
 
 
