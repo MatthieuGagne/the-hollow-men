@@ -102,3 +102,7 @@ func atb_ratio() -> float:
 
 func limit_ratio() -> float:
 	return limit_gauge / limit_cap()
+
+
+static func calculate_damage(attacker: Combatant, target: Combatant) -> int:
+	return maxi(1, floori((attacker.str_stat - target.def_stat) * randf_range(0.9, 1.1)))

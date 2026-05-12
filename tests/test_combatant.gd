@@ -59,3 +59,26 @@ func test_tick_atb_proportional_to_spd() -> void:
 	slow.tick_atb(0.1)
 
 	assert_gt(fast.atb, slow.atb)
+
+
+func test_calculate_damage_within_expected_range() -> void:
+	# Reid STR=45 vs Shade DEF=15 → floor(30 * [0.9,1.1]) → [27,33]
+	var attacker := Combatant.new()
+	attacker.str_stat = 45
+	var target := Combatant.new()
+	target.def_stat = 15
+	for _i in range(200):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 27, "damage below minimum expected")
+		assert_lte(dmg, 33, "damage above maximum expected")
+
+
+func test_calculate_damage_minimum_one() -> void:
+	# When def > str the formula goes negative — must clamp to 1
+	var attacker := Combatant.new()
+	attacker.str_stat = 5
+	var target := Combatant.new()
+	target.def_stat = 100
+	for _i in range(50):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 1, "damage must never be below 1")
