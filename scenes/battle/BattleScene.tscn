@@ -13,10 +13,10 @@ color = Color(0.05, 0.05, 0.08, 1)
 size = Vector2(320, 180)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
-position = Vector2(60, 90)
+position = Vector2(60, 70)
 
 [node name="PartyContainer" type="Node2D" parent="."]
-position = Vector2(230, 62)
+position = Vector2(230, 70)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
