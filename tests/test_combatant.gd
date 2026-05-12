@@ -82,3 +82,17 @@ func test_calculate_damage_minimum_one() -> void:
 	for _i in range(50):
 		var dmg := Combatant.calculate_damage(attacker, target)
 		assert_gte(dmg, 1, "damage must never be below 1")
+
+
+func test_atb_fills_between_6_and_8_seconds_at_base_speed() -> void:
+	var c := Combatant.new()
+	c.spd_stat = 10
+	c.reset_runtime_state()
+
+	# After 6 seconds, ATB should not yet be full (would be too fast)
+	c.tick_atb(6.0)
+	assert_lt(c.atb, Combatant.ATB_MAX, "ATB should not be full after 6 seconds")
+
+	# After a further 2 seconds (8 total), ATB must be full
+	c.tick_atb(2.0)
+	assert_gte(c.atb, Combatant.ATB_MAX, "ATB must be full after 8 seconds at base speed")
