@@ -6,7 +6,7 @@ signal action_selected(action_name: String)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
-		$AttackButton.grab_focus()
+		$VBoxContainer/AttackButton.grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -18,6 +18,9 @@ var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 
+@onready var _action_menu: Control = $UI/HUD/ActionMenu
+@onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
+
 
 func _ready() -> void:
 	var reid: Combatant = load(REID_RES)
@@ -34,6 +37,7 @@ func _ready() -> void:
 
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
+	_action_menu.action_selected.connect(execute_action)
 
 
 func _setup_sprites() -> void:
@@ -85,6 +89,8 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
+	_enemy_window.hide()
+	_action_menu.show()
 
 
 func _begin_enemy_turn(combatant: Combatant) -> void:
@@ -93,8 +99,9 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 	_end_turn()
 
 
-func execute_action(action: Dictionary) -> void:
-	_state = BattleState.ANIMATING
+func execute_action(action_name: String) -> void:
+	_action_menu.hide()
+	_enemy_window.show()
 	_end_turn()
 
 
