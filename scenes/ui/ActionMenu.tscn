@@ -10,7 +10,7 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 0.375
 anchor_bottom = 1.0
-offset_top = -56.0
+offset_top = -40.0
 visible = false
 script = ExtResource("1_menu")
 
