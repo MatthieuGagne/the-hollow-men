@@ -81,10 +81,13 @@ func _setup_sprites() -> void:
 
 
 func _process(delta: float) -> void:
-	if _state != BattleState.TICKING:
-		return
-	_tick_atb(delta)
-	_check_win_loss()
+	if _state == BattleState.TICKING:
+		_tick_atb(delta)
+		_check_win_loss()
+	elif _state == BattleState.AWAITING_INPUT:
+		for combatant in enemies:
+			combatant.tick_atb(delta)
+			combatant_updated.emit(combatant)
 
 
 func _tick_atb(delta: float) -> void:
@@ -117,6 +120,8 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 		var damage: int = Combatant.calculate_damage(combatant, target)
 		target.take_damage(damage)
 		combatant_updated.emit(target)
+		var idx: int = party.find(target)
+		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
 	await get_tree().create_timer(0.3).timeout
 	_end_turn()
 	_check_win_loss()
@@ -135,7 +140,7 @@ func execute_action(action_name: String) -> void:
 		var target: Combatant = enemies[0]
 		var damage: int = Combatant.calculate_damage(_active, target)
 		target.take_damage(damage)
-		_spawn_damage_number(damage)
+		_spawn_damage_number(damage, $EnemyContainer)
 	_end_turn()
 	_check_win_loss()
 
@@ -159,12 +164,12 @@ func _check_win_loss() -> void:
 		battle_ended.emit(false)
 
 
-func _spawn_damage_number(amount: int) -> void:
+func _spawn_damage_number(amount: int, container: Node2D) -> void:
 	var label := Label.new()
 	label.text = str(amount)
 	label.position = DAMAGE_NUMBER_SPAWN_OFFSET
 	label.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
-	$EnemyContainer.add_child(label)
+	container.add_child(label)
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(label, "position:y",
