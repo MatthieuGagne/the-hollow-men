@@ -10,6 +10,7 @@ const COLOR_LIMIT_JAILBROKEN := Color(1.00, 0.80, 0.10)
 const NAME_MIN_WIDTH: int = 36
 const STAT_NUM_WIDTH: int = 26
 const ATB_MIN_WIDTH: int  = 44
+const CURSOR_MIN_WIDTH: int = 8
 
 var _party: Array[Combatant] = []
 var _panels: Array[Control] = []
@@ -18,6 +19,8 @@ var _panels: Array[Control] = []
 func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> void:
 	_party = party
 	battle.combatant_updated.connect(_on_combatant_updated)
+	battle.player_turn_started.connect(_on_player_turn_started)
+	battle.player_turn_ended.connect(_on_player_turn_ended)
 	_build_enemy_label(enemies)
 	_build_panels()
 
@@ -44,6 +47,14 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	row.name = combatant.character_name + "Panel"
 	row.add_theme_constant_override("separation", 2)
 	row.custom_minimum_size = Vector2(0, 6)
+
+	var cursor_label := Label.new()
+	cursor_label.name = "CursorLabel"
+	cursor_label.text = "▶"
+	cursor_label.custom_minimum_size = Vector2(CURSOR_MIN_WIDTH, 0)
+	cursor_label.add_theme_font_size_override("font_size", 6)
+	cursor_label.visible = false
+	row.add_child(cursor_label)
 
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
@@ -149,3 +160,14 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 	atb_bar.value = combatant.atb_ratio() * 100.0
 	atb_bar.modulate = COLOR_ATB
 	panel.modulate.a = 0.4 if combatant.is_dead() else 1.0
+
+
+func _on_player_turn_started(combatant: Combatant) -> void:
+	for i in range(_party.size()):
+		var cursor: Label = _panels[i].get_node("CursorLabel")
+		cursor.visible = (_party[i] == combatant)
+
+
+func _on_player_turn_ended() -> void:
+	for i in range(_party.size()):
+		_panels[i].get_node("CursorLabel").visible = false
