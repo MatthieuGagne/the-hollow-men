@@ -3,30 +3,41 @@ extends Control
 
 signal action_selected(action_name: String)
 
+const CURSOR_INDENT: int = 10  # px reserved for the ▶ column; VBoxContainer offset_left = 6 + CURSOR_INDENT
+
 var _cursor: Label
+var _rows: Array[Label] = []
 
 
 func _ready() -> void:
 	_cursor = Label.new()
-	_cursor.text = "►"
+	_cursor.text = "▶"
 	_cursor.add_theme_font_size_override("font_size", 6)
 	_cursor.modulate.a = 0.0
 	add_child(_cursor)
 
-	var attack_btn: Button = $VBoxContainer/AttackButton
-	attack_btn.focus_entered.connect(_show_cursor_at.bind(attack_btn))
-	attack_btn.focus_exited.connect(func(): _cursor.modulate.a = 0.0)
-
-
-func _show_cursor_at(button: Button) -> void:
-	var btn_pos: Vector2 = $VBoxContainer.position + button.position
-	_cursor.position = Vector2(btn_pos.x - 8, btn_pos.y)
-	_cursor.modulate.a = 1.0
+	for child in $VBoxContainer.get_children():
+		if child is Label:
+			_rows.append(child)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED and visible:
-		$VBoxContainer/AttackButton.grab_focus()
+		_move_cursor_to(0)
+
+
+func _move_cursor_to(idx: int) -> void:
+	if _rows.is_empty():
+		return
+	await get_tree().process_frame
+	var row: Label = _rows[idx]
+	var vbox_pos: Vector2 = $VBoxContainer.position
+	var row_rect: Rect2 = row.get_rect()
+	_cursor.position = Vector2(
+		vbox_pos.x - CURSOR_INDENT,
+		vbox_pos.y + row_rect.position.y + (row_rect.size.y - _cursor.size.y) * 0.5
+	)
+	_cursor.modulate.a = 1.0
 
 
 func _unhandled_input(event: InputEvent) -> void:

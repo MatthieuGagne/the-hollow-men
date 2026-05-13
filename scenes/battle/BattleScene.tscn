@@ -48,9 +48,6 @@ offset_bottom = -6.0
 text = ""
 horizontal_alignment = 0
 
-[node name="ActionMenu" parent="UI/HUD" instance=ExtResource("4_action_menu")]
-layout_mode = 1
-
 [node name="PartyWindow" type="Panel" parent="UI/HUD"]
 theme = ExtResource("3_theme")
 layout_mode = 1
@@ -70,6 +67,9 @@ offset_top = 6.0
 offset_right = -6.0
 offset_bottom = -6.0
 theme_override_constants/separation = 0
+
+[node name="ActionMenu" parent="UI/HUD" instance=ExtResource("4_action_menu")]
+layout_mode = 1
 
 [node name="FlashOverlay" type="ColorRect" parent="UI"]
 layout_mode = 3
