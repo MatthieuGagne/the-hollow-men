@@ -1,11 +1,18 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="ability_iris"]
+script = ExtResource("2_ability")
+ability_name = "Static Touch"
+pp_cost = 8
 
 [resource]
 script = ExtResource("1_combatant")
 character_name = "Iris"
 is_player_controlled = true
+ability = SubResource("ability_iris")
 max_hp = 270
 max_pp = 60
 str_stat = 30

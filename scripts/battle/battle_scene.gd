@@ -129,6 +129,7 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
+	_action_menu.setup(_active)
 	_action_menu.show()
 	player_turn_started.emit(combatant)
 
@@ -159,13 +160,32 @@ func execute_action(action_name: String) -> void:
 	if _state != BattleState.AWAITING_INPUT:
 		return
 	_action_menu.hide()
-	if action_name == "attack" and not enemies.is_empty():
+	if not enemies.is_empty():
 		var target: Combatant = enemies[0]
-		var damage: int = Combatant.calculate_damage(_active, target)
-		target.take_damage(damage)
-		_spawn_damage_number(damage, $EnemyContainer)
+		var damage: int = 0
+		match action_name:
+			"attack":
+				damage = Combatant.calculate_damage(_active, target)
+			"ability":
+				damage = _resolve_ability(_active, target)
+		if damage > 0:
+			target.take_damage(damage)
+			_spawn_damage_number(damage, $EnemyContainer)
 	_end_turn()
 	_check_win_loss()
+
+
+func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
+	if attacker.ability == null:
+		return 0
+	if not attacker.spend_pp(attacker.ability.pp_cost):
+		return 0
+	match attacker.character_name:
+		"Reid":
+			return Combatant.calculate_piercing_strike(attacker)
+		"Iris":
+			return Combatant.calculate_static_touch(attacker, target)
+	return 0  # unknown character — ability not implemented
 
 
 func skip_turn() -> void:
