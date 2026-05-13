@@ -63,6 +63,10 @@ func is_dead() -> bool:
 	return current_hp <= 0
 
 
+func is_alive() -> bool:
+	return current_hp > 0
+
+
 func limit_cap() -> float:
 	return LIMIT_CAP_BUREAU if sigil_type == SigilType.BUREAU else LIMIT_MAX
 

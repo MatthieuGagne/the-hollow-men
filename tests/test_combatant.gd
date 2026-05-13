@@ -96,3 +96,29 @@ func test_atb_fills_between_6_and_8_seconds_at_base_speed() -> void:
 	# After a further 2 seconds (8 total), ATB must be full
 	c.tick_atb(2.0)
 	assert_gte(c.atb, Combatant.ATB_MAX, "ATB must be full after 8 seconds at base speed")
+
+
+func test_is_alive_returns_true_when_hp_positive() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	assert_true(c.is_alive())
+
+
+func test_is_alive_returns_false_when_hp_zero() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 0
+	assert_false(c.is_alive())
+
+
+func test_tick_atb_skips_downed_combatant() -> void:
+	var c := Combatant.new()
+	c.spd_stat = 50
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 0
+	var atb_before: float = c.atb
+	c.tick_atb(1.0)
+	assert_eq(c.atb, atb_before, "dead combatant ATB must not advance")

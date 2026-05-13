@@ -138,8 +138,7 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 	var atb_bar: ProgressBar = panel.get_node("ATBBar")
 
 	name_label.text = combatant.character_name.to_upper()
-	name_label.modulate.a = 1.0 if not combatant.atb_full() else \
-		(0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.006))
+	name_label.modulate.a = 1.0
 
 	hp_label.text = str(combatant.current_hp)
 	hp_label.modulate = COLOR_HP_FULL.lerp(COLOR_HP_LOW, 1.0 - combatant.hp_ratio())
@@ -149,3 +148,4 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 
 	atb_bar.value = combatant.atb_ratio() * 100.0
 	atb_bar.modulate = COLOR_ATB
+	panel.modulate.a = 0.4 if combatant.is_dead() else 1.0

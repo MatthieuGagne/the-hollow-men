@@ -35,6 +35,7 @@ var _active: Combatant = null
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
 @onready var _victory_label: Label = $UI/VictoryLabel
+@onready var _defeat_label: Label = $UI/DefeatLabel
 
 
 func _ready() -> void:
@@ -54,6 +55,7 @@ func _ready() -> void:
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
 	battle_ended.connect(_on_battle_ended)
+	combatant_updated.connect(_on_combatant_updated)
 
 
 func _setup_sprites() -> void:
@@ -80,10 +82,16 @@ func _setup_sprites() -> void:
 
 
 func _process(delta: float) -> void:
-	if _state != BattleState.TICKING:
-		return
-	_tick_atb(delta)
-	_check_win_loss()
+	if _state == BattleState.TICKING:
+		_tick_atb(delta)
+		_check_win_loss()
+	elif _state == BattleState.AWAITING_INPUT:
+		for combatant in enemies:
+			combatant.tick_atb(delta)
+			combatant_updated.emit(combatant)
+			if combatant.atb_full() and not combatant.is_dead():
+				_begin_enemy_turn(combatant)
+				return
 
 
 func _tick_atb(delta: float) -> void:
@@ -111,16 +119,34 @@ func _begin_player_turn(combatant: Combatant) -> void:
 func _begin_enemy_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.ANIMATING
+	var target: Combatant = _select_enemy_target()
+	if target:
+		var damage: int = Combatant.calculate_damage(combatant, target)
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+		var idx: int = party.find(target)
+		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
+	await get_tree().create_timer(0.3).timeout
 	_end_turn()
+	_check_win_loss()
+
+
+func _select_enemy_target() -> Combatant:
+	var living: Array[Combatant] = party.filter(func(p: Combatant) -> bool: return p.is_alive())
+	if living.is_empty():
+		return null
+	return living[randi() % living.size()]
 
 
 func execute_action(action_name: String) -> void:
+	if _state != BattleState.AWAITING_INPUT:
+		return
 	_action_menu.hide()
 	if action_name == "attack" and not enemies.is_empty():
 		var target: Combatant = enemies[0]
 		var damage: int = Combatant.calculate_damage(_active, target)
 		target.take_damage(damage)
-		_spawn_damage_number(damage)
+		_spawn_damage_number(damage, $EnemyContainer)
 	_end_turn()
 	_check_win_loss()
 
@@ -144,12 +170,12 @@ func _check_win_loss() -> void:
 		battle_ended.emit(false)
 
 
-func _spawn_damage_number(amount: int) -> void:
+func _spawn_damage_number(amount: int, container: Node2D) -> void:
 	var label := Label.new()
 	label.text = str(amount)
 	label.position = DAMAGE_NUMBER_SPAWN_OFFSET
 	label.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
-	$EnemyContainer.add_child(label)
+	container.add_child(label)
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(label, "position:y",
@@ -158,6 +184,15 @@ func _spawn_damage_number(amount: int) -> void:
 	tween.finished.connect(label.queue_free)
 
 
+func _on_combatant_updated(combatant: Combatant) -> void:
+	var idx := party.find(combatant)
+	if idx < 0:
+		return
+	$PartyContainer.get_child(idx).modulate.a = 0.4 if combatant.is_dead() else 1.0
+
+
 func _on_battle_ended(victory: bool) -> void:
 	if victory:
 		_victory_label.show()
+	else:
+		_defeat_label.show()
