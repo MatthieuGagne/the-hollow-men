@@ -35,6 +35,7 @@ var _active: Combatant = null
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
 @onready var _victory_label: Label = $UI/VictoryLabel
+@onready var _defeat_label: Label = $UI/DefeatLabel
 
 
 func _ready() -> void:
@@ -111,7 +112,21 @@ func _begin_player_turn(combatant: Combatant) -> void:
 func _begin_enemy_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.ANIMATING
+	var target: Combatant = _select_enemy_target()
+	if target:
+		var damage: int = Combatant.calculate_damage(combatant, target)
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+	await get_tree().create_timer(0.3).timeout
 	_end_turn()
+	_check_win_loss()
+
+
+func _select_enemy_target() -> Combatant:
+	var living: Array[Combatant] = party.filter(func(p: Combatant) -> bool: return p.is_alive())
+	if living.is_empty():
+		return null
+	return living[randi() % living.size()]
 
 
 func execute_action(action_name: String) -> void:
@@ -161,3 +176,5 @@ func _spawn_damage_number(amount: int) -> void:
 func _on_battle_ended(victory: bool) -> void:
 	if victory:
 		_victory_label.show()
+	else:
+		_defeat_label.show()

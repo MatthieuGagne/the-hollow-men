@@ -149,3 +149,4 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 
 	atb_bar.value = combatant.atb_ratio() * 100.0
 	atb_bar.modulate = COLOR_ATB
+	panel.modulate.a = 0.4 if combatant.is_dead() else 1.0
