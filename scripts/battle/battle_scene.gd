@@ -55,6 +55,7 @@ func _ready() -> void:
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
 	battle_ended.connect(_on_battle_ended)
+	combatant_updated.connect(_on_combatant_updated)
 
 
 func _setup_sprites() -> void:
@@ -181,6 +182,13 @@ func _spawn_damage_number(amount: int, container: Node2D) -> void:
 		DAMAGE_NUMBER_SPAWN_OFFSET.y - DAMAGE_NUMBER_FLOAT_DIST, DAMAGE_NUMBER_DURATION)
 	tween.tween_property(label, "modulate:a", 0.0, DAMAGE_NUMBER_DURATION)
 	tween.finished.connect(label.queue_free)
+
+
+func _on_combatant_updated(combatant: Combatant) -> void:
+	var idx := party.find(combatant)
+	if idx < 0:
+		return
+	$PartyContainer.get_child(idx).modulate.a = 0.4 if combatant.is_dead() else 1.0
 
 
 func _on_battle_ended(victory: bool) -> void:
