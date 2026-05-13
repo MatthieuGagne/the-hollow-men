@@ -184,3 +184,34 @@ func test_static_touch_minimum_1() -> void:
 	target.res_stat = 100
 	assert_eq(Combatant.calculate_static_touch(attacker, target), 1,
 		"static touch minimum damage must be 1 when PSY < RES")
+
+
+func test_ability_targets_party_defaults_false() -> void:
+	var ab := Ability.new()
+	assert_false(ab.targets_party, "targets_party must default to false")
+
+
+func test_heal_increases_hp() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 40
+	c.heal(30)
+	assert_eq(c.current_hp, 70)
+
+
+func test_heal_caps_at_max_hp() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 90
+	c.heal(60)
+	assert_eq(c.current_hp, 100)
+
+
+func test_heal_exact_max() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.heal(9999)
+	assert_eq(c.current_hp, 100)
