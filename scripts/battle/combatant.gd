@@ -6,6 +6,7 @@ enum SigilType { NONE, BUREAU, JAILBROKEN }
 # Identity
 @export var character_name: String = ""
 @export var is_player_controlled: bool = true
+@export var ability: Ability = null
 
 # Base stats
 @export var max_hp: int = 100
@@ -118,3 +119,11 @@ func limit_ratio() -> float:
 
 static func calculate_damage(attacker: Combatant, target: Combatant) -> int:
 	return maxi(1, floori((attacker.str_stat - target.def_stat) * randf_range(0.9, 1.1)))
+
+
+static func calculate_piercing_strike(attacker: Combatant) -> int:
+	return maxi(1, floori(attacker.str_stat * randf_range(0.9, 1.1)))
+
+
+static func calculate_static_touch(attacker: Combatant, target: Combatant) -> int:
+	return maxi(1, floori((attacker.psy_stat - target.res_stat) * randf_range(0.9, 1.1)))
