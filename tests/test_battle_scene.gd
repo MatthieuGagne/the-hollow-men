@@ -328,3 +328,32 @@ func test_party_contains_karim() -> void:
 func test_party_contains_margot() -> void:
 	var names: Array = _scene.party.map(func(p: Combatant) -> String: return p.character_name)
 	assert_true(names.has("Margot"), "party must include Margot")
+
+
+func test_margot_ability_deals_psy_damage() -> void:
+	var margot: Combatant = _scene.party[3]
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before: int = shade.current_hp
+	_scene._begin_player_turn(margot)
+	_scene.execute_action("ability")
+	assert_lt(shade.current_hp, hp_before,
+		"Void Calculus must deal PSY damage to Shade")
+
+
+func test_margot_ability_spends_pp() -> void:
+	var margot: Combatant = _scene.party[3]
+	var pp_before: int = margot.current_pp
+	_scene._begin_player_turn(margot)
+	_scene.execute_action("ability")
+	assert_lt(margot.current_pp, pp_before, "Void Calculus must spend 15 PP")
+
+
+func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
+	var margot: Combatant = _scene.party[3]
+	margot.current_pp = 0
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before: int = shade.current_hp
+	_scene._begin_player_turn(margot)
+	_scene.execute_action("ability")
+	assert_eq(shade.current_hp, hp_before,
+		"Void Calculus must not deal damage when PP is 0")

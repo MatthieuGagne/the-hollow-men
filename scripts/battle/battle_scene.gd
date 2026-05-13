@@ -258,6 +258,8 @@ func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
 			return Combatant.calculate_piercing_strike(attacker)
 		"Iris":
 			return Combatant.calculate_static_touch(attacker, target)
+		"Margot":
+			return Combatant.calculate_static_touch(attacker, target)
 	return 0  # unknown character — ability not implemented
 
 
