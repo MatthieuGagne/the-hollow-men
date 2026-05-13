@@ -74,7 +74,7 @@ func _ready() -> void:
 
 
 func _setup_sprites() -> void:
-	var party_textures: Array = [
+	var party_textures: Array[Texture2D] = [
 		load(REID_TEX), load(IRIS_TEX), load(REID_TEX), load(REID_TEX)
 	]
 	var party_modulates: Array[Color] = [
