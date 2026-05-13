@@ -1,4 +1,5 @@
 extends Node2D
+class_name BattleScene
 
 signal battle_ended(victory: bool)
 signal combatant_updated(combatant: Combatant)
@@ -10,7 +11,16 @@ const IRIS_RES  := "res://characters/iris.tres"
 const SHADE_RES := "res://characters/enemies/shade.tres"
 const REID_TEX  := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX  := "res://assets/sprites/characters/iris.png"
-const SLOT_POSITIONS: Array[int] = [-50, -25, 0, 25, 50]
+const SPRITE_FRAME_HEIGHT: int = 24  # reid.png / iris.png: 144px sheet, vframes=6
+const SPRITE_GAP_PX: int       = 1
+
+const SLOT_POSITIONS: Array[int] = [
+	-2 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
+	-1 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
+	 0,
+	 1 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
+	 2 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
+]
 const PLACEHOLDER_MODULATE := Color(0.4, 0.4, 0.4, 0.5)
 const DAMAGE_NUMBER_FONT_SIZE:    int     = 8
 const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
