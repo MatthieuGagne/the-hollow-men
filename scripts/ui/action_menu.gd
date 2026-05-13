@@ -3,14 +3,14 @@ extends Control
 
 signal action_selected(action_name: String)
 
-const CURSOR_INDENT: int = 10
+const CURSOR_INDENT: int = 10  # px reserved for the ▶ column; VBoxContainer offset_left = 6 + CURSOR_INDENT
 const GREY_ALPHA: float = 0.4
 
 var _cursor: Label
 var _rows: Array[Label] = []
 var _selected_idx: int = 0
 var _row_count: int = 1
-var _ability_affordable: bool = true
+var _ability_affordable: bool = false
 
 
 func _ready() -> void:
@@ -28,6 +28,7 @@ func _ready() -> void:
 func setup(combatant: Combatant) -> void:
 	_selected_idx = 0
 	_row_count = 1
+	_ability_affordable = false
 
 	if combatant.ability != null:
 		_rows[1].text = combatant.ability.ability_name
