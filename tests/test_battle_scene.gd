@@ -189,3 +189,36 @@ func test_player_turn_ended_not_emitted_after_enemy_turn() -> void:
 	watch_signals(_scene)
 	_scene._end_turn()
 	assert_signal_not_emitted(_scene, "player_turn_ended")
+
+
+func test_ability_damages_enemy_as_reid() -> void:
+	var reid: Combatant = _scene.party[0]
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before: int = shade.current_hp
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_lt(shade.current_hp, hp_before, "Piercing Strike must deal damage to Shade")
+
+
+func test_ability_damages_enemy_as_iris() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before: int = shade.current_hp
+	_scene._begin_player_turn(iris)
+	_scene.execute_action("ability")
+	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
+
+
+func test_ability_spends_pp() -> void:
+	var reid: Combatant = _scene.party[0]
+	var pp_before: int = reid.current_pp
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_lt(reid.current_pp, pp_before, "Piercing Strike must spend PP")
+
+
+func test_ability_returns_to_ticking() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_eq(_scene._state, _scene.BattleState.TICKING)
