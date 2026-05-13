@@ -184,3 +184,60 @@ func test_static_touch_minimum_1() -> void:
 	target.res_stat = 100
 	assert_eq(Combatant.calculate_static_touch(attacker, target), 1,
 		"static touch minimum damage must be 1 when PSY < RES")
+
+
+func test_ability_targets_party_defaults_false() -> void:
+	var ab := Ability.new()
+	assert_false(ab.targets_party, "targets_party must default to false")
+
+
+func test_heal_increases_hp() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 40
+	c.heal(30)
+	assert_eq(c.current_hp, 70)
+
+
+func test_heal_caps_at_max_hp() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.current_hp = 90
+	c.heal(60)
+	assert_eq(c.current_hp, 100)
+
+
+func test_heal_exact_max() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	c.heal(9999)
+	assert_eq(c.current_hp, 100)
+
+
+func test_karim_loads_with_correct_stats() -> void:
+	var karim: Combatant = load("res://characters/karim.tres")
+	karim.reset_runtime_state()
+	assert_eq(karim.character_name, "Karim")
+	assert_eq(karim.max_hp, 310)
+	assert_eq(karim.max_pp, 70)
+	assert_eq(karim.spd_stat, 22)
+	assert_true(karim.is_player_controlled)
+	assert_eq(karim.ability.ability_name, "Field Suture")
+	assert_eq(karim.ability.pp_cost, 10)
+	assert_true(karim.ability.targets_party)
+
+
+func test_margot_loads_with_correct_stats() -> void:
+	var margot: Combatant = load("res://characters/margot.tres")
+	margot.reset_runtime_state()
+	assert_eq(margot.character_name, "Margot")
+	assert_eq(margot.max_hp, 240)
+	assert_eq(margot.max_pp, 90)
+	assert_eq(margot.spd_stat, 40)
+	assert_true(margot.is_player_controlled)
+	assert_eq(margot.ability.ability_name, "Void Calculus")
+	assert_eq(margot.ability.pp_cost, 15)
+	assert_false(margot.ability.targets_party)

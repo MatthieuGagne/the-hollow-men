@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="ability_karim"]
+script = ExtResource("2_ability")
+ability_name = "Field Suture"
+pp_cost = 10
+targets_party = true
+
+[resource]
+script = ExtResource("1_combatant")
+character_name = "Karim"
+is_player_controlled = true
+ability = SubResource("ability_karim")
+max_hp = 310
+max_pp = 70
+str_stat = 20
+def_stat = 35
+psy_stat = 45
+res_stat = 50
+spd_stat = 22
+sigil_type = 0

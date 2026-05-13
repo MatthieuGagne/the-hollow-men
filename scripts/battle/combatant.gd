@@ -94,6 +94,10 @@ func drain_pp(amount: int) -> void:
 	current_pp = maxi(current_pp - amount, 0)
 
 
+func heal(amount: int) -> void:
+	current_hp = mini(current_hp + amount, max_hp)
+
+
 func spend_pp(cost: int) -> bool:
 	if current_pp < cost:
 		return false
