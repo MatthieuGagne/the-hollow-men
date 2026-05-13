@@ -79,14 +79,13 @@ func test_party_sprites_have_1px_vertical_gap() -> void:
 
 
 func test_select_enemy_target_excludes_downed_members() -> void:
-	# Down Reid (party[0]), Iris (party[1]) remains alive
+	# Down Reid (party[0]); remaining living members must be the only valid targets
 	var reid: Combatant = _scene.party[0]
-	var iris: Combatant = _scene.party[1]
 	reid.current_hp = 0
 
 	for _i in range(50):
 		var target: Combatant = _scene._select_enemy_target()
-		assert_eq(target, iris, "downed Reid must never be selected as target")
+		assert_ne(target, reid, "downed Reid must never be selected as target")
 
 
 func test_select_enemy_target_returns_null_when_all_downed() -> void:
@@ -315,3 +314,17 @@ func test_confirm_party_target_ignores_dead_target() -> void:
 	assert_eq(reid.current_hp, hp_before, "dead target must not be healed")
 	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
 		"state must remain SELECTING_ALLY when dead target is confirmed")
+
+
+func test_party_size_is_four() -> void:
+	assert_eq(_scene.party.size(), 4, "party must contain exactly 4 members")
+
+
+func test_party_contains_karim() -> void:
+	var names: Array = _scene.party.map(func(p: Combatant) -> String: return p.character_name)
+	assert_true(names.has("Karim"), "party must include Karim")
+
+
+func test_party_contains_margot() -> void:
+	var names: Array = _scene.party.map(func(p: Combatant) -> String: return p.character_name)
+	assert_true(names.has("Margot"), "party must include Margot")

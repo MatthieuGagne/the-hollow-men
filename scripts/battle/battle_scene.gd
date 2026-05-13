@@ -9,9 +9,11 @@ signal party_target_changed(combatant: Combatant)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY }
 
-const REID_RES  := "res://characters/reid.tres"
-const IRIS_RES  := "res://characters/iris.tres"
-const SHADE_RES := "res://characters/enemies/shade.tres"
+const REID_RES   := "res://characters/reid.tres"
+const IRIS_RES   := "res://characters/iris.tres"
+const KARIM_RES  := "res://characters/karim.tres"
+const MARGOT_RES := "res://characters/margot.tres"
+const SHADE_RES  := "res://characters/enemies/shade.tres"
 const REID_TEX  := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX  := "res://assets/sprites/characters/iris.png"
 const SPRITE_FRAME_HEIGHT: int = 24  # reid.png / iris.png: 144px sheet, vframes=6
@@ -25,6 +27,8 @@ const SLOT_POSITIONS: Array[int] = [
 	 2 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
 ]
 const PLACEHOLDER_MODULATE := Color(0.4, 0.4, 0.4, 0.5)
+const KARIM_MODULATE       := Color(0.6, 0.85, 1.0, 1.0)
+const MARGOT_MODULATE      := Color(0.85, 0.6, 1.0, 1.0)
 const DAMAGE_NUMBER_FONT_SIZE:    int     = 8
 const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
 const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
@@ -50,10 +54,16 @@ func _ready() -> void:
 	var iris: Combatant = load(IRIS_RES)
 	iris.reset_runtime_state()
 
+	var karim: Combatant = load(KARIM_RES)
+	karim.reset_runtime_state()
+
+	var margot: Combatant = load(MARGOT_RES)
+	margot.reset_runtime_state()
+
 	var shade: Combatant = load(SHADE_RES)
 	shade.reset_runtime_state()
 
-	party = [reid, iris]
+	party = [reid, iris, karim, margot]
 	enemies = [shade]
 
 	_setup_sprites()
@@ -64,7 +74,12 @@ func _ready() -> void:
 
 
 func _setup_sprites() -> void:
-	var party_textures: Array = [load(REID_TEX), load(IRIS_TEX)]
+	var party_textures: Array = [
+		load(REID_TEX), load(IRIS_TEX), load(REID_TEX), load(REID_TEX)
+	]
+	var party_modulates: Array[Color] = [
+		Color.WHITE, Color.WHITE, KARIM_MODULATE, MARGOT_MODULATE
+	]
 
 	for i in range(5):
 		var sprite := Sprite2D.new()
@@ -74,6 +89,7 @@ func _setup_sprites() -> void:
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
 		if i < party_textures.size():
 			sprite.texture = party_textures[i]
+			sprite.modulate = party_modulates[i]
 		else:
 			sprite.texture = load(REID_TEX)
 			sprite.modulate = PLACEHOLDER_MODULATE
