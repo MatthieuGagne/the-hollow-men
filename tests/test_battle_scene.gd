@@ -110,3 +110,82 @@ func test_defeat_signal_emitted_when_all_party_downed() -> void:
 		p.current_hp = 0
 	_scene._check_win_loss()
 	assert_signal_emitted_with_parameters(_scene, "battle_ended", [false])
+
+
+func test_skip_turn_does_not_consume_atb() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	_scene.skip_turn()
+	assert_eq(reid.atb, Combatant.ATB_MAX, "skip must not consume ATB")
+
+
+func test_skip_turn_sets_skip_cooldown() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	_scene.skip_turn()
+	assert_gt(reid.skip_cooldown, 0.0, "skip_cooldown must be > 0 after skip")
+
+
+func test_skip_turn_returns_to_ticking() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	_scene.skip_turn()
+	assert_eq(_scene._state, _scene.BattleState.TICKING)
+
+
+func test_skip_cooldown_ticks_down_in_process() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.skip_cooldown = 2.0
+	_scene._process(1.0)
+	assert_lt(reid.skip_cooldown, 2.0, "skip_cooldown must decrease after _process")
+
+
+func test_skip_cooldown_clears_when_expired() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.skip_cooldown = 0.1
+	_scene._process(0.2)
+	assert_false(reid.is_skipping(), "skip_cooldown must be 0 after expiry")
+
+
+func test_skipping_combatant_does_not_get_new_turn() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	reid.skip_cooldown = 2.0
+	_scene._tick_atb(0.0)
+	assert_ne(_scene._state, _scene.BattleState.AWAITING_INPUT,
+		"skipping combatant must not trigger a new turn")
+
+
+func test_player_turn_started_signal_emitted() -> void:
+	var reid: Combatant = _scene.party[0]
+	watch_signals(_scene)
+	_scene._begin_player_turn(reid)
+	assert_signal_emitted_with_parameters(_scene, "player_turn_started", [reid])
+
+
+func test_player_turn_ended_signal_emitted_after_skip() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	watch_signals(_scene)
+	_scene.skip_turn()
+	assert_signal_emitted(_scene, "player_turn_ended")
+
+
+func test_player_turn_ended_signal_emitted_after_action() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	watch_signals(_scene)
+	_scene.execute_action("attack")
+	assert_signal_emitted(_scene, "player_turn_ended")
+
+
+func test_player_turn_ended_not_emitted_after_enemy_turn() -> void:
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_enemy_turn(shade)
+	watch_signals(_scene)
+	_scene._end_turn()
+	assert_signal_not_emitted(_scene, "player_turn_ended")
