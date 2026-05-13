@@ -14,7 +14,7 @@ func test_cursor_hidden_at_start() -> void:
 	for i in range(_scene.party.size()):
 		var panel: Control = _hud._panels[i]
 		var cursor: Label = panel.get_node("CursorLabel")
-		assert_false(cursor.visible, "cursor must be hidden at battle start")
+		assert_eq(cursor.modulate.a, 0.0, "cursor must be transparent at battle start")
 
 
 func test_cursor_visible_on_player_turn_started() -> void:
@@ -23,7 +23,7 @@ func test_cursor_visible_on_player_turn_started() -> void:
 	await get_tree().process_frame
 	var panel: Control = _hud._panels[0]
 	var cursor: Label = panel.get_node("CursorLabel")
-	assert_true(cursor.visible, "cursor must be visible during AWAITING_INPUT")
+	assert_eq(cursor.modulate.a, 1.0, "cursor must be opaque during AWAITING_INPUT")
 
 
 func test_cursor_hidden_on_player_turn_ended() -> void:
@@ -34,7 +34,7 @@ func test_cursor_hidden_on_player_turn_ended() -> void:
 	await get_tree().process_frame
 	var panel: Control = _hud._panels[0]
 	var cursor: Label = panel.get_node("CursorLabel")
-	assert_false(cursor.visible, "cursor must be hidden after turn ends")
+	assert_eq(cursor.modulate.a, 0.0, "cursor must be transparent after turn ends")
 
 
 func test_cursor_hidden_on_skip() -> void:
@@ -46,7 +46,7 @@ func test_cursor_hidden_on_skip() -> void:
 	await get_tree().process_frame
 	var panel: Control = _hud._panels[0]
 	var cursor: Label = panel.get_node("CursorLabel")
-	assert_false(cursor.visible, "cursor must be hidden after skip")
+	assert_eq(cursor.modulate.a, 0.0, "cursor must be transparent after skip")
 
 
 func test_only_active_combatant_cursor_visible() -> void:
@@ -55,5 +55,5 @@ func test_only_active_combatant_cursor_visible() -> void:
 	await get_tree().process_frame
 	var reid_panel: Control = _hud._panels[0]
 	var iris_panel: Control = _hud._panels[1]
-	assert_false(reid_panel.get_node("CursorLabel").visible, "Reid cursor must be hidden")
-	assert_true(iris_panel.get_node("CursorLabel").visible, "Iris cursor must be visible")
+	assert_eq(reid_panel.get_node("CursorLabel").modulate.a, 0.0, "Reid cursor must be transparent")
+	assert_eq(iris_panel.get_node("CursorLabel").modulate.a, 1.0, "Iris cursor must be opaque")

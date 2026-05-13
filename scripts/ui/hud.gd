@@ -53,7 +53,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	cursor_label.text = "▶"
 	cursor_label.custom_minimum_size = Vector2(CURSOR_MIN_WIDTH, 0)
 	cursor_label.add_theme_font_size_override("font_size", 6)
-	cursor_label.visible = false
+	cursor_label.modulate.a = 0.0
 	row.add_child(cursor_label)
 
 	var name_label := Label.new()
@@ -165,9 +165,9 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 func _on_player_turn_started(combatant: Combatant) -> void:
 	for i in range(_party.size()):
 		var cursor: Label = _panels[i].get_node("CursorLabel")
-		cursor.visible = (_party[i] == combatant)
+		cursor.modulate.a = 1.0 if _party[i] == combatant else 0.0
 
 
 func _on_player_turn_ended() -> void:
 	for i in range(_party.size()):
-		_panels[i].get_node("CursorLabel").visible = false
+		_panels[i].get_node("CursorLabel").modulate.a = 0.0

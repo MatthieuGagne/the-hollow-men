@@ -28,7 +28,7 @@ const DAMAGE_NUMBER_FONT_SIZE:    int     = 8
 const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
 const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
-const SKIP_COOLDOWN:              float   = 4.0
+const SKIP_COOLDOWN:              float   = 2.0
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
