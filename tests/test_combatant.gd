@@ -215,3 +215,29 @@ func test_heal_exact_max() -> void:
 	c.reset_runtime_state()
 	c.heal(9999)
 	assert_eq(c.current_hp, 100)
+
+
+func test_karim_loads_with_correct_stats() -> void:
+	var karim: Combatant = load("res://characters/karim.tres")
+	karim.reset_runtime_state()
+	assert_eq(karim.character_name, "Karim")
+	assert_eq(karim.max_hp, 310)
+	assert_eq(karim.max_pp, 70)
+	assert_eq(karim.spd_stat, 22)
+	assert_true(karim.is_player_controlled)
+	assert_eq(karim.ability.ability_name, "Field Suture")
+	assert_eq(karim.ability.pp_cost, 10)
+	assert_true(karim.ability.targets_party)
+
+
+func test_margot_loads_with_correct_stats() -> void:
+	var margot: Combatant = load("res://characters/margot.tres")
+	margot.reset_runtime_state()
+	assert_eq(margot.character_name, "Margot")
+	assert_eq(margot.max_hp, 240)
+	assert_eq(margot.max_pp, 90)
+	assert_eq(margot.spd_stat, 40)
+	assert_true(margot.is_player_controlled)
+	assert_eq(margot.ability.ability_name, "Void Calculus")
+	assert_eq(margot.ability.pp_cost, 15)
+	assert_false(margot.ability.targets_party)
