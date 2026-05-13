@@ -21,6 +21,7 @@ func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> 
 	battle.combatant_updated.connect(_on_combatant_updated)
 	battle.player_turn_started.connect(_on_player_turn_started)
 	battle.player_turn_ended.connect(_on_player_turn_ended)
+	battle.party_target_changed.connect(_on_party_target_changed)
 	_build_enemy_label(enemies)
 	_build_panels()
 
@@ -179,3 +180,11 @@ func _on_player_turn_ended() -> void:
 		if not _panels[i].has_node("CursorLabel"):
 			continue
 		_panels[i].get_node("CursorLabel").modulate.a = 0.0
+
+
+func _on_party_target_changed(combatant: Combatant) -> void:
+	for i in range(mini(_party.size(), _panels.size())):
+		if not _panels[i].has_node("CursorLabel"):
+			continue
+		var cursor: Label = _panels[i].get_node("CursorLabel")
+		cursor.modulate.a = 1.0 if _party[i] == combatant else 0.0
