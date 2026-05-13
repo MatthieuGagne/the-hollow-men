@@ -99,6 +99,10 @@ func _make_placeholder_panel() -> HBoxContainer:
 	row.add_theme_constant_override("separation", 2)
 	row.modulate = Color(0.5, 0.5, 0.5, 0.5)
 
+	var cursor_spacer := Label.new()
+	cursor_spacer.custom_minimum_size = Vector2(CURSOR_MIN_WIDTH, 0)
+	row.add_child(cursor_spacer)
+
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
 	name_label.text = "---"
