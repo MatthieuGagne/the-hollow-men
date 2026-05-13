@@ -122,3 +122,27 @@ func test_tick_atb_skips_downed_combatant() -> void:
 	var atb_before: float = c.atb
 	c.tick_atb(1.0)
 	assert_eq(c.atb, atb_before, "dead combatant ATB must not advance")
+
+
+func test_skip_cooldown_initial_value_is_zero() -> void:
+	var c := Combatant.new()
+	assert_eq(c.skip_cooldown, 0.0)
+
+
+func test_reset_runtime_state_clears_skip_cooldown() -> void:
+	var c := Combatant.new()
+	c.skip_cooldown = 3.5
+	c.reset_runtime_state()
+	assert_eq(c.skip_cooldown, 0.0)
+
+
+func test_is_skipping_true_when_cooldown_positive() -> void:
+	var c := Combatant.new()
+	c.skip_cooldown = 1.0
+	assert_true(c.is_skipping())
+
+
+func test_is_skipping_false_when_cooldown_zero() -> void:
+	var c := Combatant.new()
+	c.skip_cooldown = 0.0
+	assert_false(c.is_skipping())

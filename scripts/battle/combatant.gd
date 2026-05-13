@@ -24,6 +24,7 @@ var current_hp: int
 var current_pp: int
 var atb: float = 0.0
 var limit_gauge: float = 0.0
+var skip_cooldown: float = 0.0
 
 const ATB_MAX: float = 100.0
 const LIMIT_MAX: float = 100.0
@@ -43,6 +44,7 @@ func reset_runtime_state() -> void:
 	current_pp = max_pp
 	atb = 0.0
 	limit_gauge = 0.0
+	skip_cooldown = 0.0
 
 
 func tick_atb(delta: float) -> void:
@@ -65,6 +67,10 @@ func is_dead() -> bool:
 
 func is_alive() -> bool:
 	return current_hp > 0
+
+
+func is_skipping() -> bool:
+	return skip_cooldown > 0.0
 
 
 func limit_cap() -> float:
