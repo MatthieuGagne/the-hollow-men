@@ -42,8 +42,8 @@ func _build_panels() -> void:
 func _make_panel(combatant: Combatant) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.name = combatant.character_name + "Panel"
-	row.add_theme_constant_override("separation", 3)
-	row.custom_minimum_size = Vector2(0, 8)
+	row.add_theme_constant_override("separation", 2)
+	row.custom_minimum_size = Vector2(0, 6)
 
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
@@ -74,7 +74,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	atb_bar.max_value = 100.0
 	atb_bar.value = 0.0
 	atb_bar.show_percentage = false
-	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 6)
+	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 4)
 	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(atb_bar)
 
@@ -84,8 +84,8 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 func _make_placeholder_panel() -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.name = "PlaceholderPanel"
-	row.custom_minimum_size = Vector2(0, 8)
-	row.add_theme_constant_override("separation", 3)
+	row.custom_minimum_size = Vector2(0, 6)
+	row.add_theme_constant_override("separation", 2)
 	row.modulate = Color(0.5, 0.5, 0.5, 0.5)
 
 	var name_label := Label.new()
@@ -117,7 +117,7 @@ func _make_placeholder_panel() -> HBoxContainer:
 	atb_bar.max_value = 100.0
 	atb_bar.value = 0.0
 	atb_bar.show_percentage = false
-	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 6)
+	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 4)
 	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(atb_bar)
 

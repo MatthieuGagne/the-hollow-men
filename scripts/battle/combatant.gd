@@ -29,6 +29,8 @@ const ATB_MAX: float = 100.0
 const LIMIT_MAX: float = 100.0
 # Bureau sigils meter the limit break — cap at 80%
 const LIMIT_CAP_BUREAU: float = 80.0
+# ATB fill rate multiplier — spd_stat=10 fills ATB in ~6.67 s (within the 6–8 s design target)
+const ATB_FILL_RATE: float = 1.5
 
 
 func _init() -> void:
@@ -46,7 +48,7 @@ func reset_runtime_state() -> void:
 func tick_atb(delta: float) -> void:
 	if is_dead():
 		return
-	atb = minf(atb + float(spd_stat) * delta * 10.0, ATB_MAX)
+	atb = minf(atb + float(spd_stat) * delta * ATB_FILL_RATE, ATB_MAX)
 
 
 func atb_full() -> bool:

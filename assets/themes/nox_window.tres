@@ -27,7 +27,9 @@ bg_color = Color(1, 1, 1, 1)
 [resource]
 Panel/styles/panel = SubResource("StyleBoxFlat_panel")
 Label/fonts/font = ExtResource("1_font")
-Label/font_sizes/font_size = 8
+Label/font_sizes/font_size = 6
 Label/colors/font_color = Color(1, 1, 1, 1)
+Button/fonts/font = ExtResource("1_font")
+Button/font_sizes/font_size = 6
 ProgressBar/styles/background = SubResource("StyleBoxFlat_bar_bg")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")
