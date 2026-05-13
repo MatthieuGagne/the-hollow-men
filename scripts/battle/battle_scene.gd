@@ -178,13 +178,14 @@ func execute_action(action_name: String) -> void:
 func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
 	if attacker.ability == null:
 		return 0
-	attacker.spend_pp(attacker.ability.pp_cost)
+	if not attacker.spend_pp(attacker.ability.pp_cost):
+		return 0
 	match attacker.character_name:
 		"Reid":
 			return Combatant.calculate_piercing_strike(attacker)
 		"Iris":
 			return Combatant.calculate_static_touch(attacker, target)
-	return 0
+	return 0  # unknown character — ability not implemented
 
 
 func skip_turn() -> void:

@@ -222,3 +222,13 @@ func test_ability_returns_to_ticking() -> void:
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
+
+
+func test_ability_does_not_damage_when_pp_insufficient() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.current_pp = 0
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before: int = shade.current_hp
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when PP is 0")
