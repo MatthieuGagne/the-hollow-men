@@ -105,7 +105,6 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
-	_enemy_window.hide()
 	_action_menu.show()
 
 
@@ -117,7 +116,6 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 
 func execute_action(action_name: String) -> void:
 	_action_menu.hide()
-	_enemy_window.show()
 	if action_name == "attack" and not enemies.is_empty():
 		var target: Combatant = enemies[0]
 		var damage: int = Combatant.calculate_damage(_active, target)

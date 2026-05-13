@@ -18,7 +18,7 @@ func test_begin_player_turn_shows_action_menu() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	assert_true(_scene._action_menu.visible, "ActionMenu should be visible during AWAITING_INPUT")
-	assert_false(_scene._enemy_window.visible, "EnemyWindow should be hidden during AWAITING_INPUT")
+	assert_true(_scene._enemy_window.visible, "EnemyWindow should remain visible during AWAITING_INPUT")
 
 
 func test_execute_action_returns_to_ticking() -> void:
