@@ -151,10 +151,11 @@ func test_is_skipping_false_when_cooldown_zero() -> void:
 func test_piercing_strike_uses_str_only() -> void:
 	var attacker: Combatant = Combatant.new()
 	attacker.str_stat = 45
-	var damage: int = Combatant.calculate_piercing_strike(attacker)
-	# floor(45 * 0.9) = 40, floor(45 * 1.1) = 49
-	assert_gte(damage, 40, "piercing strike with str=45 must be at least 40")
-	assert_lte(damage, 50, "piercing strike with str=45 must be at most 50")
+	for _i in range(200):
+		var damage: int = Combatant.calculate_piercing_strike(attacker)
+		# floor(45 * 0.9) = 40, floor(45 * 1.1) = 49
+		assert_gte(damage, 40, "piercing strike with str=45 must be at least 40")
+		assert_lte(damage, 49, "piercing strike with str=45 must be at most 49")
 
 
 func test_static_touch_uses_psy_minus_res() -> void:
@@ -162,10 +163,11 @@ func test_static_touch_uses_psy_minus_res() -> void:
 	attacker.psy_stat = 50
 	var target: Combatant = Combatant.new()
 	target.res_stat = 10
-	var damage: int = Combatant.calculate_static_touch(attacker, target)
-	# floor((50-10) * 0.9) = 36, floor((50-10) * 1.1) = 44
-	assert_gte(damage, 36, "static touch with psy=50, res=10 must be at least 36")
-	assert_lte(damage, 44, "static touch with psy=50, res=10 must be at most 44")
+	for _i in range(200):
+		var damage: int = Combatant.calculate_static_touch(attacker, target)
+		# floor((50-10) * 0.9) = 36, floor((50-10) * 1.1) = 44
+		assert_gte(damage, 36, "static touch with psy=50, res=10 must be at least 36")
+		assert_lte(damage, 44, "static touch with psy=50, res=10 must be at most 44")
 
 
 func test_piercing_strike_minimum_1() -> void:
