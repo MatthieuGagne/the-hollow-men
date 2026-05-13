@@ -232,3 +232,86 @@ func test_ability_does_not_damage_when_pp_insufficient() -> void:
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when PP is 0")
+
+
+func _add_karim_to_party() -> Combatant:
+	var karim: Combatant = load("res://characters/karim.tres")
+	karim.reset_runtime_state()
+	_scene.party.append(karim)
+	return karim
+
+
+func test_party_targeting_ability_sets_selecting_ally() -> void:
+	var karim := _add_karim_to_party()
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY)
+
+
+func test_confirm_party_target_heals_target() -> void:
+	var karim := _add_karim_to_party()
+	var reid: Combatant = _scene.party[0]
+	reid.current_hp = 100
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_gt(reid.current_hp, 100, "Reid HP must increase after Field Suture")
+
+
+func test_confirm_party_target_caps_at_max_hp() -> void:
+	var karim := _add_karim_to_party()
+	var reid: Combatant = _scene.party[0]
+	reid.current_hp = reid.max_hp
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.current_hp, reid.max_hp, "HP must not exceed max_hp after heal")
+
+
+func test_confirm_party_target_spends_karim_pp() -> void:
+	var karim := _add_karim_to_party()
+	var pp_before: int = karim.current_pp
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(_scene.party[0])
+	assert_lt(karim.current_pp, pp_before, "Karim must spend PP on Field Suture")
+
+
+func test_confirm_party_target_returns_to_ticking() -> void:
+	var karim := _add_karim_to_party()
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(_scene.party[0])
+	assert_eq(_scene._state, _scene.BattleState.TICKING)
+
+
+func test_navigate_party_target_advances_cursor() -> void:
+	var karim := _add_karim_to_party()
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	var idx_before: int = _scene._party_target_idx
+	_scene._navigate_party_target(1)
+	assert_ne(_scene._party_target_idx, idx_before,
+		"navigating down must change target index when multiple living members exist")
+
+
+func test_navigate_party_target_skips_dead_members() -> void:
+	var karim := _add_karim_to_party()
+	_scene.party[0].current_hp = 0
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	var target: Combatant = _scene.party[_scene._party_target_idx]
+	assert_true(target.is_alive(), "initial target must be a living party member")
+
+
+func test_confirm_party_target_ignores_dead_target() -> void:
+	var karim := _add_karim_to_party()
+	var reid: Combatant = _scene.party[0]
+	reid.current_hp = 0
+	var hp_before: int = reid.current_hp
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.current_hp, hp_before, "dead target must not be healed")
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
+		"state must remain SELECTING_ALLY when dead target is confirmed")

@@ -5,8 +5,9 @@ signal battle_ended(victory: bool)
 signal combatant_updated(combatant: Combatant)
 signal player_turn_started(combatant: Combatant)
 signal player_turn_ended()
+signal party_target_changed(combatant: Combatant)
 
-enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED }
+enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY }
 
 const REID_RES  := "res://characters/reid.tres"
 const IRIS_RES  := "res://characters/iris.tres"
@@ -34,6 +35,7 @@ var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
+var _party_target_idx: int = 0
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
@@ -99,6 +101,17 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _state == BattleState.SELECTING_ALLY:
+		if event.is_action_pressed("move_up"):
+			_navigate_party_target(-1)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_down"):
+			_navigate_party_target(1)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("interact"):
+			confirm_party_target(party[_party_target_idx])
+			get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("skip_turn"):
 		skip_turn()
 		get_viewport().set_input_as_handled()
@@ -160,6 +173,12 @@ func execute_action(action_name: String) -> void:
 	if _state != BattleState.AWAITING_INPUT:
 		return
 	_action_menu.hide()
+	if action_name == "ability" \
+			and _active != null \
+			and _active.ability != null \
+			and _active.ability.targets_party:
+		_begin_party_targeting()
+		return
 	if not enemies.is_empty():
 		var target: Combatant = enemies[0]
 		var damage: int = 0
@@ -171,6 +190,44 @@ func execute_action(action_name: String) -> void:
 		if damage > 0:
 			target.take_damage(damage)
 			_spawn_damage_number(damage, $EnemyContainer)
+	_end_turn()
+	_check_win_loss()
+
+
+func _begin_party_targeting() -> void:
+	_state = BattleState.SELECTING_ALLY
+	var living: Array[Combatant] = party.filter(
+		func(p: Combatant) -> bool: return p.is_alive())
+	if living.is_empty():
+		_end_turn()
+		return
+	_party_target_idx = party.find(living[0])
+	party_target_changed.emit(party[_party_target_idx])
+
+
+func _navigate_party_target(delta: int) -> void:
+	var living: Array[Combatant] = party.filter(
+		func(p: Combatant) -> bool: return p.is_alive())
+	if living.is_empty():
+		return
+	var living_idx: int = living.find(party[_party_target_idx])
+	if living_idx < 0:
+		living_idx = 0
+	living_idx = clampi(living_idx + delta, 0, living.size() - 1)
+	_party_target_idx = party.find(living[living_idx])
+	party_target_changed.emit(party[_party_target_idx])
+
+
+func confirm_party_target(target: Combatant) -> void:
+	if not target.is_alive():
+		return
+	if _active == null or _active.ability == null:
+		return
+	if not _active.spend_pp(_active.ability.pp_cost):
+		return
+	target.heal(60)
+	combatant_updated.emit(target)
+	combatant_updated.emit(_active)
 	_end_turn()
 	_check_win_loss()
 

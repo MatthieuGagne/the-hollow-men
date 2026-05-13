@@ -167,11 +167,15 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 
 
 func _on_player_turn_started(combatant: Combatant) -> void:
-	for i in range(_party.size()):
+	for i in range(mini(_party.size(), _panels.size())):
+		if not _panels[i].has_node("CursorLabel"):
+			continue
 		var cursor: Label = _panels[i].get_node("CursorLabel")
 		cursor.modulate.a = 1.0 if _party[i] == combatant else 0.0
 
 
 func _on_player_turn_ended() -> void:
-	for i in range(_party.size()):
+	for i in range(mini(_party.size(), _panels.size())):
+		if not _panels[i].has_node("CursorLabel"):
+			continue
 		_panels[i].get_node("CursorLabel").modulate.a = 0.0
