@@ -88,6 +88,10 @@ func _process(delta: float) -> void:
 		for combatant in enemies:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
+			if combatant.atb_full() and not combatant.is_dead():
+				_action_menu.hide()
+				_begin_enemy_turn(combatant)
+				return
 
 
 func _tick_atb(delta: float) -> void:
