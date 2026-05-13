@@ -89,7 +89,6 @@ func _process(delta: float) -> void:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
 			if combatant.atb_full() and not combatant.is_dead():
-				_action_menu.hide()
 				_begin_enemy_turn(combatant)
 				return
 
@@ -139,6 +138,8 @@ func _select_enemy_target() -> Combatant:
 
 
 func execute_action(action_name: String) -> void:
+	if _state != BattleState.AWAITING_INPUT:
+		return
 	_action_menu.hide()
 	if action_name == "attack" and not enemies.is_empty():
 		var target: Combatant = enemies[0]
