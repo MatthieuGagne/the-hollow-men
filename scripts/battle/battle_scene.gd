@@ -3,6 +3,8 @@ class_name BattleScene
 
 signal battle_ended(victory: bool)
 signal combatant_updated(combatant: Combatant)
+signal player_turn_started(combatant: Combatant)
+signal player_turn_ended()
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED }
 
@@ -26,6 +28,7 @@ const DAMAGE_NUMBER_FONT_SIZE:    int     = 8
 const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
 const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
+const SKIP_COOLDOWN:              float   = 4.0
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
@@ -82,6 +85,7 @@ func _setup_sprites() -> void:
 
 
 func _process(delta: float) -> void:
+	_tick_skip_cooldowns(delta)
 	if _state == BattleState.TICKING:
 		_tick_atb(delta)
 		_check_win_loss()
@@ -94,18 +98,30 @@ func _process(delta: float) -> void:
 				return
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("skip_turn"):
+		skip_turn()
+		get_viewport().set_input_as_handled()
+
+
+func _tick_skip_cooldowns(delta: float) -> void:
+	for combatant in party + enemies:
+		if combatant.is_skipping():
+			combatant.skip_cooldown = maxf(combatant.skip_cooldown - delta, 0.0)
+
+
 func _tick_atb(delta: float) -> void:
 	for combatant in party + enemies:
 		combatant.tick_atb(delta)
 		combatant_updated.emit(combatant)
 
 	for combatant in party:
-		if combatant.atb_full() and not combatant.is_dead():
+		if combatant.atb_full() and not combatant.is_dead() and not combatant.is_skipping():
 			_begin_player_turn(combatant)
 			return
 
 	for combatant in enemies:
-		if combatant.atb_full() and not combatant.is_dead():
+		if combatant.atb_full() and not combatant.is_dead() and not combatant.is_skipping():
 			_begin_enemy_turn(combatant)
 			return
 
@@ -114,6 +130,7 @@ func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
 	_action_menu.show()
+	player_turn_started.emit(combatant)
 
 
 func _begin_enemy_turn(combatant: Combatant) -> void:
@@ -151,7 +168,19 @@ func execute_action(action_name: String) -> void:
 	_check_win_loss()
 
 
+func skip_turn() -> void:
+	if _state != BattleState.AWAITING_INPUT:
+		return
+	_active.skip_cooldown = SKIP_COOLDOWN
+	_active = null
+	_action_menu.hide()
+	_state = BattleState.TICKING
+	player_turn_ended.emit()
+
+
 func _end_turn() -> void:
+	if _active and _active.is_player_controlled:
+		player_turn_ended.emit()
 	if _active:
 		_active.consume_atb()
 		_active = null
