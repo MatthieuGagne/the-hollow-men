@@ -11,9 +11,12 @@ const NAME_MIN_WIDTH: int = 36
 const STAT_NUM_WIDTH: int = 26
 const ATB_MIN_WIDTH: int  = 44
 const CURSOR_MIN_WIDTH: int = 8
+const ATB_DRAIN_DURATION: float = 0.15
+const ATB_DRAIN_THRESHOLD: float = 10.0
 
 var _party: Array[Combatant] = []
 var _panels: Array[Control] = []
+var _draining: Dictionary = {}
 
 
 func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> void:
@@ -162,7 +165,14 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 	pp_label.text = str(combatant.current_pp)
 	pp_label.modulate = COLOR_PP
 
-	atb_bar.value = combatant.atb_ratio() * 100.0
+	var target_atb: float = combatant.atb_ratio() * 100.0
+	if not _draining.get(panel, false) and atb_bar.value > target_atb + ATB_DRAIN_THRESHOLD:
+		_draining[panel] = true
+		var tween := create_tween()
+		tween.tween_property(atb_bar, "value", target_atb, ATB_DRAIN_DURATION)
+		tween.finished.connect(func(): _draining[panel] = false)
+	elif not _draining.get(panel, false):
+		atb_bar.value = target_atb
 	atb_bar.modulate = COLOR_ATB
 	panel.modulate.a = 0.4 if combatant.is_dead() else 1.0
 
