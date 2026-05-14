@@ -367,6 +367,28 @@ func test_ability_emits_combatant_updated_for_attacker() -> void:
 	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
 
 
+func test_ability_spawns_pp_cost_label_over_attacker() -> void:
+	var reid: Combatant = _scene.party[0]
+	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
+	var child_count_before: int = reid_sprite.get_child_count()
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_gt(reid_sprite.get_child_count(), child_count_before,
+		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
+
+
+func test_party_ability_spawns_pp_cost_label_over_attacker() -> void:
+	var karim := _add_karim_to_party()
+	var karim_idx: int = _scene.party.find(karim)
+	var karim_sprite: Node2D = _scene.get_node("PartyContainer").get_child(karim_idx)
+	var child_count_before: int = karim_sprite.get_child_count()
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(_scene.party[0])
+	assert_gt(karim_sprite.get_child_count(), child_count_before,
+		"a floating PP cost label must be spawned over Karim's sprite after Field Suture")
+
+
 # --- Pause tests ---
 
 func test_toggle_pause_from_ticking_enters_paused() -> void:
