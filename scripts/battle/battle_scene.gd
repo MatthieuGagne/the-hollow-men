@@ -43,6 +43,7 @@ var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 var _party_target_idx: int = 0
 var _pre_pause_state: BattleState = BattleState.TICKING
+var _interrupted_player: Combatant = null
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
@@ -119,6 +120,7 @@ func _process(delta: float) -> void:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
 			if combatant.atb_full() and not combatant.is_dead():
+				_interrupted_player = _active
 				_begin_enemy_turn(combatant)
 				return
 
@@ -314,7 +316,13 @@ func _end_turn() -> void:
 	if _active:
 		_active.consume_atb()
 		_active = null
-	_state = BattleState.TICKING
+	if _interrupted_player != null and _interrupted_player.is_alive() and _interrupted_player.atb_full():
+		var player := _interrupted_player
+		_interrupted_player = null
+		_begin_player_turn(player)
+	else:
+		_interrupted_player = null
+		_state = BattleState.TICKING
 
 
 func _check_win_loss() -> void:

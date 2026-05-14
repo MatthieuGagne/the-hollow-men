@@ -367,6 +367,55 @@ func test_ability_emits_combatant_updated_for_attacker() -> void:
 	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
 
 
+func test_interrupted_player_saved_when_enemy_interrupts() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(iris)
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_eq(_scene._interrupted_player, iris,
+		"_interrupted_player must be set when enemy interrupts during AWAITING_INPUT")
+
+
+func test_end_turn_restores_interrupted_player() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	iris.atb = Combatant.ATB_MAX
+	_scene._interrupted_player = iris
+	_scene._active = shade
+	shade.atb = Combatant.ATB_MAX
+	_scene._state = _scene.BattleState.ANIMATING
+	_scene._end_turn()
+	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
+		"state must be AWAITING_INPUT when interrupted player is restored")
+	assert_eq(_scene._active, iris,
+		"_active must be the interrupted player after enemy turn ends")
+
+
+func test_end_turn_does_not_restore_dead_interrupted_player() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	iris.current_hp = 0
+	_scene._interrupted_player = iris
+	_scene._active = shade
+	shade.atb = Combatant.ATB_MAX
+	_scene._state = _scene.BattleState.ANIMATING
+	_scene._end_turn()
+	assert_eq(_scene._state, _scene.BattleState.TICKING,
+		"must fall through to TICKING if the interrupted player is dead")
+	assert_null(_scene._interrupted_player,
+		"_interrupted_player must be cleared when the interrupted player is dead")
+
+
+func test_skip_does_not_set_interrupted_player() -> void:
+	var reid: Combatant = _scene.party[0]
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	_scene.skip_turn()
+	assert_null(_scene._interrupted_player,
+		"skip must not set _interrupted_player — the player voluntarily ceded priority")
+
+
 func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	var reid: Combatant = _scene.party[0]
 	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
