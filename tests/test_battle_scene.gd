@@ -359,6 +359,79 @@ func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
 		"Void Calculus must not deal damage when PP is 0")
 
 
+func test_ability_emits_combatant_updated_for_attacker() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	watch_signals(_scene)
+	_scene.execute_action("ability")
+	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
+
+
+func test_enemy_attacks_during_awaiting_input_state_unchanged() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(iris)
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
+		"state must remain AWAITING_INPUT when enemy attacks during player's action menu")
+
+
+func test_enemy_atb_consumed_after_attacking_during_awaiting_input() -> void:
+	var iris: Combatant = _scene.party[1]
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(iris)
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_eq(shade.atb, 0.0,
+		"enemy ATB must be consumed after attacking during player's turn")
+
+
+func test_enemy_attacks_during_selecting_ally_state_unchanged() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
+		"state must remain SELECTING_ALLY when enemy attacks during party targeting")
+
+
+func test_enemies_tick_during_selecting_ally() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	shade.atb = 0.0
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY)
+	_scene._process(1.0)
+	assert_gt(shade.atb, 0.0,
+		"enemy ATB must advance during SELECTING_ALLY so enemies can still attack")
+
+
+func test_ability_spawns_pp_cost_label_over_attacker() -> void:
+	var reid: Combatant = _scene.party[0]
+	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
+	var child_count_before: int = reid_sprite.get_child_count()
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_gt(reid_sprite.get_child_count(), child_count_before,
+		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
+
+
+func test_party_ability_spawns_pp_cost_label_over_attacker() -> void:
+	var karim := _add_karim_to_party()
+	var karim_idx: int = _scene.party.find(karim)
+	var karim_sprite: Node2D = _scene.get_node("PartyContainer").get_child(karim_idx)
+	var child_count_before: int = karim_sprite.get_child_count()
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(_scene.party[0])
+	assert_gt(karim_sprite.get_child_count(), child_count_before,
+		"a floating PP cost label must be spawned over Karim's sprite after Field Suture")
+
+
 # --- Pause tests ---
 
 func test_toggle_pause_from_ticking_enters_paused() -> void:

@@ -35,6 +35,7 @@ const DAMAGE_NUMBER_SPAWN_OFFSET: Vector2 = Vector2(0.0, -20.0)
 const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
 const SKIP_COOLDOWN:              float   = 2.0
+const PP_COST_COLOR := Color(0.55, 0.20, 0.85)
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
@@ -113,12 +114,17 @@ func _process(delta: float) -> void:
 	if _state == BattleState.TICKING:
 		_tick_atb(delta)
 		_check_win_loss()
-	elif _state == BattleState.AWAITING_INPUT:
+	elif _state == BattleState.AWAITING_INPUT or _state == BattleState.SELECTING_ALLY:
 		for combatant in enemies:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
 			if combatant.atb_full() and not combatant.is_dead():
-				_begin_enemy_turn(combatant)
+				_enemy_attack_without_interrupting(combatant)
+				_check_win_loss()
+				if _state == BattleState.ENDED:
+					return
+				if _active != null and _active.is_dead():
+					_end_turn()
 				return
 
 
@@ -202,6 +208,17 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 	_check_win_loss()
 
 
+func _enemy_attack_without_interrupting(combatant: Combatant) -> void:
+	var target: Combatant = _select_enemy_target()
+	if target:
+		var damage: int = Combatant.calculate_damage(combatant, target)
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+		var idx: int = party.find(target)
+		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
+	combatant.consume_atb()
+
+
 func _select_enemy_target() -> Combatant:
 	var living: Array[Combatant] = party.filter(func(p: Combatant) -> bool: return p.is_alive())
 	if living.is_empty():
@@ -230,6 +247,12 @@ func execute_action(action_name: String) -> void:
 		if damage > 0:
 			target.take_damage(damage)
 			_spawn_damage_number(damage, $EnemyContainer)
+		if action_name == "ability" and _active != null and _active.ability != null:
+			combatant_updated.emit(_active)
+			var attacker_idx: int = party.find(_active)
+			if attacker_idx >= 0:
+				_spawn_damage_number(-_active.ability.pp_cost,
+					$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 	_end_turn()
 	_check_win_loss()
 
@@ -268,6 +291,10 @@ func confirm_party_target(target: Combatant) -> void:
 	target.heal(60)
 	combatant_updated.emit(target)
 	combatant_updated.emit(_active)
+	var attacker_idx: int = party.find(_active)
+	if attacker_idx >= 0:
+		_spawn_damage_number(-_active.ability.pp_cost,
+			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 	_end_turn()
 	_check_win_loss()
 
@@ -318,9 +345,10 @@ func _check_win_loss() -> void:
 		battle_ended.emit(false)
 
 
-func _spawn_damage_number(amount: int, container: Node2D) -> void:
+func _spawn_damage_number(amount: int, container: Node2D, color: Color = Color.WHITE) -> void:
 	var label := Label.new()
 	label.text = str(amount)
+	label.modulate = color
 	label.position = DAMAGE_NUMBER_SPAWN_OFFSET
 	label.add_theme_font_size_override("font_size", DAMAGE_NUMBER_FONT_SIZE)
 	container.add_child(label)
