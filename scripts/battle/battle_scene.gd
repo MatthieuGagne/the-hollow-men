@@ -120,7 +120,8 @@ func _process(delta: float) -> void:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
 			if combatant.atb_full() and not combatant.is_dead():
-				_interrupted_player = _active
+				if _active != null and _active.is_player_controlled:
+					_interrupted_player = _active
 				_begin_enemy_turn(combatant)
 				return
 
@@ -316,6 +317,7 @@ func _end_turn() -> void:
 	if _active:
 		_active.consume_atb()
 		_active = null
+	# Safe to call _begin_player_turn here — enemy turns serialize through ANIMATING state.
 	if _interrupted_player != null and _interrupted_player.is_alive() and _interrupted_player.atb_full():
 		var player := _interrupted_player
 		_interrupted_player = null
