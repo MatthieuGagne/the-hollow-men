@@ -124,6 +124,8 @@ func _process(delta: float) -> void:
 				if _active != null and _active.is_player_controlled:
 					_interrupted_player = _active
 					_targeting_interrupted = (_state == BattleState.SELECTING_ALLY)
+					if not _targeting_interrupted:
+						_action_menu.hide()
 				_begin_enemy_turn(combatant)
 				return
 
