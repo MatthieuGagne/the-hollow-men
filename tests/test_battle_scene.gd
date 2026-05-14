@@ -459,3 +459,22 @@ func test_unpause_emits_pause_toggled_false() -> void:
 	watch_signals(_scene)
 	_scene._toggle_pause()
 	assert_signal_emitted_with_parameters(_scene, "pause_toggled", [false])
+
+
+# --- PausedLabel visibility tests ---
+
+func test_paused_label_hidden_by_default() -> void:
+	assert_false(_scene._paused_label.visible, "PausedLabel must be hidden at start")
+
+
+func test_paused_label_shown_on_pause() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	assert_true(_scene._paused_label.visible, "PausedLabel must be visible while paused")
+
+
+func test_paused_label_hidden_on_unpause() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	_scene._toggle_pause()
+	assert_false(_scene._paused_label.visible, "PausedLabel must be hidden after unpausing")
