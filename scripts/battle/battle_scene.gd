@@ -43,8 +43,6 @@ var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 var _party_target_idx: int = 0
 var _pre_pause_state: BattleState = BattleState.TICKING
-var _interrupted_player: Combatant = null
-var _targeting_interrupted: bool = false
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
@@ -121,12 +119,12 @@ func _process(delta: float) -> void:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
 			if combatant.atb_full() and not combatant.is_dead():
-				if _active != null and _active.is_player_controlled:
-					_interrupted_player = _active
-					_targeting_interrupted = (_state == BattleState.SELECTING_ALLY)
-					if not _targeting_interrupted:
-						_action_menu.set_input_blocked(true)
-				_begin_enemy_turn(combatant)
+				_enemy_attack_without_interrupting(combatant)
+				_check_win_loss()
+				if _state == BattleState.ENDED:
+					return
+				if _active != null and _active.is_dead():
+					_end_turn()
 				return
 
 
@@ -190,7 +188,6 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
-	_action_menu.set_input_blocked(false)
 	_action_menu.setup(_active)
 	_action_menu.show()
 	player_turn_started.emit(combatant)
@@ -209,6 +206,17 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 	await get_tree().create_timer(0.3).timeout
 	_end_turn()
 	_check_win_loss()
+
+
+func _enemy_attack_without_interrupting(combatant: Combatant) -> void:
+	var target: Combatant = _select_enemy_target()
+	if target:
+		var damage: int = Combatant.calculate_damage(combatant, target)
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+		var idx: int = party.find(target)
+		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
+	combatant.consume_atb()
 
 
 func _select_enemy_target() -> Combatant:
@@ -322,21 +330,7 @@ func _end_turn() -> void:
 	if _active:
 		_active.consume_atb()
 		_active = null
-	# Safe to restore player here — enemy turns serialize through ANIMATING state.
-	if _interrupted_player != null and _interrupted_player.is_alive() and _interrupted_player.atb_full():
-		var player := _interrupted_player
-		var was_targeting := _targeting_interrupted
-		_interrupted_player = null
-		_targeting_interrupted = false
-		if was_targeting:
-			_active = player
-			_begin_party_targeting()
-		else:
-			_begin_player_turn(player)
-	else:
-		_interrupted_player = null
-		_targeting_interrupted = false
-		_state = BattleState.TICKING
+	_state = BattleState.TICKING
 
 
 func _check_win_loss() -> void:

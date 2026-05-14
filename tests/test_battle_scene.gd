@@ -367,53 +367,35 @@ func test_ability_emits_combatant_updated_for_attacker() -> void:
 	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
 
 
-func test_interrupted_player_saved_when_enemy_interrupts() -> void:
+func test_enemy_attacks_during_awaiting_input_state_unchanged() -> void:
 	var iris: Combatant = _scene.party[1]
 	var shade: Combatant = _scene.enemies[0]
 	_scene._begin_player_turn(iris)
 	shade.atb = Combatant.ATB_MAX
 	_scene._process(0.0)
-	assert_eq(_scene._interrupted_player, iris,
-		"_interrupted_player must be set when enemy interrupts during AWAITING_INPUT")
-
-
-func test_end_turn_restores_interrupted_player() -> void:
-	var iris: Combatant = _scene.party[1]
-	var shade: Combatant = _scene.enemies[0]
-	iris.atb = Combatant.ATB_MAX
-	_scene._interrupted_player = iris
-	_scene._active = shade
-	shade.atb = Combatant.ATB_MAX
-	_scene._state = _scene.BattleState.ANIMATING
-	_scene._end_turn()
 	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
-		"state must be AWAITING_INPUT when interrupted player is restored")
-	assert_eq(_scene._active, iris,
-		"_active must be the interrupted player after enemy turn ends")
+		"state must remain AWAITING_INPUT when enemy attacks during player's action menu")
 
 
-func test_end_turn_does_not_restore_dead_interrupted_player() -> void:
+func test_enemy_atb_consumed_after_attacking_during_awaiting_input() -> void:
 	var iris: Combatant = _scene.party[1]
 	var shade: Combatant = _scene.enemies[0]
-	iris.current_hp = 0
-	_scene._interrupted_player = iris
-	_scene._active = shade
+	_scene._begin_player_turn(iris)
 	shade.atb = Combatant.ATB_MAX
-	_scene._state = _scene.BattleState.ANIMATING
-	_scene._end_turn()
-	assert_eq(_scene._state, _scene.BattleState.TICKING,
-		"must fall through to TICKING if the interrupted player is dead")
-	assert_null(_scene._interrupted_player,
-		"_interrupted_player must be cleared when the interrupted player is dead")
+	_scene._process(0.0)
+	assert_eq(shade.atb, 0.0,
+		"enemy ATB must be consumed after attacking during player's turn")
 
 
-func test_skip_does_not_set_interrupted_player() -> void:
-	var reid: Combatant = _scene.party[0]
-	reid.atb = Combatant.ATB_MAX
-	_scene._begin_player_turn(reid)
-	_scene.skip_turn()
-	assert_null(_scene._interrupted_player,
-		"skip must not set _interrupted_player — the player voluntarily ceded priority")
+func test_enemy_attacks_during_selecting_ally_state_unchanged() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
+		"state must remain SELECTING_ALLY when enemy attacks during party targeting")
 
 
 func test_enemies_tick_during_selecting_ally() -> void:
@@ -426,34 +408,6 @@ func test_enemies_tick_during_selecting_ally() -> void:
 	_scene._process(1.0)
 	assert_gt(shade.atb, 0.0,
 		"enemy ATB must advance during SELECTING_ALLY so enemies can still attack")
-
-
-func test_targeting_interrupted_set_when_enemy_fills_atb_during_selecting_ally() -> void:
-	var karim := _add_karim_to_party()
-	var shade: Combatant = _scene.enemies[0]
-	_scene._begin_player_turn(karim)
-	_scene.execute_action("ability")
-	shade.atb = Combatant.ATB_MAX
-	_scene._process(0.0)
-	assert_true(_scene._targeting_interrupted,
-		"_targeting_interrupted must be set when enemy interrupts during SELECTING_ALLY")
-
-
-func test_end_turn_restores_party_targeting_after_interruption() -> void:
-	var karim := _add_karim_to_party()
-	var shade: Combatant = _scene.enemies[0]
-	karim.atb = Combatant.ATB_MAX
-	_scene._active = karim
-	_scene._state = _scene.BattleState.SELECTING_ALLY
-	_scene._interrupted_player = karim
-	_scene._targeting_interrupted = true
-	_scene._active = shade
-	shade.atb = Combatant.ATB_MAX
-	_scene._end_turn()
-	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
-		"state must return to SELECTING_ALLY when interrupted player was in party targeting")
-	assert_eq(_scene._active, karim,
-		"_active must be the interrupted player after enemy turn ends mid-targeting")
 
 
 func test_ability_spawns_pp_cost_label_over_attacker() -> void:
