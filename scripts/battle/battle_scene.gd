@@ -230,6 +230,8 @@ func execute_action(action_name: String) -> void:
 		if damage > 0:
 			target.take_damage(damage)
 			_spawn_damage_number(damage, $EnemyContainer)
+		if action_name == "ability" and _active != null:
+			combatant_updated.emit(_active)
 	_end_turn()
 	_check_win_loss()
 

@@ -359,6 +359,14 @@ func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
 		"Void Calculus must not deal damage when PP is 0")
 
 
+func test_ability_emits_combatant_updated_for_attacker() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	watch_signals(_scene)
+	_scene.execute_action("ability")
+	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
+
+
 # --- Pause tests ---
 
 func test_toggle_pause_from_ticking_enters_paused() -> void:
