@@ -71,6 +71,7 @@ func _ready() -> void:
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
+	pause_toggled.connect(_action_menu._on_pause_toggled)
 	battle_ended.connect(_on_battle_ended)
 	combatant_updated.connect(_on_combatant_updated)
 

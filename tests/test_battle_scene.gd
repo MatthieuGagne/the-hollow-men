@@ -428,6 +428,24 @@ func test_atb_frozen_while_paused() -> void:
 	assert_eq(shade.atb, 0.0, "ATB must not advance while paused")
 
 
+# --- ActionMenu pause guard test ---
+
+func test_interact_blocked_while_paused() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)   # AWAITING_INPUT, ActionMenu visible
+	_scene._toggle_pause()            # → PAUSED; signal fires → ActionMenu._is_paused = true
+
+	watch_signals(_scene._action_menu)
+
+	var ev := InputEventAction.new()
+	ev.action = "interact"
+	ev.pressed = true
+	_scene._action_menu._unhandled_input(ev)
+
+	assert_signal_not_emitted(_scene._action_menu, "action_selected",
+		"action_selected must not fire while paused")
+
+
 func test_pause_emits_pause_toggled_true() -> void:
 	_scene._state = _scene.BattleState.TICKING
 	watch_signals(_scene)
