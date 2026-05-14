@@ -357,3 +357,87 @@ func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
 	_scene.execute_action("ability")
 	assert_eq(shade.current_hp, hp_before,
 		"Void Calculus must not deal damage when PP is 0")
+
+
+# --- Pause tests ---
+
+func test_toggle_pause_from_ticking_enters_paused() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.PAUSED)
+
+
+func test_toggle_pause_stores_pre_pause_state_ticking() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	assert_eq(_scene._pre_pause_state, _scene.BattleState.TICKING)
+
+
+func test_toggle_pause_from_awaiting_input_enters_paused() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.PAUSED)
+
+
+func test_toggle_pause_stores_pre_pause_state_awaiting_input() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene._toggle_pause()
+	assert_eq(_scene._pre_pause_state, _scene.BattleState.AWAITING_INPUT)
+
+
+func test_toggle_pause_from_selecting_ally_enters_paused() -> void:
+	_scene._state = _scene.BattleState.SELECTING_ALLY
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.PAUSED)
+
+
+func test_toggle_pause_ignored_from_animating() -> void:
+	_scene._state = _scene.BattleState.ANIMATING
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.ANIMATING)
+
+
+func test_toggle_pause_ignored_from_ended() -> void:
+	_scene._state = _scene.BattleState.ENDED
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.ENDED)
+
+
+func test_unpause_restores_ticking() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.TICKING)
+
+
+func test_unpause_restores_awaiting_input() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene._toggle_pause()
+	_scene._toggle_pause()
+	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT)
+
+
+func test_atb_frozen_while_paused() -> void:
+	var shade: Combatant = _scene.enemies[0]
+	shade.atb = 0.0
+	_scene._state = _scene.BattleState.PAUSED
+	_scene._process(1.0)
+	assert_eq(shade.atb, 0.0, "ATB must not advance while paused")
+
+
+func test_pause_emits_pause_toggled_true() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	watch_signals(_scene)
+	_scene._toggle_pause()
+	assert_signal_emitted_with_parameters(_scene, "pause_toggled", [true])
+
+
+func test_unpause_emits_pause_toggled_false() -> void:
+	_scene._state = _scene.BattleState.TICKING
+	_scene._toggle_pause()
+	watch_signals(_scene)
+	_scene._toggle_pause()
+	assert_signal_emitted_with_parameters(_scene, "pause_toggled", [false])
