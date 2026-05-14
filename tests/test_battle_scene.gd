@@ -416,6 +416,46 @@ func test_skip_does_not_set_interrupted_player() -> void:
 		"skip must not set _interrupted_player — the player voluntarily ceded priority")
 
 
+func test_enemies_tick_during_selecting_ally() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	shade.atb = 0.0
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY)
+	_scene._process(1.0)
+	assert_gt(shade.atb, 0.0,
+		"enemy ATB must advance during SELECTING_ALLY so enemies can still attack")
+
+
+func test_targeting_interrupted_set_when_enemy_fills_atb_during_selecting_ally() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	shade.atb = Combatant.ATB_MAX
+	_scene._process(0.0)
+	assert_true(_scene._targeting_interrupted,
+		"_targeting_interrupted must be set when enemy interrupts during SELECTING_ALLY")
+
+
+func test_end_turn_restores_party_targeting_after_interruption() -> void:
+	var karim := _add_karim_to_party()
+	var shade: Combatant = _scene.enemies[0]
+	karim.atb = Combatant.ATB_MAX
+	_scene._active = karim
+	_scene._state = _scene.BattleState.SELECTING_ALLY
+	_scene._interrupted_player = karim
+	_scene._targeting_interrupted = true
+	_scene._active = shade
+	shade.atb = Combatant.ATB_MAX
+	_scene._end_turn()
+	assert_eq(_scene._state, _scene.BattleState.SELECTING_ALLY,
+		"state must return to SELECTING_ALLY when interrupted player was in party targeting")
+	assert_eq(_scene._active, karim,
+		"_active must be the interrupted player after enemy turn ends mid-targeting")
+
+
 func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	var reid: Combatant = _scene.party[0]
 	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
