@@ -6,8 +6,9 @@ signal combatant_updated(combatant: Combatant)
 signal player_turn_started(combatant: Combatant)
 signal player_turn_ended()
 signal party_target_changed(combatant: Combatant)
+signal pause_toggled(paused: bool)
 
-enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY }
+enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, PAUSED }
 
 const REID_RES   := "res://characters/reid.tres"
 const IRIS_RES   := "res://characters/iris.tres"
@@ -40,11 +41,13 @@ var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 var _party_target_idx: int = 0
+var _pre_pause_state: BattleState = BattleState.TICKING
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
 @onready var _enemy_window: Panel = $UI/HUD/EnemyWindow
 @onready var _victory_label: Label = $UI/VictoryLabel
 @onready var _defeat_label: Label = $UI/DefeatLabel
+@onready var _paused_label: Label = $UI/PausedLabel
 
 
 func _ready() -> void:
@@ -69,6 +72,7 @@ func _ready() -> void:
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
+	pause_toggled.connect(_action_menu._on_pause_toggled)
 	battle_ended.connect(_on_battle_ended)
 	combatant_updated.connect(_on_combatant_updated)
 
@@ -104,6 +108,8 @@ func _setup_sprites() -> void:
 
 func _process(delta: float) -> void:
 	_tick_skip_cooldowns(delta)
+	if _state == BattleState.PAUSED:
+		return
 	if _state == BattleState.TICKING:
 		_tick_atb(delta)
 		_check_win_loss()
@@ -117,6 +123,12 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause_battle"):
+		_toggle_pause()
+		get_viewport().set_input_as_handled()
+		return
+	if _state == BattleState.PAUSED:
+		return
 	if _state == BattleState.SELECTING_ALLY:
 		if event.is_action_pressed("move_up"):
 			_navigate_party_target(-1)
@@ -131,6 +143,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("skip_turn"):
 		skip_turn()
 		get_viewport().set_input_as_handled()
+
+
+func _toggle_pause() -> void:
+	if _state == BattleState.PAUSED:
+		_state = _pre_pause_state
+		pause_toggled.emit(false)
+		_paused_label.hide()
+	elif _state in [BattleState.TICKING, BattleState.AWAITING_INPUT, BattleState.SELECTING_ALLY]:
+		_pre_pause_state = _state
+		_state = BattleState.PAUSED
+		pause_toggled.emit(true)
+		_paused_label.show()
 
 
 func _tick_skip_cooldowns(delta: float) -> void:

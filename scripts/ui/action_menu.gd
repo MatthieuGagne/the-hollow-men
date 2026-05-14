@@ -11,6 +11,7 @@ var _rows: Array[Label] = []
 var _selected_idx: int = 0
 var _row_count: int = 1
 var _ability_affordable: bool = false
+var _is_paused: bool = false
 
 
 func _ready() -> void:
@@ -72,8 +73,14 @@ func _confirm_selection() -> void:
 		action_selected.emit("ability")
 
 
+func _on_pause_toggled(paused: bool) -> void:
+	_is_paused = paused
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		return
+	if _is_paused:
 		return
 	if event.is_action_pressed("move_up"):
 		_navigate(-1)
