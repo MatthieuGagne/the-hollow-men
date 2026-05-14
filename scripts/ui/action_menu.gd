@@ -76,7 +76,6 @@ func _confirm_selection() -> void:
 
 func set_input_blocked(blocked: bool) -> void:
 	_is_input_blocked = blocked
-	modulate.a = 0.5 if blocked else 1.0
 
 
 func _on_pause_toggled(paused: bool) -> void:
