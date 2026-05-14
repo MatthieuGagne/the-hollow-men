@@ -125,7 +125,7 @@ func _process(delta: float) -> void:
 					_interrupted_player = _active
 					_targeting_interrupted = (_state == BattleState.SELECTING_ALLY)
 					if not _targeting_interrupted:
-						_action_menu.hide()
+						_action_menu.set_input_blocked(true)
 				_begin_enemy_turn(combatant)
 				return
 
@@ -190,6 +190,7 @@ func _tick_atb(delta: float) -> void:
 func _begin_player_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.AWAITING_INPUT
+	_action_menu.set_input_blocked(false)
 	_action_menu.setup(_active)
 	_action_menu.show()
 	player_turn_started.emit(combatant)
