@@ -19,7 +19,8 @@ const REID_TEX          := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX          := "res://assets/sprites/characters/iris.png"
 const KARIM_BATTLE_TEX  := "res://assets/sprites/characters/karim_battle.png"
 const MARGOT_BATTLE_TEX := "res://assets/sprites/characters/margot_battle.png"
-const SPRITE_FRAME_HEIGHT: int = 24  # reid.png / iris.png: 144px sheet, vframes=6
+const SPRITE_FRAME_HEIGHT: int = 24
+const PARTY_VFRAMES: Array[int] = [8, 7, 6, 6]  # reid: 192px/24, iris: 168px/24, karim/margot: 144px/24
 const SPRITE_GAP_PX: int       = 1
 
 const SLOT_POSITIONS: Array[int] = [
@@ -87,9 +88,9 @@ func _setup_sprites() -> void:
 
 	for i in range(party_textures.size()):
 		var sprite := Sprite2D.new()
-		sprite.vframes = 6
-		sprite.frame = 0
-		sprite.flip_h = true
+		sprite.vframes = PARTY_VFRAMES[i]
+		sprite.frame = 2 if i < 2 else 0  # reid/iris: left-facing (row 2) faces enemies; karim/margot: battle frame
+		sprite.flip_h = i >= 2  # karim/margot battle sprites face right natively; reid/iris left-facing sprite already faces enemies
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
 		sprite.texture = load(party_textures[i])
 		sprite.modulate = party_modulates[i]
