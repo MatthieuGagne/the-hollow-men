@@ -551,3 +551,23 @@ func test_paused_label_hidden_on_unpause() -> void:
 	_scene._toggle_pause()
 	_scene._toggle_pause()
 	assert_false(_scene._paused_label.visible, "PausedLabel must be hidden after unpausing")
+
+
+func test_try_again_button_hidden_by_default() -> void:
+	assert_false(_scene._try_again_button.visible,
+		"TryAgainButton must be hidden at battle start")
+
+func test_victory_shows_victory_label() -> void:
+	_scene._on_battle_ended(true)
+	assert_true(_scene._victory_label.visible,
+		"VictoryLabel must be visible immediately after victory")
+
+func test_defeat_shows_defeat_label() -> void:
+	_scene._on_battle_ended(false)
+	assert_true(_scene._defeat_label.visible,
+		"DefeatLabel must be visible after defeat")
+
+func test_defeat_shows_try_again_button() -> void:
+	_scene._on_battle_ended(false)
+	assert_true(_scene._try_again_button.visible,
+		"TryAgainButton must be visible after defeat")
