@@ -17,10 +17,10 @@ const MARGOT_RES := "res://characters/margot.tres"
 const SHADE_RES  := "res://characters/enemies/shade.tres"
 const REID_TEX          := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX          := "res://assets/sprites/characters/iris.png"
-const KARIM_BATTLE_TEX  := "res://assets/sprites/characters/karim_battle.png"
+const KARIM_TEX         := "res://assets/sprites/characters/karim.png"
 const MARGOT_BATTLE_TEX := "res://assets/sprites/characters/margot_battle.png"
 const SPRITE_FRAME_HEIGHT: int = 24
-const PARTY_VFRAMES: Array[int] = [8, 7, 6, 6]  # reid: 192px/24, iris: 168px/24, karim/margot: 144px/24
+const PARTY_VFRAMES: Array[int] = [8, 8, 8, 6]  # reid/iris/karim: 192px/24, margot: 144px/24
 const SPRITE_GAP_PX: int       = 1
 
 const SLOT_POSITIONS: Array[int] = [
@@ -80,7 +80,7 @@ func _ready() -> void:
 
 func _setup_sprites() -> void:
 	var party_textures: Array[String] = [
-		REID_TEX, IRIS_TEX, KARIM_BATTLE_TEX, MARGOT_BATTLE_TEX
+		REID_TEX, IRIS_TEX, KARIM_TEX, MARGOT_BATTLE_TEX
 	]
 	var party_modulates: Array[Color] = [
 		Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE
@@ -89,8 +89,8 @@ func _setup_sprites() -> void:
 	for i in range(party_textures.size()):
 		var sprite := Sprite2D.new()
 		sprite.vframes = PARTY_VFRAMES[i]
-		sprite.frame = 2 if i < 2 else 0  # reid/iris: left-facing (row 2) faces enemies; karim/margot: battle frame
-		sprite.flip_h = i >= 2  # karim/margot battle sprites face right natively; reid/iris left-facing sprite already faces enemies
+		sprite.frame = 2 if i < 3 else 0  # reid/iris/karim: left-facing (row 2); margot: battle frame
+		sprite.flip_h = i >= 3  # margot battle sprite faces right natively; others use left-facing frame
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
 		sprite.texture = load(party_textures[i])
 		sprite.modulate = party_modulates[i]
