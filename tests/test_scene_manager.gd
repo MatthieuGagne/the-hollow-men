@@ -11,3 +11,12 @@ func test_scene_manager_has_pre_scene_change_signal() -> void:
 
 func test_scene_manager_has_change_scene_method() -> void:
 	assert_true(SceneManager.has_method("change_scene"))
+
+
+func test_scene_manager_has_fade_overlay() -> void:
+	assert_not_null(SceneManager._overlay,
+		"SceneManager must have a ColorRect fade overlay after _ready")
+
+func test_fade_overlay_initially_transparent() -> void:
+	assert_eq(SceneManager._overlay.modulate.a, 0.0,
+		"fade overlay must start fully transparent")
