@@ -17,9 +17,11 @@ const MARGOT_RES := "res://characters/margot.tres"
 const SHADE_RES  := "res://characters/enemies/shade.tres"
 const REID_TEX          := "res://assets/sprites/characters/reid.png"
 const IRIS_TEX          := "res://assets/sprites/characters/iris.png"
-const KARIM_BATTLE_TEX  := "res://assets/sprites/characters/karim_battle.png"
-const MARGOT_BATTLE_TEX := "res://assets/sprites/characters/margot_battle.png"
-const SPRITE_FRAME_HEIGHT: int = 24  # reid.png / iris.png: 144px sheet, vframes=6
+const KARIM_TEX         := "res://assets/sprites/characters/karim.png"
+const MARGOT_TEX        := "res://assets/sprites/characters/margot.png"
+const SHADE_TEX         := "res://assets/sprites/enemies/shade.png"
+const SPRITE_FRAME_HEIGHT: int = 24
+const PARTY_VFRAMES: Array[int] = [8, 8, 8, 8]  # reid/iris/karim/margot: 192px/24
 const SPRITE_GAP_PX: int       = 1
 
 const SLOT_POSITIONS: Array[int] = [
@@ -79,7 +81,7 @@ func _ready() -> void:
 
 func _setup_sprites() -> void:
 	var party_textures: Array[String] = [
-		REID_TEX, IRIS_TEX, KARIM_BATTLE_TEX, MARGOT_BATTLE_TEX
+		REID_TEX, IRIS_TEX, KARIM_TEX, MARGOT_TEX
 	]
 	var party_modulates: Array[Color] = [
 		Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE
@@ -87,19 +89,17 @@ func _setup_sprites() -> void:
 
 	for i in range(party_textures.size()):
 		var sprite := Sprite2D.new()
-		sprite.vframes = 6
-		sprite.frame = 0
-		sprite.flip_h = true
+		sprite.vframes = PARTY_VFRAMES[i]
+		sprite.frame = 2  # all characters: left-facing (row 2) faces enemies
+		sprite.flip_h = false
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
 		sprite.texture = load(party_textures[i])
 		sprite.modulate = party_modulates[i]
 		$PartyContainer.add_child(sprite)
 
-	var shade_rect := ColorRect.new()
-	shade_rect.color = Color(0.5, 0.5, 0.5)
-	shade_rect.size = Vector2(32, 32)
-	shade_rect.position = Vector2(-16, -16)
-	$EnemyContainer.add_child(shade_rect)
+	var shade_sprite := Sprite2D.new()
+	shade_sprite.texture = load(SHADE_TEX)
+	$EnemyContainer.add_child(shade_sprite)
 
 
 func _process(delta: float) -> void:

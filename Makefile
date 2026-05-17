@@ -9,6 +9,8 @@ assets: copy-art sync-tsx import
 copy-art:
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/tilesets/ assets/tilesets/
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/objects/ assets/objects/
+	rsync -a --include="*/" --include="*.png" --exclude="*" art/characters/ assets/sprites/characters/
+	rsync -a --include="*/" --include="*.png" --exclude="*" art/enemies/ assets/sprites/enemies/
 
 # Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
 sync-tsx:

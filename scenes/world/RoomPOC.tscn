@@ -43,7 +43,7 @@ shape = SubResource("RectangleShape2D_1")
 texture = ExtResource("3_sprites")
 offset = Vector2(0, -4)
 hframes = 1
-vframes = 6
+vframes = 8
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1391117161]
 limit_left = 0
