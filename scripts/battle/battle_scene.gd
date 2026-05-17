@@ -37,6 +37,9 @@ const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
 const SKIP_COOLDOWN:              float   = 2.0
 const PP_COST_COLOR := Color(0.55, 0.20, 0.85)
+const WORLD_SCENE:   String = "res://scenes/world/RoomPOC.tscn"
+const BATTLE_SCENE:  String = "res://scenes/battle/BattleScene.tscn"
+const VICTORY_DELAY: float  = 1.5
 
 var party: Array[Combatant] = []
 var enemies: Array[Combatant] = []
@@ -50,6 +53,7 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 @onready var _victory_label: Label = $UI/VictoryLabel
 @onready var _defeat_label: Label = $UI/DefeatLabel
 @onready var _paused_label: Label = $UI/PausedLabel
+@onready var _try_again_button: Button = $UI/TryAgainButton
 
 
 func _ready() -> void:
@@ -76,6 +80,7 @@ func _ready() -> void:
 	_action_menu.action_selected.connect(execute_action)
 	pause_toggled.connect(_action_menu._on_pause_toggled)
 	battle_ended.connect(_on_battle_ended)
+	_try_again_button.pressed.connect(_on_try_again_pressed)
 	combatant_updated.connect(_on_combatant_updated)
 
 
@@ -365,5 +370,13 @@ func _on_combatant_updated(combatant: Combatant) -> void:
 func _on_battle_ended(victory: bool) -> void:
 	if victory:
 		_victory_label.show()
+		await get_tree().create_timer(VICTORY_DELAY).timeout
+		if is_inside_tree():
+			SceneManager.change_scene(WORLD_SCENE)
 	else:
 		_defeat_label.show()
+		_try_again_button.show()
+
+
+func _on_try_again_pressed() -> void:
+	SceneManager.change_scene(BATTLE_SCENE)
