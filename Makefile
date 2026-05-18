@@ -30,6 +30,7 @@ import:
 worktree-init:
 	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
 	cp $(MAIN_REPO)/dialogue/*.import dialogue/
-	cp $(MAIN_REPO)/.godot/imported/iris.yarnproject-* .godot/imported/
+	rsync -a --include="*.yarnproject-*" --include="*.yarn-*" --exclude="*" $(MAIN_REPO)/.godot/imported/ .godot/imported/
 	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
+	dotnet build
 	$(MAKE) assets
