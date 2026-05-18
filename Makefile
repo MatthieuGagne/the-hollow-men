@@ -18,6 +18,10 @@ sync-tsx:
 	python3 scripts/sync_tsx.py
 
 import:
+	@test -f .godot/mono/temp/bin/Debug/TheHollowMen.dll || \
+		(echo "ERROR: C# assemblies not built. Run 'dotnet build' first." && exit 1)
+	@test -f dialogue/iris.yarnproject.import || \
+		(echo "ERROR: Dialogue not initialized. Run 'make worktree-init' first." && exit 1)
 	DISPLAY=:0 godot --headless --editor --quit --path .
 
 # Run once after creating a new worktree — copies gitignored build artifacts
@@ -26,6 +30,7 @@ import:
 worktree-init:
 	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
 	cp $(MAIN_REPO)/dialogue/*.import dialogue/
-	cp $(MAIN_REPO)/.godot/imported/iris.yarnproject-* .godot/imported/
+	rsync -a --include="*.yarnproject-*" --include="*.yarn-*" --exclude="*" $(MAIN_REPO)/.godot/imported/ .godot/imported/
 	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
+	dotnet build
 	$(MAKE) assets

@@ -191,8 +191,8 @@ public partial class DialogueRunner : Godot.Node
                 var textProvider = new TextLineProvider();
                 textProvider.Name = nameof(TextLineProvider);
                 lineProvider = textProvider;
-                AddChild(textProvider);
                 lineProvider.YarnProject = yarnProject;
+                AddChild(textProvider);
             }
 
             return lineProvider;
