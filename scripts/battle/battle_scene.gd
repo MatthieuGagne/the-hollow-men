@@ -54,9 +54,11 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 @onready var _defeat_label: Label = $UI/DefeatLabel
 @onready var _paused_label: Label = $UI/PausedLabel
 @onready var _try_again_button: Button = $UI/TryAgainButton
+@onready var _background: Sprite2D = $Background
 
 
 func _ready() -> void:
+	_load_background()
 	var reid: Combatant = load(REID_RES)
 	reid.reset_runtime_state()
 
@@ -82,6 +84,15 @@ func _ready() -> void:
 	battle_ended.connect(_on_battle_ended)
 	_try_again_button.pressed.connect(_on_try_again_pressed)
 	combatant_updated.connect(_on_combatant_updated)
+
+
+func _load_background() -> void:
+	var id := BattleParams.background_id if BattleParams.background_id != "" else "default"
+	BattleParams.background_id = ""
+	var path := "res://assets/battle_backgrounds/%s.png" % id
+	if not ResourceLoader.exists(path):
+		path = "res://assets/battle_backgrounds/default.png"
+	_background.texture = load(path)
 
 
 func _setup_sprites() -> void:

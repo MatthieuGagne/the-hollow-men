@@ -8,9 +8,8 @@
 [node name="BattleScene" type="Node2D"]
 script = ExtResource("1_battle")
 
-[node name="Background" type="ColorRect" parent="."]
-color = Color(0.05, 0.05, 0.08, 1)
-size = Vector2(320, 180)
+[node name="Background" type="Sprite2D" parent="."]
+centered = false
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 position = Vector2(60, 70)
