@@ -11,6 +11,7 @@ copy-art:
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/objects/ assets/objects/
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/characters/ assets/sprites/characters/
 	rsync -a --include="*/" --include="*.png" --exclude="*" art/enemies/ assets/sprites/enemies/
+	rsync -a --include="*/" --include="*.png" --exclude="*" art/battle_backgrounds/ assets/battle_backgrounds/
 
 # Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
 sync-tsx:
