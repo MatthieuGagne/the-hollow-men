@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Hollow Men — Architecture</title>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --bg-panel: #13161e;
+      --bg-card: #181b24;
+      --border: #252936;
+      --accent: #5b8dee;
+      --accent-dim: #2e4880;
+      --green: #4caf82;
+      --purple: #a47cdb;
+      --gold: #c9a84c;
+      --red: #d95f5f;
+      --teal: #4db6ac;
+      --text: #cdd3e0;
+      --text-dim: #6b738a;
+      --text-bright: #eaedf5;
+      --tag-bg: #1e2333;
+      --sidebar-w: 260px;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      display: flex;
+    }
+
+    /* ─── SIDEBAR ─────────────────────────────── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    #sidebar-header {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #sidebar-header .title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    #sidebar-header .subtitle {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    #sidebar nav {
+      padding: 12px 0;
+      flex: 1;
+    }
+
+    .nav-group {
+      padding: 6px 18px 2px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    #sidebar a {
+      display: block;
+      padding: 5px 18px 5px 22px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 2px solid transparent;
+      transition: all 0.1s;
+    }
+
+    #sidebar a:hover,
+    #sidebar a.active {
+      color: var(--text-bright);
+      border-left-color: var(--accent);
+      background: rgba(91, 141, 238, 0.06);
+    }
+
+    #sidebar a .tag {
+      float: right;
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    /* ─── MAIN ────────────────────────────────── */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 40px 48px 80px;
+      max-width: 1000px;
+    }
+
+    /* ─── PAGE HEADER ─────────────────────────── */
+    .page-header {
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -0.02em;
+    }
+
+    .page-header .tagline {
+      color: var(--text-dim);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    .badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ─── SECTIONS ────────────────────────────── */
+    section {
+      margin-bottom: 56px;
+      scroll-margin-top: 24px;
+    }
+
+    section > h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-bright);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    section > h2 .section-num {
+      color: var(--text-dim);
+      font-weight: 400;
+      font-size: 13px;
+      margin-right: 8px;
+      font-family: var(--mono);
+    }
+
+    /* ─── CARDS ───────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-bright);
+      font-family: var(--mono);
+    }
+
+    .card-header .kind {
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .kind-autoload  { background: rgba(76,175,130,0.15); color: var(--green); }
+    .kind-scene     { background: rgba(91,141,238,0.15); color: var(--accent); }
+    .kind-class     { background: rgba(164,124,219,0.15); color: var(--purple); }
+    .kind-resource  { background: rgba(201,168,76,0.15);  color: var(--gold); }
+    .kind-node      { background: rgba(77,182,172,0.15);  color: var(--teal); }
+    .kind-ui        { background: rgba(217,95,95,0.15);   color: var(--red); }
+
+    .card-desc {
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .card-path {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    /* ─── PROPS / SIGNALS / METHODS ──────────── */
+    .detail-block {
+      margin-top: 12px;
+    }
+
+    .detail-block-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+
+    .item-name {
+      font-family: var(--mono);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .item-type {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .item-desc {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    .signal .item-name { color: var(--green); }
+    .method .item-name { color: var(--purple); }
+    .enum-val .item-name { color: var(--teal); }
+
+    /* ─── SCENE TREE ──────────────────────────── */
+    .scene-tree {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      line-height: 1.9;
+    }
+
+    .tree-root  { color: var(--text-bright); font-weight: 700; }
+    .tree-child { color: var(--text); }
+    .tree-type  { color: var(--text-dim); }
+    .tree-script{ color: var(--accent); }
+
+    /* ─── CALLOUT ─────────────────────────────── */
+    .callout {
+      border-left: 3px solid var(--accent);
+      background: rgba(91,141,238,0.07);
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .callout.warn {
+      border-left-color: var(--gold);
+      background: rgba(201,168,76,0.07);
+    }
+
+    /* ─── PATTERN GRID ────────────────────────── */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .pattern-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .pattern-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 5px;
+    }
+
+    .pattern-card p {
+      font-size: 12.5px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .pattern-card .example {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--teal);
+      margin-top: 6px;
+    }
+
+    /* ─── FLOW DIAGRAM ────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    .flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .flow-arrow {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    /* ─── TABLE ───────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 7px 12px;
+      border-bottom: 1px solid rgba(37,41,54,0.5);
+      vertical-align: top;
+    }
+
+    td code {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--accent);
+      background: var(--tag-bg);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* ─── DIVIDER ─────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+
+    /* ─── SCROLLBAR ───────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ─── DIAGRAMS ────────────────────────────── */
+    .diagram-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px 20px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+
+    .diagram-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .diagram-caption strong {
+      font-size: 13px;
+      color: var(--text-bright);
+    }
+
+    .diagram-caption .hint {
+      font-size: 11px;
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .mermaid {
+      display: flex;
+      justify-content: center;
+      min-width: 500px;
+    }
+
+    .mermaid svg {
+      background: transparent !important;
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside id="sidebar">
+  <div id="sidebar-header">
+    <div class="title">The Hollow Men</div>
+    <div class="subtitle">Architecture Reference</div>
+  </div>
+  <nav>
+    <div class="nav-group">Getting Started</div>
+    <a href="#overview">Overview</a>
+    <a href="#patterns">Key Patterns</a>
+    <a href="#workflow">Dev Workflow</a>
+
+    <div class="nav-group">Diagrams</div>
+    <a href="#diagrams">System Architecture</a>
+    <a href="#diagram-world">World Interaction</a>
+    <a href="#diagram-battle">Battle Turn Cycle</a>
+    <a href="#diagram-hierarchy">Class Hierarchy</a>
+
+    <div class="nav-group">Autoloads</div>
+    <a href="#scene-manager">SceneManager <span class="tag">singleton</span></a>
+    <a href="#cell-registry">CellRegistry <span class="tag">singleton</span></a>
+    <a href="#audio-manager">AudioManager <span class="tag">singleton</span></a>
+    <a href="#battle-params">BattleParams <span class="tag">singleton</span></a>
+
+    <div class="nav-group">Battle System</div>
+    <a href="#combatant">Combatant <span class="tag">resource</span></a>
+    <a href="#ability">Ability <span class="tag">resource</span></a>
+    <a href="#battle-scene">BattleScene <span class="tag">scene</span></a>
+
+    <div class="nav-group">World System</div>
+    <a href="#room-poc">RoomPOC <span class="tag">scene</span></a>
+    <a href="#player">Player <span class="tag">class</span></a>
+    <a href="#world-object">WorldObject <span class="tag">class</span></a>
+    <a href="#npc">NPC <span class="tag">class</span></a>
+    <a href="#examine-object">ExamineObject <span class="tag">class</span></a>
+    <a href="#battle-encounter">BattleEncounter <span class="tag">class</span></a>
+    <a href="#world">World <span class="tag">class</span></a>
+    <a href="#flickering-light">FlickeringLight <span class="tag">class</span></a>
+
+    <div class="nav-group">UI System</div>
+    <a href="#dialogue-box">DialogueBox <span class="tag">scene</span></a>
+    <a href="#yarn-bridge">YarnDialogueBridge <span class="tag">class</span></a>
+    <a href="#action-menu">ActionMenu <span class="tag">scene</span></a>
+    <a href="#defeat-menu">DefeatMenu <span class="tag">scene</span></a>
+    <a href="#hud">HUD <span class="tag">class</span></a>
+
+    <div class="nav-group">Testing</div>
+    <a href="#tests">GUT Tests</a>
+  </nav>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════════ -->
+<main id="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>The Hollow Men</h1>
+    <div class="tagline">Turn-based cyberpunk noir horror JRPG — Architecture Reference for Contributors</div>
+    <div class="badge-row">
+      <span class="badge"><span class="dot" style="background:#4caf82"></span>Godot 4.6 / GDScript</span>
+      <span class="badge"><span class="dot" style="background:#5b8dee"></span>Mobile Renderer (GL Compatibility)</span>
+      <span class="badge"><span class="dot" style="background:#a47cdb"></span>320×180 → 1280×720</span>
+      <span class="badge"><span class="dot" style="background:#c9a84c"></span>TDD with GUT</span>
+    </div>
+  </div>
+
+  <!-- ═══ 1. OVERVIEW ═══ -->
+  <section id="overview">
+    <h2><span class="section-num">01</span> Overview</h2>
+
+    <p style="margin-bottom: 14px;">
+      <em>The Hollow Men</em> is a 2D turn-based JRPG set in NOX, a perpetually rain-soaked cyberpunk city.
+      Protagonist Reid investigates a missing person case, descending into Lovecraftian horror and corporate
+      bureaucratic magic. The game is built entirely in <strong>Godot 4.6</strong> using GDScript for runtime
+      logic and C# only for editor tooling (the YATI tilemap importer and YarnSpinner importer).
+    </p>
+
+    <div class="callout">
+      The game runs at <strong>320×180</strong> (stretched to 1280×720). The <strong>Mobile renderer</strong>
+      (GL Compatibility) is used for broad device support. All sprite art is pixel art aligned to this grid.
+    </div>
+
+    <h3 style="margin-bottom: 10px; color: var(--text-bright); font-size: 14px;">High-level structure</h3>
+    <p style="margin-bottom: 10px;">The game is divided into two primary gameplay loops, each with its own scene:</p>
+    <table>
+      <tr><th>Loop</th><th>Scene</th><th>Description</th></tr>
+      <tr><td><strong>World exploration</strong></td><td><code>RoomPOC.tscn</code></td><td>Grid-based movement, NPC dialogue, interactable objects, battle encounters</td></tr>
+      <tr><td><strong>Battle</strong></td><td><code>BattleScene.tscn</code></td><td>Turn-based ATB combat with party of 4 vs enemies</td></tr>
+    </table>
+
+    <h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--text-bright); font-size: 14px;">Directory layout</h3>
+    <table>
+      <tr><th>Path</th><th>Contents</th></tr>
+      <tr><td><code>scenes/world/</code></td><td>World exploration scenes (RoomPOC, NPC, WorldObject, ExamineObject, BattleEncounter)</td></tr>
+      <tr><td><code>scenes/battle/</code></td><td>Battle scene and its sub-scenes</td></tr>
+      <tr><td><code>scenes/ui/</code></td><td>Reusable UI scenes (ActionMenu, DefeatMenu, DialogueBox)</td></tr>
+      <tr><td><code>scripts/autoload/</code></td><td>Global singletons registered in Project Settings</td></tr>
+      <tr><td><code>scripts/battle/</code></td><td>Battle system scripts (Combatant, Ability, BattleScene)</td></tr>
+      <tr><td><code>scripts/world/</code></td><td>World system scripts (Player, NPC, WorldObject, etc.)</td></tr>
+      <tr><td><code>scripts/ui/</code></td><td>UI scripts (DialogueBox, ActionMenu, HUD, etc.)</td></tr>
+      <tr><td><code>tests/</code></td><td>GUT unit tests — one file per module</td></tr>
+      <tr><td><code>assets/</code></td><td>Sprites, tilesets (PNGs are build artifacts, gitignored)</td></tr>
+      <tr><td><code>dialogue/</code></td><td>YarnSpinner <code>.yarn</code> scripts for NPC dialogue</td></tr>
+      <tr><td><code>docs/</code></td><td>Design docs, plans, lore, art references</td></tr>
+    </table>
+  </section>
+
+  <!-- ═══ 2. KEY PATTERNS ═══ -->
+  <section id="patterns">
+    <h2><span class="section-num">02</span> Key Patterns</h2>
+
+    <p style="margin-bottom: 16px;">
+      Understanding these four patterns explains most of the code you'll encounter.
+    </p>
+
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <h4>Signal-driven UI</h4>
+        <p>UI nodes connect to autoload signals and react to them — they never poll or call into game logic directly. BattleScene emits <code>combatant_updated</code>; HUD listens and refreshes. This keeps UI and game logic fully decoupled.</p>
+        <div class="example">battle_scene.combatant_updated.connect(_on_combatant_updated)</div>
+      </div>
+      <div class="pattern-card">
+        <h4>Grid-based world</h4>
+        <p>The world is a 16×16px tile grid. Player movement is discrete (one tile at a time). The <code>CellRegistry</code> autoload tracks which cells are blocked or interactable, so any node can register itself without knowing about Player.</p>
+        <div class="example">CellRegistry.register_blocking(cell, self)</div>
+      </div>
+      <div class="pattern-card">
+        <h4>ATB combat</h4>
+        <p>Combatants have an ATB gauge (0–100) that fills over time. When full, it's that combatant's turn. Player-controlled turns pause the timer and show the ActionMenu. This gives real-time feel with turn-based depth.</p>
+        <div class="example">combatant.tick_atb(delta)  # fills each frame</div>
+      </div>
+      <div class="pattern-card">
+        <h4>Resource-based data</h4>
+        <p>Characters and abilities are <code>Resource</code> subclasses (<code>Combatant</code>, <code>Ability</code>), saved as <code>.tres</code> files. This separates data from behavior and allows easy serialization without custom parsers.</p>
+        <div class="example">var reid = load("res://data/combatants/reid.tres")</div>
+      </div>
+      <div class="pattern-card">
+        <h4>Static typing everywhere</h4>
+        <p>All variables and function signatures use explicit GDScript types. This catches errors at parse time and makes the codebase easier to navigate without an IDE. Always type-hint when adding new code.</p>
+        <div class="example">var party: Array[Combatant] = []</div>
+      </div>
+      <div class="pattern-card">
+        <h4>TDD with GUT</h4>
+        <p>Every module has a corresponding <code>tests/test_*.gd</code> file. The rule is: write the failing test first, then the implementation. Tests run headlessly via <code>godot --headless -s addons/gut/gut_cmdln.gd</code>.</p>
+        <div class="example">func test_take_damage_reduces_hp(): ...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. DEV WORKFLOW ═══ -->
+  <section id="workflow">
+    <h2><span class="section-num">03</span> Dev Workflow</h2>
+
+    <p style="margin-bottom: 12px;">All features follow this lifecycle. Never merge to <code>master</code> locally — always go through a PR.</p>
+
+    <div class="flow">
+      <div class="flow-step">💡 idea</div><div class="flow-arrow">→</div>
+      <div class="flow-step">brainstorm</div><div class="flow-arrow">→</div>
+      <div class="flow-step">GitHub issue (PRD)</div><div class="flow-arrow">→</div>
+      <div class="flow-step">write plan</div><div class="flow-arrow">→</div>
+      <div class="flow-step">worktree</div><div class="flow-arrow">→</div>
+      <div class="flow-step">implement (TDD)</div><div class="flow-arrow">→</div>
+      <div class="flow-step">PR → merge</div>
+    </div>
+
+    <div class="callout warn" style="margin-top: 16px;">
+      <strong>Worktree setup is required.</strong> After <code>git worktree add</code>, always run
+      <code>make worktree-init</code> before opening the game. This copies gitignored build artifacts
+      (placeholder textures, dialogue import sidecars) and runs a headless reimport. Skipping it causes
+      maps to render empty and dialogue to fail.
+    </div>
+
+    <table style="margin-top: 16px;">
+      <tr><th>Command</th><th>When to use</th></tr>
+      <tr><td><code>make worktree-init</code></td><td>After creating a new worktree (copies artifacts + runs headless import)</td></tr>
+      <tr><td><code>godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/</code></td><td>Run all GUT tests</td></tr>
+      <tr><td><code>make import</code></td><td>Reimport after adding a new <code>class_name</code> script or changing a TMX</td></tr>
+      <tr><td><code>dotnet build</code></td><td>Compile C# (YarnSpinner importer) before first headless import in a new worktree</td></tr>
+    </table>
+
+    <p style="margin-top: 14px; color: var(--text-dim); font-size: 12.5px;">
+      Worktrees live at <code>/home/mathdaman/code/worktrees/</code>.
+      Branch naming convention: <code>feat/issue-&lt;N&gt;-&lt;description&gt;</code>.
+    </p>
+  </section>
+
+  <!-- ═══════════ DIAGRAMS ═══════════ -->
+
+  <section id="diagrams">
+    <h2><span class="section-num">04</span> Architecture Diagrams</h2>
+
+    <p style="margin-bottom: 20px; color: var(--text-dim); font-size: 13px;">
+      Click any node to jump to its documentation. Solid arrows are direct calls or data flow;
+      dashed arrows are signals or indirect dependencies.
+    </p>
+
+    <!-- ── Diagram 1: System Architecture ── -->
+    <div class="diagram-wrap">
+      <div class="diagram-caption">
+        <strong>System Architecture</strong> — all components and how they connect
+        <span class="hint">click nodes to navigate ↗</span>
+      </div>
+      <div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"primaryColor": "#1e2333", "primaryTextColor": "#eaedf5", "primaryBorderColor": "#252936", "lineColor": "#5b8dee", "clusterBkg": "#13161e", "clusterBorder": "#5b8dee", "titleColor": "#5b8dee", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": "13px", "edgeLabelBackground": "#0d0f14"}}}%%
+flowchart LR
+    subgraph WORLD["🌆 World Loop · RoomPOC.tscn"]
+        PL["Player"]
+        WO["WorldObject"]
+        NPC["NPC"]
+        EO["ExamineObject"]
+        BE["BattleEncounter"]
+        DB["DialogueBox"]
+        YB["YarnDialogueBridge"]
+        WLD["World"]
+    end
+
+    subgraph GLOBAL["⚡ Autoloads"]
+        SM["SceneManager"]
+        CR["CellRegistry"]
+        AM["AudioManager"]
+        BP["BattleParams"]
+    end
+
+    subgraph BATTLE["⚔ Battle Loop · BattleScene.tscn"]
+        BS["BattleScene"]
+        CB["Combatant"]
+        AC["ActionMenu"]
+        HD["HUD"]
+        DM["DefeatMenu"]
+    end
+
+    PL -->|queries| CR
+    NPC -->|registers| CR
+    WO -->|registers| CR
+    EO -->|registers| CR
+    NPC -.->|extends| WO
+    DB -.->|blocks input| PL
+    NPC -->|triggers| YB
+    YB -->|controls| DB
+    DB -.->|signals back| YB
+    BE -->|background_id| BP
+    BE -->|change_scene| SM
+    SM -.->|pre_scene_change| AM
+    BP -.->|reads| BS
+    BS --> CB
+    BS --> AC
+    BS --> HD
+    BS --> DM
+
+    click SM call goTo("scene-manager")
+    click CR call goTo("cell-registry")
+    click AM call goTo("audio-manager")
+    click BP call goTo("battle-params")
+    click PL call goTo("player")
+    click WO call goTo("world-object")
+    click NPC call goTo("npc")
+    click EO call goTo("examine-object")
+    click BE call goTo("battle-encounter")
+    click DB call goTo("dialogue-box")
+    click YB call goTo("yarn-bridge")
+    click WLD call goTo("world")
+    click BS call goTo("battle-scene")
+    click CB call goTo("combatant")
+    click AC call goTo("action-menu")
+    click HD call goTo("hud")
+    click DM call goTo("defeat-menu")
+      </div>
+    </div>
+
+    <!-- ── Diagram 2: World Interaction Flow ── -->
+    <div class="diagram-wrap" id="diagram-world">
+      <div class="diagram-caption">
+        <strong>World Interaction Flow</strong> — what happens on each keypress
+        <span class="hint">click nodes to navigate ↗</span>
+      </div>
+      <div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"primaryColor": "#1e2333", "primaryTextColor": "#eaedf5", "primaryBorderColor": "#252936", "lineColor": "#4caf82", "clusterBkg": "#13161e", "clusterBorder": "#4caf82", "titleColor": "#4caf82", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": "13px", "edgeLabelBackground": "#0d0f14"}}}%%
+flowchart TD
+    INP(["⌨ Keypress"])
+
+    INP -->|move key| WALL{"Wall tile?\nTileData metadata"}
+    WALL -->|yes| BLK1(["❌ Blocked"])
+    WALL -->|no| CREG{"CellRegistry\n.is_blocked?"}
+    CREG -->|yes| BLK2(["❌ Blocked"])
+    CREG -->|no| STEP["Tween one tile\nWorld.on_player_stepped()"]
+    STEP -->|encounter roll| ENC{"Threshold\nmet?"}
+    ENC -->|no| DONE(["Continue"])
+    ENC -->|yes| BENC["BattleEncounter\n→ BattleScene"]
+
+    INP -->|interact key| FACE["get_facing_cell()"]
+    FACE -->|"get_interactable()"| FOUND{"Interactable?"}
+    FOUND -->|NPC| YBR["YarnDialogueBridge\n.start_dialogue()"]
+    FOUND -->|ExamineObject| DBOX["DialogueBox\n.show_text()"]
+    FOUND -->|none| NOOP(["No-op"])
+    YBR -->|runs dialogue| DBOX
+
+    click CREG call goTo("cell-registry")
+    click FACE call goTo("player")
+    click YBR call goTo("yarn-bridge")
+    click DBOX call goTo("dialogue-box")
+    click BENC call goTo("battle-encounter")
+    click STEP call goTo("world")
+      </div>
+    </div>
+
+    <!-- ── Diagram 3: Battle Turn Cycle ── -->
+    <div class="diagram-wrap" id="diagram-battle">
+      <div class="diagram-caption">
+        <strong>Battle Turn Cycle</strong> — ATB loop, state machine, and signal flow
+        <span class="hint">click nodes to navigate ↗</span>
+      </div>
+      <div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"primaryColor": "#1e2333", "primaryTextColor": "#eaedf5", "primaryBorderColor": "#252936", "lineColor": "#a47cdb", "clusterBkg": "#13161e", "clusterBorder": "#a47cdb", "titleColor": "#a47cdb", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": "13px", "edgeLabelBackground": "#0d0f14"}}}%%
+flowchart TD
+    START(["⚔ TICKING state\n_process(delta)"])
+    START --> TICK["combatant.tick_atb(delta)\nfor each alive combatant"]
+    TICK --> FULL{"ATB full?"}
+    FULL -->|no| START
+    FULL -->|player turn| AW["AWAITING_INPUT\nActionMenu shown\nplayer_turn_started →"]
+    FULL -->|enemy turn| AI["AI picks action\nexecute_action()"]
+    AW -->|action_selected| EXEC["execute_action(action_name)"]
+    AW -->|ability targets_party| SEL["SELECTING_ALLY\nparty_target_changed →"]
+    SEL -->|confirm_party_target| EXEC
+    AI --> EXEC
+    EXEC --> DMG["Apply damage / effects\ncombatant_updated → HUD"]
+    DMG --> WIN{"All enemies\ndead?"}
+    WIN -->|yes| VICTORY(["🏆 Victory → World scene"])
+    WIN -->|no| LOSS{"Party\nwiped?"}
+    LOSS -->|yes| DEFEAT["ENDED state\nDefeatMenu shown"]
+    LOSS -->|no| START
+
+    click AW call goTo("action-menu")
+    click DEFEAT call goTo("defeat-menu")
+    click DMG call goTo("combatant")
+    click EXEC call goTo("battle-scene")
+    click TICK call goTo("combatant")
+    click SEL call goTo("hud")
+      </div>
+    </div>
+
+    <!-- ── Diagram 4: Class Hierarchy ── -->
+    <div class="diagram-wrap" id="diagram-hierarchy">
+      <div class="diagram-caption">
+        <strong>Class Hierarchy</strong> — GDScript classes and their Godot base types
+        <span class="hint">click nodes to navigate ↗</span>
+      </div>
+      <div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"primaryColor": "#1e2333", "primaryTextColor": "#eaedf5", "primaryBorderColor": "#252936", "lineColor": "#c9a84c", "clusterBkg": "#13161e", "clusterBorder": "#c9a84c", "titleColor": "#c9a84c", "fontFamily": "Inter, system-ui, sans-serif", "fontSize": "13px", "edgeLabelBackground": "#0d0f14"}}}%%
+flowchart TD
+    subgraph N2D["Node2D"]
+        WOC["WorldObject"] -->|extends| NPC_C["NPC"]
+        RPC["RoomPOC"]
+        BSC["BattleScene"]
+        EOC["ExamineObject"]
+        WC["World"]
+    end
+
+    subgraph CB2D["CharacterBody2D"]
+        PLC["Player"]
+    end
+
+    subgraph RES["Resource"]
+        CMBC["Combatant"]
+        ABLC["Ability"]
+    end
+
+    subgraph CTRL["Control"]
+        ACC["ActionMenu"]
+        DMC["DefeatMenu"]
+        DBC["DialogueBox"]
+        HUDC["HUD"]
+    end
+
+    subgraph OTHER["Other Godot bases"]
+        PL2D["PointLight2D"] -->|extends| FLC["FlickeringLight"]
+        AR2D["Area2D"] -->|extends| BEC["BattleEncounter"]
+        NODE["Node"] -->|extends| YBC["YarnDialogueBridge"]
+    end
+
+    click WOC call goTo("world-object")
+    click NPC_C call goTo("npc")
+    click RPC call goTo("room-poc")
+    click BSC call goTo("battle-scene")
+    click EOC call goTo("examine-object")
+    click WC call goTo("world")
+    click PLC call goTo("player")
+    click CMBC call goTo("combatant")
+    click ABLC call goTo("ability")
+    click ACC call goTo("action-menu")
+    click DMC call goTo("defeat-menu")
+    click DBC call goTo("dialogue-box")
+    click HUDC call goTo("hud")
+    click FLC call goTo("flickering-light")
+    click BEC call goTo("battle-encounter")
+    click YBC call goTo("yarn-bridge")
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ AUTOLOADS ═══════════ -->
+
+  <section id="scene-manager">
+    <h2><span class="section-num">05</span> Autoloads</h2>
+
+    <div class="callout">
+      Autoloads are global singletons accessible from any script without importing.
+      They are registered in <strong>Project → Project Settings → Autoload</strong>.
+      Treat them like services — lean, with well-defined responsibilities.
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>SceneManager</h3>
+        <span class="kind kind-autoload">autoload</span>
+      </div>
+      <div class="card-path">scripts/autoload/scene_manager.gd</div>
+      <div class="card-desc">
+        Handles all scene transitions with a smooth black fade overlay. Never call
+        <code>get_tree().change_scene_to_file()</code> directly — always go through
+        <code>SceneManager.change_scene(path)</code> to preserve the fade effect and
+        let AudioManager know a transition is happening.
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Signals</div>
+        <div class="item-list">
+          <div class="item signal">
+            <span class="item-name">pre_scene_change</span>
+            <span class="item-desc">— emitted just before the scene swap; AudioManager connects here to fade music</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method">
+            <span class="item-name">change_scene(path: String)</span>
+            <span class="item-desc">— fades to black (0.3s), swaps scene, fades back in</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Implementation notes</div>
+        <p style="font-size: 12.5px; color: var(--text-dim);">
+          Uses a <code>ColorRect</code> overlay on CanvasLayer 100 (above everything). Fade is a 0.3-second tween
+          on the alpha. The overlay is added directly to the SceneManager node, not the scene, so it persists through transitions.
+        </p>
+      </div>
+    </div>
+
+    <div class="card" id="cell-registry">
+      <div class="card-header">
+        <h3>CellRegistry</h3>
+        <span class="kind kind-autoload">autoload</span>
+      </div>
+      <div class="card-path">scripts/autoload/cell_registry.gd</div>
+      <div class="card-desc">
+        The spatial index for the world grid. Objects register themselves here on
+        <code>_ready()</code> and unregister on <code>_exit_tree()</code>. The Player queries
+        this each step to know whether movement is blocked and whether there's something to interact with.
+        This pattern means Player never needs direct references to individual world objects.
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Internal data</div>
+        <div class="item-list">
+          <div class="item">
+            <span class="item-name">_blocking</span>
+            <span class="item-type">Dictionary[Vector2i, Node]</span>
+            <span class="item-desc">— cells that block movement</span>
+          </div>
+          <div class="item">
+            <span class="item-name">_interactables</span>
+            <span class="item-type">Dictionary[Vector2i, Node]</span>
+            <span class="item-desc">— cells with interact handlers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">register_blocking(cell: Vector2i, node: Node)</span></div>
+          <div class="item method"><span class="item-name">unregister_blocking(cell: Vector2i)</span></div>
+          <div class="item method"><span class="item-name">is_blocked(cell: Vector2i) → bool</span></div>
+          <div class="item method"><span class="item-name">register_interactable(cell: Vector2i, node: Node)</span></div>
+          <div class="item method"><span class="item-name">unregister_interactable(cell: Vector2i)</span></div>
+          <div class="item method"><span class="item-name">get_interactable(cell: Vector2i) → Node</span></div>
+          <div class="item method"><span class="item-name">clear()</span><span class="item-desc"> — used in tests to reset state</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="audio-manager">
+      <div class="card-header">
+        <h3>AudioManager</h3>
+        <span class="kind kind-autoload">autoload</span>
+      </div>
+      <div class="card-path">scripts/autoload/audio_manager.gd</div>
+      <div class="card-desc">
+        Manages background music with smooth 1.5-second cross-fades. Automatically stops music
+        before scene transitions by connecting to <code>SceneManager.pre_scene_change</code>.
+        Call <code>play_music</code> from scene <code>_ready()</code> functions to set the track for that scene.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">play_music(path: String)</span><span class="item-desc"> — fades in the given audio file</span></div>
+          <div class="item method"><span class="item-name">stop_music()</span><span class="item-desc"> — fades out current track</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="battle-params">
+      <div class="card-header">
+        <h3>BattleParams</h3>
+        <span class="kind kind-autoload">autoload</span>
+      </div>
+      <div class="card-path">scripts/autoload/battle_params.gd</div>
+      <div class="card-desc">
+        A simple data bag for passing state from the world to the battle scene during the scene
+        transition. Because Godot scene changes destroy the calling scene, parameters cannot be
+        passed via function arguments — they're written here before <code>SceneManager.change_scene()</code>
+        and read in <code>BattleScene._ready()</code>.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Properties</div>
+        <div class="item-list">
+          <div class="item">
+            <span class="item-name">background_id</span>
+            <span class="item-type">String</span>
+            <span class="item-desc">— which battle background sprite to display (e.g. "alley", "office")</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ BATTLE SYSTEM ═══════════ -->
+
+  <section id="combatant">
+    <h2><span class="section-num">06</span> Battle System</h2>
+
+    <p style="margin-bottom: 16px;">
+      The battle system is a classic <strong>Active Time Battle (ATB)</strong> system. Each combatant has
+      a gauge that fills over time; when full it's their turn. The state machine in BattleScene drives
+      the loop.
+    </p>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Combatant</h3>
+        <span class="kind kind-resource">resource</span>
+      </div>
+      <div class="card-path">scripts/battle/combatant.gd — extends Resource</div>
+      <div class="card-desc">
+        The single source of truth for a character's stats and runtime state. Saved as <code>.tres</code>
+        files in <code>data/combatants/</code>. Exported properties are the baseline data; runtime
+        properties (current HP, ATB fill) are populated when battle starts.
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Enum</div>
+        <div class="item-list">
+          <div class="item enum-val"><span class="item-name">SigilType.NONE</span></div>
+          <div class="item enum-val"><span class="item-name">SigilType.BUREAU</span><span class="item-desc"> — limit break capped at 80% (corporate compliance restriction)</span></div>
+          <div class="item enum-val"><span class="item-name">SigilType.JAILBROKEN</span><span class="item-desc"> — no cap</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Exported stats</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">character_name</span><span class="item-type">String</span></div>
+          <div class="item"><span class="item-name">is_player_controlled</span><span class="item-type">bool</span></div>
+          <div class="item"><span class="item-name">ability</span><span class="item-type">Ability</span></div>
+          <div class="item"><span class="item-name">max_hp, max_pp</span><span class="item-type">int</span></div>
+          <div class="item"><span class="item-name">str_stat, def_stat, psy_stat, res_stat, spd_stat</span><span class="item-type">int</span></div>
+          <div class="item"><span class="item-name">sigil_type</span><span class="item-type">SigilType</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Runtime state</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">current_hp, current_pp</span><span class="item-type">int</span></div>
+          <div class="item"><span class="item-name">atb</span><span class="item-type">float</span><span class="item-desc"> — 0 to ATB_MAX (100.0)</span></div>
+          <div class="item"><span class="item-name">limit_gauge</span><span class="item-type">float</span><span class="item-desc"> — 0 to LIMIT_MAX (100.0), capped at 80 for Bureau sigil</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Key methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">tick_atb(delta)</span><span class="item-desc"> — fills ATB by <code>spd_stat × ATB_FILL_RATE × delta</code></span></div>
+          <div class="item method"><span class="item-name">take_damage(amount) / heal(amount) / spend_pp(cost)</span></div>
+          <div class="item method"><span class="item-name">hp_ratio() / pp_ratio() / atb_ratio() / limit_ratio() → float</span><span class="item-desc"> — for UI bars</span></div>
+          <div class="item method"><span class="item-name">calculate_damage(attacker, defender) → int</span><span class="item-desc"> — static, STR vs DEF formula</span></div>
+          <div class="item method"><span class="item-name">calculate_piercing_strike(attacker, defender) → int</span><span class="item-desc"> — ignores DEF</span></div>
+          <div class="item method"><span class="item-name">calculate_static_touch(attacker, defender) → int</span><span class="item-desc"> — PSY vs RES formula</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="ability">
+      <div class="card-header">
+        <h3>Ability</h3>
+        <span class="kind kind-resource">resource</span>
+      </div>
+      <div class="card-path">scripts/battle/ability.gd — extends Resource</div>
+      <div class="card-desc">
+        Simple data container for an ability. Each Combatant can have one <code>Ability</code>
+        assigned. The ability name is used to look up behavior in <code>BattleScene.execute_action()</code>.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">ability_name</span><span class="item-type">String</span></div>
+          <div class="item"><span class="item-name">pp_cost</span><span class="item-type">int</span></div>
+          <div class="item"><span class="item-name">targets_party</span><span class="item-type">bool</span><span class="item-desc"> — true for ally-targeting abilities (triggers target selection mode)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="battle-scene">
+      <div class="card-header">
+        <h3>BattleScene</h3>
+        <span class="kind kind-scene">scene</span>
+      </div>
+      <div class="card-path">scenes/battle/BattleScene.tscn · scripts/battle/battle_scene.gd — extends Node2D</div>
+      <div class="card-desc">
+        The main battle controller. Owns the ATB state machine, drives combatant turns, processes
+        actions, and emits signals for the HUD to react to. The scene tree looks like:
+      </div>
+
+      <div class="scene-tree">
+        <span class="tree-root">BattleScene</span> <span class="tree-type">(Node2D)</span> <span class="tree-script">← battle_scene.gd</span><br>
+        ├── <span class="tree-child">Background</span> <span class="tree-type">(Sprite2D)</span> — dynamic, set from BattleParams.background_id<br>
+        ├── <span class="tree-child">EnemyContainer</span> <span class="tree-type">(Node2D)</span> — enemy sprites placed here<br>
+        ├── <span class="tree-child">PartyContainer</span> <span class="tree-type">(Node2D)</span> — party sprites placed here<br>
+        └── <span class="tree-child">UI</span> <span class="tree-type">(CanvasLayer)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-child">HUD</span> <span class="tree-type">(Control)</span> <span class="tree-script">← hud.gd</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── EnemyWindow, PartyWindow, ActionMenu<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-child">FlashOverlay</span> <span class="tree-type">(ColorRect)</span> — damage flash effect<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-child">DefeatMenu</span> <span class="tree-type">(Control)</span> <span class="tree-script">← defeat_menu.gd</span>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">State machine</div>
+        <div class="item-list">
+          <div class="item enum-val"><span class="item-name">TICKING</span><span class="item-desc"> — ATB gauges filling; no input accepted</span></div>
+          <div class="item enum-val"><span class="item-name">AWAITING_INPUT</span><span class="item-desc"> — player's turn; ActionMenu is visible</span></div>
+          <div class="item enum-val"><span class="item-name">ANIMATING</span><span class="item-desc"> — action in progress; no input accepted</span></div>
+          <div class="item enum-val"><span class="item-name">SELECTING_ALLY</span><span class="item-desc"> — player is picking a party target for an ally ability</span></div>
+          <div class="item enum-val"><span class="item-name">PAUSED</span><span class="item-desc"> — pause menu open</span></div>
+          <div class="item enum-val"><span class="item-name">ENDED</span><span class="item-desc"> — battle finished (victory or defeat); transition pending</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Signals</div>
+        <div class="item-list">
+          <div class="item signal"><span class="item-name">battle_ended(victory: bool)</span></div>
+          <div class="item signal"><span class="item-name">combatant_updated(combatant: Combatant)</span><span class="item-desc"> — HUD redraws on this</span></div>
+          <div class="item signal"><span class="item-name">player_turn_started(combatant: Combatant)</span></div>
+          <div class="item signal"><span class="item-name">player_turn_ended()</span></div>
+          <div class="item signal"><span class="item-name">party_target_changed(combatant: Combatant)</span></div>
+          <div class="item signal"><span class="item-name">pause_toggled(paused: bool)</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Key methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">execute_action(action_name: String)</span><span class="item-desc"> — called by ActionMenu; dispatches Attack or Ability logic</span></div>
+          <div class="item method"><span class="item-name">confirm_party_target(target: Combatant)</span><span class="item-desc"> — called after ally selection</span></div>
+          <div class="item method"><span class="item-name">skip_turn()</span><span class="item-desc"> — enables skip cooldown on active combatant</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ WORLD SYSTEM ═══════════ -->
+
+  <section id="room-poc">
+    <h2><span class="section-num">07</span> World System</h2>
+
+    <p style="margin-bottom: 16px;">
+      The world is a tile grid where the player explores, reads objects, and talks to NPCs.
+      Movement is turn-by-turn (one tile per keypress). Blocking and interaction are handled
+      through the <code>CellRegistry</code> rather than physics colliders.
+    </p>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>RoomPOC</h3>
+        <span class="kind kind-scene">scene</span>
+      </div>
+      <div class="card-path">scenes/world/RoomPOC.tscn · scripts/world/room_poc.gd — extends Node2D</div>
+      <div class="card-desc">
+        The current main scene (the game's entry point). A proof-of-concept room that will
+        eventually be replaced by a proper room system. Sets the battle background for any
+        encounters spawned in this room and starts background music.
+      </div>
+
+      <div class="scene-tree">
+        <span class="tree-root">RoomPOC</span> <span class="tree-type">(Node2D)</span> <span class="tree-script">← room_poc.gd</span><br>
+        ├── <span class="tree-child">room_poc</span> <span class="tree-type">(TileMapLayer)</span> — imported from room_poc.tmx via YATI<br>
+        │&nbsp;&nbsp;&nbsp;└── <span class="tree-child">World</span> <span class="tree-type">(Node2D)</span> — YATI object layer container<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-child">Interactions</span> <span class="tree-type">(Node2D)</span> — interactive object instances<br>
+        ├── <span class="tree-child">Player</span> <span class="tree-type">(CharacterBody2D)</span> <span class="tree-script">← player.gd</span><br>
+        ├── <span class="tree-child">UILayer</span> <span class="tree-type">(CanvasLayer 10)</span><br>
+        │&nbsp;&nbsp;&nbsp;├── <span class="tree-child">DialogueBox</span> <span class="tree-script">← dialogue_box.gd</span><br>
+        │&nbsp;&nbsp;&nbsp;├── <span class="tree-child">DialogueRunner</span> — YarnSpinner runtime<br>
+        │&nbsp;&nbsp;&nbsp;└── <span class="tree-child">YarnDialogueBridge</span> <span class="tree-script">← yarn_dialogue_bridge.gd</span><br>
+        ├── <span class="tree-child">FlickeringLight</span> <span class="tree-type">(PointLight2D)</span> <span class="tree-script">← flickering_light.gd</span><br>
+        └── <span class="tree-child">CanvasModulate</span> <span class="tree-type">(Color: 0.08, 0.08, 0.12)</span> — deep blue-black ambient
+      </div>
+
+      <div class="callout" style="margin-top: 12px;">
+        The tilemap is imported from a Tiled <code>.tmx</code> file via the YATI plugin. Wall tiles
+        have <code>class="wall"</code> in the <code>.tsx</code> tileset, stored as tile metadata.
+        Player reads this to check movement blocking — <em>not</em> the CellRegistry.
+      </div>
+    </div>
+
+    <div class="card" id="player">
+      <div class="card-header">
+        <h3>Player</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scripts/world/player.gd — extends CharacterBody2D</div>
+      <div class="card-desc">
+        Handles grid-based movement and world interaction. Movement is discrete: each keypress
+        moves exactly one tile after checking for walls and registry-blocked cells. Interaction
+        looks up the facing cell in CellRegistry and calls <code>interact()</code> on whatever is there.
+        Input is blocked during dialogue.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Constants</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">TILE_SIZE</span><span class="item-type">= 16</span><span class="item-desc"> — pixels per tile</span></div>
+          <div class="item"><span class="item-name">MOVE_DURATION</span><span class="item-type">= 0.1</span><span class="item-desc"> — seconds to tween between tiles</span></div>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Key methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">_try_move(action)</span><span class="item-desc"> — checks wall tile + CellRegistry before tweening</span></div>
+          <div class="item method"><span class="item-name">_try_interact()</span><span class="item-desc"> — looks up facing cell in CellRegistry, calls node.interact()</span></div>
+          <div class="item method"><span class="item-name">_is_wall(world_pos) → bool</span><span class="item-desc"> — reads TileData metadata for "wall" class</span></div>
+          <div class="item method"><span class="item-name">get_facing_cell() → Vector2i</span></div>
+          <div class="item method"><span class="item-name">snap_to_grid(pos) → Vector2</span><span class="item-desc"> — snaps to tile center (uses floorf + half-tile offset)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="world-object">
+      <div class="card-header">
+        <h3>WorldObject</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scenes/world/WorldObject.tscn · scripts/world/world_object.gd — extends Node2D</div>
+      <div class="card-desc">
+        Base class for any object that occupies tiles in the world. On <code>_ready()</code> it
+        calculates which cells it spans (based on <code>tile_cols × tile_rows</code>) and registers
+        them as blocking in CellRegistry. Automatically unregisters on <code>_exit_tree()</code>.
+        NPC extends this.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">object_name</span><span class="item-type">String</span></div>
+          <div class="item"><span class="item-name">sprite_texture</span><span class="item-type">Texture2D</span></div>
+          <div class="item"><span class="item-name">blocks_movement</span><span class="item-type">bool</span></div>
+          <div class="item"><span class="item-name">tile_cols, tile_rows</span><span class="item-type">int</span><span class="item-desc"> — size in tiles</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="npc">
+      <div class="card-header">
+        <h3>NPC</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scenes/world/NPC.tscn · scripts/world/npc.gd — extends WorldObject</div>
+      <div class="card-desc">
+        An interactable character. Extends WorldObject (so it blocks movement and registers cells).
+        When the player interacts, it triggers a YarnSpinner dialogue by node ID.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">yarn_node_id</span><span class="item-type">String</span><span class="item-desc"> — YarnSpinner node to run (e.g. "Iris.Intro")</span></div>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">interact(_dialogue_box, yarn_bridge)</span><span class="item-desc"> — calls yarn_bridge.start_dialogue(yarn_node_id)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="examine-object">
+      <div class="card-header">
+        <h3>ExamineObject</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scenes/world/ExamineObject.tscn · scripts/world/examine_object.gd — extends Node2D</div>
+      <div class="card-desc">
+        A static world prop that shows text when examined. Does not extend WorldObject (it has
+        no sprite or blocking — it's usually placed on top of a decorative tile). Registers a
+        single cell as interactable in CellRegistry.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">examine_text</span><span class="item-type">String</span></div>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">interact(dialogue_box, _yarn_bridge)</span><span class="item-desc"> — calls dialogue_box.show_text(examine_text)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="battle-encounter">
+      <div class="card-header">
+        <h3>BattleEncounter</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scenes/world/BattleEncounter.tscn · scripts/world/battle_encounter.gd — extends Area2D</div>
+      <div class="card-desc">
+        An invisible trigger zone in the world. When Player enters it, it sets
+        <code>BattleParams.background_id</code> and calls <code>SceneManager.change_scene()</code>
+        to the battle scene. The red <code>ColorRect</code> child is a visual aid in the editor only.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">battle_background_override</span><span class="item-type">String</span><span class="item-desc"> — overrides the room default if set</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="world">
+      <div class="card-header">
+        <h3>World</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scripts/world/world.gd — extends Node2D</div>
+      <div class="card-desc">
+        Manages the room's encounter rate mode. Player calls <code>on_player_stepped()</code>
+        on every tile movement; World rolls for a random encounter based on the current mode.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Enum — Mode</div>
+        <div class="item-list">
+          <div class="item enum-val"><span class="item-name">INVESTIGATION</span><span class="item-desc"> — 0% encounter rate (safe exploration)</span></div>
+          <div class="item enum-val"><span class="item-name">HOT_ZONE</span><span class="item-desc"> — 2% per step</span></div>
+          <div class="item enum-val"><span class="item-name">RUINS</span><span class="item-desc"> — 4% per step</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="flickering-light">
+      <div class="card-header">
+        <h3>FlickeringLight</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scripts/world/flickering_light.gd — extends PointLight2D</div>
+      <div class="card-desc">
+        Animates light energy between min and max values on randomized intervals to simulate
+        a fluorescent flicker. Uses a recursive tween loop — when one tween finishes it starts the next.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Exported properties</div>
+        <div class="item-list">
+          <div class="item"><span class="item-name">min_energy, max_energy</span><span class="item-type">float</span></div>
+          <div class="item"><span class="item-name">flicker_min_duration, flicker_max_duration</span><span class="item-type">float</span><span class="item-desc"> — random range per flicker</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ UI SYSTEM ═══════════ -->
+
+  <section id="dialogue-box">
+    <h2><span class="section-num">08</span> UI System</h2>
+
+    <p style="margin-bottom: 16px;">
+      UI nodes connect to game signals — they never call into gameplay code directly.
+      All UI scenes live in <code>scenes/ui/</code>.
+    </p>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>DialogueBox</h3>
+        <span class="kind kind-scene">scene</span>
+      </div>
+      <div class="card-path">scenes/ui/DialogueBox.tscn · scripts/ui/dialogue_box.gd — extends Control</div>
+      <div class="card-desc">
+        Handles both plain text display (examine objects) and full YarnSpinner dialogue
+        (speaker name, typewriter text reveal, choice lists). Positioned at the bottom of
+        the screen at full width.
+      </div>
+
+      <div class="scene-tree">
+        <span class="tree-root">DialogueBox</span> <span class="tree-type">(Panel)</span><br>
+        ├── <span class="tree-child">SpeakerLabel</span> — character name<br>
+        ├── <span class="tree-child">Label</span> — main text (autowrap, typewriter effect)<br>
+        └── <span class="tree-child">ChoiceList</span> <span class="tree-type">(VBoxContainer)</span> — shown during choices
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">States</div>
+        <div class="item-list">
+          <div class="item enum-val"><span class="item-name">IDLE</span><span class="item-desc"> — hidden</span></div>
+          <div class="item enum-val"><span class="item-name">SHOWING_LINE</span><span class="item-desc"> — text is revealing character by character (0.05s/char)</span></div>
+          <div class="item enum-val"><span class="item-name">SHOWING_CHOICES</span><span class="item-desc"> — waiting for player choice input</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Signals</div>
+        <div class="item-list">
+          <div class="item signal"><span class="item-name">opened / closed</span><span class="item-desc"> — Player connects here to block/unblock movement input</span></div>
+          <div class="item signal"><span class="item-name">line_advanced</span><span class="item-desc"> — YarnDialogueBridge awaits this</span></div>
+          <div class="item signal"><span class="item-name">option_selected(index: int)</span><span class="item-desc"> — YarnDialogueBridge awaits this</span></div>
+        </div>
+      </div>
+
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">show_text(text)</span><span class="item-desc"> — plain text (examine objects)</span></div>
+          <div class="item method"><span class="item-name">show_line(speaker, text)</span><span class="item-desc"> — speaker + typewriter text (YarnSpinner)</span></div>
+          <div class="item method"><span class="item-name">show_choices(options)</span><span class="item-desc"> — displays choice buttons</span></div>
+          <div class="item method"><span class="item-name">skip_or_dismiss()</span><span class="item-desc"> — if revealing: shows full text instantly; if done: emits line_advanced</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="yarn-bridge">
+      <div class="card-header">
+        <h3>YarnDialogueBridge</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scripts/ui/yarn_dialogue_bridge.gd — extends Node</div>
+      <div class="card-desc">
+        The glue between the YarnSpinner C# runtime (<code>DialogueRunner</code>) and the GDScript
+        <code>DialogueBox</code>. YarnSpinner calls into this bridge asynchronously; the bridge
+        awaits signals from DialogueBox before returning control to YarnSpinner.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">run_line_async(line)</span><span class="item-desc"> — forwards to dialogue_box.show_line(), awaits line_advanced</span></div>
+          <div class="item method"><span class="item-name">run_options_async(options, set_option)</span><span class="item-desc"> — shows choices, awaits option_selected, calls set_option callback</span></div>
+          <div class="item method"><span class="item-name">on_dialogue_complete_async()</span><span class="item-desc"> — closes dialogue box</span></div>
+          <div class="item method"><span class="item-name">start_dialogue(node_id: String)</span><span class="item-desc"> — entry point called by NPC.interact()</span></div>
+          <div class="item method"><span class="item-name">_get_speaker(line) → String</span><span class="item-desc"> — static; extracts speaker name from Yarn line attributes</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="action-menu">
+      <div class="card-header">
+        <h3>ActionMenu</h3>
+        <span class="kind kind-scene">scene</span>
+      </div>
+      <div class="card-path">scenes/ui/ActionMenu.tscn · scripts/ui/action_menu.gd — extends Control</div>
+      <div class="card-desc">
+        The battle action picker. Shows "Attack" plus the active combatant's ability (grayed out
+        if they can't afford the PP cost). Cursor navigated with move_up/move_down; confirmed
+        with interact. Emits <code>action_selected</code> which BattleScene connects to.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Signals</div>
+        <div class="item-list">
+          <div class="item signal"><span class="item-name">action_selected(action_name: String)</span></div>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Methods</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">setup(combatant: Combatant)</span><span class="item-desc"> — configures menu rows for this combatant's abilities</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="defeat-menu">
+      <div class="card-header">
+        <h3>DefeatMenu</h3>
+        <span class="kind kind-scene">scene</span>
+      </div>
+      <div class="card-path">scenes/ui/DefeatMenu.tscn · scripts/ui/defeat_menu.gd — extends Control</div>
+      <div class="card-desc">
+        Game over menu. Two options: Try Again (reloads BattleScene) and Quit (exits game).
+        Same cursor navigation pattern as ActionMenu.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Signals</div>
+        <div class="item-list">
+          <div class="item signal"><span class="item-name">retry_requested</span></div>
+          <div class="item signal"><span class="item-name">quit_requested</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="hud">
+      <div class="card-header">
+        <h3>HUD</h3>
+        <span class="kind kind-class">class</span>
+      </div>
+      <div class="card-path">scripts/ui/hud.gd — extends Control</div>
+      <div class="card-desc">
+        Displays the battle status: enemy names in a top panel, party HP/PP/ATB bars in a
+        bottom panel. Panels are generated dynamically at runtime from the combatant array.
+        Connects to BattleScene signals to refresh without polling.
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Setup</div>
+        <div class="item-list">
+          <div class="item method"><span class="item-name">setup(party, enemies, battle)</span><span class="item-desc"> — builds dynamic panels and connects to battle signals</span></div>
+          <div class="item method"><span class="item-name">_make_panel(combatant) → HBoxContainer</span><span class="item-desc"> — creates name + HP/PP/ATB progress bars</span></div>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-block-title">Color conventions</div>
+        <p style="font-size: 12.5px; color: var(--text-dim);">
+          HP bar: green → red as HP falls. PP bar: purple. ATB bar: white.
+          Limit break bar: grey (inactive), gold (active). Bureau sigil combatants
+          have a dimmer gold cap at 80%.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTS ═══════════ -->
+
+  <section id="tests">
+    <h2><span class="section-num">09</span> Tests</h2>
+
+    <p style="margin-bottom: 12px;">
+      All logic is covered by <strong>GUT</strong> (Godot Unit Test) tests. The rule is
+      TDD: write a failing test, then implement. Tests run headlessly and are required
+      to pass before any PR can be merged.
+    </p>
+
+    <div class="callout">
+      <strong>Run tests:</strong> <code>godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/</code><br>
+      If you add a new <code>class_name</code> script, run <code>make import</code> first — GUT won't
+      find the class until the global class registry is rebuilt.
+    </div>
+
+    <table>
+      <tr><th>Test file</th><th>Covers</th></tr>
+      <tr><td><code>test_combatant.gd</code></td><td>Stats, ATB tick, damage calculations, limit cap by sigil type</td></tr>
+      <tr><td><code>test_battle_scene.gd</code></td><td>State machine transitions, action execution, win/loss conditions</td></tr>
+      <tr><td><code>test_battle_sprites.gd</code></td><td>Party/enemy sprite placement in BattleScene</td></tr>
+      <tr><td><code>test_battle_encounter.gd</code></td><td>Trigger zone → BattleParams → SceneManager flow</td></tr>
+      <tr><td><code>test_action_menu.gd</code></td><td>Cursor navigation, ability affordability, action_selected signal</td></tr>
+      <tr><td><code>test_defeat_menu.gd</code></td><td>Menu navigation, retry/quit signal emission</td></tr>
+      <tr><td><code>test_dialogue_box.gd</code></td><td>Typewriter reveal, skip behavior, choice display</td></tr>
+      <tr><td><code>test_player.gd</code></td><td>Grid movement, wall detection, facing cell</td></tr>
+      <tr><td><code>test_player_interact.gd</code></td><td>Interaction with NPC/ExamineObject via CellRegistry</td></tr>
+      <tr><td><code>test_npc.gd</code></td><td>NPC registration and dialogue trigger</td></tr>
+      <tr><td><code>test_world_object.gd</code></td><td>Multi-tile blocking registration/unregistration</td></tr>
+      <tr><td><code>test_examine_object.gd</code></td><td>Interactable registration, examine text display</td></tr>
+      <tr><td><code>test_flickering_light.gd</code></td><td>Energy tween animation loop</td></tr>
+      <tr><td><code>test_scene_manager.gd</code></td><td>Fade overlay behavior, pre_scene_change signal</td></tr>
+      <tr><td><code>test_audio_manager.gd</code></td><td>Music play/stop, fade on scene change</td></tr>
+      <tr><td><code>test_cell_registry.gd</code></td><td>Register/unregister/query for blocking and interactables</td></tr>
+      <tr><td><code>test_skip_turn.gd</code></td><td>Skip cooldown mechanics in battle</td></tr>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  // Called by Mermaid click handlers to navigate to a documentation section
+  function goTo(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: 'loose',
+    theme: 'dark',
+  });
+
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const links = document.querySelectorAll('#sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`#sidebar a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
