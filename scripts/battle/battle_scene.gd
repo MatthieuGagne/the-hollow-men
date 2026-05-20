@@ -53,7 +53,7 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 @onready var _victory_label: Label = $UI/VictoryLabel
 @onready var _defeat_label: Label = $UI/DefeatLabel
 @onready var _paused_label: Label = $UI/PausedLabel
-@onready var _try_again_button: Button = $UI/TryAgainButton
+@onready var _defeat_menu: DefeatMenu = $UI/DefeatMenu
 @onready var _background: Sprite2D = $Background
 
 
@@ -82,7 +82,8 @@ func _ready() -> void:
 	_action_menu.action_selected.connect(execute_action)
 	pause_toggled.connect(_action_menu._on_pause_toggled)
 	battle_ended.connect(_on_battle_ended)
-	_try_again_button.pressed.connect(_on_try_again_pressed)
+	_defeat_menu.retry_requested.connect(func(): SceneManager.change_scene(BATTLE_SCENE))
+	_defeat_menu.quit_requested.connect(func(): get_tree().quit())
 	combatant_updated.connect(_on_combatant_updated)
 
 
@@ -379,6 +380,7 @@ func _on_combatant_updated(combatant: Combatant) -> void:
 
 
 func _on_battle_ended(victory: bool) -> void:
+	_action_menu.hide()
 	if victory:
 		_victory_label.show()
 		await get_tree().create_timer(VICTORY_DELAY).timeout
@@ -386,8 +388,4 @@ func _on_battle_ended(victory: bool) -> void:
 			SceneManager.change_scene(WORLD_SCENE)
 	else:
 		_defeat_label.show()
-		_try_again_button.show()
-
-
-func _on_try_again_pressed() -> void:
-	SceneManager.change_scene(BATTLE_SCENE)
+		_defeat_menu.show()
