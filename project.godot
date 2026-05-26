@@ -37,6 +37,7 @@ CellRegistry="*res://scripts/autoload/cell_registry.gd"
 SceneManager="*res://scripts/autoload/scene_manager.gd"
 BattleParams="*res://scripts/autoload/battle_params.gd"
 AudioManager="*res://scripts/autoload/audio_manager.gd"
+GameState="*res://scripts/autoload/game_state.gd"
 
 [input]
 
