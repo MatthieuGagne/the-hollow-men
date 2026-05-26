@@ -18,8 +18,9 @@
 | Batch 2 (Tasks 4–5) | ✅ Done | Player.setup(), SpawnPoint scene |
 | Batch 3 (Tasks 6–8) | ✅ Done | GameStateVariableStorage, DialogueManager autoload, interact() cleanup |
 | Batch 4 Tasks 9–11 | ✅ Done | BaseRoom, ExitDoor, RoomPOC refactor |
-| Smoketest 4 | 🔄 In progress | Game running, awaiting user confirmation |
-| Batch 5 (Tasks 12–14) | ⬜ Pending | Four Winds Bar map + scene |
+| Smoketest 4 | ✅ Done | Confirmed by user |
+| Batch 5 (Tasks 12–14) | ✅ Done | Four Winds Bar map + scene |
+| Smoketest 5 | 🔄 In progress | Game running, awaiting user confirmation |
 
 ### Discovered during implementation
 
@@ -28,6 +29,9 @@ The plan specified `@export var world_layer: TileMapLayer` in `base_room.gd` and
 
 **Camera2D limits must not be set to 0 in BaseRoom.tscn.**
 The agent wrote `limit_right = 0`, `limit_bottom = 0`. With all four limits at 0, the camera is pinned to world origin and cannot follow the player even when `_apply_camera_limits()` fires. Fix: omit the limit properties in the .tscn (they default to ±10,000,000 in Godot 4, which is correct for "unlimited").
+
+**YATI bakes TMX object properties as node `metadata/<key>`, not as exported GDScript properties.**
+For `type="instance"` objects, YATI sets e.g. `metadata/spawn_id = "default"` rather than the `@export var spawn_id`. Fix: read from metadata in `_ready()` when the export is empty — `if spawn_id == "" and has_meta("spawn_id"): spawn_id = get_meta("spawn_id")`. Apply this pattern to any future scene that reads TMX object properties as exported vars.
 
 **`find_children("*", "SpawnPoint", true, false)` DOES work with GDScript `class_name`.**
 A code reviewer claimed it wouldn't. It does — reverting the reviewer's suggested "fix" (changing the type arg to `""`) was the right call: passing `""` returns ALL descendants and causes a null-cast crash on non-SpawnPoint nodes.
