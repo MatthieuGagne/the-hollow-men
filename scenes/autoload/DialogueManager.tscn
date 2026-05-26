@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/DialogueBox.tscn" id="1_dialoguebox"]
+[ext_resource type="Script" uid="uid://budnld4qd513n" path="res://addons/YarnSpinner-Godot/Runtime/DialogueRunner.cs" id="2_dialoguerunner"]
+[ext_resource type="Script" uid="uid://bx7wsljb20f0w" path="res://scripts/ui/yarn_dialogue_bridge.gd" id="3_bridge"]
+[ext_resource type="Resource" uid="uid://cwsy3wvha17st" path="res://dialogue/iris.yarnproject" id="4_yarnproject"]
+[ext_resource type="Script" path="res://scripts/autoload/GameStateVariableStorage.cs" id="5_variablestorage"]
+[ext_resource type="Script" path="res://scripts/autoload/dialogue_manager.gd" id="6_script"]
+
+[node name="DialogueManager" type="Node"]
+script = ExtResource("6_script")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="DialogueBox" parent="CanvasLayer" instance=ExtResource("1_dialoguebox")]
+
+[node name="DialogueRunner" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("dialoguePresenters", "variableStorage")]
+mouse_filter = 2
+script = ExtResource("2_dialoguerunner")
+yarnProject = ExtResource("4_yarnproject")
+dialoguePresenters = [NodePath("../YarnDialogueBridge")]
+variableStorage = NodePath("../GameStateVariableStorage")
+
+[node name="YarnDialogueBridge" type="Node" parent="CanvasLayer"]
+script = ExtResource("3_bridge")
+
+[node name="GameStateVariableStorage" type="Node" parent="CanvasLayer"]
+script = ExtResource("5_variablestorage")
