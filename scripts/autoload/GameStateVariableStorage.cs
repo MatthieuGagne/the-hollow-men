@@ -1,0 +1,63 @@
+#nullable disable
+
+using Godot;
+using YarnSpinnerGodot;
+
+namespace TheHollowMen;
+
+[GlobalClass]
+public partial class GameStateVariableStorage : VariableStorageBehaviour
+{
+    private GodotObject GameState => Engine.GetSingleton("GameState");
+
+    public override bool TryGetValue<T>(string variableName, out T result)
+    {
+        if (!Contains(variableName))
+        {
+            result = default;
+            return false;
+        }
+        var raw = GameState.Call("get_flag", variableName, new Variant());
+        if (raw.Obj is T typed)
+        {
+            result = typed;
+            return true;
+        }
+        GD.PushError($"GameStateVariableStorage: type mismatch for '{variableName}' — expected {typeof(T).Name}");
+        result = default;
+        return false;
+    }
+
+    public override void SetValue(string variableName, bool boolValue) =>
+        GameState.Call("set_flag", variableName, boolValue);
+
+    public override void SetValue(string variableName, float floatValue) =>
+        GameState.Call("set_flag", variableName, floatValue);
+
+    public override void SetValue(string variableName, string stringValue) =>
+        GameState.Call("set_flag", variableName, stringValue);
+
+    public override void Clear() { }
+
+    public override bool Contains(string variableName) =>
+        GameState.Call("has_flag", variableName).AsBool();
+
+    public override void SetAllVariables(
+        System.Collections.Generic.Dictionary<string, float> floats,
+        System.Collections.Generic.Dictionary<string, string> strings,
+        System.Collections.Generic.Dictionary<string, bool> bools,
+        bool clear = true)
+    {
+        foreach (var kv in floats) SetValue(kv.Key, kv.Value);
+        foreach (var kv in strings) SetValue(kv.Key, kv.Value);
+        foreach (var kv in bools) SetValue(kv.Key, kv.Value);
+    }
+
+    public override (
+        System.Collections.Generic.Dictionary<string, float>,
+        System.Collections.Generic.Dictionary<string, string>,
+        System.Collections.Generic.Dictionary<string, bool>) GetAllVariables()
+    {
+        return (new(), new(), new());
+    }
+}
