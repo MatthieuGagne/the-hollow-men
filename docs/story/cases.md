@@ -1,6 +1,6 @@
 # Cases
 
-## Case 1: The Recovery Job
+## Case 1: Wandering Star
 
 ### Overview
 
@@ -237,7 +237,7 @@ He's in. Whatever it costs — the Bureau's tolerance, the arrangement that's ke
 
 ---
 
-## Case 2: The Document Case
+## Case 2: She's Lost Control
 
 ### Overview
 
@@ -460,7 +460,7 @@ The kid's room is off the corridor. Their name — street-given, not registered 
 
 ---
 
-## Case 3: The Wound
+## Case 3: Inside the cable temple
 
 ### Overview
 
@@ -605,7 +605,7 @@ Kos is still out there in the deep geometry. He helped without agreeing to. He's
 
 ---
 
-## Case 4: Dead Signal
+## Case 4: The Great Below
 
 ### Overview
 
@@ -635,7 +635,7 @@ Post-boss: one practical exchange with Margot. Neither names what they're carryi
 
 He files his report. Writes what he can write. *Investigation ongoing.* Puts his badge on — takes a beat longer than usual — and goes back. He does not join.
 
-**Why he stays Bureau:** He can still write the report. After Dead Signal, his framework has a container for what he saw. The container is a stretch. He knows it is a stretch. The moment Gideon can no longer write a report that makes sense to himself is the moment he stops being Bureau. That moment is not here.
+**Why he stays Bureau:** He can still write the report. After The Great Below, his framework has a container for what he saw. The container is a stretch. He knows it is a stretch. The moment Gideon can no longer write a report that makes sense to himself is the moment he stops being Bureau. That moment is not here.
 
 ---
 
