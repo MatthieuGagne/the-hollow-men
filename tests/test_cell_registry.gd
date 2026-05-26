@@ -83,3 +83,12 @@ func test_clear_resets_both_dictionaries() -> void:
 	assert_false(CellRegistry.is_blocked(Vector2i(1, 1)))
 	assert_null(CellRegistry.get_interactable(Vector2i(2, 2)))
 	node.free()
+
+
+func test_clears_on_pre_scene_change() -> void:
+	var node := Node.new()
+	CellRegistry.register_blocking(Vector2i(1, 1), node)
+	assert_true(CellRegistry.is_blocked(Vector2i(1, 1)))
+	SceneManager.pre_scene_change.emit()
+	assert_false(CellRegistry.is_blocked(Vector2i(1, 1)))
+	node.free()
