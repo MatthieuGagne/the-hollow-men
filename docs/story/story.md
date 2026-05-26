@@ -27,7 +27,7 @@ Summoners are rare, Bureau-monitored, and feared. When one goes missing, it mean
 
 ---
 
-## Opening Sequence — Beat Map
+## Rooftop, 3AM — Beat Map
 
 The game begins in the Heights before Crane makes contact. Five beats, one encounter, one crack in the city's lie.
 
@@ -127,7 +127,7 @@ The party returns to the hub. The wound is locatable and disrupted. The kid's ge
 
 ---
 
-## Case 4 — Dead Signal
+## Case 4 — Inside the cable temple
 
 See `docs/plans/2026-04-26-dead-signal-game-design-doc.md` for full structure. Full design: GitHub issue #9.
 
