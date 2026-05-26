@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="The Hollow Men"
-run/main_scene="res://scenes/world/RoomPOC.tscn"
+run/main_scene="res://scenes/world/FourWindsBar.tscn"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 config/icon="res://icon.svg"
 
