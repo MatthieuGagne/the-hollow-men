@@ -9,9 +9,6 @@ var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
 var _world_layer: TileMapLayer
 
-@onready var _dialogue_box: DialogueBox = get_node_or_null("../UILayer/DialogueBox")
-@onready var _yarn_bridge: Node = get_node_or_null("../UILayer/YarnDialogueBridge")
-
 var _dbg_target_offset: Vector2 = Vector2.ZERO
 var _dbg_is_wall: bool = false
 var _dbg_has_target: bool = false
@@ -74,8 +71,7 @@ func _draw() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and _input_blocked:
-		if _dialogue_box != null:
-			_dialogue_box.skip_or_dismiss()
+		DialogueManager.skip_or_dismiss()
 		return
 	if _moving or _input_blocked or _world_layer == null:
 		return
@@ -92,7 +88,7 @@ func _try_interact() -> void:
 	var interactable: Node = CellRegistry.get_interactable(cell)
 	if interactable == null:
 		return
-	interactable.interact(_dialogue_box, _yarn_bridge)
+	interactable.interact()
 
 
 func _try_move(action: String) -> void:
