@@ -100,7 +100,7 @@ Magic and technology coexist. Both are real. Both are controlled. Both are lies.
 
 **Literature:** Raymond Chandler, Dashiell Hammett, H.P. Lovecraft, Thomas Ligotti, William Gibson, Paul Auster (meta-noir), Haruki Murakami, Jeff VanderMeer (*Annihilation*), N.K. Jemisin (*The Broken Earth* trilogy — the orogene licensing system as direct parallel to the Grade system; power detected young, controlled, harvested), Walter Mosley (Easy Rawlins — Black detective navigating institutions not built for him; relevant for Gideon specifically), Kafka (*The Trial*, *The Castle* — the institution that cannot be understood or appealed to)
 
-**Music:** Blue Öyster Cult (prog-rock mysticism, cosmic horror, the uncanny meeting the mundane)
+**Music:** Blue Öyster Cult (prog-rock mysticism, cosmic horror, the uncanny meeting the mundane), Monster Magnet (psychedelic heavy rock; the sacred and the monstrous as the same thing; power as cosmic drug; Spine of God as the ley architecture made sound), Portishead (trip-hop noir; rain-soaked alienation; the job that pays when nothing else does — Wandering Star), Joy Division (post-punk urban alienation; the body losing control of itself; the weight that closes in — She's Lost Control), Nine Inch Nails (industrial; the entity beneath; the ley architecture as underworld — The Great Below), Omnipotent Youth Society (Chinese indie rock; poetic urban melancholy; the sacred geometry of a dying city — Inside the cable temple)
 
 ---
 

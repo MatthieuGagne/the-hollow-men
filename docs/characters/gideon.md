@@ -34,7 +34,7 @@ Neither speaks first.
 
 Gideon's arc is the most heartbreaking in the party because he is not wrong to believe in justice. He has simply put it in the wrong institution — and the institution has shaped him so thoroughly that dismantling one means dismantling the other. The question his arc asks: *when the thing you served reveals what it actually is, who are you without it?*
 
-## Investigation Entry (Case 4 — Inside the cable temple)
+## Investigation Entry (Case 4 — The Great Below)
 
 Gideon is in the Lowline on his own initiative — not assigned. He saw the incident report for Junction 9 (involuntary output activity, unregistered practitioners), recognized Assessment Division jurisdiction being bypassed by Kurtz's blunt Bureau sweep, and came to do the investigation correctly. He is doing real police work. He believes in the institution's stated purpose, even when the institution isn't following it.
 
@@ -46,6 +46,6 @@ Post-boss: one practical exchange with Margot. Neither names what they're carryi
 
 He files his report. Writes what he can write. *Investigation ongoing.* Puts his badge on — takes a beat longer than usual — and goes back. He does not join.
 
-**Why he stays Bureau:** He can still write the report. After Inside the cable temple, his framework has a container for what he saw. The container is a stretch. He knows it is a stretch. The moment Gideon can no longer write a report that makes sense to himself is the moment he stops being Bureau. That moment is not here.
+**Why he stays Bureau:** He can still write the report. After The Great Below, his framework has a container for what he saw. The container is a stretch. He knows it is a stretch. The moment Gideon can no longer write a report that makes sense to himself is the moment he stops being Bureau. That moment is not here.
 
 **His arc break** — the last report he can't file — is TBD, contingent on act structure. Kurtz will eventually notice the *investigation ongoing* flag.
