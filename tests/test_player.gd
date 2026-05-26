@@ -45,3 +45,13 @@ func test_facing_from_action_left() -> void:
 
 func test_facing_from_action_right() -> void:
 	assert_eq(Player.facing_from_action("move_right"), Vector2i(1, 0))
+
+
+func test_setup_assigns_world_layer() -> void:
+	var player := Player.new()
+	add_child(player)
+	var mock_layer := TileMapLayer.new()
+	player.setup(mock_layer)
+	assert_eq(player._world_layer, mock_layer)
+	player.free()
+	mock_layer.free()

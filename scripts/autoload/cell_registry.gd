@@ -4,6 +4,10 @@ var _blocking: Dictionary = {}
 var _interactables: Dictionary = {}
 
 
+func _ready() -> void:
+	SceneManager.pre_scene_change.connect(clear)
+
+
 func register_blocking(cell: Vector2i, node: Node) -> void:
 	_blocking[cell] = node
 

@@ -7,10 +7,7 @@ const MOVE_DURATION: float = 0.1
 var _moving: bool = false
 var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
-
-@onready var _world_layer: TileMapLayer = $"../room_poc/World"
-@onready var _dialogue_box: DialogueBox = $"../UILayer/DialogueBox"
-@onready var _yarn_bridge: Node = $"../UILayer/YarnDialogueBridge"
+var _world_layer: TileMapLayer
 
 var _dbg_target_offset: Vector2 = Vector2.ZERO
 var _dbg_is_wall: bool = false
@@ -22,6 +19,10 @@ func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
 	z_as_relative = false
 	_setup_debug_overlay()
+
+
+func setup(layer: TileMapLayer) -> void:
+	_world_layer = layer
 
 
 func _setup_debug_overlay() -> void:
@@ -43,6 +44,8 @@ func _process(_delta: float) -> void:
 				_try_move(action)
 				break
 	queue_redraw()
+	if _world_layer == null:
+		return
 	var tile: Vector2i = _world_layer.local_to_map(position)
 	var lines: PackedStringArray = [
 		"pos: (%.0f, %.0f)" % [position.x, position.y],
@@ -68,9 +71,9 @@ func _draw() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact") and _input_blocked:
-		_dialogue_box.skip_or_dismiss()
+		DialogueManager.skip_or_dismiss()
 		return
-	if _moving or _input_blocked:
+	if _moving or _input_blocked or _world_layer == null:
 		return
 	for action: String in ["move_up", "move_down", "move_left", "move_right"]:
 		if event.is_action_pressed(action):
@@ -85,7 +88,7 @@ func _try_interact() -> void:
 	var interactable: Node = CellRegistry.get_interactable(cell)
 	if interactable == null:
 		return
-	interactable.interact(_dialogue_box, _yarn_bridge)
+	interactable.interact()
 
 
 func _try_move(action: String) -> void:

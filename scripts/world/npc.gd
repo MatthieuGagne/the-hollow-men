@@ -15,7 +15,7 @@ func _exit_tree() -> void:
 	CellRegistry.unregister_interactable(get_cell())
 
 
-func interact(_dialogue_box: Node, yarn_bridge: Node) -> void:
-	if yarn_node_id == "" or yarn_bridge == null:
+func interact() -> void:
+	if yarn_node_id == "":
 		return
-	yarn_bridge.start_dialogue(yarn_node_id)
+	DialogueManager.run_node(yarn_node_id)

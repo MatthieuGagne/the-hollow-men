@@ -5,6 +5,7 @@ var _obj: Node2D
 
 func before_each() -> void:
 	CellRegistry.clear()
+	DialogueManager._dialogue_box.dismiss()
 	_obj = Node2D.new()
 	_obj.set_script(load("res://scripts/world/examine_object.gd"))
 	_obj.position = Vector2(80.0, 64.0)  # tile (5, 4)
@@ -46,15 +47,10 @@ func test_interact_shows_examine_text() -> void:
 	obj.examine_text = "A dusty shelf."
 	add_child(obj)
 
-	var mock_box := Control.new()
-	mock_box.set_script(load("res://scripts/ui/dialogue_box.gd"))
-	add_child(mock_box)
+	obj.interact()
+	DialogueManager.skip_or_dismiss()
+	assert_eq(DialogueManager._dialogue_box.get_displayed_text(), "A dusty shelf.")
 
-	obj.interact(mock_box, null)
-	mock_box.skip_or_dismiss()
-	assert_eq(mock_box.get_displayed_text(), "A dusty shelf.")
-
-	mock_box.free()
 	obj.free()
 
 
@@ -64,12 +60,7 @@ func test_interact_with_no_examine_text_does_nothing() -> void:
 	obj.examine_text = ""
 	add_child(obj)
 
-	var mock_box := Control.new()
-	mock_box.set_script(load("res://scripts/ui/dialogue_box.gd"))
-	add_child(mock_box)
+	obj.interact()
+	assert_false(DialogueManager._dialogue_box.visible)
 
-	obj.interact(mock_box, null)
-	assert_false(mock_box.visible)
-
-	mock_box.free()
 	obj.free()

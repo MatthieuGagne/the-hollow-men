@@ -5,6 +5,7 @@ signal pre_scene_change
 const FADE_DURATION: float = 0.3
 
 var _overlay: ColorRect
+var pending_spawn_point: String = ""
 
 
 func _ready() -> void:
@@ -18,7 +19,8 @@ func _ready() -> void:
 	canvas.add_child(_overlay)
 
 
-func change_scene(path: String) -> void:
+func change_scene(path: String, spawn_point: String = "") -> void:
+	pending_spawn_point = spawn_point
 	pre_scene_change.emit()
 	var tween := create_tween()
 	tween.tween_property(_overlay, "modulate:a", 1.0, FADE_DURATION)
