@@ -77,7 +77,7 @@ No calls yet. Just the weight of something he can't name.
 
 ---
 
-## Case 1 — The Recovery Job (TBD)
+## Case 1 — Wandering Star
 
 See `docs/plans/2026-04-23-case-1-recovery-job-design.md` for full structure.
 
@@ -95,7 +95,7 @@ The player has heard the name twice in ten seconds — from a Sprawl healer foll
 
 ---
 
-## Case 2 — The Document Case (working title)
+## Case 2 — She's Lost Control
 
 See `docs/plans/2026-04-24-case-2-design.md` for full structure.
 
@@ -113,7 +113,7 @@ After Case 2, the party is Reid + Karim + Margot + Iris. The next thread is what
 
 ---
 
-## Case 3 — The Wound (working title)
+## Case 3 — Inside the cable temple
 
 See `docs/plans/2026-04-24-case-3-design.md` for full structure.
 
@@ -127,7 +127,7 @@ The party returns to the hub. The wound is locatable and disrupted. The kid's ge
 
 ---
 
-## Case 4 — Inside the cable temple
+## Case 4 — The Great Below
 
 See `docs/plans/2026-04-26-dead-signal-game-design-doc.md` for full structure. Full design: GitHub issue #9.
 
