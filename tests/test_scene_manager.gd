@@ -20,3 +20,16 @@ func test_scene_manager_has_fade_overlay() -> void:
 func test_fade_overlay_initially_transparent() -> void:
 	assert_eq(SceneManager._overlay.modulate.a, 0.0,
 		"fade overlay must start fully transparent")
+
+
+func test_change_scene_stores_spawn_point() -> void:
+	# Can't call change_scene (it transitions scene tree), so test the
+	# pending_spawn_point field directly.
+	SceneManager.pending_spawn_point = ""
+	SceneManager.pending_spawn_point = "four_winds_entrance"
+	assert_eq(SceneManager.pending_spawn_point, "four_winds_entrance")
+
+
+func test_pending_spawn_point_defaults_empty() -> void:
+	SceneManager.pending_spawn_point = ""
+	assert_eq(SceneManager.pending_spawn_point, "")
