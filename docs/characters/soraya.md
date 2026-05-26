@@ -32,7 +32,7 @@ She has spent decades alone with knowledge nobody else has. She wonders if the d
 - **Kos**: both have the deepest entity relationships in the party — she through the Grid's information layer, he through his body. Whether she recognizes the entity's signature in him immediately is TBD.
 - **Reid**: she has the map of what his investigation is uncovering. Whether she gives it all at once or parcels it out — testing the investigation's structure before loading it — is TBD.
 
-## Investigation Entry (Case 4 — Dead Signal, partial)
+## Investigation Entry (Case 4 — Inside the cable temple, partial)
 
 First contact is indirect. After the party defeats The Node at Junction 9, Margot reads the terminal's output log and finds Soraya's notation — advanced Grid-layer analysis syntax, a format beyond Bureau standard that Margot has never encountered. The message:
 
