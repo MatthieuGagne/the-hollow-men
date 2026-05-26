@@ -26,10 +26,6 @@ hframes = 1
 vframes = 8
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-limit_left = 0
-limit_top = 0
-limit_right = 0
-limit_bottom = 0
 position_smoothing_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]

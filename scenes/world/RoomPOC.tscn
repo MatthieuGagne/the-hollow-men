@@ -17,7 +17,7 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1.0, 0.5)
 
 [node name="RoomPOC" instance=ExtResource("1_baseroom")]
-world_layer = NodePath("room_poc/World")
+world_layer_path = NodePath("room_poc/World")
 music_path = "res://assets/audio/music/NoirCafe.ogg"
 battle_background = "alley"
 default_spawn = "default"

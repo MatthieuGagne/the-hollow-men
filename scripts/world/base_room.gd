@@ -2,11 +2,13 @@
 class_name BaseRoom
 extends Node2D
 
-@export var world_layer: TileMapLayer
+@export_node_path("TileMapLayer") var world_layer_path: NodePath = NodePath("")
 @export var music_path: String = ""
 @export var battle_background: String = "default"
 @export var default_spawn: String = "default"
 @export var ambient_color: Color = Color(0.08, 0.08, 0.12, 1.0)
+
+var _world_layer: TileMapLayer
 
 
 func _ready() -> void:
@@ -15,9 +17,10 @@ func _ready() -> void:
 	$CanvasModulate.color = ambient_color
 	if music_path != "":
 		AudioManager.play_music(music_path)
-	if world_layer:
+	_world_layer = get_node_or_null(world_layer_path) as TileMapLayer
+	if _world_layer:
 		_apply_camera_limits()
-		$Player.setup(world_layer)
+		$Player.setup(_world_layer)
 	_resolve_spawn()
 	DialogueManager.dialogue_opened.connect($Player._on_dialogue_opened)
 	DialogueManager.dialogue_closed.connect($Player._on_dialogue_closed)
@@ -44,8 +47,8 @@ func _find_spawn_point(spawn_id: String) -> SpawnPoint:
 
 func _apply_camera_limits() -> void:
 	var limits := compute_camera_limits(
-		world_layer.get_used_rect(),
-		world_layer.tile_set.tile_size
+		_world_layer.get_used_rect(),
+		_world_layer.tile_set.tile_size
 	)
 	var cam: Camera2D = $Player/Camera2D
 	cam.limit_left   = limits.position.x
