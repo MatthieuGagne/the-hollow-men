@@ -35,7 +35,7 @@ func _resolve_spawn() -> void:
 		return
 	var sp := _find_spawn_point(target_id)
 	assert(sp != null, "BaseRoom: no SpawnPoint with spawn_id='%s' in scene '%s'" % [target_id, name])
-	$Player.position = sp.position
+	$Player.position = Player.snap_to_grid(sp.position, 16)
 
 
 func _find_spawn_point(spawn_id: String) -> SpawnPoint:

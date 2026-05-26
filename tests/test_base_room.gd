@@ -15,6 +15,20 @@ func test_get_configuration_warnings_no_default_spawn() -> void:
 	assert_gt(warnings.size(), 0)
 	room.free()
 
+func test_resolve_spawn_snaps_to_tile_center() -> void:
+	# Spawn points from YATI land on tile boundaries (multiples of 16).
+	# The player must be snapped to the tile center (+8) so sprite feet
+	# align with NPC sprites that use the same tile-row convention.
+	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
+	room.default_spawn = "test"
+	var sp := SpawnPoint.new()
+	sp.spawn_id = "test"
+	sp.position = Vector2(128, 144)  # tile boundary, not center
+	room.add_child(sp)
+	add_child(room)
+	assert_eq(room.get_node("Player").position, Vector2(136, 152))  # snapped center
+	room.queue_free()
+
 func test_get_configuration_warnings_valid_spawn() -> void:
 	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
 	room.default_spawn = "default"
