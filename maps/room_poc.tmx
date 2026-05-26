@@ -54,7 +54,7 @@
     <property name="res_path" type="file" value="res://scenes/world/BattleEncounter.tscn"/>
    </properties>
   </object>
-  <object id="9" type="instance" x="48" y="112" width="16" height="16">
+  <object id="9" type="instance" x="96" y="112" width="16" height="16">
    <properties>
     <property name="spawn_id" value="four_winds_entrance"/>
     <property name="res_path" type="file" value="res://scenes/world/SpawnPoint.tscn"/>

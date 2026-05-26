@@ -28,7 +28,7 @@
     <property name="res_path" type="file" value="res://scenes/world/NPC.tscn"/>
    </properties>
   </object>
-  <object id="3" type="instance" x="128" y="176" width="16" height="16">
+  <object id="3" type="instance" x="128" y="184" width="16" height="16">
    <properties>
     <property name="target_path" value="res://scenes/world/RoomPOC.tscn"/>
     <property name="spawn_point" value="four_winds_entrance"/>
