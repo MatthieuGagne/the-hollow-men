@@ -7,10 +7,10 @@ const MOVE_DURATION: float = 0.1
 var _moving: bool = false
 var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
+var _world_layer: TileMapLayer
 
-@onready var _world_layer: TileMapLayer = $"../room_poc/World"
-@onready var _dialogue_box: DialogueBox = $"../UILayer/DialogueBox"
-@onready var _yarn_bridge: Node = $"../UILayer/YarnDialogueBridge"
+@onready var _dialogue_box: DialogueBox = get_node_or_null("../UILayer/DialogueBox")
+@onready var _yarn_bridge: Node = get_node_or_null("../UILayer/YarnDialogueBridge")
 
 var _dbg_target_offset: Vector2 = Vector2.ZERO
 var _dbg_is_wall: bool = false
@@ -22,6 +22,10 @@ func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
 	z_as_relative = false
 	_setup_debug_overlay()
+
+
+func setup(layer: TileMapLayer) -> void:
+	_world_layer = layer
 
 
 func _setup_debug_overlay() -> void:
@@ -43,6 +47,8 @@ func _process(_delta: float) -> void:
 				_try_move(action)
 				break
 	queue_redraw()
+	if _world_layer == null:
+		return
 	var tile: Vector2i = _world_layer.local_to_map(position)
 	var lines: PackedStringArray = [
 		"pos: (%.0f, %.0f)" % [position.x, position.y],
