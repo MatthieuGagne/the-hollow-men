@@ -4,9 +4,36 @@
 
 **Goal:** Build the Four Winds Bar as the game's first real navigable map and extract a shared BaseRoom architecture that all future rooms will inherit — replacing the ad-hoc RoomPOC structure.
 
-**Architecture:** `BaseRoom.tscn` owns Player, Camera2D, CanvasModulate, and an empty UILayer. `BaseRoom.gd` sets camera limits from `world_layer.get_used_rect()`, resolves the spawn point from `SceneManager.pending_spawn_point`, connects `DialogueManager` signals to Player, and plays music. `DialogueManager` is extracted into a persistent `.tscn` autoload that holds DialogueRunner, YarnDialogueBridge, and DialogueBox — plus a C# `GameStateVariableStorage` node that bridges Yarn variables to `GameState` flags in real time.
+**Architecture:** `BaseRoom.tscn` owns Player, Camera2D, CanvasModulate, and an empty UILayer. `BaseRoom.gd` sets camera limits from the world layer, resolves the spawn point from `SceneManager.pending_spawn_point`, connects `DialogueManager` signals to Player, and plays music. `DialogueManager` is extracted into a persistent `.tscn` autoload that holds DialogueRunner, YarnDialogueBridge, and DialogueBox — plus a C# `GameStateVariableStorage` node that bridges Yarn variables to `GameState` flags in real time.
 
 **Tech Stack:** Godot 4.6 / GDScript / C# (YarnSpinner-Godot); Tiled (`.tmx` maps via YATI); GUT tests; `VariableStorageBehaviour` from `addons/YarnSpinner-Godot/Runtime/VariableStorageBehaviour.cs`
+
+---
+
+## Execution Status (updated 2026-05-25)
+
+| Batch | Status | Notes |
+|-------|--------|-------|
+| Batch 1 (Tasks 1–3) | ✅ Done | GameState, SceneManager spawn_point, CellRegistry auto-clear |
+| Batch 2 (Tasks 4–5) | ✅ Done | Player.setup(), SpawnPoint scene |
+| Batch 3 (Tasks 6–8) | ✅ Done | GameStateVariableStorage, DialogueManager autoload, interact() cleanup |
+| Batch 4 Tasks 9–11 | ✅ Done | BaseRoom, ExitDoor, RoomPOC refactor |
+| Smoketest 4 | 🔄 In progress | Game running, awaiting user confirmation |
+| Batch 5 (Tasks 12–14) | ⬜ Pending | Four Winds Bar map + scene |
+
+### Discovered during implementation
+
+**`@export var node: NodeType` does NOT resolve across inherited scene boundaries.**
+The plan specified `@export var world_layer: TileMapLayer` in `base_room.gd` and `world_layer = NodePath("room_poc/World")` in `RoomPOC.tscn`. Godot 4 does NOT auto-resolve the NodePath when the referenced node exists only in the child scene. Fix: use `@export_node_path("TileMapLayer") var world_layer_path: NodePath` and resolve manually with `get_node_or_null(world_layer_path)` in `_ready()`. **Update all future room scenes** to use `world_layer_path = NodePath(...)` not `world_layer = NodePath(...)`.
+
+**Camera2D limits must not be set to 0 in BaseRoom.tscn.**
+The agent wrote `limit_right = 0`, `limit_bottom = 0`. With all four limits at 0, the camera is pinned to world origin and cannot follow the player even when `_apply_camera_limits()` fires. Fix: omit the limit properties in the .tscn (they default to ±10,000,000 in Godot 4, which is correct for "unlimited").
+
+**`find_children("*", "SpawnPoint", true, false)` DOES work with GDScript `class_name`.**
+A code reviewer claimed it wouldn't. It does — reverting the reviewer's suggested "fix" (changing the type arg to `""`) was the right call: passing `""` returns ALL descendants and causes a null-cast crash on non-SpawnPoint nodes.
+
+**`player.gd` needs `Player.setup()` called by the room.**
+After removing the `@onready` world-layer path in Task 4, a bridge call `$Player.setup($"room_poc/World")` was added to `room_poc.gd` for the Batch 2 smoketest. `room_poc.gd` was deleted in Task 11; `BaseRoom._ready()` now handles this via `$Player.setup(_world_layer)`.
 
 ---
 
