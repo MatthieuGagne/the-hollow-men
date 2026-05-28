@@ -79,7 +79,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed(action):
 			_try_move(action)
 			return
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact", false):
 		_try_interact()
 
 
@@ -88,6 +88,7 @@ func _try_interact() -> void:
 	var interactable: Node = CellRegistry.get_interactable(cell)
 	if interactable == null:
 		return
+	_input_blocked = true
 	interactable.interact()
 
 
