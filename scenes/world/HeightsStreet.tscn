@@ -19,6 +19,8 @@ world_layer_path = NodePath("heights_street/World")
 default_spawn = "heights_street_start"
 ambient_color = Color(0.05, 0.05, 0.10, 1)
 
+[node name="heights_street" parent="." instance=ExtResource("2_map")]
+
 [node name="StreetLamp" type="PointLight2D" parent="."]
 position = Vector2(128, 96)
 color = Color(1.0, 0.75, 0.3, 1)
