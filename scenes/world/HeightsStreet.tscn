@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" uid="uid://ct0vwof2wfd43" path="res://maps/heights_street.tmx" id="2_map"]
+
+[node name="HeightsStreet" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("heights_street/World")
+default_spawn = "heights_street_start"
+
+[node name="heights_street" parent="." instance=ExtResource("2_map")]
