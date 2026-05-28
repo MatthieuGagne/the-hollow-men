@@ -7,6 +7,7 @@ const MOVE_DURATION: float = 0.1
 var _moving: bool = false
 var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
+var _interact_awaiting_release: bool = false
 var _world_layer: TileMapLayer
 
 var _dbg_target_offset: Vector2 = Vector2.ZERO
@@ -70,6 +71,8 @@ func _draw() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("interact"):
+		_interact_awaiting_release = false
 	if event.is_action_pressed("interact") and _input_blocked:
 		DialogueManager.skip_or_dismiss()
 		return
@@ -79,7 +82,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed(action):
 			_try_move(action)
 			return
-	if event.is_action_pressed("interact", false):
+	if event.is_action_pressed("interact", false) and not _interact_awaiting_release:
+		_interact_awaiting_release = true
 		_try_interact()
 
 
