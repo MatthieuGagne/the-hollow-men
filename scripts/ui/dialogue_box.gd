@@ -17,6 +17,7 @@ var _char_index: int = 0
 var _timer: Timer
 var _yarn_mode: bool = false
 var _state: State = State.IDLE
+var _is_narration: bool = false
 var _selected_choice: int = 0
 var _choice_count: int = 0
 
@@ -30,12 +31,21 @@ func _ready() -> void:
 
 
 func show_text(text: String) -> void:
+	_is_narration = false
+	_yarn_mode = false
+	_set_speaker("")
+	_show_line_internal(text)
+
+
+func show_narration(text: String) -> void:
+	_is_narration = true
 	_yarn_mode = false
 	_set_speaker("")
 	_show_line_internal(text)
 
 
 func show_line(speaker: String, text: String) -> void:
+	_is_narration = false
 	_yarn_mode = true
 	_set_speaker(speaker)
 	_show_line_internal(text)
@@ -45,7 +55,7 @@ func show_choices(options: Array) -> void:
 	_state = State.SHOWING_CHOICES
 	_selected_choice = 0
 	_choice_count = options.size()
-	var label: Label = get_node_or_null("Label")
+	var label: RichTextLabel = get_node_or_null("Label")
 	if label:
 		label.text = ""
 	var choice_list: VBoxContainer = get_node_or_null("ChoiceList")
@@ -122,9 +132,12 @@ func _set_speaker(name: String) -> void:
 
 
 func _update_label() -> void:
-	var label: Label = get_node_or_null("Label")
+	var label: RichTextLabel = get_node_or_null("Label")
 	if label:
-		label.text = get_displayed_text()
+		if _is_narration:
+			label.text = "[i]" + get_displayed_text() + "[/i]"
+		else:
+			label.text = get_displayed_text()
 
 
 func _update_choice_highlight() -> void:
