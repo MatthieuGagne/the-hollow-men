@@ -4,6 +4,7 @@ var _obj: Node2D
 
 
 func before_each() -> void:
+	GameState._flags.clear()
 	CellRegistry.clear()
 	DialogueManager._dialogue_box.dismiss()
 	_obj = Node2D.new()
@@ -63,4 +64,26 @@ func test_interact_with_no_examine_text_does_nothing() -> void:
 	obj.interact()
 	assert_false(DialogueManager._dialogue_box.visible)
 
+	obj.free()
+
+
+func test_interact_sets_game_state_flag() -> void:
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/examine_object.gd"))
+	obj.examine_text = "A dusty shelf."
+	obj.sets_flag = "clue_found"
+	add_child(obj)
+	obj.interact()
+	assert_true(GameState.has_flag("clue_found"))
+	obj.free()
+
+
+func test_interact_does_not_set_flag_when_sets_flag_empty() -> void:
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/examine_object.gd"))
+	obj.examine_text = "A dusty shelf."
+	obj.sets_flag = ""
+	add_child(obj)
+	obj.interact()
+	assert_eq(GameState._flags.size(), 0)
 	obj.free()

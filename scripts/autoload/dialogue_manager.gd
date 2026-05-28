@@ -20,5 +20,9 @@ func show_text(text: String) -> void:
 	_dialogue_box.show_text(text)
 
 
+func show_narration(text: String) -> void:
+	_dialogue_box.show_narration(text)
+
+
 func skip_or_dismiss() -> void:
 	_dialogue_box.skip_or_dismiss()
