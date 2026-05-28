@@ -43,7 +43,17 @@ If the output contains the word "updated" (sync-tsx patched one or more `.tsx` f
 rm -f <project_path>/.godot/imported/*.tmx-*.md5 <project_path>/.godot/imported/*.tmx-*.tscn
 ```
 
-Then run the headless import and wait for it to finish:
+**Check for stale Yarn compilation.** The yarnproject compiled `.tres` is not automatically invalidated when `.yarn` files change. Check and invalidate if needed:
+
+```sh
+TRES=$(ls <project_path>/.godot/imported/iris.yarnproject-*.tres 2>/dev/null | head -1)
+if [ -z "$TRES" ] || find <project_path>/dialogue -name "*.yarn" -newer "$TRES" | grep -q .; then
+  echo "Yarn files changed — invalidating compiled yarnproject"
+  rm -f <project_path>/.godot/imported/iris.yarnproject-*.tres <project_path>/.godot/imported/iris.yarnproject-*.md5
+fi
+```
+
+Then run the headless import and wait for it to finish (run this if either TMX cache was cleared OR Yarn cache was invalidated above):
 
 ```sh
 DISPLAY=:0 godot --headless --editor --quit --path <project_path> 2>&1 | tail -10

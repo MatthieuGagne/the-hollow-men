@@ -8,7 +8,7 @@ namespace TheHollowMen;
 [GlobalClass]
 public partial class GameStateVariableStorage : VariableStorageBehaviour
 {
-    private GodotObject GameState => Engine.GetSingleton("GameState");
+    private Node GameState => GetNode<Node>("/root/GameState");
 
     public override bool TryGetValue<T>(string variableName, out T result)
     {
