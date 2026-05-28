@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" uid="uid://dn210xtgg37xl" path="res://maps/rooftop.tmx" id="2_map"]
+
+[node name="Rooftop" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("rooftop/World")
+default_spawn = "rooftop_start"
+
+[node name="rooftop" parent="." instance=ExtResource("2_map")]
