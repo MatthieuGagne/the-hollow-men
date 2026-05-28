@@ -1,4 +1,8 @@
 title: holloway_four_winds_act1
 ---
+<<if $intro_complete>>
 Holloway: You look lost, kid. This ain't the place for sightseeing.
+<<else>>
+Holloway: The usual table. The usual quiet.
+<<endif>>
 ===
