@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" uid="uid://4ycvbiv2vgd" path="res://maps/office_building.tmx" id="2_map"]
+
+[node name="OfficeBuildingInterior" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("office_building/World")
+default_spawn = "office_entrance"
+
+[node name="office_building" parent="." instance=ExtResource("2_map")]
