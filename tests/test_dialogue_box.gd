@@ -136,3 +136,35 @@ func test_state_returns_to_idle_after_dismiss() -> void:
 	_box.dismiss()
 	assert_false(_box.visible)
 	assert_eq(_box._state, _box.State.IDLE)
+
+
+# --- narration mode ---
+
+func test_show_narration_makes_visible_and_starts_typing() -> void:
+	_box.show_narration("I'm not ready.")
+	assert_true(_box.visible)
+	assert_true(_box.is_typing)
+
+
+func test_show_narration_sets_is_narration_flag() -> void:
+	_box.show_narration("I'm not ready.")
+	assert_true(_box._is_narration)
+
+
+func test_show_text_resets_is_narration_flag() -> void:
+	_box.show_narration("I'm not ready.")
+	_box.show_text("Normal text.")
+	assert_false(_box._is_narration)
+
+
+func test_show_line_resets_is_narration_flag() -> void:
+	_box.show_narration("I'm not ready.")
+	_box.show_line("Iris", "Hello.")
+	assert_false(_box._is_narration)
+
+
+func test_show_narration_dismisses_on_double_skip() -> void:
+	_box.show_narration("I'm not ready.")
+	_box.skip_or_dismiss()  # skip typewriter
+	_box.skip_or_dismiss()  # dismiss (non-yarn mode)
+	assert_false(_box.visible)
