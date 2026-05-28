@@ -32,6 +32,7 @@
    <properties>
     <property name="target_path" value="res://scenes/world/RoomPOC.tscn"/>
     <property name="spawn_point" value="four_winds_entrance"/>
+    <property name="required_flag" value="vera_lead_obtained"/>
     <property name="res_path" type="file" value="res://scenes/world/ExitDoor.tscn"/>
    </properties>
   </object>
