@@ -15,14 +15,14 @@ copy-art:
 
 # Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
 sync-tsx:
-	python3 scripts/sync_tsx.py
+	py scripts/sync_tsx.py
 
 import:
 	@test -f .godot/mono/temp/bin/Debug/TheHollowMen.dll || \
 		(echo "ERROR: C# assemblies not built. Run 'dotnet build' first." && exit 1)
 	@test -f dialogue/iris.yarnproject.import || \
 		(echo "ERROR: Dialogue not initialized. Run 'make worktree-init' first." && exit 1)
-	DISPLAY=:0 godot --headless --editor --quit --path .
+	godot_console --headless --editor --quit --path .
 
 # Run once after creating a new worktree — copies gitignored build artifacts
 # from the main repo that have no automated export pipeline yet, then imports.
