@@ -112,6 +112,7 @@ func _show_line_internal(text: String) -> void:
 	is_typing = true
 	_state = State.SHOWING_LINE
 	visible = true
+	_update_label()
 	var choice_list: VBoxContainer = get_node_or_null("ChoiceList")
 	if choice_list:
 		choice_list.visible = false
