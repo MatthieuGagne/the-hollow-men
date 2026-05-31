@@ -25,6 +25,8 @@ func on_dialogue_complete_async() -> void:
 
 
 func start_dialogue(node_id: String) -> void:
+	if _runner.IsDialogueRunning:
+		return
 	_runner.StartDialogueForget(node_id)
 
 
