@@ -168,3 +168,12 @@ func test_show_narration_dismisses_on_double_skip() -> void:
 	_box.skip_or_dismiss()  # skip typewriter
 	_box.skip_or_dismiss()  # dismiss (non-yarn mode)
 	assert_false(_box.visible)
+
+
+func test_second_show_line_clears_label_immediately() -> void:
+	_box.show_line("Iris", "First line.")
+	_box.skip_or_dismiss()  # complete typewriter
+	# label now displays "First line." — start a new dialogue without dismissing
+	_box.show_line("Iris", "Second line.")
+	var label: RichTextLabel = _box.get_node_or_null("Label")
+	assert_eq(label.text, "", "label must be blank the moment a new line starts")
