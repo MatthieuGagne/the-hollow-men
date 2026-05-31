@@ -1,23 +1,19 @@
-[gd_resource type="Theme" load_steps=6 format=3]
+[gd_resource type="Theme" format=3 uid="uid://dbtftiq1eh283"]
 
-[ext_resource type="FontFile" path="res://assets/fonts/Monocraft.ttc" id="1_font"]
-[ext_resource type="FontFile" path="res://assets/fonts/Monocraft-Italic.ttf" id="2_font_italic"]
+[ext_resource type="FontFile" uid="uid://dypb372co2mt5" path="res://assets/fonts/Monocraft.ttc" id="1_font"]
+[ext_resource type="FontFile" uid="uid://8lb4e63gh6p8" path="res://assets/fonts/Monocraft-Italic.ttf" id="2_font_italic"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 0
-corner_radius_bottom_left = 0
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
 bg_color = Color(0.15, 0.15, 0.15, 1)
@@ -26,16 +22,16 @@ bg_color = Color(0.15, 0.15, 0.15, 1)
 bg_color = Color(1, 1, 1, 1)
 
 [resource]
-Panel/styles/panel = SubResource("StyleBoxFlat_panel")
-Label/fonts/font = ExtResource("1_font")
-Label/font_sizes/font_size = 6
-Label/colors/font_color = Color(1, 1, 1, 1)
-RichTextLabel/fonts/normal_font = ExtResource("1_font")
-RichTextLabel/fonts/italics_font = ExtResource("2_font_italic")
-RichTextLabel/font_sizes/normal_font_size = 6
-RichTextLabel/font_sizes/italics_font_size = 6
-RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
-Button/fonts/font = ExtResource("1_font")
 Button/font_sizes/font_size = 6
+Button/fonts/font = ExtResource("1_font")
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/font_sizes/font_size = 6
+Label/fonts/font = ExtResource("1_font")
+Panel/styles/panel = SubResource("StyleBoxFlat_panel")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_bar_bg")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")
+RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
+RichTextLabel/font_sizes/italics_font_size = 6
+RichTextLabel/font_sizes/normal_font_size = 6
+RichTextLabel/fonts/italics_font = ExtResource("2_font_italic")
+RichTextLabel/fonts/normal_font = ExtResource("1_font")

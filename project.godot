@@ -15,6 +15,15 @@ run/main_scene="res://scenes/world/Rooftop.tscn"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+CellRegistry="*res://scripts/autoload/cell_registry.gd"
+SceneManager="*res://scripts/autoload/scene_manager.gd"
+BattleParams="*res://scripts/autoload/battle_params.gd"
+AudioManager="*res://scripts/autoload/audio_manager.gd"
+GameState="*res://scripts/autoload/game_state.gd"
+DialogueManager="*res://scenes/autoload/DialogueManager.tscn"
+
 [display]
 
 window/size/viewport_width=320
@@ -30,15 +39,6 @@ project/assembly_name="TheHollowMen"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/YATI/plugin.cfg", "res://addons/YarnSpinner-Godot/plugin.cfg")
-
-[autoload]
-
-CellRegistry="*res://scripts/autoload/cell_registry.gd"
-SceneManager="*res://scripts/autoload/scene_manager.gd"
-BattleParams="*res://scripts/autoload/battle_params.gd"
-AudioManager="*res://scripts/autoload/audio_manager.gd"
-GameState="*res://scripts/autoload/game_state.gd"
-DialogueManager="*res://scenes/autoload/DialogueManager.tscn"
 
 [input]
 

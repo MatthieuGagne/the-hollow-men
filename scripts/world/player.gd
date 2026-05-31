@@ -73,7 +73,8 @@ func _draw() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("interact"):
 		_interact_awaiting_release = false
-	if event.is_action_pressed("interact") and _input_blocked:
+	if event.is_action_pressed("interact", false) and _input_blocked:
+		_interact_awaiting_release = true
 		DialogueManager.skip_or_dismiss()
 		return
 	if _moving or _input_blocked or _world_layer == null:

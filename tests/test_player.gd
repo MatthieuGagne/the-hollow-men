@@ -55,3 +55,44 @@ func test_setup_assigns_world_layer() -> void:
 	assert_eq(player._world_layer, mock_layer)
 	player.free()
 	mock_layer.free()
+
+
+func test_dismiss_press_sets_awaiting_release() -> void:
+	# When E is pressed (non-echo) while dialogue is open, the dismiss path must
+	# set _interact_awaiting_release so the user has to release before re-interacting.
+	var player := Player.new()
+	add_child(player)
+	DialogueManager._dialogue_box.dismiss()  # ensure dialogue box starts idle
+	player._input_blocked = true
+	player._interact_awaiting_release = false
+
+	var event := InputEventKey.new()
+	event.physical_keycode = 69  # E key — mapped to "interact" in project.godot
+	event.pressed = true
+	event.echo = false
+	player._unhandled_input(event)
+
+	assert_true(player._interact_awaiting_release,
+		"dismiss press must set _interact_awaiting_release=true")
+	player.free()
+
+
+func test_echo_press_does_not_trigger_dismiss_path() -> void:
+	# An echo event (key held) must NOT trigger skip_or_dismiss while dialogue is open.
+	# Verified by checking that _interact_awaiting_release stays false — the dismiss
+	# path would set it to true after the fix.
+	var player := Player.new()
+	add_child(player)
+	DialogueManager._dialogue_box.dismiss()
+	player._input_blocked = true
+	player._interact_awaiting_release = false
+
+	var event := InputEventKey.new()
+	event.physical_keycode = 69  # E key
+	event.pressed = true
+	event.echo = true  # echo event — should be ignored
+	player._unhandled_input(event)
+
+	assert_false(player._interact_awaiting_release,
+		"echo press must NOT set _interact_awaiting_release (dismiss path must be skipped)")
+	player.free()
