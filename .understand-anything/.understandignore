@@ -1,0 +1,87 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Focused on dialog logic — excludes everything unrelated to dialogue
+#
+# Built-in defaults (always excluded unless negated):
+#   node_modules/, .git/, dist/, build/, obj/, *.lock, *.min.js, etc.
+#
+
+# Documentation / markup
+*.md
+docs/
+
+# Art and assets
+art/
+assets/
+*.xcf
+*.png
+*.jpg
+*.svg
+*.ico
+*.mp3
+*.ogg
+*.wav
+
+# Maps and tilesets
+maps/
+addons/
+
+# Compiled / generated
+*.import
+*.translation
+*.uid
+*.tres
+*.theme
+export_presets.cfg
+.godot/
+
+# Non-dialog tests (keep test_dialogue_box.gd and test_npc.gd)
+tests/test_action_menu.gd
+tests/test_audio_manager.gd
+tests/test_base_room.gd
+tests/test_battle_encounter.gd
+tests/test_battle_scene.gd
+tests/test_battle_sprites.gd
+tests/test_cell_registry.gd
+tests/test_combatant.gd
+tests/test_defeat_menu.gd
+tests/test_examine_object.gd
+tests/test_exit_door.gd
+tests/test_flickering_light.gd
+tests/test_game_state.gd
+tests/test_player.gd
+tests/test_player_interact.gd
+tests/test_scene_manager.gd
+tests/test_skip_turn.gd
+tests/test_spawn_point.gd
+tests/test_world_object.gd
+tests/test_skip_turn.gd
+
+# Non-dialog scripts (keep dialogue_manager, dialogue_box, yarn_dialogue_bridge, npc)
+scripts/battle/
+scripts/world/flickering_light.gd
+scripts/world/exit_door.gd
+scripts/world/examine_object.gd
+scripts/world/spawn_point.gd
+scripts/world/world_object.gd
+scripts/world/base_room.gd
+scripts/autoload/audio_manager.gd
+scripts/autoload/game_state.gd
+scripts/autoload/scene_manager.gd
+scripts/autoload/cell_registry.gd
+scripts/ui/action_menu.gd
+scripts/ui/battle_sprites.gd
+scripts/ui/defeat_menu.gd
+scripts/gen_placeholder_sprites.py
+scripts/sync_tsx.py
+
+# Non-dialog scenes (keep DialogueBox.tscn, DialogueManager.tscn, NPC.tscn)
+scenes/battle/
+scenes/world/rooftop.tscn
+scenes/world/four_winds_bar.tscn
+scenes/world/heights_street.tscn
+scenes/world/office_building.tscn
+
+# Config / project files (not relevant to dialog logic)
+Makefile
+TheHollowMen.csproj
+icon.svg

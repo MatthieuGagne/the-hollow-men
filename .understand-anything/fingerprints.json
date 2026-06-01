@@ -1,0 +1,1934 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "a12d35acb31fa6808d512e2269e59ce20763ffb0",
+  "generatedAt": "2026-06-01T00:42:29.811Z",
+  "files": {
+    ".gitattributes": {
+      "filePath": ".gitattributes",
+      "contentHash": "8e6b09836acb2d4c736700d6130c17623e1d0b1167dbdd85013782f599421253",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "1827ef701b894994fa9969774a1a9988998a49747602e6082609c4f04ba81e11",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 88,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/intermediate/batch-1.json": {
+      "filePath": ".understand-anything/intermediate/batch-1.json",
+      "contentHash": "cfa69bb14cb55899480bf1c4d97babe30a22545496dcc22030e917084eb87b4c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 186,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-10.json": {
+      "filePath": ".understand-anything/intermediate/batch-10.json",
+      "contentHash": "f154afa9f2cde184e9268de151d085d8ef11f9f9232a66daa370f5638cc7e89d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 765,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-11.json": {
+      "filePath": ".understand-anything/intermediate/batch-11.json",
+      "contentHash": "e39f25cabd588e7747d3cec20d87df56590a20a1d43f3cfe15230a52d3bb4f7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 690,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-12.json": {
+      "filePath": ".understand-anything/intermediate/batch-12.json",
+      "contentHash": "c9de3687d6366eabd92c9f7736cfc0eebd799ece6735d21e93bb0cbb5b456d13",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 575,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-13.json": {
+      "filePath": ".understand-anything/intermediate/batch-13.json",
+      "contentHash": "8f0afb92d61f5cea1e7dd129b4f69846f43ff8078126be71bcf78113f11d24c3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 484,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-14.json": {
+      "filePath": ".understand-anything/intermediate/batch-14.json",
+      "contentHash": "89593626b13e3fba8056c1ecf57d7fcae02bfa2a6a89017ad1e013b6a46a3665",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 734,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-15.json": {
+      "filePath": ".understand-anything/intermediate/batch-15.json",
+      "contentHash": "3a3211aa2c56124985cde0d08a740c7cf5e7b353596605a355f9fb0a775f9939",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 258,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-16.json": {
+      "filePath": ".understand-anything/intermediate/batch-16.json",
+      "contentHash": "9f7272bc4569caff9c5ed9537b647bb2b5a9486163648c346717ccca34549517",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 463,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-17.json": {
+      "filePath": ".understand-anything/intermediate/batch-17.json",
+      "contentHash": "4c7ac9da8125eba9f273c1cd3bd06a497cfbcd2fc7fe1502dd92b2e692f2b921",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 655,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-18.json": {
+      "filePath": ".understand-anything/intermediate/batch-18.json",
+      "contentHash": "772e8ee511f91dc675a2f2e275dd061bd9fbb429b00a07974e758de09d7300a0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 638,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-19.json": {
+      "filePath": ".understand-anything/intermediate/batch-19.json",
+      "contentHash": "a9d1b21e71c2468731ff8a2d70fdd229e23c1b2377b2f47cfe32e378b8a797e2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 561,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-2.json": {
+      "filePath": ".understand-anything/intermediate/batch-2.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-24.json": {
+      "filePath": ".understand-anything/intermediate/batch-24.json",
+      "contentHash": "c53a8562a97649955c5531576d03e41e45ae6655e428b21f53696eb7371ae53c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 244,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-3.json": {
+      "filePath": ".understand-anything/intermediate/batch-3.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-4.json": {
+      "filePath": ".understand-anything/intermediate/batch-4.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-5.json": {
+      "filePath": ".understand-anything/intermediate/batch-5.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-6.json": {
+      "filePath": ".understand-anything/intermediate/batch-6.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-7.json": {
+      "filePath": ".understand-anything/intermediate/batch-7.json",
+      "contentHash": "abbbfb47098474bd0d478558b8155778186e01016ee5127395ad1c5a2d3dbfb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-8.json": {
+      "filePath": ".understand-anything/intermediate/batch-8.json",
+      "contentHash": "a03232013ac7f1ab4c09f12a4cbc0f9132ac94f7f3a4e44709ead04d9c395e0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 156,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batch-9.json": {
+      "filePath": ".understand-anything/intermediate/batch-9.json",
+      "contentHash": "6315de352dccb7894d1adb5fdea658b85cad54e66bf5b5aebea723cd86a7142c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 668,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/batches.json": {
+      "filePath": ".understand-anything/intermediate/batches.json",
+      "contentHash": "e2932e7410da8b7e76fb90a9c7498164de56529552b10a1dacc53d828375bc99",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1327,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/scan-result.json": {
+      "filePath": ".understand-anything/intermediate/scan-result.json",
+      "contentHash": "1be0e610df450ab7380162b38f17664b2b673f94eb37d7add273cfaf8ce8cee5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1204,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-1.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-1.json",
+      "contentHash": "5c445c187572c02138adc7855a59e644a668bc6ee7fcac29e54e995b8915f94c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-10.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-10.json",
+      "contentHash": "edf8f04b4e30beb416f56ee10d9ac78495dcc95aa9dcd4cbf86f64e1dc6695f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-11.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-11.json",
+      "contentHash": "19fcefc618f9cb21fca3da605c2008ad47862248aab5163f13b89095b7489b57",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-12.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-12.json",
+      "contentHash": "37e4e731ade700e172592d6d00c18099f5d55addd137a263368a2b8eef1b78a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-13.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-13.json",
+      "contentHash": "7a8f5ed04aa8751c4fae5953b782daba678e926bbd925eac68c2ff1ea23db34b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-14.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-14.json",
+      "contentHash": "445bd241c32c29cedc7573e998441128ffd5e743ce07b5d2e702f181fd2559ad",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-15.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-15.json",
+      "contentHash": "7a808394cb708d60815032b33e705401238933289476f3ac730a8e9bb61f4b09",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-16.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-16.json",
+      "contentHash": "470f652447220a77d73a630220cc9225e3a5d9223df77a7beb1fd5617594b125",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-17.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-17.json",
+      "contentHash": "966dd680d94255e231cedeaf1ddf4bf4de47299e26dd5b55eef19f73f877f2cd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-18.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-18.json",
+      "contentHash": "9568d2a637e42d54f39a26270847e729507ea393a08d8c1113c45b15a732c4e2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-19.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-19.json",
+      "contentHash": "a0d6fa524508c3b121e453d2c7089191c06a21beb4d785cf0e4f5c18ab2a1b1d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-2.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-2.json",
+      "contentHash": "a8c78291ba4bccc4c30fda32fc4719231083646b30b3b71339219c704ea18b6d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-20.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-20.json",
+      "contentHash": "b51ebb3c037c6113173e29cebe5a5d6b7991ce4bc415144692c3f41200968458",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-21.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-21.json",
+      "contentHash": "75af19d66b25034003805832c66e5eb62a98b0de0f4c03635bb20b5eeac936e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-22.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-22.json",
+      "contentHash": "2dff342feb60de2e79aa8f0827631d247296bea637870e131bccfe6021940d10",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-23.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-23.json",
+      "contentHash": "b8df981cb4b1f74e35b97444b8f01a0f77a905c099a36abf00d0fb1c616b1b15",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-24.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-24.json",
+      "contentHash": "8f4bf570859e7b98fff38976520fa24fc99e404798a389e6292883037ac52c5d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-25.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-25.json",
+      "contentHash": "63c947a99a55c5260ecd9ea9d34751ddba9305f799d286b8aa479e648486dd62",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-26.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-26.json",
+      "contentHash": "0fe01011e26b3ca9907fc1691743b9b59ed2e02c53c16a9d7b99d2e652852965",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-27.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-27.json",
+      "contentHash": "62dbec598762dd4fe5ac806d0f8a26811096160f1beafa32b7175b082cd1fee8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-28.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-28.json",
+      "contentHash": "431811cbc33ed46a5939f6a810f867c5c0583a1cd7bdaa4ffcc32f779432c2eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 106,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-3.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-3.json",
+      "contentHash": "1a374f3de9a20bf521dfb8bda7f87fdc27e2de576901fd7071e9c3a406611bff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-4.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-4.json",
+      "contentHash": "17fbcd92168d8d35cd9ba2ded6b65843b41385c5f7af505462e34c0c17041e46",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-5.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-5.json",
+      "contentHash": "bae2d18767f4e3b0ff93c55aa7c5d82d60e74d51bac60f961cb870a6ec3786ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-6.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-6.json",
+      "contentHash": "86fbabbaeb3350b24962a8de8ace7d0de286fc1640d80d80a17fa021b13c9b58",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-7.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-7.json",
+      "contentHash": "dd909df6f5409630ecb4ce2699c6ce7bc624458f4ba3a9ba496efdcd975ec68f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-8.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-8.json",
+      "contentHash": "4c89b94e91aff3dff4b109792ec35c4dd5f0bb37b07ef4ee8b681b1363e9541d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-meta-9.json": {
+      "filePath": ".understand-anything/tmp/batch-meta-9.json",
+      "contentHash": "d3581fa604681ea23371a7a1d68ec7011823d4240bf7b3f7828aad1d2ecfcdf2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-1.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-1.json",
+      "contentHash": "bc9cde2d7928b99cc6ae91d2304a633fe2e28fd26e17347bd88fc97e08504207",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-10.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-10.json",
+      "contentHash": "d0dd4f47f1221a4404db586d1c0bf408e245c1044fb518805ebd43db1d746c10",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-11.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-11.json",
+      "contentHash": "6ff6440e7772ed3ec6d457fcd0bb2ffb168e053c9d8e47f5b284890f4bbd7a0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-12.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-12.json",
+      "contentHash": "ab47eb0e1da859af264cfdd434cfc6db6cd196911bcd0b03f7d771eccbc042ea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-13.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-13.json",
+      "contentHash": "1f983918ab17499e13330d7b44f14723f27792a254ce635a23ffb6f85e5d0a7e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-14.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-14.json",
+      "contentHash": "1d8b09804f08533b49a859f7f80c157ccc8e4fb55598bcc8a4f91c17af5fe403",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-15.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-15.json",
+      "contentHash": "f66ad38e8a54c983e3d2576757fe69a3c1afb8db734319756f94024ee8655a05",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-16.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-16.json",
+      "contentHash": "4d90ae0a7f04fd2f29cedb9413f823ab6987363e03a3ce300e8e36eab1f0895d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-17.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-17.json",
+      "contentHash": "e5e6335f4e9bb8f9f3701e60d078f0b8ab3e93685ad5475ba849d0a0ee4a6a22",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-18.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-18.json",
+      "contentHash": "55355037bc5de409ca80d60583a54bbf4f0dbfafffa1d802ac088bcadb6d3651",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-19.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-19.json",
+      "contentHash": "a49c5610535f72466898f851c7e1d6b7d18c3b9a2ce3cb558872960d91ef08fb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-2.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-2.json",
+      "contentHash": "4cda41ee36ba40e01cdd0e16d98d9af78ed0073216bc67b41ba56408661b9d06",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-20.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-20.json",
+      "contentHash": "4592b102fbeb37677a98348c70945a0ef34c89c50ca14c26416f0fdcbce348c4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-21.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-21.json",
+      "contentHash": "75de72975d47ebf1316a9e5399e72510295a753709540ff3a3876752fe9e7e7f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-22.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-22.json",
+      "contentHash": "69b60f25ab3ae4b9d82665d69a5239d1162628f23a7f186812a6413e45ba0927",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-23.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-23.json",
+      "contentHash": "6dcccc3527a54fb0b3d527fe94e8b9d2bf14514bcfd479db99f246323f0791a0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-24.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-24.json",
+      "contentHash": "1121c2f7b165d78dd2ef221373c4b9823b2e8a3e76562c60e3f05cd489acc1a5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-25.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-25.json",
+      "contentHash": "09922ed6dcb20dafe4419ff617c99571262256488603606f99bc21576c01ba4f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-26.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-26.json",
+      "contentHash": "83fb8ac0d79a11055528d4cae7eca4f14a3c6b850ad12661ec07973bd118fb6f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-27.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-27.json",
+      "contentHash": "3b95ef3a3ddb60ce928a666437dcb684aa03762ac56db190cbc6f87f4b4dd8eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-28.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-28.json",
+      "contentHash": "63f0457e6d4db4be84e6fd7c749887006b34ef044aed94ebf34f894d0ba0d7c2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-3.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-3.json",
+      "contentHash": "f94c0c9fd7f7e0febc484cbad970a808d1afb9923e276c8379c1e41662aa9c0b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-4.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-4.json",
+      "contentHash": "a0d8abc879455674b1e661cb8883f307664222bfef731ed5d4724e8c9d604d38",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-5.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-5.json",
+      "contentHash": "4142b3d6ab7c60d374404b0361b67aa655dfaddd5f3b6c721d96bc9d9ff2679b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-6.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-6.json",
+      "contentHash": "a7dbf26c2a63c13fd782247f9d0329727f7363215bf4f7f6b1afa311d98fdce7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-7.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-7.json",
+      "contentHash": "66dfa74a6feda5a7c01c4c1ec10861fabe79a07e2df469df9aa2459321b793e4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-8.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-8.json",
+      "contentHash": "04438ad9b240f8c8ad3ed042cec33891297b3f013fbefd9de789ae9b3243993a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/batch-prompt-9.json": {
+      "filePath": ".understand-anything/tmp/batch-prompt-9.json",
+      "contentHash": "26585e7dc770f53529d69caad55dcf0c1ca67d137a9c308e173070f54294e668",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-1.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-1.json",
+      "contentHash": "636d880e0045e594379d86c2172d11f04521fee1a1ae113966a966e812522063",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-10.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-10.json",
+      "contentHash": "93cd6920c596c5fb9f749d286604e89e39fc02b12f249e625ffb4384a6b521f0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-11.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-11.json",
+      "contentHash": "97f697bba835e0ddbb5c106a7bd90310df6883fc5e72915f16dc1ba240fb5747",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-12.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-12.json",
+      "contentHash": "a56c2167e3443b257288da84ff804489b7c4a614ed911eadc9ba1642828388f2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-13.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-13.json",
+      "contentHash": "d440748dc12770c280f01fba36f75489f3d0ffde1588ba1c3df095037cc83872",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-14.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-14.json",
+      "contentHash": "631f4280c8e7cdab9e38dc747714d9d7bfd8d36c21df95e7e41c5531815d1159",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-15.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-15.json",
+      "contentHash": "6fddb2974b30aefce089d42b52e18fa0d9a218a174de16fadd5b9fe1139bdb03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-16.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-16.json",
+      "contentHash": "5895de4bd67ddcb21f0cc7c1749e129e9999958041fc70dc62c33a685ae32d1e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-17.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-17.json",
+      "contentHash": "7f54ccf0567962b1946798db00ac543aa35a0c9d716daa66a2f0208ecae5e1d2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-18.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-18.json",
+      "contentHash": "ab0b8a6c1ee333dd68a798562c77f143f18800163128a4628b5ed16d8a1e16fc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-19.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-19.json",
+      "contentHash": "a3397ee6461ff8efbdcd079ee425b72a985445c00f25d62af55bce06f6e0f7ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-2.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-2.json",
+      "contentHash": "8ac8c71527251b47a8b8ba670d798b3235c4e64d0052ad2bc24dda8019de872a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-20.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-20.json",
+      "contentHash": "a67f6176aebec788f69bdc8630edee16a1809b8b4770f4e77d1da45859daa1e1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-21.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-21.json",
+      "contentHash": "1ae829e35b3b4cdde5eb00ec6783653f640e8bcc8b472b6b097ad3e77b4ba0d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-22.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-22.json",
+      "contentHash": "63e0e9642312e3f4dae84ba90fa5fe5da4017b2c1bd51ed9edbec722ce1bd029",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-23.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-23.json",
+      "contentHash": "fcf9906318fe51eed41e9490569f557cdff7ea7dea835ba50da0abfbc010cd83",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-24.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-24.json",
+      "contentHash": "bf1599775f47b8a60c7a72bd30ed743b1b118ec3a5e720989c32928ec8e873e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-25.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-25.json",
+      "contentHash": "746c51b9d51891d61b8f1dfddd295ce6b2b6dd48f75aeccb929c96eae8b7a243",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-26.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-26.json",
+      "contentHash": "4df5ca023dc4c0edc7d32354cce3585803af1b6cc1bd3be15510e0467171948e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-27.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-27.json",
+      "contentHash": "ba0c24d7b92ad51c344c44b674e9b6c9e6b2ad613e6fdc1908bb0fe3700f78f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-3.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-3.json",
+      "contentHash": "a0332c784d33ab136aded04a24943ad52d0af144c978f4e7485bafaddfa99dab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-4.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-4.json",
+      "contentHash": "35057a001ff2cf835002098ea42795523704dced29a4a49b1cf2ba3c5f11c60b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-5.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-5.json",
+      "contentHash": "0a5420bf19b6ccd0ea4305492f4a19e4218bc6aeeda0ea2a354568481ed969c8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-6.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-6.json",
+      "contentHash": "d507a03ed65e4aec4ad52476782cb57495424ca935fafe23634836526f57b9a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-7.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-7.json",
+      "contentHash": "c5c4ef0d82e8b204ff4841d3c688106ad4e2af8c3f0e25a06234c166effc2650",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-8.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-8.json",
+      "contentHash": "2fba9818e6891853f9d6ddc4e445053397b5815016fc0bef2fe8616abab9b931",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-analyzer-input-9.json": {
+      "filePath": ".understand-anything/tmp/ua-file-analyzer-input-9.json",
+      "contentHash": "4b73811f6158db61da0be105f91b8852346e58be4e2f394efd31015454c42a11",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-1.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-1.json",
+      "contentHash": "b418ed8b2098b800bec6454297ee8a737112af46bab8a1749be0ff4aa2a24725",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-10.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-10.json",
+      "contentHash": "6976521cdb5341b971223dd9f3864eb92c83b194d41a38b090b6b46fabb71165",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 207,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-11.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-11.json",
+      "contentHash": "972333009f0586fc11c89ef75ddd6d5ea353e0fbb87d8c27076c384d8bb366e2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 207,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-12.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-12.json",
+      "contentHash": "3d200af631ac4381fe27abbeb7f84d07e46bb69f57870ca0ccba1a7078f9756e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 213,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-13.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-13.json",
+      "contentHash": "3716b0971aedb29a6efa63f701214c2c0400866ea7563b086994ae7d64cc5dcd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 207,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-14.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-14.json",
+      "contentHash": "ad7e561cdcc10a7cc25a3d3bacb7ecf93ab992f855d18157aeca274a4891661a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 207,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-15.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-15.json",
+      "contentHash": "bcb842ddc9f594adb3d784e9d6e2d27f6ed2886dc46074f750f9f89ca033067e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2550,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-16.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-16.json",
+      "contentHash": "e0e35eb8a21bc464d86e54926cdbe1f3c920cc184f8febfa1dc15f155c77257e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3328,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-17.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-17.json",
+      "contentHash": "be2ae309eeeda7ab0a66dd666081fe05e631c2cb330c960ac8977fe2c2589ece",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1886,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-18.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-18.json",
+      "contentHash": "620b05b862127603fdb0016c87177726c3220040336a00ad0773f544b6b3b610",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4810,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-19.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-19.json",
+      "contentHash": "ba7f802f495f4a61f095337975e8e8716d202de5ac8eaa58b3b6038b0b64949e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2134,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-2.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-2.json",
+      "contentHash": "36477620ef3949594059f6b31de407a4f3467163385c15501e512807efd69880",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-20.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-20.json",
+      "contentHash": "b8c158e98506161bc949082388b6d783c96ec94992567679d67b7694d311c855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1195,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-21.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-21.json",
+      "contentHash": "778612dac2ab89433b3eca05b3341143b6a55643847a5a476ffb1291cd548c8f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5401,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-22.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-22.json",
+      "contentHash": "9107096f57c9dc54b102cedc5227cad9c4dedf12e6e4a9790361b3659183c4c4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 216,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-23.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-23.json",
+      "contentHash": "7861c5595ac9067e7488bb72f4b0e2c78b76fc4ddfe1235ec3c34e9ace5bf4b1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7982,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-24.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-24.json",
+      "contentHash": "020c64eaf46b40d584f7efd841a1fd4c1a7ee187779c547ee34b22774f1bf920",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 219,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-25.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-25.json",
+      "contentHash": "9117769236178c2e6b7cc191dfd93a2994b15609fff33544876b462649aaee4b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 709,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-26.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-26.json",
+      "contentHash": "9560ebf85015f5f9323aad7ca07a5d6aadea35e233a3fc1b8e8c515066e456d1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 589,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-27.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-27.json",
+      "contentHash": "df9ad96a2737b0984e6f8e06c6d2e45885eabe571de5e985d337c96fc15a59b6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 361,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-3.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-3.json",
+      "contentHash": "7271647a881f5e0c674035ab9a3de90d92647cd31516001019d6fc3892574e81",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 380,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-4.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-4.json",
+      "contentHash": "b8225ba2bf2d54b722d1a54d30ced9a5fd947441cdaa2c9436f4f1292fdb4ad3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 300,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-5.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-5.json",
+      "contentHash": "917a48d5800b8955b0c53aa115007a579a1cb79b982f5be1c40667b6ca04075f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 340,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-6.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-6.json",
+      "contentHash": "315d6ce8a6a3ed3e6bd210009bf6d7f242ba03c50ff5f96b54132f9fcca6b8b6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 528,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-7.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-7.json",
+      "contentHash": "8d6bc9784fbc679dbc519f52453e58f82ff4e8dc8c60e3ef34e35f6bfce6a191",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 937,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-8.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-8.json",
+      "contentHash": "c38ff122fd865e77a5dd3b7de497c3f2143abdd01703cfdfa229bf4833ca038d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-file-extract-results-9.json": {
+      "filePath": ".understand-anything/tmp/ua-file-extract-results-9.json",
+      "contentHash": "1e1325abb583ebc0c5c535e46d5c0c85417e6b5637c85223bbb2b3b01a3b59d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 428,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-import-map-input.json": {
+      "filePath": ".understand-anything/tmp/ua-import-map-input.json",
+      "contentHash": "8f122a60825c5ece865bab9efe620d92170f5b2e1c1bd75ec5c0eaa3871464dd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1026,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-import-map-output.json": {
+      "filePath": ".understand-anything/tmp/ua-import-map-output.json",
+      "contentHash": "94da3f9ade6bd6f4b23be23c671ac85087d54f5ce0ce9abd15dfd95adc263d90",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/tmp/ua-scan-files.json": {
+      "filePath": ".understand-anything/tmp/ua-scan-files.json",
+      "contentHash": "dd97fca6b351da3a3341501cb40759fe36747f883f914504408e298520f2819d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1045,
+      "hasStructuralAnalysis": true
+    },
+    "dialogue/holloway_four_winds_act1.yarn": {
+      "filePath": "dialogue/holloway_four_winds_act1.yarn",
+      "contentHash": "01dca34b5fa15b3a9ae2a25f9625d2faa3861f6cca096bcfea32b949625b0474",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "dialogue/iris_intro.yarn": {
+      "filePath": "dialogue/iris_intro.yarn",
+      "contentHash": "0b1ceacb866fea2614d1fb695aed7d42fa666ac70feb0fb695a7a74450dbf0c1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "dialogue/iris.yarnproject": {
+      "filePath": "dialogue/iris.yarnproject",
+      "contentHash": "9d11161e8ae787f59404e7122dda37852b17e64a4b659c39bcc2a2d2a7d1ddd6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "project.godot": {
+      "filePath": "project.godot",
+      "contentHash": "0cf0ab2d4abab7aa13859721beed2b716b9622217d78595805b797008757741d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 88,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/autoload/DialogueManager.tscn": {
+      "filePath": "scenes/autoload/DialogueManager.tscn",
+      "contentHash": "edf5bcf94c76ac193bfa154b7cfdd10f66d91a821114e30c64a74a78760f2a30",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/ui/ActionMenu.tscn": {
+      "filePath": "scenes/ui/ActionMenu.tscn",
+      "contentHash": "c01ba9e6f51cc3563b8b85ace06498cabfa2647dc6780d6b4fa495376885c62b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/ui/DefeatMenu.tscn": {
+      "filePath": "scenes/ui/DefeatMenu.tscn",
+      "contentHash": "c7ef1b10551ff687a25775019605096fcebae3559e30b6919612690d5837b03e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/ui/DialogueBox.tscn": {
+      "filePath": "scenes/ui/DialogueBox.tscn",
+      "contentHash": "8d3397f69a212f5cd70ead7dde1584fb0a6c6eec5222a9839886fb3f710fdc9e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/BaseRoom.tscn": {
+      "filePath": "scenes/world/BaseRoom.tscn",
+      "contentHash": "0d11399fab3371a03b9619342c2ba282eb2e69c1179c5782eb8b782b3b99ed37",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/BattleEncounter.tscn": {
+      "filePath": "scenes/world/BattleEncounter.tscn",
+      "contentHash": "261d53e696a278355f72e2e04ff681dd56e9170b52800982ba42b06eed33876b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/ExamineObject.tscn": {
+      "filePath": "scenes/world/ExamineObject.tscn",
+      "contentHash": "8ef2689ca4b8371fdd7b15810ce3f176fe88ac387ec5c63c7d9512f79343c15d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/ExitDoor.tscn": {
+      "filePath": "scenes/world/ExitDoor.tscn",
+      "contentHash": "1c497bd5dbd54e82166caa98dc891b1b146b23f64cbea0888b8758c4cc558fd1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/FourWindsBar.tscn": {
+      "filePath": "scenes/world/FourWindsBar.tscn",
+      "contentHash": "270bfb9346e4a4251e207649deae98d739398bc732a71f824f3139d5bd994181",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/HeightsStreet.tscn": {
+      "filePath": "scenes/world/HeightsStreet.tscn",
+      "contentHash": "de8db58172fca4cfb041e0ad1bd235264d61fd99e38064d920b41afb0ca62a79",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/NPC.tscn": {
+      "filePath": "scenes/world/NPC.tscn",
+      "contentHash": "396be31f41cf5d90b6460f57c921bd24dd8ce149540d917b714fa4353894581b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/OfficeBuildingInterior.tscn": {
+      "filePath": "scenes/world/OfficeBuildingInterior.tscn",
+      "contentHash": "3a9d4aa70a476c24bb6127fc95a43654f70dbcada5564196d7d1526bd4325016",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/RoomPOC.tscn": {
+      "filePath": "scenes/world/RoomPOC.tscn",
+      "contentHash": "9729a0158cdf7037c495cc6455bc418817ce872f69e656acfefde553d0ad12fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/SpawnPoint.tscn": {
+      "filePath": "scenes/world/SpawnPoint.tscn",
+      "contentHash": "b1c3eb2762b42ba143c0f270cb72b9da76ef99e31f97aeb3e83d806b114cf83b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/World.tscn": {
+      "filePath": "scenes/world/World.tscn",
+      "contentHash": "82f2c13f3ea9383eb516eadfb702ab894e4f9a5cf1fbfbbf6108278d45a173ba",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "scenes/world/WorldObject.tscn": {
+      "filePath": "scenes/world/WorldObject.tscn",
+      "contentHash": "9fac07078bdea1e8474e0bb7027cd20b5db9527ce8a67ff8933e535460f67734",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/autoload/battle_params.gd": {
+      "filePath": "scripts/autoload/battle_params.gd",
+      "contentHash": "0fe2f96b7bf55a5257f02c346540e466b404a1aef1f26ac98bfa7d285ee1220e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/autoload/dialogue_manager.gd": {
+      "filePath": "scripts/autoload/dialogue_manager.gd",
+      "contentHash": "45a39b79d8229e951dd95ef5ffe97a91550c13823ed129d58201c413247a6402",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/autoload/GameStateVariableStorage.cs": {
+      "filePath": "scripts/autoload/GameStateVariableStorage.cs",
+      "contentHash": "44aa05553daae301640532ae9d26d627ec48a8692c6aae140441b85227e0a781",
+      "functions": [
+        {
+          "name": "TryGetValue",
+          "params": [
+            "variableName",
+            "result"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "SetValue",
+          "params": [
+            "variableName",
+            "boolValue"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "SetValue",
+          "params": [
+            "variableName",
+            "floatValue"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "SetValue",
+          "params": [
+            "variableName",
+            "stringValue"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "Clear",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "Contains",
+          "params": [
+            "variableName"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "SetAllVariables",
+          "params": [
+            "floats",
+            "strings",
+            "bools",
+            "clear"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "GetAllVariables",
+          "params": [],
+          "returnType": "(\n        System.Collections.Generic.Dictionary<string, float>,\n        System.Collections.Generic.Dictionary<string, string>,\n        System.Collections.Generic.Dictionary<string, bool>)",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [
+        {
+          "name": "GameStateVariableStorage",
+          "methods": [
+            "TryGetValue",
+            "SetValue",
+            "SetValue",
+            "SetValue",
+            "Clear",
+            "Contains",
+            "SetAllVariables",
+            "GetAllVariables"
+          ],
+          "properties": [
+            "GameState"
+          ],
+          "exported": true,
+          "lineCount": 56
+        }
+      ],
+      "imports": [
+        {
+          "source": "Godot",
+          "specifiers": [
+            "Godot"
+          ]
+        },
+        {
+          "source": "YarnSpinnerGodot",
+          "specifiers": [
+            "YarnSpinnerGodot"
+          ]
+        }
+      ],
+      "exports": [
+        "TryGetValue",
+        "SetValue",
+        "SetValue",
+        "SetValue",
+        "Clear",
+        "Contains",
+        "SetAllVariables",
+        "GetAllVariables",
+        "GameStateVariableStorage"
+      ],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/ui/dialogue_box.gd": {
+      "filePath": "scripts/ui/dialogue_box.gd",
+      "contentHash": "791c339cb7701bff866cac666fed3bba332d762343c39007218b5321230447d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 161,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/ui/hud.gd": {
+      "filePath": "scripts/ui/hud.gd",
+      "contentHash": "182331ebe7eff367303081f0e319ecefa9cc95483d06eb902f4bdfe3b0a9f009",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 201,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/ui/yarn_dialogue_bridge.gd": {
+      "filePath": "scripts/ui/yarn_dialogue_bridge.gd",
+      "contentHash": "68595515791cfd6310f6b6154a2430d775d0ad16c796e88015b070e4a890c78b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/ui/YarnDialogueBridge.cs": {
+      "filePath": "scripts/ui/YarnDialogueBridge.cs",
+      "contentHash": "dfe54f97e7ec9f71c5ebecc4d2f177e80a4ca8b8589b161c3763f48c7e78365e",
+      "functions": [
+        {
+          "name": "RunLineAsync",
+          "params": [
+            "line",
+            "token"
+          ],
+          "returnType": "YarnTask",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "RunOptionsAsync",
+          "params": [
+            "dialogueOptions",
+            "cancellationToken"
+          ],
+          "returnType": "YarnTask<DialogueOption?>",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "OnDialogueCompleteAsync",
+          "params": [],
+          "returnType": "YarnTask",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "ContinueLine",
+          "params": [],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "SelectOption",
+          "params": [
+            "index"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "StartDialogue",
+          "params": [
+            "nodeId"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "YarnDialogueBridge",
+          "methods": [
+            "RunLineAsync",
+            "RunOptionsAsync",
+            "OnDialogueCompleteAsync",
+            "ContinueLine",
+            "SelectOption",
+            "StartDialogue"
+          ],
+          "properties": [
+            "runner",
+            "ActionMarkupHandlers",
+            "_lineAdvanced",
+            "_pendingOptionIndex",
+            "_pendingOptions"
+          ],
+          "exported": true,
+          "lineCount": 58
+        }
+      ],
+      "imports": [
+        {
+          "source": "System.Collections.Generic",
+          "specifiers": [
+            "Generic"
+          ]
+        },
+        {
+          "source": "System.Threading",
+          "specifiers": [
+            "Threading"
+          ]
+        },
+        {
+          "source": "Godot",
+          "specifiers": [
+            "Godot"
+          ]
+        },
+        {
+          "source": "YarnSpinnerGodot",
+          "specifiers": [
+            "YarnSpinnerGodot"
+          ]
+        }
+      ],
+      "exports": [
+        "runner",
+        "ActionMarkupHandlers",
+        "RunLineAsync",
+        "RunOptionsAsync",
+        "OnDialogueCompleteAsync",
+        "ContinueLine",
+        "SelectOption",
+        "StartDialogue",
+        "YarnDialogueBridge"
+      ],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/world/battle_encounter.gd": {
+      "filePath": "scripts/world/battle_encounter.gd",
+      "contentHash": "fa69c2520685675987b61b888aeb162933ffa192beaf32e3ef4de58b68a5d30a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/world/npc.gd": {
+      "filePath": "scripts/world/npc.gd",
+      "contentHash": "74c641e48eb87e45f0d1b8c855e09a3e7a77f59092d3e9248eac5c7b9095169b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/world/player.gd": {
+      "filePath": "scripts/world/player.gd",
+      "contentHash": "95a0f7f528b32863fc1b81f0c8113de72e4da6b0c266cac4dc32150c0867a184",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 154,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/world/world.gd": {
+      "filePath": "scripts/world/world.gd",
+      "contentHash": "a1571b3f80df104ae12891eda65d33e772a660b546eb75b7104886263a5eb45d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": false
+    },
+    "tests/test_dialogue_box.gd": {
+      "filePath": "tests/test_dialogue_box.gd",
+      "contentHash": "ac2402c6c1feb8c011cf0c459a4136b58021bbf98dffb050630bc76350d09e53",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": false
+    },
+    "tests/test_npc.gd": {
+      "filePath": "tests/test_npc.gd",
+      "contentHash": "96c2a3a7ac46194b3f328ca43bdec7d7c9eab0352c6f5dbefa73dd2b18201918",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": false
+    }
+  }
+}
