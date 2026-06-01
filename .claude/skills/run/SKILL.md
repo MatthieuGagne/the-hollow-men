@@ -12,21 +12,21 @@ pwd
 **If inside a worktree**, check initialization before doing anything else:
 
 ```sh
-ls <worktree_path>/.godot 2>/dev/null && ls <worktree_path>/assets/tilesets/placeholder.png 2>/dev/null || echo "NEEDS_INIT"
+ls <worktree_path>/.godot 2>$null && ls <worktree_path>/assets/tilesets/placeholder.png 2>$null || echo "NEEDS_INIT"
 ```
 
 If either path is missing, run `make worktree-init` from the worktree root first. This copies gitignored build artifacts from the main repo and runs a full headless reimport. Without it the map scene will load empty and sprites may be missing. Wait for it to complete before continuing.
 
-**Kill any running Godot instance first** (exit 144 from pkill means no process was running — that is normal, not an error):
+**Kill any running Godot instance first** (if no Godot process is running, the command completes silently — that is normal, not an error):
 
 ```sh
-pkill -f godot; true
+Get-Process godot* -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
 **Ensure C# assemblies are built.** Check whether the build output DLL exists:
 
 ```sh
-ls <project_path>/.godot/mono/temp/bin/Debug/TheHollowMen.dll 2>/dev/null || echo "NEEDS_BUILD"
+ls <project_path>/.godot/mono/temp/bin/Debug/TheHollowMen.dll 2>$null || echo "NEEDS_BUILD"
 ```
 
 If `NEEDS_BUILD`, run `dotnet build` from the project root and wait for it to complete (expected: "0 Error(s)"). This is required for YarnSpinner and any other C# scripts to instantiate correctly.
@@ -56,7 +56,7 @@ fi
 Then run the headless import and wait for it to finish (run this if either TMX cache was cleared OR Yarn cache was invalidated above):
 
 ```sh
-DISPLAY=:0 godot --headless --editor --quit --path <project_path> 2>&1 | tail -10
+godot_console --headless --editor --quit --path <project_path>
 ```
 
 **Determine the mode** from the user's request:
@@ -66,19 +66,17 @@ DISPLAY=:0 godot --headless --editor --quit --path <project_path> 2>&1 | tail -1
 **If inside a worktree** (path contains `worktrees/`), launch from the worktree path:
 
 ```sh
-DISPLAY=:0 godot [--editor] --path <worktree_path> 2>&1 &
-echo "PID: $!"
-sleep 3 && ps aux | grep godot | grep -v grep
+Start-Process godot_console -ArgumentList "[--editor] --path <worktree_path>"
+Start-Sleep 3; Get-Process godot_console -ErrorAction SilentlyContinue
 ```
 
 **If in the main repo**, launch from the project root:
 
 ```sh
-DISPLAY=:0 godot [--editor] --path /home/mathdaman/code/the-hollow-men 2>&1 &
-echo "PID: $!"
-sleep 3 && ps aux | grep godot | grep -v grep
+Start-Process godot_console -ArgumentList "[--editor] --path C:\Code\the-hollow-men"
+Start-Sleep 3; Get-Process godot_console -ErrorAction SilentlyContinue
 ```
 
-Verify the PID still appears in the `ps` output. If it does not, Godot exited silently — report the failure. Do not rely on the `pkill` exit code to determine whether a prior instance was running.
+Verify that `Get-Process` returns a result. If it does not, Godot exited silently — report the failure.
 
 Report to the user that Godot is launching (editor or game, as appropriate).
