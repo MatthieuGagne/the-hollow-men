@@ -26,11 +26,11 @@ pwd
 git worktree list
 ```
 
-If `pwd` output is already under `/home/mathdaman/code/worktrees/`, you are in a worktree — skip to Step 2.
+If `pwd` output is already under `C:\Code\worktrees\`, you are in a worktree — skip to Step 2.
 
 Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then use the `EnterWorktree` tool to create and enter the worktree:
 
-- Worktree path: `/home/mathdaman/code/worktrees/<branch-name-with-slashes-as-dashes>`
+- Worktree path: `C:\Code\worktrees\<branch-name-with-slashes-as-dashes>`
 - Branch: `feat/issue-<N>-<short-description>`
 
 `EnterWorktree` creates a fresh branch off master — no separate sync step is needed.
@@ -59,7 +59,7 @@ For each task (whether parallel or sequential):
    - **Non-logic task** (scenes, docs, assets): follow each step exactly as written in the plan.
 3. After completing any GDScript task: run the full test suite to confirm no regressions:
    ```bash
-   godot --headless -s addons/gut/gut_cmdln.gd
+   godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
    ```
    If any test fails, stop and fix before continuing.
 4. Run verifications as specified in the plan

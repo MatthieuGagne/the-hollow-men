@@ -9,7 +9,7 @@ You are a Godot 4 / GDScript engine expert.
 ## Memory Behavior
 
 At the start of every task, read your memory file:
-`~/.claude/projects/-home-mathdaman-code-noir-fantasy-rpg/memory/godot-expert.md`
+`C:\Users\mathd\.claude\projects\C--Code-the-hollow-men\memory\godot-expert.md`
 
 After completing a task, append any new bugs found, API gotchas, or confirmed patterns to that file. Do not duplicate existing entries.
 
@@ -117,7 +117,7 @@ When called with a prompt starting with **"implement this task: …"**, act as t
 **Trigger phrase:** `implement this task: <full task text from plan>`
 
 **Behavior in implementation mode:**
-1. Read memory file (`~/.claude/projects/-home-mathdaman-code-noir-fantasy-rpg/memory/godot-expert.md`) and CLAUDE.md for project context.
+1. Read memory file (`C:\Users\mathd\.claude\projects\C--Code-the-hollow-men\memory\godot-expert.md`) and CLAUDE.md for project context.
 2. Read the full task text and identify all files to create or modify.
 3. Follow TDD: write the failing GUT test first:
    ```bash

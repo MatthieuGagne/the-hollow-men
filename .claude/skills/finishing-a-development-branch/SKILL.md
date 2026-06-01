@@ -24,7 +24,7 @@ If merge conflicts occur: resolve them, commit the merge, then continue.
 ### Step 2: Run GUT Tests
 
 ```bash
-godot --headless -s addons/gut/gut_cmdln.gd
+godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
 ```
 
 If tests fail: stop, show failures. Do not proceed until they pass.
@@ -34,7 +34,7 @@ If tests fail: stop, show failures. Do not proceed until they pass.
 Launch the game in the background (always run this step, even when called from executing-plans):
 
 ```bash
-godot &
+Start-Process godot_console
 ```
 
 Tell the user what to look for. Then ask:
@@ -97,13 +97,13 @@ EOF
 After PR is created, report:
 
 > "PR created: <URL>
-> When the PR is merged, let me know and I'll clean up the worktree at `/home/mathdaman/code/worktrees/<sanitized-branch>`."
+> When the PR is merged, let me know and I'll clean up the worktree at `C:\Code\worktrees\<sanitized-branch>`."
 
 **Do NOT run Step 7 yet.** Cleanup only happens after the user confirms the merge.
 
 #### Option 2: Keep As-Is
 
-Report: "Keeping branch `<name>`. Worktree preserved at `/home/mathdaman/code/worktrees/<sanitized-branch>`."
+Report: "Keeping branch `<name>`. Worktree preserved at `C:\Code\worktrees\<sanitized-branch>`."
 
 **Do NOT run Step 7.**
 
@@ -115,7 +115,7 @@ Report: "Keeping branch `<name>`. Worktree preserved at `/home/mathdaman/code/wo
 This will permanently delete:
 - Branch <name>
 - All commits: <commit-list>
-- Worktree at /home/mathdaman/code/worktrees/<sanitized-branch>
+- Worktree at C:\Code\worktrees\<sanitized-branch>
 
 Type 'discard' to confirm.
 ```
@@ -167,24 +167,24 @@ If not inside an active `EnterWorktree` session, continue to Step 7b.
 Always `cd` first — if the session CWD is inside a deleted worktree, git panics with "Unable to read current working directory":
 
 ```bash
-cd /home/mathdaman/code/noir-fantasy-rpg
+cd C:\Code\the-hollow-men
 ```
 
 **Step 7c: Remove the worktree**
 
 ```bash
-git worktree remove /home/mathdaman/code/worktrees/<sanitized-branch>
+git worktree remove C:\Code\worktrees\<sanitized-branch>
 ```
 
 If that fails (dirty working tree):
 ```bash
-git worktree remove --force /home/mathdaman/code/worktrees/<sanitized-branch>
+git worktree remove --force C:\Code\worktrees\<sanitized-branch>
 # Warn: "Worktree had uncommitted changes — removed with --force."
 ```
 
 If `--force` also fails (directory already deleted from disk, stale git ref):
 ```bash
-rm -rf /home/mathdaman/code/worktrees/<sanitized-branch>
+Remove-Item -Recurse -Force C:\Code\worktrees\<sanitized-branch>
 git worktree prune
 # Note: "Worktree directory was already gone — pruned stale ref."
 ```
@@ -222,7 +222,7 @@ Run Step 7a → 7b → 7c → 7d in sequence. Skip 7e (branch already deleted wi
 
 Branch names are sanitized before use as directory names: replace all `/` with `-`.
 
-- Example: `feat/issue-19-worktree` → `/home/mathdaman/code/worktrees/feat-issue-19-worktree`
+- Example: `feat/issue-19-worktree` → `C:\Code\worktrees\feat-issue-19-worktree`
 
 ## Quick Reference
 
@@ -244,7 +244,7 @@ Branch names are sanitized before use as directory names: replace all `/` with `
 - **Fix:** After PR creation, tell user the worktree path and wait for merge confirmation
 
 **`git worktree remove` fails with "Unable to read current working directory"**
-- **Fix:** Always `cd /home/mathdaman/code/noir-fantasy-rpg` before any worktree remove command (Step 7b)
+- **Fix:** Always `cd C:\Code\the-hollow-men` before any worktree remove command (Step 7b)
 
 **`git worktree remove --force` fails with "is not a working tree"**
 - **Fix:** Fall back to `rm -rf <path> && git worktree prune` to clean up the stale ref
