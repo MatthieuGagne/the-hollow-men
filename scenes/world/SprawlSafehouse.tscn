@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" path="res://maps/sprawl_safehouse.tmx" id="2_map"]
+
+[node name="SprawlSafehouse" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("sprawl_safehouse/World")
+default_spawn = "heights_entrance"
+ambient_color = Color(0.04, 0.04, 0.08, 1)
+
+[node name="sprawl_safehouse" parent="." instance=ExtResource("2_map")]
