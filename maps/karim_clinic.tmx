@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="4">
+ <tileset firstgid="1" source="placeholder.tsx"/>
+ <layer id="1" name="World" width="16" height="12">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,7,2,2,2,2,2,2,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,2,
+2,2,2,2,2,2,2,2,7,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <objectgroup id="2" name="Objects">
+ </objectgroup>
+ <objectgroup id="3" name="Interactions">
+  <object id="1" type="instance" x="128" y="32" width="16" height="16">
+   <properties>
+    <property name="spawn_id" value="sprawl_entrance"/>
+    <property name="res_path" type="file" value="res://scenes/world/SpawnPoint.tscn"/>
+   </properties>
+  </object>
+  <object id="2" type="instance" x="128" y="144" width="16" height="16">
+   <properties>
+    <property name="spawn_id" value="default"/>
+    <property name="res_path" type="file" value="res://scenes/world/SpawnPoint.tscn"/>
+   </properties>
+  </object>
+  <object id="3" type="instance" x="128" y="176" width="16" height="16">
+   <properties>
+    <property name="target_path" value="res://scenes/world/SprawlSafehouse.tscn"/>
+    <property name="spawn_point" value="clinic_entrance"/>
+    <property name="res_path" type="file" value="res://scenes/world/ExitDoor.tscn"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
