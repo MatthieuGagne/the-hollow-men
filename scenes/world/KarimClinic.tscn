@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" path="res://maps/karim_clinic.tmx" id="2_map"]
+
+[node name="KarimClinic" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("karim_clinic/World")
+default_spawn = "sprawl_entrance"
+ambient_color = Color(0.04, 0.06, 0.08, 1)
+
+[node name="karim_clinic" parent="." instance=ExtResource("2_map")]
