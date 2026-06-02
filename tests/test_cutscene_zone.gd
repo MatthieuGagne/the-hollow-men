@@ -37,3 +37,40 @@ func test_next_scene_defaults_to_empty() -> void:
 
 func test_fired_starts_false() -> void:
 	assert_false(_zone._fired)
+
+
+func test_non_player_body_does_not_set_fired() -> void:
+	var other := CharacterBody2D.new()
+	add_child_autofree(other)
+	_zone._on_body_entered(other)
+	assert_false(_zone._fired)
+
+
+func test_player_body_sets_fired() -> void:
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_player_body_with_empty_dialogue_node_does_not_crash() -> void:
+	_zone.dialogue_node = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_player_body_disables_monitoring_after_deferred() -> void:
+	_zone._on_body_entered(_player)
+	await get_tree().process_frame
+	assert_false(_zone.monitoring)
+
+
+func test_second_entry_does_not_reset_fired() -> void:
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_on_dialogue_closed_with_empty_next_scene_does_not_crash() -> void:
+	_zone.next_scene = ""
+	_zone._on_dialogue_closed()
+	assert_true(true)  # assert_true(true) is the GUT idiom for "assert no exception thrown"

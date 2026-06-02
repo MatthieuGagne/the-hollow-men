@@ -13,9 +13,18 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-func _on_body_entered(_body: Node2D) -> void:
-	pass
+func _on_body_entered(body: Node2D) -> void:
+	if _fired or not body is Player:
+		return
+	_fired = true
+	set_deferred("monitoring", false)
+	if dialogue_node == "":
+		return
+	DialogueManager.dialogue_closed.connect(_on_dialogue_closed, CONNECT_ONE_SHOT)
+	DialogueManager.run_node(dialogue_node)
 
 
 func _on_dialogue_closed() -> void:
-	pass
+	if next_scene.is_empty():
+		return
+	SceneManager.change_scene(next_scene)
