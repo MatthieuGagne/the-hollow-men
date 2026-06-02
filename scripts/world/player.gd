@@ -10,31 +10,14 @@ var _input_blocked: bool = false
 var _interact_awaiting_release: bool = false
 var _world_layer: TileMapLayer
 
-var _dbg_target_offset: Vector2 = Vector2.ZERO
-var _dbg_is_wall: bool = false
-var _dbg_has_target: bool = false
-var _dbg_label: Label
-
 
 func _ready() -> void:
 	position = snap_to_grid(position, TILE_SIZE)
 	z_as_relative = false
-	_setup_debug_overlay()
 
 
 func setup(layer: TileMapLayer) -> void:
 	_world_layer = layer
-
-
-func _setup_debug_overlay() -> void:
-	var canvas := CanvasLayer.new()
-	canvas.layer = 100
-	add_child(canvas)
-
-	_dbg_label = Label.new()
-	_dbg_label.position = Vector2(4, 4)
-	_dbg_label.add_theme_font_size_override("font_size", 8)
-	canvas.add_child(_dbg_label)
 
 
 func _process(_delta: float) -> void:
@@ -44,30 +27,8 @@ func _process(_delta: float) -> void:
 			if Input.is_action_pressed(action):
 				_try_move(action)
 				break
-	queue_redraw()
-	if _world_layer == null:
-		return
-	var tile: Vector2i = _world_layer.local_to_map(position)
-	var lines: PackedStringArray = [
-		"pos: (%.0f, %.0f)" % [position.x, position.y],
-		"tile: %s" % [tile],
-	]
-	if _dbg_has_target:
-		var target_tile: Vector2i = _world_layer.local_to_map(position + _dbg_target_offset)
-		lines.append("target: %s  wall=%s" % [target_tile, _dbg_is_wall])
-	_dbg_label.text = "\n".join(lines)
-
-
-func _draw() -> void:
-	var half: float = TILE_SIZE / 2.0
-	var tile_rect := Rect2(-half, -half, TILE_SIZE, TILE_SIZE)
-	draw_rect(tile_rect, Color(0.0, 1.0, 0.0, 0.25), true)
-	draw_rect(tile_rect, Color(0.0, 1.0, 0.0, 0.9), false)
-	if _dbg_has_target:
-		var t := Rect2(_dbg_target_offset.x - half, _dbg_target_offset.y - half, TILE_SIZE, TILE_SIZE)
-		var col := Color(1.0, 0.1, 0.1, 0.35) if _dbg_is_wall else Color(0.0, 0.8, 1.0, 0.35)
-		draw_rect(t, col, true)
-		draw_rect(t, col + Color(0, 0, 0, 0.5), false)
+	if _world_layer != null:
+		DebugOverlay.notify_position(position, _world_layer.local_to_map(position))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -102,10 +63,7 @@ func _try_move(action: String) -> void:
 	_facing = offset
 	var target_pos: Vector2 = position + Vector2(offset) * TILE_SIZE
 	var target_cell: Vector2i = _world_layer.local_to_map(target_pos)
-	_dbg_target_offset = Vector2(offset) * TILE_SIZE
-	_dbg_is_wall = _is_wall(target_pos) or CellRegistry.is_blocked(target_cell)
-	_dbg_has_target = true
-	if _dbg_is_wall:
+	if _is_wall(target_pos) or CellRegistry.is_blocked(target_cell):
 		return
 	_moving = true
 	var tween: Tween = create_tween()
