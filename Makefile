@@ -1,7 +1,6 @@
 .DEFAULT_GOAL := assets
 
 MAIN_REPO := $(shell git worktree list --porcelain | head -1 | awk '{print $$2}')
-MAIN_REPO_UNIX := $(shell cygpath "$(MAIN_REPO)" 2>/dev/null || echo "$(MAIN_REPO)")
 
 .PHONY: assets copy-art sync-tsx import worktree-init
 
@@ -31,7 +30,8 @@ import:
 worktree-init:
 	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
 	cp $(MAIN_REPO)/dialogue/*.import dialogue/
-	rsync -a --include="*.yarnproject-*" --include="*.yarn-*" --exclude="*" $(MAIN_REPO_UNIX)/.godot/imported/ .godot/imported/
+	cp $(MAIN_REPO)/.godot/imported/*yarnproject-* .godot/imported/ 2>/dev/null || true
+	cp $(MAIN_REPO)/.godot/imported/*yarn-* .godot/imported/ 2>/dev/null || true
 	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
 	dotnet build
 	$(MAKE) assets
