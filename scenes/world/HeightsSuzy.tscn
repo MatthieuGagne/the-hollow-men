@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" path="res://maps/heights_suzy.tmx" id="2_map"]
+
+[sub_resource type="Gradient" id="Gradient_1"]
+colors = PackedColorArray(0.8, 0.9, 1, 1, 0.8, 0.9, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1"]
+gradient = SubResource("Gradient_1")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="HeightsSuzy" instance=ExtResource("1_baseroom")]
+world_layer_path = NodePath("heights_suzy/World")
+default_spawn = "four_winds_entrance"
+ambient_color = Color(0.05, 0.05, 0.10, 1)
+
+[node name="heights_suzy" parent="." instance=ExtResource("2_map")]
+
+[node name="OverheadLight" type="PointLight2D" parent="."]
+position = Vector2(128, 96)
+color = Color(0.8, 0.9, 1, 1)
+energy = 2.0
+texture = SubResource("GradientTexture2D_1")
+texture_scale = 6.0
