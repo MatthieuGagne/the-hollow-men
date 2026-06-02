@@ -15,7 +15,7 @@ copy-art:
 
 # Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
 sync-tsx:
-	py scripts/sync_tsx.py
+	python3 scripts/sync_tsx.py
 
 import:
 	@test -f .godot/mono/temp/bin/Debug/TheHollowMen.dll || \
