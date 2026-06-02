@@ -14,6 +14,7 @@ var _world_layer: TileMapLayer
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	$RoomLabelLayer/RoomLabel.text = name
 	$CanvasModulate.color = ambient_color
 	if music_path != "":
 		AudioManager.play_music(music_path)
