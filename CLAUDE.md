@@ -28,7 +28,7 @@ Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun i
 
 ## Dev Workflow
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
-- Worktree base: `C:\Code\worktrees\`
+- Worktree base: `.worktrees/` (project-local, gitignored)
 - **After creating a new worktree**, run `make worktree-init` before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
 - TDD for all GDScript logic: write failing GUT test first
 - Run GUT: `godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
@@ -58,7 +58,7 @@ idea → brainstorm → PRD (GitHub issue) → plan → worktree → implement �
 1. `/brainstorming` — explore the idea
 2. `/prd` — write a GitHub issue spec
 3. `/writing-plans` — turn spec into step-by-step tasks
-4. Create worktree: `git worktree add C:\Code\worktrees\<branch> -b <branch>` then `make worktree-init`
+4. Create worktree: `git worktree add .worktrees/<branch> -b <branch>` then `make worktree-init`
 5. `/executing-plans` — implement with checkpoints
 6. `/finishing-a-development-branch` — tests, smoketest, PR, cleanup
 
