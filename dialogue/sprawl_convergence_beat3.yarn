@@ -1,0 +1,23 @@
+title: sprawl_convergence_beat3
+---
+CASIMIR: Reid. I knew they'd send someone from Gray eventually.
+VERA: Dad—
+CASIMIR: Let me handle this, Vera.
+REID: There's nothing to handle. Bureau wants her back. Reinstatement. Standard process.
+CASIMIR: There's no process here. She left. That was her choice.
+VERA: It's not that simple.
+CASIMIR: Reid, you know me. We've worked together. Whatever they're paying—
+REID: Don't finish that sentence.
+IRIS: Question.
+CASIMIR: Who are you?
+IRIS: Doesn't matter. Can we fight our way out of this room?
+REID: Not a conversation I'd recommend starting.
+IRIS: Can we run?
+REID: I've already logged the location.
+IRIS: Then we talk.
+VERA: Let her. Please.
+CASIMIR: Vera—
+VERA: Dad.
+<<show_narration "The door came in fast.">>
+<<set $case_1_beat3_complete = true>>
+===
