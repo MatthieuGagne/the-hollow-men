@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="9">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="10">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <tileset firstgid="13" source="objects.tsx"/>
  <layer id="1" name="World" width="16" height="12">
@@ -31,9 +31,8 @@
   </object>
   <object id="3" type="instance" x="128" y="184" width="16" height="16">
    <properties>
-    <property name="target_path" value="res://scenes/world/RoomPOC.tscn"/>
+    <property name="target_path" value="res://scenes/world/HeightsSuzy.tscn"/>
     <property name="spawn_point" value="four_winds_entrance"/>
-    <property name="required_flag" value="vera_lead_obtained"/>
     <property name="res_path" type="file" value="res://scenes/world/ExitDoor.tscn"/>
    </properties>
   </object>
@@ -62,6 +61,12 @@
     <property name="examine_text" value="A grimy counter. Empty bottles line the shelf."/>
     <property name="sets_flag" value="bar_examined"/>
     <property name="res_path" type="file" value="res://scenes/world/ExamineObject.tscn"/>
+   </properties>
+  </object>
+  <object id="9" type="instance" x="128" y="160" width="16" height="16">
+   <properties>
+    <property name="spawn_id" value="four_winds_entrance"/>
+    <property name="res_path" type="file" value="res://scenes/world/SpawnPoint.tscn"/>
    </properties>
   </object>
  </objectgroup>
