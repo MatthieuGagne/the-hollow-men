@@ -18,6 +18,14 @@ public partial class YarnDialogueBridge : Node, DialoguePresenterBase
     private int _pendingOptionIndex = -1;
     private DialogueOption[]? _pendingOptions;
 
+    public override void _Ready()
+    {
+        runner?.AddCommandHandler<string>("show_narration", (text) =>
+        {
+            GetNode<Node>("/root/DialogueManager").Call("show_narration", text);
+        });
+    }
+
     public async YarnTask RunLineAsync(LocalizedLine line, LineCancellationToken token)
     {
         _lineAdvanced = false;
