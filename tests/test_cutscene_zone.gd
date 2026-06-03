@@ -74,3 +74,15 @@ func test_on_dialogue_closed_with_empty_next_scene_does_not_crash() -> void:
 	_zone.next_scene = ""
 	_zone._on_dialogue_closed()
 	assert_true(true)  # assert_true(true) is the GUT idiom for "assert no exception thrown"
+
+
+func test_shape_resizes_from_meta_in_ready() -> void:
+	_zone.set_meta("width", 224.0)
+	_zone.set_meta("height", 128.0)
+	var col_shape := CollisionShape2D.new()
+	col_shape.name = "CollisionShape2D"
+	_zone.add_child(col_shape)
+	_zone._ready()
+	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
+	var rect: RectangleShape2D = shape_node.shape as RectangleShape2D
+	assert_eq(rect.size, Vector2(224, 128))

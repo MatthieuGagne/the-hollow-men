@@ -65,8 +65,10 @@
   <object id="8" type="instance" x="16" y="32" width="224" height="128">
    <properties>
     <property name="dialogue_node" value="sprawl_convergence_beat3"/>
+    <property name="height" type="float" value="128"/>
     <property name="next_scene" value="res://scenes/battle/BattleScene.tscn"/>
     <property name="res_path" type="file" value="res://scenes/world/CutsceneZone.tscn"/>
+    <property name="width" type="float" value="224"/>
    </properties>
   </object>
  </objectgroup>

@@ -10,7 +10,17 @@ var _fired: bool = false
 func _ready() -> void:
 	dialogue_node = get_meta("dialogue_node", dialogue_node)
 	next_scene = get_meta("next_scene", next_scene)
-	body_entered.connect(_on_body_entered)
+	var w: float = get_meta("width", 0.0)
+	var h: float = get_meta("height", 0.0)
+	if w > 0.0 and h > 0.0:
+		var shape_node := $CollisionShape2D
+		if shape_node.shape == null:
+			shape_node.shape = RectangleShape2D.new()
+		var rect := shape_node.shape as RectangleShape2D
+		if rect != null:
+			rect.size = Vector2(w, h)
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 
 
 func _on_body_entered(body: Node2D) -> void:
