@@ -25,6 +25,7 @@ func test_execute_action_returns_to_ticking() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
 
@@ -42,6 +43,7 @@ func test_execute_action_damages_enemy() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Shade HP must decrease after Attack")
 
 
@@ -51,6 +53,7 @@ func test_execute_action_triggers_win_on_lethal_hit() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.ENDED,
 		"State must be ENDED when all enemies are dead")
 
@@ -62,6 +65,7 @@ func test_battle_ended_signal_emitted_on_win() -> void:
 	watch_signals(_scene)
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	await wait_for_signal(_scene.battle_ended, 2.0)
 	assert_signal_emitted_with_parameters(_scene, "battle_ended", [true])
 
 
@@ -179,6 +183,7 @@ func test_player_turn_ended_signal_emitted_after_action() -> void:
 	_scene._begin_player_turn(reid)
 	watch_signals(_scene)
 	_scene.execute_action("attack")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_signal_emitted(_scene, "player_turn_ended")
 
 
@@ -196,6 +201,7 @@ func test_ability_damages_enemy_as_reid() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Piercing Strike must deal damage to Shade")
 
 
@@ -205,6 +211,7 @@ func test_ability_damages_enemy_as_iris() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(iris)
 	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
 
 
@@ -220,6 +227,7 @@ func test_ability_returns_to_ticking() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
 
@@ -336,6 +344,7 @@ func test_margot_ability_deals_psy_damage() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(margot)
 	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before,
 		"Void Calculus must deal PSY damage to Shade")
 
@@ -416,6 +425,7 @@ func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	var child_count_before: int = reid_sprite.get_child_count()
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_gt(reid_sprite.get_child_count(), child_count_before,
 		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
 
