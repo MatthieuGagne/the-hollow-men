@@ -60,4 +60,10 @@ public partial class GameStateVariableStorage : VariableStorageBehaviour
     {
         return (new(), new(), new());
     }
+
+    [YarnCommand("show_narration")]
+    public void ShowNarration(string text)
+    {
+        GetNode<Node>("/root/DialogueManager").Call("show_narration", text);
+    }
 }
