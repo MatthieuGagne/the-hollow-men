@@ -15,7 +15,7 @@ copy-art:
 
 # Patch each .tsx in maps/ so its tilecount/columns/width/height match the actual PNG on disk.
 sync-tsx:
-	py scripts/sync_tsx.py
+	python scripts/sync_tsx.py
 
 import:
 	@test -f .godot/mono/temp/bin/Debug/TheHollowMen.dll || \
@@ -30,7 +30,8 @@ import:
 worktree-init:
 	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
 	cp $(MAIN_REPO)/dialogue/*.import dialogue/
-	rsync -a --include="*.yarnproject-*" --include="*.yarn-*" --exclude="*" $(MAIN_REPO)/.godot/imported/ .godot/imported/
+	cp $(MAIN_REPO)/.godot/imported/*yarnproject-* .godot/imported/ 2>/dev/null || true
+	cp $(MAIN_REPO)/.godot/imported/*yarn-* .godot/imported/ 2>/dev/null || true
 	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
 	dotnet build
 	$(MAKE) assets
