@@ -37,6 +37,13 @@ const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
 const SKIP_COOLDOWN:              float   = 2.0
 const PP_COST_COLOR := Color(0.55, 0.20, 0.85)
+const LUNGE_DISTANCE:      float = 20.0
+const LUNGE_DURATION:      float = 0.1
+const LUNGE_RETURN_DUR:    float = 0.15
+const FLASH_PULSE_HALF:    float = 0.05   # each pulse = 2 × this (up + down)
+const FLASH_PULSES:        int   = 3      # 3 pulses × 0.1s = 0.3s total
+const FLASH_HOLD:          float = 0.15   # remaining flash after return (0.3 - 0.15)
+const OVERBRIGHT:          Color = Color(2.0, 2.0, 2.0, 1.0)
 const WORLD_SCENE:   String = "res://scenes/world/RoomPOC.tscn"
 const BATTLE_SCENE:  String = "res://scenes/battle/BattleScene.tscn"
 const VICTORY_DELAY: float  = 1.5
@@ -242,29 +249,61 @@ func execute_action(action_name: String) -> void:
 	if _state != BattleState.AWAITING_INPUT:
 		return
 	_action_menu.hide()
+
+	# Healing abilities route through party targeting — no animation
 	if action_name == "ability" \
 			and _active != null \
 			and _active.ability != null \
 			and _active.ability.targets_party:
 		_begin_party_targeting()
 		return
+
+	# Resolve damage and PP cost synchronously before any await
+	var damage: int = 0
+	var target: Combatant = null
 	if not enemies.is_empty():
-		var target: Combatant = enemies[0]
-		var damage: int = 0
+		target = enemies[0]
 		match action_name:
 			"attack":
 				damage = Combatant.calculate_damage(_active, target)
 			"ability":
 				damage = _resolve_ability(_active, target)
-		if damage > 0:
-			target.take_damage(damage)
-			_spawn_damage_number(damage, $EnemyContainer)
+
+	# Emit PP HUD update now — PP was already spent by _resolve_ability
+	if action_name == "ability" and _active != null and _active.ability != null:
+		combatant_updated.emit(_active)
+
+	if damage > 0 and target != null:
+		var attacker_idx: int = party.find(_active)
+		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
+		var target_sprite: Sprite2D = $EnemyContainer.get_child(0)
+		_state = BattleState.ANIMATING
+
+		# Lunge toward enemy (negative x = left toward EnemyContainer)
+		var origin_x: float = attacker_sprite.position.x
+		var lunge_tween := create_tween()
+		lunge_tween.tween_property(attacker_sprite, "position:x",
+			origin_x - LUNGE_DISTANCE, LUNGE_DURATION)
+		await lunge_tween.finished
+
+		# Impact peak: apply damage, spawn numbers, start flash
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+		_spawn_damage_number(damage, $EnemyContainer)
 		if action_name == "ability" and _active != null and _active.ability != null:
-			combatant_updated.emit(_active)
-			var attacker_idx: int = party.find(_active)
-			if attacker_idx >= 0:
-				_spawn_damage_number(-_active.ability.pp_cost,
-					$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+			_spawn_damage_number(-_active.ability.pp_cost,
+				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+		_start_enemy_flash(target_sprite)
+
+		# Return to origin — runs concurrently with flash
+		var return_tween := create_tween()
+		return_tween.tween_property(attacker_sprite, "position:x",
+			origin_x, LUNGE_RETURN_DUR)
+		await return_tween.finished
+
+		# Wait for the remaining flash time before ending turn (flash = 0.3s, return = 0.15s)
+		await get_tree().create_timer(FLASH_HOLD).timeout
+
 	_end_turn()
 	_check_win_loss()
 
@@ -370,6 +409,13 @@ func _spawn_damage_number(amount: int, container: Node2D, color: Color = Color.W
 		DAMAGE_NUMBER_SPAWN_OFFSET.y - DAMAGE_NUMBER_FLOAT_DIST, DAMAGE_NUMBER_DURATION)
 	tween.tween_property(label, "modulate:a", 0.0, DAMAGE_NUMBER_DURATION)
 	tween.finished.connect(label.queue_free)
+
+
+func _start_enemy_flash(sprite: Sprite2D) -> void:
+	var flash_tween := create_tween()
+	for _i in range(FLASH_PULSES):
+		flash_tween.tween_property(sprite, "modulate", OVERBRIGHT, FLASH_PULSE_HALF)
+		flash_tween.tween_property(sprite, "modulate", Color.WHITE, FLASH_PULSE_HALF)
 
 
 func _on_combatant_updated(combatant: Combatant) -> void:
