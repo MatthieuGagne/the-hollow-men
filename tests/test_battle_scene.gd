@@ -588,3 +588,29 @@ func test_action_menu_hidden_on_victory() -> void:
 	_scene._on_battle_ended(true)
 	assert_false(_scene._action_menu.visible,
 		"ActionMenu must be hidden when victory fires")
+
+
+func test_execute_action_enters_animating_state() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("attack")
+	assert_eq(_scene._state, _scene.BattleState.ANIMATING,
+		"execute_action must immediately enter ANIMATING before tween completes")
+
+
+func test_offensive_ability_enters_animating_state() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_eq(_scene._state, _scene.BattleState.ANIMATING,
+		"offensive ability must enter ANIMATING state when attacker has enough PP")
+
+
+func test_healing_confirm_skips_animating_state() -> void:
+	var karim := _add_karim_to_party()
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")  # enters SELECTING_ALLY (party-targeting path)
+	_scene.confirm_party_target(reid)  # healing — must NOT go through ANIMATING
+	assert_eq(_scene._state, _scene.BattleState.TICKING,
+		"healing via confirm_party_target must go directly to TICKING, never ANIMATING")
