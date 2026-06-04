@@ -1,14 +1,18 @@
 extends Node
 
-const REID_RES := "res://characters/reid.tres"
+const REID_RES   := "res://characters/reid.tres"
+const IRIS_RES   := "res://characters/iris.tres"
+const KARIM_RES  := "res://characters/karim.tres"
+const MARGOT_RES := "res://characters/margot.tres"
 
 var _permanent_members: Array[Combatant] = []
 var _temporary_members: Array[Combatant] = []
 
 func _ready() -> void:
-	var reid: Combatant = load(REID_RES).duplicate()
-	reid.reset_runtime_state()
-	_permanent_members.append(reid)
+	for res_path in [REID_RES, IRIS_RES, KARIM_RES, MARGOT_RES]:
+		var c: Combatant = (load(res_path) as Combatant).duplicate()
+		c.reset_runtime_state()
+		_permanent_members.append(c)
 
 func add_member(combatant: Combatant) -> void:
 	_permanent_members.append(combatant)
