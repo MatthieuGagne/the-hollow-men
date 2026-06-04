@@ -752,3 +752,108 @@ func test_resolve_enemy_action_default_attacks_party() -> void:
 	_scene._resolve_enemy_action(shade)
 	assert_lt(reid.current_hp, hp_before,
 		"Default enemy (Shade) must attack a party member via _resolve_enemy_action")
+
+
+# --- Captain AI tests ---
+
+func _make_captain_scene() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	var reid: Combatant = load("res://characters/reid.tres").duplicate()
+	reid.reset_runtime_state()
+	PartyManager._permanent_members.append(reid)
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	var captain: Combatant = load("res://characters/enemies/block_captain.tres").duplicate()
+	captain.reset_runtime_state()
+	s.enemies.clear()
+	s.enemies.append(captain)
+	return s
+
+
+func test_captain_hold_the_line_buffs_enemy_def() -> void:
+	var s := _make_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var def_before := captain.get_effective_stat(StatusEffect.StatAxis.DEF)
+	s._resolve_enemy_action(captain)
+	assert_gt(captain.get_effective_stat(StatusEffect.StatAxis.DEF), def_before,
+		"Hold the Line must raise Captain's effective DEF")
+
+
+func test_captain_hold_the_line_not_repeated_while_active() -> void:
+	var s := _make_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	# First action: Hold the Line fires
+	s._resolve_enemy_action(captain)
+	# Second action: Hold the Line is already active → goes to Mark Target path
+	s._resolve_enemy_action(captain)
+	# Party member should be marked now (no mark existed before)
+	var reid: Combatant = s.party[0]
+	var marked := reid.active_effects.any(func(ef: StatusEffect) -> bool:
+		return ef.effect_name == "mark_target")
+	assert_true(marked,
+		"Captain must use Mark Target on second action when Hold the Line is already active")
+
+
+func test_captain_mark_target_applies_def_debuff() -> void:
+	var s := _make_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	# Seed Hold the Line so it's already active
+	var htl := StatusEffect.new()
+	htl.effect_name = "hold_the_line"
+	htl.stat = StatusEffect.StatAxis.DEF
+	htl.modifier = 8
+	htl.duration = 2
+	captain.apply_effect(htl)
+	var reid: Combatant = s.party[0]
+	var def_before := reid.get_effective_stat(StatusEffect.StatAxis.DEF)
+	s._resolve_enemy_action(captain)
+	assert_lt(reid.get_effective_stat(StatusEffect.StatAxis.DEF), def_before,
+		"Mark Target must lower the target party member's effective DEF")
+
+
+func test_captain_heavy_strike_when_both_active() -> void:
+	var s := _make_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	# Seed Hold the Line (active) and Mark Target (active on Reid)
+	var htl := StatusEffect.new()
+	htl.effect_name = "hold_the_line"
+	htl.stat = StatusEffect.StatAxis.DEF
+	htl.modifier = 8
+	htl.duration = 2
+	captain.apply_effect(htl)
+	var mark := StatusEffect.new()
+	mark.effect_name = "mark_target"
+	mark.stat = StatusEffect.StatAxis.DEF
+	mark.modifier = -6
+	mark.duration = 99
+	reid.apply_effect(mark)
+	var hp_before: int = reid.current_hp
+	s._resolve_enemy_action(captain)
+	assert_lt(reid.current_hp, hp_before,
+		"Captain must use Heavy Strike when both Hold the Line and Mark Target are already active")
+
+
+func test_hold_the_line_raises_effective_def_during_combat() -> void:
+	# AC1: attacks during Hold the Line window deal less damage
+	var s := _make_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	var def_no_buff := captain.get_effective_stat(StatusEffect.StatAxis.DEF)
+	# Apply Hold the Line
+	var htl := StatusEffect.new()
+	htl.effect_name = "hold_the_line"
+	htl.stat = StatusEffect.StatAxis.DEF
+	htl.modifier = 8
+	htl.duration = 2
+	captain.apply_effect(htl)
+	var def_with_buff := captain.get_effective_stat(StatusEffect.StatAxis.DEF)
+	assert_gt(def_with_buff, def_no_buff,
+		"Hold the Line must increase effective DEF above base")
+	# Damage from Reid against buffed Captain must be lower
+	for _i in range(50):
+		var dmg_buffed := Combatant.calculate_damage(reid, captain)
+		captain.current_hp = captain.max_hp  # reset so we can sample repeatedly
+		assert_lte(dmg_buffed, Combatant.calculate_damage(reid, Combatant.new()) + 1,
+			"damage against buffed enemy must be lower than against unbuffed")
