@@ -10,19 +10,17 @@ signal pause_toggled(paused: bool)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, PAUSED }
 
-const REID_RES   := "res://characters/reid.tres"
-const IRIS_RES   := "res://characters/iris.tres"
-const KARIM_RES  := "res://characters/karim.tres"
-const MARGOT_RES := "res://characters/margot.tres"
 const SHADE_RES  := "res://characters/enemies/shade.tres"
-const REID_TEX          := "res://assets/sprites/characters/reid.png"
-const IRIS_TEX          := "res://assets/sprites/characters/iris.png"
-const KARIM_TEX         := "res://assets/sprites/characters/karim.png"
-const MARGOT_TEX        := "res://assets/sprites/characters/margot.png"
-const SHADE_TEX         := "res://assets/sprites/enemies/shade.png"
+const SHADE_TEX  := "res://assets/sprites/enemies/shade.png"
 const SPRITE_FRAME_HEIGHT: int = 24
-const PARTY_VFRAMES: Array[int] = [8, 8, 8, 8]  # reid/iris/karim/margot: 192px/24
 const SPRITE_GAP_PX: int       = 1
+
+const PARTY_SPRITE_DATA: Dictionary = {
+	"Reid":   {"texture": "res://assets/sprites/characters/reid.png",   "vframes": 8},
+	"Iris":   {"texture": "res://assets/sprites/characters/iris.png",   "vframes": 8},
+	"Karim":  {"texture": "res://assets/sprites/characters/karim.png",  "vframes": 8},
+	"Margot": {"texture": "res://assets/sprites/characters/margot.png", "vframes": 8},
+}
 
 const SLOT_POSITIONS: Array[int] = [
 	-2 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
@@ -66,22 +64,11 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 
 func _ready() -> void:
 	_load_background()
-	var reid: Combatant = load(REID_RES)
-	reid.reset_runtime_state()
 
-	var iris: Combatant = load(IRIS_RES)
-	iris.reset_runtime_state()
+	party = PartyManager.get_active_members()
 
-	var karim: Combatant = load(KARIM_RES)
-	karim.reset_runtime_state()
-
-	var margot: Combatant = load(MARGOT_RES)
-	margot.reset_runtime_state()
-
-	var shade: Combatant = load(SHADE_RES)
+	var shade: Combatant = load(SHADE_RES).duplicate()
 	shade.reset_runtime_state()
-
-	party = [reid, iris, karim, margot]
 	enemies = [shade]
 
 	_setup_sprites()
@@ -104,21 +91,19 @@ func _load_background() -> void:
 
 
 func _setup_sprites() -> void:
-	var party_textures: Array[String] = [
-		REID_TEX, IRIS_TEX, KARIM_TEX, MARGOT_TEX
-	]
-	var party_modulates: Array[Color] = [
-		Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE
-	]
-
-	for i in range(party_textures.size()):
+	for i in range(party.size()):
+		var member := party[i]
+		if not PARTY_SPRITE_DATA.has(member.character_name):
+			push_warning("BattleScene: no sprite data for '%s'" % member.character_name)
+			continue
+		var data: Dictionary = PARTY_SPRITE_DATA[member.character_name]
 		var sprite := Sprite2D.new()
-		sprite.vframes = PARTY_VFRAMES[i]
-		sprite.frame = 2  # all characters: left-facing (row 2) faces enemies
+		sprite.vframes = data["vframes"]
+		sprite.frame = 2
 		sprite.flip_h = false
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
-		sprite.texture = load(party_textures[i])
-		sprite.modulate = party_modulates[i]
+		sprite.texture = load(data["texture"])
+		sprite.modulate = Color.WHITE
 		$PartyContainer.add_child(sprite)
 
 	var shade_sprite := Sprite2D.new()
@@ -428,10 +413,12 @@ func _on_combatant_updated(combatant: Combatant) -> void:
 func _on_battle_ended(victory: bool) -> void:
 	_action_menu.hide()
 	if victory:
+		PartyManager.remove_temporary_members()
 		_victory_label.show()
 		await get_tree().create_timer(VICTORY_DELAY).timeout
 		if is_inside_tree():
-			SceneManager.change_scene(WORLD_SCENE)
+			var target := BattleParams.return_scene if BattleParams.return_scene != "" else WORLD_SCENE
+			SceneManager.change_scene(target)
 	else:
 		_defeat_label.show()
 		_defeat_menu.show()
