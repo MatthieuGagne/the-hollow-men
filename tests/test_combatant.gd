@@ -343,3 +343,116 @@ func test_tick_effects_only_removes_expired_leaves_others() -> void:
 	c.tick_effects()
 	assert_eq(c.active_effects.size(), 1, "only expired effects must be removed")
 	assert_eq(c.active_effects[0].effect_name, "long")
+
+
+func test_get_effective_stat_no_effects_returns_base() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 10)
+
+
+func test_get_effective_stat_with_buff() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 18)
+
+
+func test_get_effective_stat_with_debuff() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -6
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 4)
+
+
+func test_get_effective_stat_clamps_at_zero() -> void:
+	var c := Combatant.new()
+	c.def_stat = 5
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -20
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 0, "effective stat must clamp at 0")
+
+
+func test_take_damage_clears_mark_target() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -6
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.active_effects.size(), 1)
+	c.take_damage(10)
+	assert_eq(c.active_effects.size(), 0, "mark_target must be cleared on first hit")
+
+
+func test_take_damage_does_not_clear_other_effects() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	c.take_damage(10)
+	assert_eq(c.active_effects.size(), 1, "take_damage must not clear non-mark_target effects")
+
+
+func test_calculate_damage_uses_effective_stats() -> void:
+	# DEF buff on target reduces damage
+	var attacker := Combatant.new()
+	attacker.str_stat = 40
+	var target := Combatant.new()
+	target.def_stat = 10
+	# With buff: effective DEF = 30, so damage = floor((40-30)*[0.9,1.1]) = [9,11]
+	var buff := StatusEffect.new()
+	buff.effect_name = "hold_the_line"
+	buff.stat = StatusEffect.StatAxis.DEF
+	buff.modifier = 20
+	buff.duration = 2
+	target.apply_effect(buff)
+	for _i in range(100):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 9, "buffed DEF must reduce incoming damage (min)")
+		assert_lte(dmg, 11, "buffed DEF must reduce incoming damage (max)")
+
+
+func test_calculate_damage_mark_target_increases_damage() -> void:
+	# DEF debuff on target increases damage
+	var attacker := Combatant.new()
+	attacker.str_stat = 40
+	var target := Combatant.new()
+	target.def_stat = 10
+	# With debuff: effective DEF = 4, so damage = floor((40-4)*[0.9,1.1]) = [32,39]
+	var debuff := StatusEffect.new()
+	debuff.effect_name = "mark_target"
+	debuff.stat = StatusEffect.StatAxis.DEF
+	debuff.modifier = -6
+	debuff.duration = 99
+	target.apply_effect(debuff)
+	for _i in range(100):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 32, "marked DEF must increase incoming damage (min)")
+		assert_lte(dmg, 40, "marked DEF must increase incoming damage (max)")
