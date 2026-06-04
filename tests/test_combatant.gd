@@ -241,3 +241,17 @@ func test_margot_loads_with_correct_stats() -> void:
 	assert_eq(margot.ability.ability_name, "Void Calculus")
 	assert_eq(margot.ability.pp_cost, 15)
 	assert_false(margot.ability.targets_party)
+
+
+func test_status_effect_fields_have_correct_defaults() -> void:
+	var effect := StatusEffect.new()
+	assert_eq(effect.effect_name, "")
+	assert_eq(effect.modifier, 0)
+	assert_eq(effect.duration, 0)
+
+
+func test_status_effect_stat_axis_has_all_axes() -> void:
+	# Verify the enum members exist and are distinct
+	assert_ne(StatusEffect.StatAxis.DEF, StatusEffect.StatAxis.STR)
+	assert_ne(StatusEffect.StatAxis.PSY, StatusEffect.StatAxis.RES)
+	assert_ne(StatusEffect.StatAxis.SPD, StatusEffect.StatAxis.HP)
