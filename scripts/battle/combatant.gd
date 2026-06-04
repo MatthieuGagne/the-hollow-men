@@ -58,6 +58,15 @@ func apply_effect(effect: StatusEffect) -> void:
 	active_effects.append(effect)
 
 
+func tick_effects() -> void:
+	var i := active_effects.size() - 1
+	while i >= 0:
+		active_effects[i].duration -= 1
+		if active_effects[i].duration <= 0:
+			active_effects.remove_at(i)
+		i -= 1
+
+
 func tick_atb(delta: float) -> void:
 	if is_dead():
 		return

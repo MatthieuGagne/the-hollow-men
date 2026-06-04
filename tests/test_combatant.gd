@@ -297,3 +297,49 @@ func test_reset_runtime_state_clears_active_effects() -> void:
 	c.apply_effect(effect)
 	c.reset_runtime_state()
 	assert_eq(c.active_effects.size(), 0, "reset_runtime_state must clear active effects")
+
+
+func test_tick_effects_decrements_duration() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 3
+	c.apply_effect(effect)
+	c.tick_effects()
+	assert_eq(c.active_effects[0].duration, 2, "duration must decrement by 1 per tick")
+
+
+func test_tick_effects_removes_expired_effect() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 1
+	c.apply_effect(effect)
+	c.tick_effects()
+	assert_eq(c.active_effects.size(), 0, "expired effect must be removed after tick")
+
+
+func test_tick_effects_only_removes_expired_leaves_others() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var short := StatusEffect.new()
+	short.effect_name = "short"
+	short.stat = StatusEffect.StatAxis.DEF
+	short.modifier = 1
+	short.duration = 1
+	var long_eff := StatusEffect.new()
+	long_eff.effect_name = "long"
+	long_eff.stat = StatusEffect.StatAxis.STR
+	long_eff.modifier = 2
+	long_eff.duration = 3
+	c.apply_effect(short)
+	c.apply_effect(long_eff)
+	c.tick_effects()
+	assert_eq(c.active_effects.size(), 1, "only expired effects must be removed")
+	assert_eq(c.active_effects[0].effect_name, "long")
