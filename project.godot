@@ -22,6 +22,7 @@ SceneManager="*res://scripts/autoload/scene_manager.gd"
 BattleParams="*res://scripts/autoload/battle_params.gd"
 AudioManager="*res://scripts/autoload/audio_manager.gd"
 GameState="*res://scripts/autoload/game_state.gd"
+PartyManager="*res://scripts/autoload/party_manager.gd"
 DialogueManager="*res://scenes/autoload/DialogueManager.tscn"
 DebugOverlay="*res://scripts/autoload/debug_overlay.gd"
 
