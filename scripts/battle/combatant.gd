@@ -26,6 +26,7 @@ var current_pp: int
 var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
+var active_effects: Array[StatusEffect] = []
 
 const ATB_MAX: float = 100.0
 const LIMIT_MAX: float = 100.0
@@ -46,6 +47,15 @@ func reset_runtime_state() -> void:
 	atb = 0.0
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
+	active_effects = []
+
+
+func apply_effect(effect: StatusEffect) -> void:
+	for existing in active_effects:
+		if existing.effect_name == effect.effect_name:
+			existing.duration = effect.duration
+			return
+	active_effects.append(effect)
 
 
 func tick_atb(delta: float) -> void:

@@ -255,3 +255,45 @@ func test_status_effect_stat_axis_has_all_axes() -> void:
 	assert_ne(StatusEffect.StatAxis.DEF, StatusEffect.StatAxis.STR)
 	assert_ne(StatusEffect.StatAxis.PSY, StatusEffect.StatAxis.RES)
 	assert_ne(StatusEffect.StatAxis.SPD, StatusEffect.StatAxis.HP)
+
+
+func test_apply_effect_adds_to_active_effects() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	assert_eq(c.active_effects.size(), 1)
+
+
+func test_apply_effect_reapply_refreshes_duration_not_stacks() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var e1 := StatusEffect.new()
+	e1.effect_name = "hold_the_line"
+	e1.stat = StatusEffect.StatAxis.DEF
+	e1.modifier = 8
+	e1.duration = 1  # nearly expired
+	c.apply_effect(e1)
+	var e2 := StatusEffect.new()
+	e2.effect_name = "hold_the_line"
+	e2.stat = StatusEffect.StatAxis.DEF
+	e2.modifier = 8
+	e2.duration = 2  # fresh application
+	c.apply_effect(e2)
+	assert_eq(c.active_effects.size(), 1, "reapply must not stack a second instance")
+	assert_eq(c.active_effects[0].duration, 2, "reapply must refresh duration to new value")
+
+
+func test_reset_runtime_state_clears_active_effects() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.duration = 2
+	c.apply_effect(effect)
+	c.reset_runtime_state()
+	assert_eq(c.active_effects.size(), 0, "reset_runtime_state must clear active effects")
