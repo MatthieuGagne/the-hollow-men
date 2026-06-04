@@ -236,6 +236,7 @@ func _enemy_attack_without_interrupting(combatant: Combatant) -> void:
 		combatant_updated.emit(target)
 		var idx: int = party.find(target)
 		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
+	combatant.tick_effects()
 	combatant.consume_atb()
 
 
@@ -446,6 +447,7 @@ func _end_turn() -> void:
 	if _active and _active.is_player_controlled:
 		player_turn_ended.emit()
 	if _active:
+		_active.tick_effects()
 		_active.consume_atb()
 		_active = null
 	_state = BattleState.TICKING

@@ -857,3 +857,44 @@ func test_hold_the_line_raises_effective_def_during_combat() -> void:
 		captain.current_hp = captain.max_hp  # reset so we can sample repeatedly
 		assert_lte(dmg_buffed, Combatant.calculate_damage(reid, Combatant.new()) + 1,
 			"damage against buffed enemy must be lower than against unbuffed")
+
+
+func test_end_turn_ticks_active_combatant_effects() -> void:
+	var reid: Combatant = _scene.party[0]
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 2
+	reid.apply_effect(effect)
+	_scene._active = reid
+	_scene._end_turn()
+	assert_eq(reid.active_effects[0].duration, 1,
+		"effect duration must decrement by 1 when _end_turn is called")
+
+
+func test_end_turn_removes_expired_effects() -> void:
+	var reid: Combatant = _scene.party[0]
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 1
+	reid.apply_effect(effect)
+	_scene._active = reid
+	_scene._end_turn()
+	assert_eq(reid.active_effects.size(), 0,
+		"expired effect must be removed when _end_turn is called")
+
+
+func test_enemy_attack_without_interrupting_ticks_effects() -> void:
+	var shade: Combatant = _scene.enemies[0]
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 2
+	shade.apply_effect(effect)
+	_scene._enemy_attack_without_interrupting(shade)
+	assert_eq(shade.active_effects[0].duration, 1,
+		"enemy effect must tick after _enemy_attack_without_interrupting")
