@@ -216,10 +216,10 @@ func _begin_player_turn(combatant: Combatant) -> void:
 func _begin_enemy_turn(combatant: Combatant) -> void:
 	_active = combatant
 	_state = BattleState.ANIMATING
-	var target: Combatant = _select_enemy_target()
-	if target:
-		var damage: int = Combatant.calculate_damage(combatant, target)
-		target.take_damage(damage)
+	var result := _resolve_enemy_action(combatant)
+	if result.get("action") == "attack":
+		var target: Combatant = result["target"]
+		var damage: int = result["damage"]
 		combatant_updated.emit(target)
 		var idx: int = party.find(target)
 		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
@@ -229,14 +229,80 @@ func _begin_enemy_turn(combatant: Combatant) -> void:
 
 
 func _enemy_attack_without_interrupting(combatant: Combatant) -> void:
-	var target: Combatant = _select_enemy_target()
-	if target:
-		var damage: int = Combatant.calculate_damage(combatant, target)
-		target.take_damage(damage)
+	var result := _resolve_enemy_action(combatant)
+	if result.get("action") == "attack":
+		var target: Combatant = result["target"]
+		var damage: int = result["damage"]
 		combatant_updated.emit(target)
 		var idx: int = party.find(target)
 		_spawn_damage_number(damage, $PartyContainer.get_child(idx))
 	combatant.consume_atb()
+
+
+func _resolve_enemy_action(combatant: Combatant) -> Dictionary:
+	match combatant.character_name:
+		"Territory Enforcer":
+			return _enforcer_ai(combatant)
+		"Block Captain":
+			return _captain_ai(combatant)
+	var target := _select_enemy_target()
+	if target == null:
+		return {}
+	var damage := Combatant.calculate_damage(combatant, target)
+	target.take_damage(damage)
+	return {"action": "attack", "target": target, "damage": damage}
+
+
+func _enforcer_ai(combatant: Combatant) -> Dictionary:
+	var living_enemies := enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
+	var living_party := party.filter(func(p: Combatant) -> bool: return p.is_alive())
+	if living_enemies.size() < living_party.size():
+		var backup: Combatant = load(ENFORCER_RES).duplicate()
+		backup.reset_runtime_state()
+		add_enemy(backup)
+		return {}
+	var target := _select_enemy_target()
+	if target == null:
+		return {}
+	var damage := maxi(1,
+		floori(combatant.get_effective_stat(StatusEffect.StatAxis.STR) * 1.5 * randf_range(0.9, 1.1)))
+	target.take_damage(damage)
+	return {"action": "attack", "target": target, "damage": damage}
+
+
+func _captain_ai(combatant: Combatant) -> Dictionary:
+	var htl_active := enemies.any(func(e: Combatant) -> bool:
+		return e.is_alive() and e.active_effects.any(func(ef: StatusEffect) -> bool:
+			return ef.effect_name == "hold_the_line"))
+	if not htl_active:
+		for e in enemies:
+			if e.is_alive():
+				var effect := StatusEffect.new()
+				effect.effect_name = "hold_the_line"
+				effect.stat = StatusEffect.StatAxis.DEF
+				effect.modifier = 8
+				effect.duration = 2
+				e.apply_effect(effect)
+		return {}
+	var marked_exists := party.any(func(p: Combatant) -> bool:
+		return p.is_alive() and p.active_effects.any(func(ef: StatusEffect) -> bool:
+			return ef.effect_name == "mark_target"))
+	if not marked_exists:
+		var living_party := party.filter(func(p: Combatant) -> bool: return p.is_alive())
+		if not living_party.is_empty():
+			var effect := StatusEffect.new()
+			effect.effect_name = "mark_target"
+			effect.stat = StatusEffect.StatAxis.DEF
+			effect.modifier = -6
+			effect.duration = 99
+			living_party[randi() % living_party.size()].apply_effect(effect)
+		return {}
+	var target := _select_enemy_target()
+	if target == null:
+		return {}
+	var damage := Combatant.calculate_damage(combatant, target)
+	target.take_damage(damage)
+	return {"action": "attack", "target": target, "damage": damage}
 
 
 func _select_enemy_target() -> Combatant:

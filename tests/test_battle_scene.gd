@@ -699,3 +699,56 @@ func test_add_enemy_adds_sprite_to_enemy_container() -> void:
 	_scene.add_enemy(captain)
 	assert_eq(container.get_child_count(), sprites_before + 1,
 		"add_enemy must add a sprite to EnemyContainer")
+
+
+func test_call_backup_adds_enforcer_when_enemies_outnumbered() -> void:
+	# Party: Reid + Iris (2 living). Enemy: 1 Enforcer. → Call Backup fires.
+	PartyManager._temporary_members.clear()
+	var iris: Combatant = load("res://characters/iris.tres").duplicate()
+	iris.reset_runtime_state()
+	PartyManager.add_member(iris)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	# Swap Shade for Enforcer (logic only — leave Shade sprite in container)
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
+	enforcer.reset_runtime_state()
+	scene2.enemies.clear()
+	scene2.enemies.append(enforcer)
+	var count_before: int = scene2.enemies.size()
+	scene2._resolve_enemy_action(enforcer)
+	assert_eq(scene2.enemies.size(), count_before + 1,
+		"Call Backup must add a Territory Enforcer when enemies < living party")
+
+
+func test_call_backup_not_called_when_enemies_equal_party() -> void:
+	# Party: 1 Reid. Enemies: 1 Enforcer. → no backup.
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
+	enforcer.reset_runtime_state()
+	_scene.enemies.clear()
+	_scene.enemies.append(enforcer)
+	var count_before: int = _scene.enemies.size()
+	_scene._resolve_enemy_action(enforcer)
+	assert_eq(_scene.enemies.size(), count_before,
+		"Call Backup must not fire when enemy count >= living party count")
+
+
+func test_enforcer_shakedown_deals_damage_when_not_outnumbered() -> void:
+	var reid: Combatant = _scene.party[0]
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
+	enforcer.reset_runtime_state()
+	_scene.enemies.clear()
+	_scene.enemies.append(enforcer)
+	var hp_before: int = reid.current_hp
+	_scene._resolve_enemy_action(enforcer)
+	assert_lt(reid.current_hp, hp_before,
+		"Shakedown must deal damage to a party member when enemies >= living party")
+
+
+func test_resolve_enemy_action_default_attacks_party() -> void:
+	# Shade (default path) must still deal damage
+	var shade: Combatant = _scene.enemies[0]
+	var reid: Combatant = _scene.party[0]
+	var hp_before: int = reid.current_hp
+	_scene._resolve_enemy_action(shade)
+	assert_lt(reid.current_hp, hp_before,
+		"Default enemy (Shade) must attack a party member via _resolve_enemy_action")
