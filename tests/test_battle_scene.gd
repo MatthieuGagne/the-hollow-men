@@ -680,3 +680,22 @@ func test_victory_removes_temporary_members() -> void:
 func test_victory_uses_return_scene_when_set() -> void:
 	BattleParams.return_scene = "res://scenes/world/FourWindsBar.tscn"
 	assert_eq(BattleParams.return_scene, "res://scenes/world/FourWindsBar.tscn")
+
+
+func test_add_enemy_appends_to_enemies_array() -> void:
+	var count_before: int = _scene.enemies.size()
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
+	enforcer.reset_runtime_state()
+	_scene.add_enemy(enforcer)
+	assert_eq(_scene.enemies.size(), count_before + 1, "add_enemy must append to enemies array")
+	assert_eq(_scene.enemies.back().character_name, "Territory Enforcer")
+
+
+func test_add_enemy_adds_sprite_to_enemy_container() -> void:
+	var container: Node2D = _scene.get_node("EnemyContainer")
+	var sprites_before: int = container.get_child_count()
+	var captain: Combatant = load("res://characters/enemies/block_captain.tres").duplicate()
+	captain.reset_runtime_state()
+	_scene.add_enemy(captain)
+	assert_eq(container.get_child_count(), sprites_before + 1,
+		"add_enemy must add a sprite to EnemyContainer")

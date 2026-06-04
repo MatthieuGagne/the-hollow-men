@@ -10,8 +10,16 @@ signal pause_toggled(paused: bool)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, PAUSED }
 
-const SHADE_RES  := "res://characters/enemies/shade.tres"
-const SHADE_TEX  := "res://assets/sprites/enemies/shade.png"
+const SHADE_RES     := "res://characters/enemies/shade.tres"
+const SHADE_TEX     := "res://assets/sprites/enemies/shade.png"
+const ENFORCER_RES  := "res://characters/enemies/territory_enforcer.tres"
+const CAPTAIN_RES   := "res://characters/enemies/block_captain.tres"
+
+const ENEMY_SPRITE_DATA: Dictionary = {
+	"Shade":               {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Territory Enforcer":  {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Block Captain":       {"texture": "res://assets/sprites/enemies/shade.png"},
+}
 const SPRITE_FRAME_HEIGHT: int = 24
 const SPRITE_GAP_PX: int       = 1
 
@@ -69,7 +77,7 @@ func _ready() -> void:
 
 	var shade: Combatant = load(SHADE_RES).duplicate()
 	shade.reset_runtime_state()
-	enemies = [shade]
+	add_enemy(shade)
 
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
@@ -106,9 +114,17 @@ func _setup_sprites() -> void:
 		sprite.modulate = Color.WHITE
 		$PartyContainer.add_child(sprite)
 
-	var shade_sprite := Sprite2D.new()
-	shade_sprite.texture = load(SHADE_TEX)
-	$EnemyContainer.add_child(shade_sprite)
+
+
+func add_enemy(combatant: Combatant) -> void:
+	enemies.append(combatant)
+	var sprite := Sprite2D.new()
+	var data: Dictionary = ENEMY_SPRITE_DATA.get(combatant.character_name,
+		{"texture": SHADE_TEX})
+	sprite.texture = load(data["texture"])
+	var idx := enemies.size() - 1
+	sprite.position = Vector2(0, idx * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX))
+	$EnemyContainer.add_child(sprite)
 
 
 func _process(delta: float) -> void:
