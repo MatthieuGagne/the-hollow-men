@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+
+[resource]
+script = ExtResource("1_combatant")
+character_name = "Block Captain"
+is_player_controlled = false
+max_hp = 300
+max_pp = 0
+str_stat = 35
+def_stat = 45
+psy_stat = 5
+res_stat = 10
+spd_stat = 15
+sigil_type = 0

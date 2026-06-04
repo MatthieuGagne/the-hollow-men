@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+
+[resource]
+script = ExtResource("1_combatant")
+character_name = "Territory Enforcer"
+is_player_controlled = false
+max_hp = 180
+max_pp = 0
+str_stat = 55
+def_stat = 10
+psy_stat = 5
+res_stat = 5
+spd_stat = 20
+sigil_type = 0
