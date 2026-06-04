@@ -4,6 +4,12 @@ var _scene: Node2D
 
 
 func before_each() -> void:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleParams.return_scene = ""
+	var reid: Combatant = load("res://characters/reid.tres").duplicate()
+	reid.reset_runtime_state()
+	PartyManager._permanent_members.append(reid)
 	_scene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(_scene)
 
@@ -74,7 +80,12 @@ func test_battle_ended_signal_emitted_on_win() -> void:
 
 
 func test_party_sprites_have_1px_vertical_gap() -> void:
-	var container: Node2D = _scene.get_node("PartyContainer")
+	var iris: Combatant = load("res://characters/iris.tres").duplicate()
+	iris.reset_runtime_state()
+	PartyManager.add_member(iris)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	var container: Node2D = scene2.get_node("PartyContainer")
 	var sprites := container.get_children()
 	assert_gte(sprites.size(), 2, "need at least 2 sprites to check gap")
 
@@ -210,12 +221,16 @@ func test_ability_damages_enemy_as_reid() -> void:
 
 
 func test_ability_damages_enemy_as_iris() -> void:
-	var iris: Combatant = _scene.party[1]
-	var shade: Combatant = _scene.enemies[0]
+	var iris: Combatant = load("res://characters/iris.tres").duplicate()
+	iris.reset_runtime_state()
+	PartyManager.add_member(iris)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	var shade: Combatant = scene2.enemies[0]
 	var hp_before: int = shade.current_hp
-	_scene._begin_player_turn(iris)
-	_scene.execute_action("ability")
-	await wait_for_signal(_scene.player_turn_ended, 2.0)
+	scene2._begin_player_turn(iris)
+	scene2.execute_action("ability")
+	await wait_for_signal(scene2.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
 
 
@@ -249,6 +264,16 @@ func _add_karim_to_party() -> Combatant:
 	var karim: Combatant = load("res://characters/karim.tres")
 	karim.reset_runtime_state()
 	_scene.party.append(karim)
+	var idx: int = _scene.party.size() - 1
+	var data: Dictionary = BattleScene.PARTY_SPRITE_DATA["Karim"]
+	var sprite := Sprite2D.new()
+	sprite.vframes = data["vframes"]
+	sprite.frame = 2
+	sprite.flip_h = false
+	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[idx])
+	sprite.texture = load(data["texture"])
+	sprite.modulate = Color.WHITE
+	_scene.get_node("PartyContainer").add_child(sprite)
 	return karim
 
 
@@ -328,46 +353,44 @@ func test_confirm_party_target_ignores_dead_target() -> void:
 		"state must remain SELECTING_ALLY when dead target is confirmed")
 
 
-func test_party_size_is_four() -> void:
-	assert_eq(_scene.party.size(), 4, "party must contain exactly 4 members")
-
-
-func test_party_contains_karim() -> void:
-	var names: Array = _scene.party.map(func(p: Combatant) -> String: return p.character_name)
-	assert_true(names.has("Karim"), "party must include Karim")
-
-
-func test_party_contains_margot() -> void:
-	var names: Array = _scene.party.map(func(p: Combatant) -> String: return p.character_name)
-	assert_true(names.has("Margot"), "party must include Margot")
-
-
 func test_margot_ability_deals_psy_damage() -> void:
-	var margot: Combatant = _scene.party[3]
-	var shade: Combatant = _scene.enemies[0]
+	var margot: Combatant = load("res://characters/margot.tres").duplicate()
+	margot.reset_runtime_state()
+	PartyManager.add_member(margot)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	var shade: Combatant = scene2.enemies[0]
 	var hp_before: int = shade.current_hp
-	_scene._begin_player_turn(margot)
-	_scene.execute_action("ability")
-	await wait_for_signal(_scene.player_turn_ended, 2.0)
+	scene2._begin_player_turn(margot)
+	scene2.execute_action("ability")
+	await wait_for_signal(scene2.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before,
 		"Void Calculus must deal PSY damage to Shade")
 
 
 func test_margot_ability_spends_pp() -> void:
-	var margot: Combatant = _scene.party[3]
+	var margot: Combatant = load("res://characters/margot.tres").duplicate()
+	margot.reset_runtime_state()
+	PartyManager.add_member(margot)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
 	var pp_before: int = margot.current_pp
-	_scene._begin_player_turn(margot)
-	_scene.execute_action("ability")
+	scene2._begin_player_turn(margot)
+	scene2.execute_action("ability")
 	assert_lt(margot.current_pp, pp_before, "Void Calculus must spend 15 PP")
 
 
 func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
-	var margot: Combatant = _scene.party[3]
+	var margot: Combatant = load("res://characters/margot.tres").duplicate()
+	margot.reset_runtime_state()
 	margot.current_pp = 0
-	var shade: Combatant = _scene.enemies[0]
+	PartyManager.add_member(margot)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	var shade: Combatant = scene2.enemies[0]
 	var hp_before: int = shade.current_hp
-	_scene._begin_player_turn(margot)
-	_scene.execute_action("ability")
+	scene2._begin_player_turn(margot)
+	scene2.execute_action("ability")
 	assert_eq(shade.current_hp, hp_before,
 		"Void Calculus must not deal damage when PP is 0")
 
@@ -381,9 +404,9 @@ func test_ability_emits_combatant_updated_for_attacker() -> void:
 
 
 func test_enemy_attacks_during_awaiting_input_state_unchanged() -> void:
-	var iris: Combatant = _scene.party[1]
+	var reid: Combatant = _scene.party[0]
 	var shade: Combatant = _scene.enemies[0]
-	_scene._begin_player_turn(iris)
+	_scene._begin_player_turn(reid)
 	shade.atb = Combatant.ATB_MAX
 	_scene._process(0.0)
 	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
@@ -391,9 +414,9 @@ func test_enemy_attacks_during_awaiting_input_state_unchanged() -> void:
 
 
 func test_enemy_atb_consumed_after_attacking_during_awaiting_input() -> void:
-	var iris: Combatant = _scene.party[1]
+	var reid: Combatant = _scene.party[0]
 	var shade: Combatant = _scene.enemies[0]
-	_scene._begin_player_turn(iris)
+	_scene._begin_player_turn(reid)
 	shade.atb = Combatant.ATB_MAX
 	_scene._process(0.0)
 	assert_eq(shade.atb, 0.0,
@@ -628,3 +651,32 @@ func test_healing_confirm_skips_animating_state() -> void:
 	_scene.confirm_party_target(reid)  # healing — must NOT go through ANIMATING
 	assert_eq(_scene._state, _scene.BattleState.TICKING,
 		"healing via confirm_party_target must go directly to TICKING, never ANIMATING")
+
+
+func test_party_comes_from_party_manager() -> void:
+	assert_eq(_scene.party.size(), 1)
+	assert_eq(_scene.party[0].character_name, "Reid")
+
+
+func test_party_includes_temporary_members() -> void:
+	PartyManager._temporary_members.clear()
+	var iris: Combatant = load("res://characters/iris.tres").duplicate()
+	iris.reset_runtime_state()
+	PartyManager.add_temporary(iris)
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	assert_eq(scene2.party.size(), 2)
+	assert_eq(scene2.party[1].character_name, "Iris")
+
+
+func test_victory_removes_temporary_members() -> void:
+	var iris: Combatant = load("res://characters/iris.tres").duplicate()
+	iris.reset_runtime_state()
+	PartyManager.add_temporary(iris)
+	_scene._on_battle_ended(true)
+	assert_false(PartyManager.has_member("Iris"))
+
+
+func test_victory_uses_return_scene_when_set() -> void:
+	BattleParams.return_scene = "res://scenes/world/FourWindsBar.tscn"
+	assert_eq(BattleParams.return_scene, "res://scenes/world/FourWindsBar.tscn")

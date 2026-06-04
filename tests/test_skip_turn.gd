@@ -5,6 +5,12 @@ var _hud: Control
 
 
 func before_each() -> void:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	for path in ["res://characters/reid.tres", "res://characters/iris.tres"]:
+		var c: Combatant = load(path).duplicate()
+		c.reset_runtime_state()
+		PartyManager.add_member(c)
 	_scene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(_scene)
 	_hud = _scene.get_node("UI/HUD")
