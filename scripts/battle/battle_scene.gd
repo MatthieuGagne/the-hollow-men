@@ -72,13 +72,8 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 
 func _ready() -> void:
 	_load_background()
-
 	party = PartyManager.get_active_members()
-
-	var shade: Combatant = load(SHADE_RES).duplicate()
-	shade.reset_runtime_state()
-	add_enemy(shade)
-
+	_spawn_enemies()
 	_setup_sprites()
 	$UI/HUD.setup(party, enemies, self)
 	_action_menu.action_selected.connect(execute_action)
@@ -87,6 +82,12 @@ func _ready() -> void:
 	_defeat_menu.retry_requested.connect(func(): SceneManager.change_scene(BATTLE_SCENE))
 	_defeat_menu.quit_requested.connect(func(): get_tree().quit())
 	combatant_updated.connect(_on_combatant_updated)
+
+
+func _spawn_enemies() -> void:
+	var shade: Combatant = load(SHADE_RES).duplicate()
+	shade.reset_runtime_state()
+	add_enemy(shade)
 
 
 func _load_background() -> void:
