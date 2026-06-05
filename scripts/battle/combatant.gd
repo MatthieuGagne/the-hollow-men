@@ -26,6 +26,7 @@ var current_pp: int
 var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
+var active_effects: Array[StatusEffect] = []
 
 const ATB_MAX: float = 100.0
 const LIMIT_MAX: float = 100.0
@@ -46,6 +47,43 @@ func reset_runtime_state() -> void:
 	atb = 0.0
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
+	active_effects = []
+
+
+func apply_effect(effect: StatusEffect) -> void:
+	for existing in active_effects:
+		if existing.effect_name == effect.effect_name:
+			existing.duration = effect.duration
+			return
+	active_effects.append(effect)
+
+
+func tick_effects() -> void:
+	var i := active_effects.size() - 1
+	while i >= 0:
+		active_effects[i].duration -= 1
+		if active_effects[i].duration <= 0:
+			active_effects.remove_at(i)
+		i -= 1
+
+
+func get_effective_stat(stat: StatusEffect.StatAxis) -> int:
+	var base := _base_stat(stat)
+	for effect in active_effects:
+		if effect.stat == stat:
+			base += effect.modifier
+	return maxi(0, base)
+
+
+func _base_stat(stat: StatusEffect.StatAxis) -> int:
+	match stat:
+		StatusEffect.StatAxis.DEF: return def_stat
+		StatusEffect.StatAxis.STR: return str_stat
+		StatusEffect.StatAxis.PSY: return psy_stat
+		StatusEffect.StatAxis.RES: return res_stat
+		StatusEffect.StatAxis.SPD: return spd_stat
+		StatusEffect.StatAxis.HP:  return max_hp
+	return 0
 
 
 func tick_atb(delta: float) -> void:
@@ -83,8 +121,12 @@ func is_limit_ready() -> bool:
 
 
 func take_damage(amount: int) -> void:
+	var i := active_effects.size() - 1
+	while i >= 0:
+		if active_effects[i].effect_name == "mark_target":
+			active_effects.remove_at(i)
+		i -= 1
 	current_hp = maxi(current_hp - amount, 0)
-	# Damage charges the limit gauge
 	var ratio: float = float(amount) / float(max_hp)
 	limit_gauge = minf(limit_gauge + ratio * LIMIT_MAX, limit_cap())
 
@@ -122,12 +164,16 @@ func limit_ratio() -> float:
 
 
 static func calculate_damage(attacker: Combatant, target: Combatant) -> int:
-	return maxi(1, floori((attacker.str_stat - target.def_stat) * randf_range(0.9, 1.1)))
+	var atk := attacker.get_effective_stat(StatusEffect.StatAxis.STR)
+	var def_ := target.get_effective_stat(StatusEffect.StatAxis.DEF)
+	return maxi(1, floori((atk - def_) * randf_range(0.9, 1.1)))
 
 
 static func calculate_piercing_strike(attacker: Combatant) -> int:
-	return maxi(1, floori(attacker.str_stat * randf_range(0.9, 1.1)))
+	return maxi(1, floori(attacker.get_effective_stat(StatusEffect.StatAxis.STR) * randf_range(0.9, 1.1)))
 
 
 static func calculate_static_touch(attacker: Combatant, target: Combatant) -> int:
-	return maxi(1, floori((attacker.psy_stat - target.res_stat) * randf_range(0.9, 1.1)))
+	var atk := attacker.get_effective_stat(StatusEffect.StatAxis.PSY)
+	var res := target.get_effective_stat(StatusEffect.StatAxis.RES)
+	return maxi(1, floori((atk - res) * randf_range(0.9, 1.1)))

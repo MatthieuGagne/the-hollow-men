@@ -241,3 +241,242 @@ func test_margot_loads_with_correct_stats() -> void:
 	assert_eq(margot.ability.ability_name, "Void Calculus")
 	assert_eq(margot.ability.pp_cost, 15)
 	assert_false(margot.ability.targets_party)
+
+
+func test_status_effect_fields_have_correct_defaults() -> void:
+	var effect := StatusEffect.new()
+	assert_eq(effect.effect_name, "")
+	assert_eq(effect.modifier, 0)
+	assert_eq(effect.duration, 0)
+
+
+func test_status_effect_stat_axis_has_all_axes() -> void:
+	# Verify the enum members exist and are distinct
+	assert_ne(StatusEffect.StatAxis.DEF, StatusEffect.StatAxis.STR)
+	assert_ne(StatusEffect.StatAxis.PSY, StatusEffect.StatAxis.RES)
+	assert_ne(StatusEffect.StatAxis.SPD, StatusEffect.StatAxis.HP)
+
+
+func test_apply_effect_adds_to_active_effects() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	assert_eq(c.active_effects.size(), 1)
+
+
+func test_apply_effect_reapply_refreshes_duration_not_stacks() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var e1 := StatusEffect.new()
+	e1.effect_name = "hold_the_line"
+	e1.stat = StatusEffect.StatAxis.DEF
+	e1.modifier = 8
+	e1.duration = 1  # nearly expired
+	c.apply_effect(e1)
+	var e2 := StatusEffect.new()
+	e2.effect_name = "hold_the_line"
+	e2.stat = StatusEffect.StatAxis.DEF
+	e2.modifier = 8
+	e2.duration = 2  # fresh application
+	c.apply_effect(e2)
+	assert_eq(c.active_effects.size(), 1, "reapply must not stack a second instance")
+	assert_eq(c.active_effects[0].duration, 2, "reapply must refresh duration to new value")
+
+
+func test_reset_runtime_state_clears_active_effects() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.duration = 2
+	c.apply_effect(effect)
+	c.reset_runtime_state()
+	assert_eq(c.active_effects.size(), 0, "reset_runtime_state must clear active effects")
+
+
+func test_tick_effects_decrements_duration() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 3
+	c.apply_effect(effect)
+	c.tick_effects()
+	assert_eq(c.active_effects[0].duration, 2, "duration must decrement by 1 per tick")
+
+
+func test_tick_effects_removes_expired_effect() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 5
+	effect.duration = 1
+	c.apply_effect(effect)
+	c.tick_effects()
+	assert_eq(c.active_effects.size(), 0, "expired effect must be removed after tick")
+
+
+func test_tick_effects_only_removes_expired_leaves_others() -> void:
+	var c := Combatant.new()
+	c.reset_runtime_state()
+	var short := StatusEffect.new()
+	short.effect_name = "short"
+	short.stat = StatusEffect.StatAxis.DEF
+	short.modifier = 1
+	short.duration = 1
+	var long_eff := StatusEffect.new()
+	long_eff.effect_name = "long"
+	long_eff.stat = StatusEffect.StatAxis.STR
+	long_eff.modifier = 2
+	long_eff.duration = 3
+	c.apply_effect(short)
+	c.apply_effect(long_eff)
+	c.tick_effects()
+	assert_eq(c.active_effects.size(), 1, "only expired effects must be removed")
+	assert_eq(c.active_effects[0].effect_name, "long")
+
+
+func test_get_effective_stat_no_effects_returns_base() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 10)
+
+
+func test_get_effective_stat_with_buff() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 18)
+
+
+func test_get_effective_stat_with_debuff() -> void:
+	var c := Combatant.new()
+	c.def_stat = 10
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -6
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 4)
+
+
+func test_get_effective_stat_clamps_at_zero() -> void:
+	var c := Combatant.new()
+	c.def_stat = 5
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -20
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 0, "effective stat must clamp at 0")
+
+
+func test_take_damage_clears_mark_target() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "mark_target"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -6
+	effect.duration = 99
+	c.apply_effect(effect)
+	assert_eq(c.active_effects.size(), 1)
+	c.take_damage(10)
+	assert_eq(c.active_effects.size(), 0, "mark_target must be cleared on first hit")
+
+
+func test_take_damage_does_not_clear_other_effects() -> void:
+	var c := Combatant.new()
+	c.max_hp = 100
+	c.reset_runtime_state()
+	var effect := StatusEffect.new()
+	effect.effect_name = "hold_the_line"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = 8
+	effect.duration = 2
+	c.apply_effect(effect)
+	c.take_damage(10)
+	assert_eq(c.active_effects.size(), 1, "take_damage must not clear non-mark_target effects")
+
+
+func test_calculate_damage_uses_effective_stats() -> void:
+	# DEF buff on target reduces damage
+	var attacker := Combatant.new()
+	attacker.str_stat = 40
+	var target := Combatant.new()
+	target.def_stat = 10
+	# With buff: effective DEF = 30, so damage = floor((40-30)*[0.9,1.1]) = [9,11]
+	var buff := StatusEffect.new()
+	buff.effect_name = "hold_the_line"
+	buff.stat = StatusEffect.StatAxis.DEF
+	buff.modifier = 20
+	buff.duration = 2
+	target.apply_effect(buff)
+	for _i in range(100):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 9, "buffed DEF must reduce incoming damage (min)")
+		assert_lte(dmg, 11, "buffed DEF must reduce incoming damage (max)")
+
+
+func test_calculate_damage_mark_target_increases_damage() -> void:
+	# DEF debuff on target increases damage
+	var attacker := Combatant.new()
+	attacker.str_stat = 40
+	var target := Combatant.new()
+	target.def_stat = 10
+	# With debuff: effective DEF = 4, so damage = floor((40-4)*[0.9,1.1]) = [32,39]
+	var debuff := StatusEffect.new()
+	debuff.effect_name = "mark_target"
+	debuff.stat = StatusEffect.StatAxis.DEF
+	debuff.modifier = -6
+	debuff.duration = 99
+	target.apply_effect(debuff)
+	for _i in range(100):
+		var dmg := Combatant.calculate_damage(attacker, target)
+		assert_gte(dmg, 32, "marked DEF must increase incoming damage (min)")
+		assert_lte(dmg, 40, "marked DEF must increase incoming damage (max)")
+
+
+func test_territory_enforcer_loads_with_correct_stats() -> void:
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres")
+	enforcer.reset_runtime_state()
+	assert_eq(enforcer.character_name, "Territory Enforcer")
+	assert_false(enforcer.is_player_controlled)
+	assert_eq(enforcer.max_hp, 180)
+	assert_eq(enforcer.str_stat, 55)
+	assert_eq(enforcer.def_stat, 10)
+	assert_eq(enforcer.spd_stat, 20)
+	assert_eq(enforcer.current_hp, 180)
+
+
+func test_block_captain_loads_with_correct_stats() -> void:
+	var captain: Combatant = load("res://characters/enemies/block_captain.tres")
+	captain.reset_runtime_state()
+	assert_eq(captain.character_name, "Block Captain")
+	assert_false(captain.is_player_controlled)
+	assert_eq(captain.max_hp, 300)
+	assert_eq(captain.str_stat, 35)
+	assert_eq(captain.def_stat, 45)
+	assert_eq(captain.spd_stat, 15)
+	assert_eq(captain.current_hp, 300)
