@@ -480,3 +480,20 @@ func test_block_captain_loads_with_correct_stats() -> void:
 	assert_eq(captain.def_stat, 45)
 	assert_eq(captain.spd_stat, 15)
 	assert_eq(captain.current_hp, 300)
+
+
+func test_combatant_ai_state_defaults_empty() -> void:
+	var c := Combatant.new()
+	assert_eq(c.ai_state, {}, "ai_state must be empty dict by default")
+
+
+func test_reset_runtime_state_clears_ai_state() -> void:
+	var c := Combatant.new()
+	c.ai_state["foo"] = true
+	c.reset_runtime_state()
+	assert_eq(c.ai_state, {}, "reset_runtime_state must clear ai_state")
+
+
+func test_combatant_ai_property_defaults_null() -> void:
+	var c := Combatant.new()
+	assert_null(c.ai, "ai must default to null")

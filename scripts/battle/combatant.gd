@@ -20,6 +20,9 @@ enum SigilType { NONE, BUREAU, JAILBROKEN }
 # Sigil
 @export var sigil_type: SigilType = SigilType.NONE
 
+# AI
+@export var ai: EnemyAI = null
+
 # Runtime state
 var current_hp: int
 var current_pp: int
@@ -27,6 +30,7 @@ var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
 var active_effects: Array[StatusEffect] = []
+var ai_state: Dictionary = {}
 
 const ATB_MAX: float = 100.0
 const LIMIT_MAX: float = 100.0
@@ -48,6 +52,7 @@ func reset_runtime_state() -> void:
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
 	active_effects = []
+	ai_state = {}
 
 
 func apply_effect(effect: StatusEffect) -> void:
