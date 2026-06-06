@@ -86,3 +86,41 @@ func test_shape_resizes_from_meta_in_ready() -> void:
 	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
 	var rect: RectangleShape2D = shape_node.shape as RectangleShape2D
 	assert_eq(rect.size, Vector2(224, 128))
+
+
+func test_required_flag_blocks_zone_when_flag_absent() -> void:
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_false(_zone._fired)
+
+
+func test_required_flag_allows_zone_when_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_required_flag_empty_allows_zone_unconditionally() -> void:
+	_zone.required_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_forbidden_flag_blocks_zone_when_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.forbidden_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_false(_zone._fired)
+
+
+func test_forbidden_flag_allows_zone_when_flag_absent() -> void:
+	_zone.forbidden_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_forbidden_flag_empty_allows_zone_unconditionally() -> void:
+	_zone.forbidden_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
