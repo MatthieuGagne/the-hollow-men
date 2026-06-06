@@ -99,6 +99,12 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(atb_bar)
 
+	var effects_label := Label.new()
+	effects_label.name = "EffectsLabel"
+	effects_label.text = ""
+	effects_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(effects_label)
+
 	return row
 
 
@@ -173,9 +179,12 @@ func _make_enemy_panel(combatant: Combatant) -> HBoxContainer:
 
 func _on_combatant_updated(combatant: Combatant) -> void:
 	var i := _party.find(combatant)
-	if i < 0 or i >= _panels.size():
+	if i >= 0 and i < _panels.size():
+		_update_panel(_panels[i], combatant)
 		return
-	_update_panel(_panels[i], combatant)
+	var j := _enemies.find(combatant)
+	if j >= 0 and j < _enemy_panels.size():
+		_update_enemy_panel(_enemy_panels[j], combatant)
 
 
 func _update_panel(panel: Control, combatant: Combatant) -> void:
@@ -203,6 +212,23 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 		atb_bar.value = target_atb
 	atb_bar.modulate = COLOR_ATB
 	panel.modulate.a = 0.4 if combatant.is_dead() else 1.0
+	if panel.has_node("EffectsLabel"):
+		panel.get_node("EffectsLabel").text = _format_effects(combatant)
+
+
+func _format_effects(combatant: Combatant) -> String:
+	var parts: Array = []
+	for effect in combatant.active_effects:
+		var axis_name: String = StatusEffect.StatAxis.keys()[effect.stat]
+		var sign: String = "+" if effect.modifier >= 0 else ""
+		parts.append("%s %s%s%d (%dt)" % [effect.effect_name, axis_name, sign, effect.modifier, effect.duration])
+	return "\n".join(parts)
+
+
+func _update_enemy_panel(panel: Control, combatant: Combatant) -> void:
+	var name_label: Label = panel.get_node("NameLabel")
+	name_label.modulate.a = 0.4 if combatant.is_dead() else 1.0
+	panel.get_node("EffectsLabel").text = _format_effects(combatant)
 
 
 func _on_player_turn_started(combatant: Combatant) -> void:
