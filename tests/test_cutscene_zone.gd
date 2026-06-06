@@ -7,6 +7,8 @@ var _player: CharacterBody2D
 func before_each() -> void:
 	GameState._flags.clear()
 	DialogueManager._dialogue_box.dismiss()
+	PartyManager.remove_temporary_members()
+	BattleParams.return_scene = ""
 	_zone = Area2D.new()
 	_zone.set_script(load("res://scripts/world/cutscene_zone.gd"))
 	_player = CharacterBody2D.new()
@@ -124,3 +126,35 @@ func test_forbidden_flag_empty_allows_zone_unconditionally() -> void:
 	_zone.forbidden_flag = ""
 	_zone._on_body_entered(_player)
 	assert_true(_zone._fired)
+
+
+func test_pre_battle_guests_empty_does_not_add_temporary_members() -> void:
+	_zone.pre_battle_guests = ""
+	_zone._on_dialogue_closed()
+	assert_eq(PartyManager._temporary_members.size(), 0)
+
+
+func test_pre_battle_guests_adds_iris_to_party() -> void:
+	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone._on_dialogue_closed()
+	assert_true(PartyManager.has_member("Iris"))
+
+
+func test_pre_battle_guests_does_not_modify_permanent_members() -> void:
+	var before_count: int = PartyManager._permanent_members.size()
+	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone._on_dialogue_closed()
+	assert_eq(PartyManager._permanent_members.size(), before_count)
+
+
+func test_battle_return_scene_sets_battle_params() -> void:
+	_zone.battle_return_scene = "res://scenes/world/SprawlSafehouse.tscn"
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.return_scene, "res://scenes/world/SprawlSafehouse.tscn")
+
+
+func test_battle_return_scene_empty_does_not_overwrite_battle_params() -> void:
+	BattleParams.return_scene = "res://scenes/world/SomeOtherScene.tscn"
+	_zone.battle_return_scene = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.return_scene, "res://scenes/world/SomeOtherScene.tscn")

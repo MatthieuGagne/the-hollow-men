@@ -5,15 +5,19 @@ extends Area2D
 @export var next_scene: String = ""
 @export var required_flag: String = ""
 @export var forbidden_flag: String = ""
+@export var pre_battle_guests: String = ""
+@export var battle_return_scene: String = ""
 
 var _fired: bool = false
 
 
 func _ready() -> void:
-	dialogue_node  = get_meta("dialogue_node",  dialogue_node)
-	next_scene     = get_meta("next_scene",     next_scene)
-	required_flag  = get_meta("required_flag",  required_flag)
-	forbidden_flag = get_meta("forbidden_flag", forbidden_flag)
+	dialogue_node       = get_meta("dialogue_node",       dialogue_node)
+	next_scene          = get_meta("next_scene",          next_scene)
+	required_flag       = get_meta("required_flag",       required_flag)
+	forbidden_flag      = get_meta("forbidden_flag",      forbidden_flag)
+	pre_battle_guests   = get_meta("pre_battle_guests",   pre_battle_guests)
+	battle_return_scene = get_meta("battle_return_scene", battle_return_scene)
 	var w: float = get_meta("width", 0.0)
 	var h: float = get_meta("height", 0.0)
 	if w > 0.0 and h > 0.0:
@@ -43,6 +47,13 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_dialogue_closed() -> void:
+	if pre_battle_guests != "":
+		for path: String in pre_battle_guests.split(","):
+			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
+			c.reset_runtime_state()
+			PartyManager.add_temporary(c)
+	if battle_return_scene != "":
+		BattleParams.return_scene = battle_return_scene
 	if next_scene.is_empty():
 		return
 	SceneManager.change_scene(next_scene)
