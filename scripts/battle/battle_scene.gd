@@ -3,12 +3,14 @@ class_name BattleScene
 
 signal battle_ended(victory: bool)
 signal combatant_updated(combatant: Combatant)
+signal enemy_added(combatant: Combatant)
+signal enemy_target_changed(combatant: Combatant)
 signal player_turn_started(combatant: Combatant)
 signal player_turn_ended()
 signal party_target_changed(combatant: Combatant)
 signal pause_toggled(paused: bool)
 
-enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, PAUSED }
+enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, SELECTING_ENEMY, PAUSED }
 
 const SHADE_RES     := "res://characters/enemies/shade.tres"
 const SHADE_TEX     := "res://assets/sprites/enemies/shade.png"
@@ -59,6 +61,8 @@ var enemies: Array[Combatant] = []
 var _state: BattleState = BattleState.TICKING
 var _active: Combatant = null
 var _party_target_idx: int = 0
+var _enemy_target_idx: int = 0
+var _pending_action: String = ""
 var _pre_pause_state: BattleState = BattleState.TICKING
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
@@ -126,6 +130,7 @@ func add_enemy(combatant: Combatant) -> void:
 	var idx := enemies.size() - 1
 	sprite.position = Vector2(0, idx * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX))
 	$EnemyContainer.add_child(sprite)
+	enemy_added.emit(combatant)
 
 
 func _process(delta: float) -> void:
@@ -135,7 +140,8 @@ func _process(delta: float) -> void:
 	if _state == BattleState.TICKING:
 		_tick_atb(delta)
 		_check_win_loss()
-	elif _state == BattleState.AWAITING_INPUT or _state == BattleState.SELECTING_ALLY:
+	elif _state == BattleState.AWAITING_INPUT or _state == BattleState.SELECTING_ALLY \
+			or _state == BattleState.SELECTING_ENEMY:
 		for combatant in enemies:
 			combatant.tick_atb(delta)
 			combatant_updated.emit(combatant)
@@ -167,6 +173,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			confirm_party_target(party[_party_target_idx])
 			get_viewport().set_input_as_handled()
 		return
+	if _state == BattleState.SELECTING_ENEMY:
+		if event.is_action_pressed("move_up"):
+			_navigate_enemy_target(-1)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_down"):
+			_navigate_enemy_target(1)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("interact"):
+			confirm_enemy_target()
+			get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("skip_turn"):
 		skip_turn()
 		get_viewport().set_input_as_handled()
@@ -177,7 +194,7 @@ func _toggle_pause() -> void:
 		_state = _pre_pause_state
 		pause_toggled.emit(false)
 		_paused_label.hide()
-	elif _state in [BattleState.TICKING, BattleState.AWAITING_INPUT, BattleState.SELECTING_ALLY]:
+	elif _state in [BattleState.TICKING, BattleState.AWAITING_INPUT, BattleState.SELECTING_ALLY, BattleState.SELECTING_ENEMY]:
 		_pre_pause_state = _state
 		_state = BattleState.PAUSED
 		pause_toggled.emit(true)
@@ -327,11 +344,18 @@ func execute_action(action_name: String) -> void:
 		_begin_party_targeting()
 		return
 
-	# Resolve damage and PP cost synchronously before any await
+	# Multiple living enemies — enter selection UI
+	var living_enemies: Array[Combatant] = enemies.filter(
+		func(e: Combatant) -> bool: return e.is_alive())
+	if living_enemies.size() > 1:
+		_begin_enemy_targeting(action_name)
+		return
+
+	# Resolve damage and PP cost synchronously before any await (dead-enemy safe)
 	var damage: int = 0
 	var target: Combatant = null
-	if not enemies.is_empty():
-		target = enemies[0]
+	if not living_enemies.is_empty():
+		target = living_enemies[0]
 		match action_name:
 			"attack":
 				damage = Combatant.calculate_damage(_active, target)
@@ -345,7 +369,8 @@ func execute_action(action_name: String) -> void:
 	if damage > 0 and target != null:
 		var attacker_idx: int = party.find(_active)
 		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
-		var target_sprite: Sprite2D = $EnemyContainer.get_child(0)
+		var enemy_idx: int = enemies.find(target)
+		var target_sprite: Sprite2D = $EnemyContainer.get_child(enemy_idx)
 		_state = BattleState.ANIMATING
 
 		# Lunge toward enemy (negative x = left toward EnemyContainer)
@@ -358,7 +383,7 @@ func execute_action(action_name: String) -> void:
 		# Impact peak: apply damage, spawn numbers, start flash
 		target.take_damage(damage)
 		combatant_updated.emit(target)
-		_spawn_damage_number(damage, $EnemyContainer)
+		_spawn_damage_number(damage, target_sprite)
 		if action_name == "ability" and _active != null and _active.ability != null:
 			_spawn_damage_number(-_active.ability.pp_cost,
 				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
@@ -415,6 +440,82 @@ func confirm_party_target(target: Combatant) -> void:
 	if attacker_idx >= 0:
 		_spawn_damage_number(-_active.ability.pp_cost,
 			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+	_end_turn()
+	_check_win_loss()
+
+
+func _begin_enemy_targeting(action_name: String) -> void:
+	_pending_action = action_name
+	var living: Array[Combatant] = enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
+	if living.is_empty():
+		_end_turn()
+		return
+	_enemy_target_idx = enemies.find(living[0])
+	_state = BattleState.SELECTING_ENEMY
+	enemy_target_changed.emit(enemies[_enemy_target_idx])
+
+
+func _navigate_enemy_target(delta: int) -> void:
+	var living: Array[Combatant] = enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
+	if living.is_empty():
+		return
+	var living_idx: int = living.find(enemies[_enemy_target_idx])
+	if living_idx < 0:
+		living_idx = 0
+	living_idx = clampi(living_idx + delta, 0, living.size() - 1)
+	_enemy_target_idx = enemies.find(living[living_idx])
+	enemy_target_changed.emit(enemies[_enemy_target_idx])
+
+
+func confirm_enemy_target() -> void:
+	if _state != BattleState.SELECTING_ENEMY:
+		return
+	var target: Combatant = enemies[_enemy_target_idx]
+	if not target.is_alive():
+		return
+
+	enemy_target_changed.emit(null)
+
+	# Resolve damage and PP cost synchronously before any await
+	var damage: int = 0
+	match _pending_action:
+		"attack":
+			damage = Combatant.calculate_damage(_active, target)
+		"ability":
+			damage = _resolve_ability(_active, target)
+
+	if _pending_action == "ability" and _active != null and _active.ability != null:
+		combatant_updated.emit(_active)
+
+	if damage > 0:
+		var attacker_idx: int = party.find(_active)
+		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
+		var target_sprite: Sprite2D = $EnemyContainer.get_child(_enemy_target_idx)
+		_state = BattleState.ANIMATING
+
+		var origin_x: float = attacker_sprite.position.x
+		var lunge_tween := create_tween()
+		lunge_tween.tween_property(attacker_sprite, "position:x",
+			origin_x - LUNGE_DISTANCE, LUNGE_DURATION)
+		await lunge_tween.finished
+
+		target.take_damage(damage)
+		combatant_updated.emit(target)
+		_spawn_damage_number(damage, target_sprite)
+		if _pending_action == "ability" and _active != null and _active.ability != null:
+			_spawn_damage_number(-_active.ability.pp_cost,
+				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+		_start_enemy_flash(target_sprite)
+
+		var return_tween := create_tween()
+		return_tween.tween_property(attacker_sprite, "position:x",
+			origin_x, LUNGE_RETURN_DUR)
+		await return_tween.finished
+
+		await get_tree().create_timer(FLASH_HOLD).timeout
+	else:
+		_state = BattleState.TICKING
+
 	_end_turn()
 	_check_win_loss()
 

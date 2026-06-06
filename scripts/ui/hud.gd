@@ -24,6 +24,8 @@ var _enemy_panels: Array[Control] = []
 func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> void:
 	_party = party
 	battle.combatant_updated.connect(_on_combatant_updated)
+	battle.enemy_added.connect(_on_enemy_added)
+	battle.enemy_target_changed.connect(_on_enemy_target_changed)
 	battle.player_turn_started.connect(_on_player_turn_started)
 	battle.player_turn_ended.connect(_on_player_turn_ended)
 	battle.party_target_changed.connect(_on_party_target_changed)
@@ -161,6 +163,14 @@ func _make_enemy_panel(combatant: Combatant) -> HBoxContainer:
 	row.add_theme_constant_override("separation", 2)
 	row.custom_minimum_size = Vector2(0, 6)
 
+	var cursor_label := Label.new()
+	cursor_label.name = "CursorLabel"
+	cursor_label.text = "▶"
+	cursor_label.custom_minimum_size = Vector2(CURSOR_MIN_WIDTH, 0)
+	cursor_label.add_theme_font_size_override("font_size", 6)
+	cursor_label.modulate.a = 0.0
+	row.add_child(cursor_label)
+
 	var name_label := Label.new()
 	name_label.name = "NameLabel"
 	name_label.text = combatant.character_name.to_upper()
@@ -175,6 +185,20 @@ func _make_enemy_panel(combatant: Combatant) -> HBoxContainer:
 	row.add_child(effects_label)
 
 	return row
+
+
+func _on_enemy_added(combatant: Combatant) -> void:
+	var panel := _make_enemy_panel(combatant)
+	$EnemyWindow/EnemyRows.add_child(panel)
+	_enemy_panels.append(panel)
+
+
+func _on_enemy_target_changed(combatant: Combatant) -> void:
+	for i in range(_enemy_panels.size()):
+		if not _enemy_panels[i].has_node("CursorLabel"):
+			continue
+		_enemy_panels[i].get_node("CursorLabel").modulate.a = \
+			1.0 if _enemies[i] == combatant else 0.0
 
 
 func _on_combatant_updated(combatant: Combatant) -> void:
