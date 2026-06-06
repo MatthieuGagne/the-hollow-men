@@ -497,3 +497,18 @@ func test_reset_runtime_state_clears_ai_state() -> void:
 func test_combatant_ai_property_defaults_null() -> void:
 	var c := Combatant.new()
 	assert_null(c.ai, "ai must default to null")
+
+
+func test_shade_has_ai() -> void:
+	var shade: Combatant = load("res://characters/enemies/shade.tres")
+	assert_not_null(shade.ai, "Shade must have an ai resource")
+
+
+func test_territory_enforcer_has_ai() -> void:
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres")
+	assert_not_null(enforcer.ai, "Territory Enforcer must have an ai resource")
+
+
+func test_block_captain_has_ai() -> void:
+	var captain: Combatant = load("res://characters/enemies/block_captain.tres")
+	assert_not_null(captain.ai, "Block Captain must have an ai resource")
