@@ -17,6 +17,8 @@ const ATB_DRAIN_THRESHOLD: float = 10.0
 var _party: Array[Combatant] = []
 var _panels: Array[Control] = []
 var _draining: Dictionary = {}
+var _enemies: Array[Combatant] = []
+var _enemy_panels: Array[Control] = []
 
 
 func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> void:
@@ -25,13 +27,17 @@ func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> 
 	battle.player_turn_started.connect(_on_player_turn_started)
 	battle.player_turn_ended.connect(_on_player_turn_ended)
 	battle.party_target_changed.connect(_on_party_target_changed)
-	_build_enemy_label(enemies)
+	_build_enemy_rows(enemies)
 	_build_panels()
 
 
-func _build_enemy_label(enemies: Array[Combatant]) -> void:
-	var label: Label = $EnemyWindow/EnemyLabel
-	label.text = "\n".join(enemies.map(func(e): return e.character_name))
+func _build_enemy_rows(enemies_list: Array[Combatant]) -> void:
+	_enemies = enemies_list
+	var container: VBoxContainer = $EnemyWindow/EnemyRows
+	for combatant in _enemies:
+		var panel := _make_enemy_panel(combatant)
+		container.add_child(panel)
+		_enemy_panels.append(panel)
 
 
 func _build_panels() -> void:
@@ -139,6 +145,28 @@ func _make_placeholder_panel() -> HBoxContainer:
 	atb_bar.custom_minimum_size = Vector2(ATB_MIN_WIDTH, 4)
 	atb_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(atb_bar)
+
+	return row
+
+
+func _make_enemy_panel(combatant: Combatant) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = combatant.character_name.replace(" ", "") + "Panel"
+	row.add_theme_constant_override("separation", 2)
+	row.custom_minimum_size = Vector2(0, 6)
+
+	var name_label := Label.new()
+	name_label.name = "NameLabel"
+	name_label.text = combatant.character_name.to_upper()
+	name_label.custom_minimum_size = Vector2(NAME_MIN_WIDTH, 0)
+	name_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(name_label)
+
+	var effects_label := Label.new()
+	effects_label.name = "EffectsLabel"
+	effects_label.text = ""
+	effects_label.add_theme_font_size_override("font_size", 6)
+	row.add_child(effects_label)
 
 	return row
 
