@@ -898,3 +898,8 @@ func test_enemy_attack_without_interrupting_ticks_effects() -> void:
 	_scene._enemy_attack_without_interrupting(shade)
 	assert_eq(shade.active_effects[0].duration, 1,
 		"enemy effect must tick after _enemy_attack_without_interrupting")
+
+
+func test_shade_ai_delegates_to_resource() -> void:
+	var shade: Combatant = _scene.enemies[0]
+	assert_not_null(shade.ai, "Shade must have an ai resource set in its .tres")
