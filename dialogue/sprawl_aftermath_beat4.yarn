@@ -1,0 +1,7 @@
+title: sprawl_aftermath_beat4
+---
+<<show_narration "Casimir was on the ground. Enforcer round, not ours. The distinction mattered to him, probably. It mattered to me.">>
+<<show_narration "Iris was gone. Second time. I stopped being surprised and started keeping count.">>
+<<show_narration "The sigil was in my hand. Cold. I had what Holloway wanted.">>
+<<set $case_1_beat4_complete = true>>
+===
