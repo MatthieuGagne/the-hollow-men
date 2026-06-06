@@ -903,3 +903,63 @@ func test_enemy_attack_without_interrupting_ticks_effects() -> void:
 func test_shade_ai_delegates_to_resource() -> void:
 	var shade: Combatant = _scene.enemies[0]
 	assert_not_null(shade.ai, "Shade must have an ai resource set in its .tres")
+
+
+func _make_security_captain_scene() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	var reid: Combatant = load("res://characters/reid.tres").duplicate()
+	reid.reset_runtime_state()
+	PartyManager._permanent_members.append(reid)
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	var captain: Combatant = load("res://characters/enemies/security_captain.tres").duplicate()
+	captain.reset_runtime_state()
+	s.enemies.clear()
+	s.enemies.append(captain)
+	return s
+
+
+func test_security_captain_authorised_force_applies_def_debuff() -> void:
+	var s := _make_security_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	var def_before := reid.get_effective_stat(StatusEffect.StatAxis.DEF)
+	s._resolve_enemy_action(captain)
+	assert_lt(reid.get_effective_stat(StatusEffect.StatAxis.DEF), def_before,
+		"Authorised Force must apply DEF debuff to a party member on first action")
+
+
+func test_security_captain_uses_override_on_subsequent_turns() -> void:
+	var s := _make_security_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	s._resolve_enemy_action(captain)
+	var hp_before := reid.current_hp
+	s._resolve_enemy_action(captain)
+	assert_lt(reid.current_hp, hp_before,
+		"Security Captain must deal damage (Override) on turn 2+")
+
+
+func test_security_captain_authorised_force_not_reapplied() -> void:
+	var s := _make_security_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	s._resolve_enemy_action(captain)
+	var effects_after_first := reid.active_effects.size()
+	s._resolve_enemy_action(captain)
+	assert_eq(reid.active_effects.size(), effects_after_first,
+		"Authorised Force must not reapply on second or later actions")
+
+
+func test_authorised_force_debuff_expires_after_2_turns() -> void:
+	var s := _make_security_captain_scene()
+	var captain: Combatant = s.enemies[0]
+	var reid: Combatant = s.party[0]
+	s._resolve_enemy_action(captain)
+	assert_lt(reid.get_effective_stat(StatusEffect.StatAxis.DEF), reid.def_stat,
+		"DEF must be debuffed after Authorised Force")
+	reid.tick_effects()
+	reid.tick_effects()
+	assert_eq(reid.get_effective_stat(StatusEffect.StatAxis.DEF), reid.def_stat,
+		"DEF must return to base after 2 tick_effects calls")
