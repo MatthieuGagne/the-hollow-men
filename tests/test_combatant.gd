@@ -512,3 +512,27 @@ func test_territory_enforcer_has_ai() -> void:
 func test_block_captain_has_ai() -> void:
 	var captain: Combatant = load("res://characters/enemies/block_captain.tres")
 	assert_not_null(captain.ai, "Block Captain must have an ai resource")
+
+
+func test_private_security_guard_loads_with_correct_stats() -> void:
+	var guard: Combatant = load("res://characters/enemies/private_security_guard.tres")
+	guard.reset_runtime_state()
+	assert_eq(guard.character_name, "Private Security Guard")
+	assert_false(guard.is_player_controlled)
+	assert_eq(guard.max_hp, 150)
+	assert_eq(guard.str_stat, 40)
+	assert_eq(guard.def_stat, 28)
+	assert_eq(guard.spd_stat, 32)
+	assert_not_null(guard.ai, "Guard must have an ai resource")
+
+
+func test_security_captain_loads_with_correct_stats() -> void:
+	var captain: Combatant = load("res://characters/enemies/security_captain.tres")
+	captain.reset_runtime_state()
+	assert_eq(captain.character_name, "Security Captain")
+	assert_false(captain.is_player_controlled)
+	assert_eq(captain.max_hp, 220)
+	assert_eq(captain.str_stat, 38)
+	assert_eq(captain.def_stat, 38)
+	assert_eq(captain.spd_stat, 14)
+	assert_not_null(captain.ai, "Security Captain must have an ai resource")

@@ -16,9 +16,11 @@ const SHADE_RES     := "res://characters/enemies/shade.tres"
 const SHADE_TEX     := "res://assets/sprites/enemies/shade.png"
 
 const ENEMY_SPRITE_DATA: Dictionary = {
-	"Shade":               {"texture": "res://assets/sprites/enemies/shade.png"},
-	"Territory Enforcer":  {"texture": "res://assets/sprites/enemies/shade.png"},
-	"Block Captain":       {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Shade":                  {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Territory Enforcer":     {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Block Captain":          {"texture": "res://assets/sprites/enemies/shade.png"},
+	"Private Security Guard": {"texture": "res://assets/sprites/enemies/private_security_guard.png"},
+	"Security Captain":       {"texture": "res://assets/sprites/enemies/security_captain.png"},
 }
 const SPRITE_FRAME_HEIGHT: int = 24
 const SPRITE_GAP_PX: int       = 1
