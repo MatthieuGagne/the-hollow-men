@@ -3,19 +3,19 @@
 [ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
 [ext_resource type="Script" path="res://scripts/battle/enemy_ai.gd" id="2_enemy_ai"]
 
-[sub_resource type="Resource" id="ai_shade"]
+[sub_resource type="Resource" id="ai_guard"]
 script = ExtResource("2_enemy_ai")
 
 [resource]
 script = ExtResource("1_combatant")
-character_name = "Shade"
+character_name = "Private Security Guard"
 is_player_controlled = false
-max_hp = 200
+max_hp = 150
 max_pp = 0
-str_stat = 45
-def_stat = 15
-psy_stat = 10
-res_stat = 10
-spd_stat = 25
+str_stat = 40
+def_stat = 28
+psy_stat = 5
+res_stat = 12
+spd_stat = 32
 sigil_type = 0
-ai = SubResource("ai_shade")
+ai = SubResource("ai_guard")

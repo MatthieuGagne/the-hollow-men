@@ -1,6 +1,10 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/ai/block_captain_ai.gd" id="2_captain_ai"]
+
+[sub_resource type="Resource" id="ai_captain"]
+script = ExtResource("2_captain_ai")
 
 [resource]
 script = ExtResource("1_combatant")
@@ -14,3 +18,4 @@ psy_stat = 5
 res_stat = 10
 spd_stat = 15
 sigil_type = 0
+ai = SubResource("ai_captain")

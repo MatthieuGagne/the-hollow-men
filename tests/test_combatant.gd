@@ -480,3 +480,59 @@ func test_block_captain_loads_with_correct_stats() -> void:
 	assert_eq(captain.def_stat, 45)
 	assert_eq(captain.spd_stat, 15)
 	assert_eq(captain.current_hp, 300)
+
+
+func test_combatant_ai_state_defaults_empty() -> void:
+	var c := Combatant.new()
+	assert_eq(c.ai_state, {}, "ai_state must be empty dict by default")
+
+
+func test_reset_runtime_state_clears_ai_state() -> void:
+	var c := Combatant.new()
+	c.ai_state["foo"] = true
+	c.reset_runtime_state()
+	assert_eq(c.ai_state, {}, "reset_runtime_state must clear ai_state")
+
+
+func test_combatant_ai_property_defaults_null() -> void:
+	var c := Combatant.new()
+	assert_null(c.ai, "ai must default to null")
+
+
+func test_shade_has_ai() -> void:
+	var shade: Combatant = load("res://characters/enemies/shade.tres")
+	assert_not_null(shade.ai, "Shade must have an ai resource")
+
+
+func test_territory_enforcer_has_ai() -> void:
+	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres")
+	assert_not_null(enforcer.ai, "Territory Enforcer must have an ai resource")
+
+
+func test_block_captain_has_ai() -> void:
+	var captain: Combatant = load("res://characters/enemies/block_captain.tres")
+	assert_not_null(captain.ai, "Block Captain must have an ai resource")
+
+
+func test_private_security_guard_loads_with_correct_stats() -> void:
+	var guard: Combatant = load("res://characters/enemies/private_security_guard.tres")
+	guard.reset_runtime_state()
+	assert_eq(guard.character_name, "Private Security Guard")
+	assert_false(guard.is_player_controlled)
+	assert_eq(guard.max_hp, 150)
+	assert_eq(guard.str_stat, 40)
+	assert_eq(guard.def_stat, 28)
+	assert_eq(guard.spd_stat, 32)
+	assert_not_null(guard.ai, "Guard must have an ai resource")
+
+
+func test_security_captain_loads_with_correct_stats() -> void:
+	var captain: Combatant = load("res://characters/enemies/security_captain.tres")
+	captain.reset_runtime_state()
+	assert_eq(captain.character_name, "Security Captain")
+	assert_false(captain.is_player_controlled)
+	assert_eq(captain.max_hp, 220)
+	assert_eq(captain.str_stat, 38)
+	assert_eq(captain.def_stat, 38)
+	assert_eq(captain.spd_stat, 14)
+	assert_not_null(captain.ai, "Security Captain must have an ai resource")
