@@ -72,6 +72,7 @@
     <property name="forbidden_flag" value="case_1_beat3_complete"/>
     <property name="height" type="float" value="128"/>
     <property name="next_scene" value="res://scenes/battle/BattleScene.tscn"/>
+    <property name="pre_battle_enemies" value="res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"/>
     <property name="pre_battle_guests" value="res://characters/iris.tres"/>
     <property name="res_path" type="file" value="res://scenes/world/CutsceneZone.tscn"/>
     <property name="width" type="float" value="224"/>
