@@ -44,6 +44,13 @@ func show_narration(text: String) -> void:
 	_show_line_internal(text)
 
 
+func show_narration_blocking(text: String) -> void:
+	_is_narration = true
+	_yarn_mode = true
+	_set_speaker("")
+	_show_line_internal(text)
+
+
 func show_line(speaker: String, text: String) -> void:
 	_is_narration = false
 	_yarn_mode = true
