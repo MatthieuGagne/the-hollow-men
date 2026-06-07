@@ -33,8 +33,14 @@ func _ready() -> void:
 		body_entered.connect(_on_body_entered)
 	# Only gated zones (required_flag set) need this — they fire on scene return,
 	# when the player spawns inside rather than walking in.
+	# Await one physics frame so get_overlapping_bodies() has valid data.
 	if required_flag != "":
-		call_deferred("_check_already_inside")
+		_check_already_inside_after_physics.call_deferred()
+
+
+func _check_already_inside_after_physics() -> void:
+	await get_tree().physics_frame
+	_check_already_inside()
 
 
 func _check_already_inside() -> void:
