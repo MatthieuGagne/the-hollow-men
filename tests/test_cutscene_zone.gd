@@ -9,6 +9,7 @@ func before_each() -> void:
 	DialogueManager._dialogue_box.dismiss()
 	PartyManager.remove_temporary_members()
 	BattleParams.return_scene = ""
+	BattleParams.enemies = ""
 	_zone = Area2D.new()
 	_zone.set_script(load("res://scripts/world/cutscene_zone.gd"))
 	_player = CharacterBody2D.new()
@@ -158,3 +159,22 @@ func test_battle_return_scene_empty_does_not_overwrite_battle_params() -> void:
 	_zone.battle_return_scene = ""
 	_zone._on_dialogue_closed()
 	assert_eq(BattleParams.return_scene, "res://scenes/world/SomeOtherScene.tscn")
+
+
+func test_pre_battle_enemies_empty_does_not_set_battle_params() -> void:
+	_zone.pre_battle_enemies = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "")
+
+
+func test_pre_battle_enemies_sets_battle_params_enemies() -> void:
+	_zone.pre_battle_enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres")
+
+
+func test_pre_battle_enemies_empty_does_not_overwrite_existing_battle_params() -> void:
+	BattleParams.enemies = "res://characters/enemies/shade.tres"
+	_zone.pre_battle_enemies = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "res://characters/enemies/shade.tres")

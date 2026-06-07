@@ -89,9 +89,17 @@ func _ready() -> void:
 
 
 func _spawn_enemies() -> void:
-	var shade: Combatant = load(SHADE_RES).duplicate()
-	shade.reset_runtime_state()
-	add_enemy(shade)
+	if BattleParams.enemies != "":
+		var paths := BattleParams.enemies
+		BattleParams.enemies = ""
+		for path: String in paths.split(","):
+			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
+			c.reset_runtime_state()
+			add_enemy(c)
+	else:
+		var shade: Combatant = load(SHADE_RES).duplicate()
+		shade.reset_runtime_state()
+		add_enemy(shade)
 
 
 func _load_background() -> void:

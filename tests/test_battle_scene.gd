@@ -7,6 +7,7 @@ func before_each() -> void:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
 	BattleParams.return_scene = ""
+	BattleParams.enemies = ""
 	var reid: Combatant = load("res://characters/reid.tres").duplicate()
 	reid.reset_runtime_state()
 	PartyManager._permanent_members.append(reid)
@@ -963,3 +964,27 @@ func test_authorised_force_debuff_expires_after_2_turns() -> void:
 	reid.tick_effects()
 	assert_eq(reid.get_effective_stat(StatusEffect.StatAxis.DEF), reid.def_stat,
 		"DEF must return to base after 2 tick_effects calls")
+
+
+func test_spawn_enemies_defaults_to_one_shade_when_params_empty() -> void:
+	assert_eq(_scene.enemies.size(), 1, "default spawn must produce exactly 1 enemy")
+	assert_eq(_scene.enemies[0].character_name, "Shade",
+		"default enemy must be a Shade when BattleParams.enemies is empty")
+
+
+func test_spawn_enemies_uses_battle_params_enemies_when_set() -> void:
+	BattleParams.enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	assert_eq(scene2.enemies.size(), 2,
+		"must spawn 2 enemies when BattleParams.enemies has 2 paths")
+	assert_eq(scene2.enemies[0].character_name, "Territory Enforcer")
+	assert_eq(scene2.enemies[1].character_name, "Territory Enforcer")
+
+
+func test_spawn_enemies_clears_battle_params_enemies_after_use() -> void:
+	BattleParams.enemies = "res://characters/enemies/territory_enforcer.tres"
+	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(scene2)
+	assert_eq(BattleParams.enemies, "",
+		"BattleParams.enemies must be cleared after _spawn_enemies consumes it")
