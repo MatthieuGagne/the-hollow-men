@@ -475,11 +475,11 @@ func test_block_captain_loads_with_correct_stats() -> void:
 	captain.reset_runtime_state()
 	assert_eq(captain.character_name, "Block Captain")
 	assert_false(captain.is_player_controlled)
-	assert_eq(captain.max_hp, 300)
+	assert_eq(captain.max_hp, 200)
 	assert_eq(captain.str_stat, 35)
-	assert_eq(captain.def_stat, 45)
+	assert_eq(captain.def_stat, 15)
 	assert_eq(captain.spd_stat, 15)
-	assert_eq(captain.current_hp, 300)
+	assert_eq(captain.current_hp, 200)
 
 
 func test_combatant_ai_state_defaults_empty() -> void:
