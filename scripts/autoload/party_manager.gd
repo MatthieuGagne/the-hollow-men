@@ -9,10 +9,9 @@ var _permanent_members: Array[Combatant] = []
 var _temporary_members: Array[Combatant] = []
 
 func _ready() -> void:
-	for res_path in [REID_RES, IRIS_RES, KARIM_RES, MARGOT_RES]:
-		var c: Combatant = (load(res_path) as Combatant).duplicate()
-		c.reset_runtime_state()
-		_permanent_members.append(c)
+	var reid: Combatant = (load(REID_RES) as Combatant).duplicate()
+	reid.reset_runtime_state()
+	_permanent_members.append(reid)
 
 func add_member(combatant: Combatant) -> void:
 	_permanent_members.append(combatant)

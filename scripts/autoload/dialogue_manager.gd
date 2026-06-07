@@ -2,6 +2,7 @@ extends Node
 
 signal dialogue_opened
 signal dialogue_closed
+signal narration_line_advanced
 
 @onready var _dialogue_box: DialogueBox = $CanvasLayer/DialogueBox
 @onready var _yarn_bridge: Node = $CanvasLayer/YarnDialogueBridge
@@ -22,6 +23,12 @@ func show_text(text: String) -> void:
 
 func show_narration(text: String) -> void:
 	_dialogue_box.show_narration(text)
+
+
+func show_narration_blocking(text: String) -> void:
+	_dialogue_box.show_narration_blocking(text)
+	await _dialogue_box.line_advanced
+	narration_line_advanced.emit()
 
 
 func skip_or_dismiss() -> void:

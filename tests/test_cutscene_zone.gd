@@ -7,6 +7,9 @@ var _player: CharacterBody2D
 func before_each() -> void:
 	GameState._flags.clear()
 	DialogueManager._dialogue_box.dismiss()
+	PartyManager.remove_temporary_members()
+	BattleParams.return_scene = ""
+	BattleParams.enemies = ""
 	_zone = Area2D.new()
 	_zone.set_script(load("res://scripts/world/cutscene_zone.gd"))
 	_player = CharacterBody2D.new()
@@ -86,3 +89,119 @@ func test_shape_resizes_from_meta_in_ready() -> void:
 	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
 	var rect: RectangleShape2D = shape_node.shape as RectangleShape2D
 	assert_eq(rect.size, Vector2(224, 128))
+	assert_eq(shape_node.position, Vector2(112, 64), "shape must be offset so top-left aligns with Tiled origin")
+
+
+func test_required_flag_blocks_zone_when_flag_absent() -> void:
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_false(_zone._fired)
+
+
+func test_required_flag_allows_zone_when_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_required_flag_empty_allows_zone_unconditionally() -> void:
+	_zone.required_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_forbidden_flag_blocks_zone_when_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.forbidden_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_false(_zone._fired)
+
+
+func test_forbidden_flag_allows_zone_when_flag_absent() -> void:
+	_zone.forbidden_flag = "case_1_beat3_complete"
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_forbidden_flag_empty_allows_zone_unconditionally() -> void:
+	_zone.forbidden_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_pre_battle_guests_empty_does_not_add_temporary_members() -> void:
+	_zone.pre_battle_guests = ""
+	_zone._on_dialogue_closed()
+	assert_eq(PartyManager._temporary_members.size(), 0)
+
+
+func test_pre_battle_guests_adds_iris_to_party() -> void:
+	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone._on_dialogue_closed()
+	assert_true(PartyManager.has_member("Iris"))
+
+
+func test_pre_battle_guests_does_not_modify_permanent_members() -> void:
+	var before_count: int = PartyManager._permanent_members.size()
+	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone._on_dialogue_closed()
+	assert_eq(PartyManager._permanent_members.size(), before_count)
+
+
+func test_battle_return_scene_sets_battle_params() -> void:
+	_zone.battle_return_scene = "res://scenes/world/SprawlSafehouse.tscn"
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.return_scene, "res://scenes/world/SprawlSafehouse.tscn")
+
+
+func test_battle_return_scene_empty_does_not_overwrite_battle_params() -> void:
+	BattleParams.return_scene = "res://scenes/world/SomeOtherScene.tscn"
+	_zone.battle_return_scene = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.return_scene, "res://scenes/world/SomeOtherScene.tscn")
+
+
+func test_pre_battle_enemies_empty_does_not_set_battle_params() -> void:
+	_zone.pre_battle_enemies = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "")
+
+
+func test_pre_battle_enemies_sets_battle_params_enemies() -> void:
+	_zone.pre_battle_enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres")
+
+
+func test_pre_battle_enemies_empty_does_not_overwrite_existing_battle_params() -> void:
+	BattleParams.enemies = "res://characters/enemies/shade.tres"
+	_zone.pre_battle_enemies = ""
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.enemies, "res://characters/enemies/shade.tres")
+
+
+func test_check_already_inside_does_not_fire_without_overlap() -> void:
+	# No collision shapes → no overlapping bodies → zone must not fire.
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._check_already_inside()
+	assert_false(_zone._fired)
+
+
+func test_check_already_inside_called_for_all_zones() -> void:
+	# All zones get the deferred overlap check — flag conditions decide whether they fire.
+	_zone.required_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)
+
+
+func test_shape_offset_aligns_topleft_with_tiled_origin() -> void:
+	_zone.set_meta("width", 224.0)
+	_zone.set_meta("height", 160.0)
+	var col_shape := CollisionShape2D.new()
+	col_shape.name = "CollisionShape2D"
+	_zone.add_child(col_shape)
+	_zone._ready()
+	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
+	assert_eq(shape_node.position, Vector2(112.0, 80.0), "offset must be w/2,h/2 so top-left aligns with Tiled origin")

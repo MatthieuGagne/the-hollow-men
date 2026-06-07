@@ -1,13 +1,14 @@
 class_name TerritoryEnforcerAI
 extends EnemyAI
 
-const ENFORCER_RES := "res://characters/enemies/territory_enforcer.tres"
+const CAPTAIN_RES := "res://characters/enemies/block_captain.tres"
 
 func resolve_action(combatant: Combatant, party: Array[Combatant], enemies: Array[Combatant], add_enemy_fn: Callable) -> Dictionary:
 	var living_enemies := enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
 	var living_party := party.filter(func(p: Combatant) -> bool: return p.is_alive())
-	if living_enemies.size() < living_party.size():
-		var backup: Combatant = load(ENFORCER_RES).duplicate()
+	if living_enemies.size() < living_party.size() and not combatant.ai_state.get("backup_called", false):
+		combatant.ai_state["backup_called"] = true
+		var backup: Combatant = load(CAPTAIN_RES).duplicate()
 		backup.reset_runtime_state()
 		add_enemy_fn.call(backup)
 		return {}
