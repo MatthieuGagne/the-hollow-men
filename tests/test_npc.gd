@@ -82,6 +82,30 @@ func test_hide_when_flag_set_frees_npc() -> void:
 	assert_false(is_instance_valid(npc))
 
 
+func test_show_when_flag_is_empty_by_default() -> void:
+	assert_eq(_npc.show_when_flag, "")
+
+
+func test_show_when_flag_absent_frees_npc() -> void:
+	var npc := Node2D.new()
+	npc.set_script(load("res://scripts/world/npc.gd"))
+	npc.set_meta("show_when_flag", "some_event")
+	add_child(npc)
+	await get_tree().process_frame
+	assert_false(is_instance_valid(npc))
+
+
+func test_show_when_flag_set_keeps_npc_alive() -> void:
+	GameState.set_flag("some_event", true)
+	var npc := Node2D.new()
+	npc.set_script(load("res://scripts/world/npc.gd"))
+	npc.set_meta("show_when_flag", "some_event")
+	add_child(npc)
+	await get_tree().process_frame
+	assert_true(is_instance_valid(npc))
+	npc.free()
+
+
 func test_hide_when_flag_set_unregisters_from_cell_registry() -> void:
 	GameState.set_flag("some_event", true)
 	var npc := Node2D.new()

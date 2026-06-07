@@ -4,6 +4,15 @@ extends Node
 @onready var _runner: Node = $"../DialogueRunner"
 
 
+func _ready() -> void:
+	_runner.AddCommandHandlerCallable("show_narration", _yarn_show_narration)
+
+
+func _yarn_show_narration(text: String) -> void:
+	_dialogue_box.show_narration_blocking(text)
+	await _dialogue_box.line_advanced
+
+
 func run_line_async(line: Dictionary) -> void:
 	var speaker := _get_speaker(line)
 	var text: String = line.get("text", {}).get("text_without_character_name", "")

@@ -65,15 +65,4 @@ public partial class GameStateVariableStorage : VariableStorageBehaviour
         return (new(), new(), new());
     }
 
-    [YarnCommand("show_narration")]
-    public async YarnTask ShowNarration(string text)
-    {
-        var dialogueManager = GetNode<Node>("/root/DialogueManager");
-        var tcs = new System.Threading.Tasks.TaskCompletionSource();
-        dialogueManager.Connect("narration_line_advanced",
-            Callable.From(() => tcs.TrySetResult()),
-            (uint)GodotObject.ConnectFlags.OneShot);
-        dialogueManager.Call("show_narration_blocking", text);
-        await tcs.Task;
-    }
 }

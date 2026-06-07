@@ -19,6 +19,10 @@ func test_battle_params_return_scene_defaults_to_empty() -> void:
 	assert_eq(BattleParams.return_scene, "", "return_scene should default to empty string")
 
 
+func test_battle_params_return_spawn_defaults_to_empty() -> void:
+	assert_eq(BattleParams.return_spawn, "", "return_spawn should default to empty string")
+
+
 func test_begin_player_turn_sets_awaiting_input() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
