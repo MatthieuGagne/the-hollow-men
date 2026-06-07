@@ -29,13 +29,13 @@ func _ready() -> void:
 		var rect := shape_node.shape as RectangleShape2D
 		if rect != null:
 			rect.size = Vector2(w, h)
+		# Tiled positions are top-left; offset shape so it covers (0,0)→(w,h) in local space.
+		shape_node.position = Vector2(w / 2.0, h / 2.0)
+		# Check for bodies already inside (player spawning into zone on scene load).
+		# Only when a real shape exists — awaits one physics frame for valid overlap data.
+		_check_already_inside_after_physics.call_deferred()
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
-	# Only gated zones (required_flag set) need this — they fire on scene return,
-	# when the player spawns inside rather than walking in.
-	# Await one physics frame so get_overlapping_bodies() has valid data.
-	if required_flag != "":
-		_check_already_inside_after_physics.call_deferred()
 
 
 func _check_already_inside_after_physics() -> void:

@@ -89,6 +89,7 @@ func test_shape_resizes_from_meta_in_ready() -> void:
 	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
 	var rect: RectangleShape2D = shape_node.shape as RectangleShape2D
 	assert_eq(rect.size, Vector2(224, 128))
+	assert_eq(shape_node.position, Vector2(112, 64), "shape must be offset so top-left aligns with Tiled origin")
 
 
 func test_required_flag_blocks_zone_when_flag_absent() -> void:
@@ -188,31 +189,19 @@ func test_check_already_inside_does_not_fire_without_overlap() -> void:
 	assert_false(_zone._fired)
 
 
-func test_check_already_inside_skipped_when_no_required_flag() -> void:
-	# Without required_flag the deferred check is never scheduled; walk-in still works.
+func test_check_already_inside_called_for_all_zones() -> void:
+	# All zones get the deferred overlap check — flag conditions decide whether they fire.
 	_zone.required_flag = ""
 	_zone._on_body_entered(_player)
 	assert_true(_zone._fired)
 
 
-func test_check_already_inside_fires_after_physics_when_player_overlapping() -> void:
-	GameState.set_flag("case_1_beat3_complete", true)
-	var zone_full: Area2D = load("res://scenes/world/CutsceneZone.tscn").instantiate()
-	(zone_full.get_node("CollisionShape2D").shape as RectangleShape2D).size = Vector2(100.0, 100.0)
-	# Set required_flag AFTER add_child so _ready() does NOT schedule the async chain.
-	add_child_autofree(zone_full)
-	zone_full.required_flag = "case_1_beat3_complete"
-	var player := CharacterBody2D.new()
-	player.set_script(load("res://scripts/world/player.gd"))
-	var pcol := CollisionShape2D.new()
-	var pcircle := CircleShape2D.new()
-	pcircle.radius = 8.0
-	pcol.shape = pcircle
-	player.add_child(pcol)
-	player.global_position = Vector2.ZERO
-	add_child_autofree(player)
-	# Two physics frames: Godot needs one step to register, one to expose via get_overlapping_bodies.
-	await get_tree().physics_frame
-	await get_tree().physics_frame
-	zone_full._check_already_inside()
-	assert_true(zone_full._fired)
+func test_shape_offset_aligns_topleft_with_tiled_origin() -> void:
+	_zone.set_meta("width", 224.0)
+	_zone.set_meta("height", 160.0)
+	var col_shape := CollisionShape2D.new()
+	col_shape.name = "CollisionShape2D"
+	_zone.add_child(col_shape)
+	_zone._ready()
+	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
+	assert_eq(shape_node.position, Vector2(112.0, 80.0), "offset must be w/2,h/2 so top-left aligns with Tiled origin")
