@@ -162,6 +162,16 @@ func test_battle_return_scene_empty_does_not_overwrite_battle_params() -> void:
 	assert_eq(BattleParams.return_scene, "res://scenes/world/SomeOtherScene.tscn")
 
 
+func test_battle_return_spawn_point_defaults_empty() -> void:
+	assert_eq(_zone.battle_return_spawn_point, "")
+
+
+func test_battle_return_spawn_point_sets_battle_params_return_spawn() -> void:
+	_zone.battle_return_spawn_point = "battle_return"
+	_zone._on_dialogue_closed()
+	assert_eq(BattleParams.return_spawn, "battle_return")
+
+
 func test_pre_battle_enemies_empty_does_not_set_battle_params() -> void:
 	_zone.pre_battle_enemies = ""
 	_zone._on_dialogue_closed()

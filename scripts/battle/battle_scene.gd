@@ -552,7 +552,7 @@ func _on_battle_ended(victory: bool) -> void:
 		await get_tree().create_timer(VICTORY_DELAY).timeout
 		if is_inside_tree():
 			var target := BattleParams.return_scene if BattleParams.return_scene != "" else WORLD_SCENE
-			SceneManager.change_scene(target)
+			SceneManager.change_scene(target, BattleParams.return_spawn)
 	else:
 		_defeat_label.show()
 		_defeat_menu.show()

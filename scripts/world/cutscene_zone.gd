@@ -8,6 +8,7 @@ extends Area2D
 @export var pre_battle_guests: String = ""
 @export var pre_battle_enemies: String = ""
 @export var battle_return_scene: String = ""
+@export var battle_return_spawn_point: String = ""
 @export var fire_on_scene_load: bool = false
 
 var _fired: bool = false
@@ -20,8 +21,9 @@ func _ready() -> void:
 	forbidden_flag      = get_meta("forbidden_flag",      forbidden_flag)
 	pre_battle_guests   = get_meta("pre_battle_guests",   pre_battle_guests)
 	pre_battle_enemies  = get_meta("pre_battle_enemies",  pre_battle_enemies)
-	battle_return_scene = get_meta("battle_return_scene", battle_return_scene)
-	fire_on_scene_load  = get_meta("fire_on_scene_load",  fire_on_scene_load)
+	battle_return_scene       = get_meta("battle_return_scene",       battle_return_scene)
+	battle_return_spawn_point = get_meta("battle_return_spawn_point", battle_return_spawn_point)
+	fire_on_scene_load        = get_meta("fire_on_scene_load",        fire_on_scene_load)
 	var w: float = get_meta("width", 0.0)
 	var h: float = get_meta("height", 0.0)
 	if w > 0.0 and h > 0.0:
@@ -73,6 +75,8 @@ func _on_dialogue_closed() -> void:
 		BattleParams.enemies = pre_battle_enemies
 	if battle_return_scene != "":
 		BattleParams.return_scene = battle_return_scene
+	if battle_return_spawn_point != "":
+		BattleParams.return_spawn = battle_return_spawn_point
 	if next_scene.is_empty():
 		return
 	SceneManager.change_scene(next_scene)
