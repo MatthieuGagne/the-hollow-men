@@ -178,3 +178,18 @@ func test_pre_battle_enemies_empty_does_not_overwrite_existing_battle_params() -
 	_zone.pre_battle_enemies = ""
 	_zone._on_dialogue_closed()
 	assert_eq(BattleParams.enemies, "res://characters/enemies/shade.tres")
+
+
+func test_check_already_inside_does_not_fire_without_overlap() -> void:
+	# No collision shapes → no overlapping bodies → zone must not fire.
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._check_already_inside()
+	assert_false(_zone._fired)
+
+
+func test_check_already_inside_skipped_when_no_required_flag() -> void:
+	# Without required_flag the deferred check is never scheduled; walk-in still works.
+	_zone.required_flag = ""
+	_zone._on_body_entered(_player)
+	assert_true(_zone._fired)

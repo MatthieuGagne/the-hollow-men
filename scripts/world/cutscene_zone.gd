@@ -31,6 +31,15 @@ func _ready() -> void:
 			rect.size = Vector2(w, h)
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
+	# Only gated zones (required_flag set) need this — they fire on scene return,
+	# when the player spawns inside rather than walking in.
+	if required_flag != "":
+		call_deferred("_check_already_inside")
+
+
+func _check_already_inside() -> void:
+	for body: Node2D in get_overlapping_bodies():
+		_on_body_entered(body)
 
 
 func _on_body_entered(body: Node2D) -> void:
