@@ -81,6 +81,7 @@
   <object id="9" type="instance" x="16" y="16" width="224" height="160">
    <properties>
     <property name="dialogue_node" value="sprawl_aftermath_beat4"/>
+    <property name="fire_on_scene_load" type="bool" value="true"/>
     <property name="height" type="float" value="160"/>
     <property name="required_flag" value="case_1_beat3_complete"/>
     <property name="res_path" type="file" value="res://scenes/world/CutsceneZone.tscn"/>
