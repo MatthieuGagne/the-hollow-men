@@ -463,11 +463,11 @@ func test_territory_enforcer_loads_with_correct_stats() -> void:
 	enforcer.reset_runtime_state()
 	assert_eq(enforcer.character_name, "Territory Enforcer")
 	assert_false(enforcer.is_player_controlled)
-	assert_eq(enforcer.max_hp, 180)
-	assert_eq(enforcer.str_stat, 55)
+	assert_eq(enforcer.max_hp, 150)
+	assert_eq(enforcer.str_stat, 35)
 	assert_eq(enforcer.def_stat, 10)
 	assert_eq(enforcer.spd_stat, 20)
-	assert_eq(enforcer.current_hp, 180)
+	assert_eq(enforcer.current_hp, 150)
 
 
 func test_block_captain_loads_with_correct_stats() -> void:
