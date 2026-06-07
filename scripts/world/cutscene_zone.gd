@@ -8,6 +8,7 @@ extends Area2D
 @export var pre_battle_guests: String = ""
 @export var pre_battle_enemies: String = ""
 @export var battle_return_scene: String = ""
+@export var fire_on_scene_load: bool = false
 
 var _fired: bool = false
 
@@ -20,6 +21,7 @@ func _ready() -> void:
 	pre_battle_guests   = get_meta("pre_battle_guests",   pre_battle_guests)
 	pre_battle_enemies  = get_meta("pre_battle_enemies",  pre_battle_enemies)
 	battle_return_scene = get_meta("battle_return_scene", battle_return_scene)
+	fire_on_scene_load  = get_meta("fire_on_scene_load",  fire_on_scene_load)
 	var w: float = get_meta("width", 0.0)
 	var h: float = get_meta("height", 0.0)
 	if w > 0.0 and h > 0.0:
@@ -29,27 +31,25 @@ func _ready() -> void:
 		var rect := shape_node.shape as RectangleShape2D
 		if rect != null:
 			rect.size = Vector2(w, h)
-		# Tiled positions are top-left; offset shape so it covers (0,0)→(w,h) in local space.
 		shape_node.position = Vector2(w / 2.0, h / 2.0)
-		# Check for bodies already inside (player spawning into zone on scene load).
-		# Only when a real shape exists — awaits one physics frame for valid overlap data.
-		_check_already_inside_after_physics.call_deferred()
+	if fire_on_scene_load:
+		_check_load_trigger.call_deferred()
 	if not body_entered.is_connected(_on_body_entered):
 		body_entered.connect(_on_body_entered)
 
 
-func _check_already_inside_after_physics() -> void:
-	await get_tree().physics_frame
-	_check_already_inside()
-
-
-func _check_already_inside() -> void:
-	for body: Node2D in get_overlapping_bodies():
-		_on_body_entered(body)
+func _check_load_trigger() -> void:
+	_fire()
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if _fired or not body is Player:
+	if not body is Player:
+		return
+	_fire()
+
+
+func _fire() -> void:
+	if _fired:
 		return
 	if required_flag != "" and not GameState.has_flag(required_flag):
 		return

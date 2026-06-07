@@ -181,19 +181,46 @@ func test_pre_battle_enemies_empty_does_not_overwrite_existing_battle_params() -
 	assert_eq(BattleParams.enemies, "res://characters/enemies/shade.tres")
 
 
-func test_check_already_inside_does_not_fire_without_overlap() -> void:
-	# No collision shapes → no overlapping bodies → zone must not fire.
-	GameState.set_flag("case_1_beat3_complete", true)
-	_zone.required_flag = "case_1_beat3_complete"
-	_zone._check_already_inside()
-	assert_false(_zone._fired)
-
-
-func test_check_already_inside_called_for_all_zones() -> void:
-	# All zones get the deferred overlap check — flag conditions decide whether they fire.
+func test_walk_in_zone_fires_on_body_entered() -> void:
 	_zone.required_flag = ""
 	_zone._on_body_entered(_player)
 	assert_true(_zone._fired)
+
+
+func test_fire_on_scene_load_defaults_to_false() -> void:
+	assert_false(_zone.fire_on_scene_load)
+
+
+func test_check_load_trigger_fires_when_no_flags_set() -> void:
+	_zone._check_load_trigger()
+	assert_true(_zone._fired)
+
+
+func test_check_load_trigger_fires_when_required_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._check_load_trigger()
+	assert_true(_zone._fired)
+
+
+func test_check_load_trigger_blocked_when_required_flag_absent() -> void:
+	_zone.required_flag = "case_1_beat3_complete"
+	_zone._check_load_trigger()
+	assert_false(_zone._fired)
+
+
+func test_check_load_trigger_blocked_when_forbidden_flag_set() -> void:
+	GameState.set_flag("case_1_beat3_complete", true)
+	_zone.forbidden_flag = "case_1_beat3_complete"
+	_zone._check_load_trigger()
+	assert_false(_zone._fired)
+
+
+func test_check_load_trigger_does_not_double_fire() -> void:
+	_zone._fired = true
+	_zone._check_load_trigger()
+	# monitoring is still true — _fire() returned early
+	assert_true(_zone.monitoring)
 
 
 func test_shape_offset_aligns_topleft_with_tiled_origin() -> void:
