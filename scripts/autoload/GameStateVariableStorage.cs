@@ -10,37 +10,41 @@ public partial class GameStateVariableStorage : VariableStorageBehaviour
 {
     private Node GameState => GetNode<Node>("/root/GameState");
 
+    private static string NormalizeKey(string variableName) =>
+        variableName.StartsWith("$") ? variableName[1..] : variableName;
+
     public override bool TryGetValue<T>(string variableName, out T result)
     {
-        if (!Contains(variableName))
+        var key = NormalizeKey(variableName);
+        if (!Contains(key))
         {
             result = default;
             return false;
         }
-        var raw = GameState.Call("get_flag", variableName, new Variant());
+        var raw = GameState.Call("get_flag", key, new Variant());
         if (raw.Obj is T typed)
         {
             result = typed;
             return true;
         }
-        GD.PushError($"GameStateVariableStorage: type mismatch for '{variableName}' — expected {typeof(T).Name}");
+        GD.PushError($"GameStateVariableStorage: type mismatch for '{key}' — expected {typeof(T).Name}");
         result = default;
         return false;
     }
 
     public override void SetValue(string variableName, bool boolValue) =>
-        GameState.Call("set_flag", variableName, boolValue);
+        GameState.Call("set_flag", NormalizeKey(variableName), boolValue);
 
     public override void SetValue(string variableName, float floatValue) =>
-        GameState.Call("set_flag", variableName, floatValue);
+        GameState.Call("set_flag", NormalizeKey(variableName), floatValue);
 
     public override void SetValue(string variableName, string stringValue) =>
-        GameState.Call("set_flag", variableName, stringValue);
+        GameState.Call("set_flag", NormalizeKey(variableName), stringValue);
 
     public override void Clear() { }
 
     public override bool Contains(string variableName) =>
-        GameState.Call("has_flag", variableName).AsBool();
+        GameState.Call("has_flag", NormalizeKey(variableName)).AsBool();
 
     public override void SetAllVariables(
         System.Collections.Generic.Dictionary<string, float> floats,
