@@ -27,8 +27,8 @@ static func _resolve_enemies(custom: String) -> String:
 
 func _get_background_id() -> String:
     var room_bg := ""
-    var scene := get_tree().current_scene
-    if "battle_background" in scene:
+    var scene := get_tree().current_scene if get_tree() else null
+    if scene != null and "battle_background" in scene:
         room_bg = scene.battle_background
     return _resolve_background_id(battle_background_override, room_bg)
 
