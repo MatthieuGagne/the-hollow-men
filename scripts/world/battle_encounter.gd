@@ -1,8 +1,12 @@
 extends Area2D
 
 const BATTLE_SCENE := "res://scenes/battle/BattleScene.tscn"
+const DEFAULT_ENEMIES := "res://characters/enemies/shade.tres"
 
 @export var battle_background_override: String = ""
+## Comma-separated enemy resource paths for this encounter. Empty falls back to a
+## single Shade — set explicitly here, never via BattleScene's read-side default.
+@export var enemies: String = ""
 
 
 func _ready() -> void:
@@ -17,6 +21,10 @@ static func _resolve_background_id(override: String, room_bg: String) -> String:
     return "default"
 
 
+static func _resolve_enemies(custom: String) -> String:
+    return custom if custom != "" else DEFAULT_ENEMIES
+
+
 func _get_background_id() -> String:
     var room_bg := ""
     var scene := get_tree().current_scene
@@ -26,5 +34,9 @@ func _get_background_id() -> String:
 
 
 func _on_body_entered(_body: Node2D) -> void:
-    BattleParams.background_id = _get_background_id()
+    var return_scene := ""
+    var scene := get_tree().current_scene
+    if scene != null:
+        return_scene = scene.scene_file_path
+    BattleContext.configure(_resolve_enemies(enemies), _get_background_id(), return_scene, "")
     SceneManager.change_scene(BATTLE_SCENE)
