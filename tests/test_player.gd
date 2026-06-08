@@ -96,3 +96,43 @@ func test_echo_press_does_not_trigger_dismiss_path() -> void:
 	assert_false(player._interact_awaiting_release,
 		"echo press must NOT set _interact_awaiting_release (dismiss path must be skipped)")
 	player.free()
+
+
+func test_interact_with_no_dialogue_does_not_block_input() -> void:
+	# Regression: _try_interact() must NOT set _input_blocked=true when the
+	# interactable's interact() does nothing (no dialogue opened). If it did,
+	# _on_dialogue_closed() would never fire and the player would be frozen forever.
+	var player := Player.new()
+	var layer := TileMapLayer.new()
+	# TileMapLayer.local_to_map() requires a TileSet; assign a default 16×16 one.
+	var tile_set := TileSet.new()
+	tile_set.tile_size = Vector2i(16, 16)
+	layer.tile_set = tile_set
+	add_child(layer)
+	add_child(player)
+	player.setup(layer)
+	# Player snapped to tile center; default _facing is (0,1) → down.
+	# Position (8,8) maps to tile (0,0); facing cell = (0,0)+(0,1) = (0,1).
+	player.position = Vector2(8.0, 8.0)
+	player._input_blocked = false
+
+	# Register a mock interactable that does nothing on interact() (simulates empty yarn_node_id)
+	var script := GDScript.new()
+	script.source_code = "extends Node\nfunc interact() -> void:\n\tpass\n"
+	script.reload()
+	var mock_npc := Node.new()
+	mock_npc.set_script(script)
+	add_child(mock_npc)
+
+	var facing_cell: Vector2i = layer.local_to_map(player.position) + player._facing
+	CellRegistry.register_interactable(facing_cell, mock_npc)
+
+	player._try_interact()
+
+	assert_false(player._input_blocked,
+		"_input_blocked must stay false when interact() opens no dialogue")
+
+	CellRegistry.unregister_interactable(facing_cell)
+	mock_npc.free()
+	player.free()
+	layer.free()

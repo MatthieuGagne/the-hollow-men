@@ -54,7 +54,6 @@ func _try_interact() -> void:
 	var interactable: Node = CellRegistry.get_interactable(cell)
 	if interactable == null:
 		return
-	_input_blocked = true
 	interactable.interact()
 
 

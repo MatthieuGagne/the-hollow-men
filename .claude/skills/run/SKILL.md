@@ -23,10 +23,13 @@ If either path is missing, run `make worktree-init` from the worktree root first
 Get-Process godot* -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
-**Ensure C# assemblies are built.** Check whether the build output DLL exists:
+**Ensure C# assemblies are built.** Check whether the DLL exists AND is up to date (no `.cs` file newer than the DLL):
 
 ```sh
-ls <project_path>/.godot/mono/temp/bin/Debug/TheHollowMen.dll 2>$null || echo "NEEDS_BUILD"
+DLL=<project_path>/.godot/mono/temp/bin/Debug/TheHollowMen.dll
+if [ ! -f "$DLL" ] || find <project_path> -name "*.cs" -newer "$DLL" | grep -q .; then
+  echo "NEEDS_BUILD"
+fi
 ```
 
 If `NEEDS_BUILD`, run `dotnet build` from the project root and wait for it to complete (expected: "0 Error(s)"). This is required for YarnSpinner and any other C# scripts to instantiate correctly.
@@ -63,17 +66,21 @@ godot_console --headless --editor --quit --path <project_path>
 - "open editor", "open in editor", "edit" → use `--editor` flag (takes priority over any scene hint)
 - "run", "play", "launch the game" → no extra flag (runs the main scene unless a scene hint is given)
 
-**Resolve the scene** if `ARGUMENTS` is non-empty and is not a mode keyword (`editor`, `edit`, `open editor`):
+**Resolve the scene** using this priority order:
 
-1. List current scenes:
+1. **Explicit hint in ARGUMENTS** (non-empty, non-mode keyword): list scenes, pick the best match by name, ask if unsure.
    ```sh
    Get-ChildItem -Recurse -Filter "*.tscn" scenes/ | Select-Object -ExpandProperty FullName
    ```
-2. Use your own judgment to pick the most likely match — weigh the hint words against scene names and game context (e.g. "battle" → `BattleScene.tscn`, "bar" or "winds" → `FourWindsBar.tscn`, "office" → `OfficeBuildingInterior.tscn`).
-3. If confident → append the scene path as a positional argument (e.g. `scenes/battle/BattleScene.tscn`).
-4. If not confident → use `AskUserQuestion` with the plausible candidates as options (up to 4 choices).
+   Match hint words against scene names and game context (e.g. "battle" → `BattleScene.tscn`, "bar" → `FourWindsBar.tscn`). If confident → use it. If not → `AskUserQuestion` with candidates.
 
-If `ARGUMENTS` is empty, run the default main scene (no extra argument).
+2. **No hint — infer from context.** When ARGUMENTS is empty, do NOT silently default to the main scene. Instead, reason about what scene makes sense right now:
+   - Check the current branch name: `git branch --show-current` — a branch like `fix/issue-116-cutscene-replay` strongly implies the SprawlSafehouse, a beat-specific branch implies the map for that beat, etc.
+   - Consider the recent conversation: were we just debugging a specific scene? That scene is the right choice.
+   - Check recently modified world/battle scene files: `git diff --name-only HEAD` — modified `.tscn` or `.tmx` files point to the scene under test.
+   - If context clearly points to one scene → use it and tell the user which scene you're launching and why.
+   - If context is ambiguous → use `AskUserQuestion` with the most plausible candidates (main scene as one option) rather than silently picking main.
+   - Only default to the main scene if there is genuinely no other signal.
 
 **If inside a worktree** (path contains `worktrees/`), launch from the worktree path:
 
