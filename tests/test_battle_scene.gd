@@ -1000,7 +1000,7 @@ func test_spawn_enemies_uses_context_enemies_when_set() -> void:
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
 	assert_eq(scene2.enemies.size(), 2,
-		"must spawn 2 enemies when BattleParams.enemies has 2 paths")
+		"must spawn 2 enemies when BattleContext.enemies has 2 paths")
 	assert_eq(scene2.enemies[0].character_name, "Territory Enforcer")
 	assert_eq(scene2.enemies[1].character_name, "Territory Enforcer")
 
