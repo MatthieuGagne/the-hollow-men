@@ -57,7 +57,12 @@ func _fire() -> void:
 		return
 	if forbidden_flag != "" and GameState.has_flag(forbidden_flag):
 		return
+	var _auto_flag := "zone_played_" + dialogue_node
+	if fire_on_scene_load and dialogue_node != "" and GameState.has_flag(_auto_flag):
+		return
 	_fired = true
+	if fire_on_scene_load and dialogue_node != "":
+		GameState.set_flag(_auto_flag, true)
 	set_deferred("monitoring", false)
 	if dialogue_node == "":
 		return

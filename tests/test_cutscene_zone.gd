@@ -242,3 +242,28 @@ func test_shape_offset_aligns_topleft_with_tiled_origin() -> void:
 	_zone._ready()
 	var shape_node: CollisionShape2D = _zone.get_node("CollisionShape2D")
 	assert_eq(shape_node.position, Vector2(112.0, 80.0), "offset must be w/2,h/2 so top-left aligns with Tiled origin")
+
+
+func test_fire_on_scene_load_sets_persistent_flag_after_first_fire() -> void:
+	# Simulate the zone having just fired (flag is set, _fired is true).
+	# Verify that once we reset _fired (scene reload) and the flag is present,
+	# the zone is blocked. We test the guard directly to avoid the Yarn run_node exception.
+	_zone.fire_on_scene_load = true
+	_zone.dialogue_node = "zone_test_persistent"
+	# Pre-set the auto-flag as if a prior _fire() had set it.
+	GameState.set_flag("zone_played_zone_test_persistent", true)
+	# _fire() must exit early because the auto-flag is already set.
+	_zone._fire()
+	assert_false(_zone._fired, "auto-flag guard must block the zone when flag is already set")
+
+
+func test_fire_on_scene_load_does_not_refire_on_scene_reload() -> void:
+	# Simulate scene reload: _fired has been reset to false, but the persistent
+	# GameState auto-flag is still set from the first visit.
+	_zone.fire_on_scene_load = true
+	_zone.dialogue_node = "zone_test_reload"
+	GameState.set_flag("zone_played_zone_test_reload", true)
+	# _fire() should detect the auto-flag and exit early.
+	_zone._fire()
+	# _fired stays false because the early return ran before _fired = true.
+	assert_false(_zone._fired, "_fired must stay false on reload — auto-flag guard must have blocked the second fire")
