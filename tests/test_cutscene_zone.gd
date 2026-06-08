@@ -8,8 +8,7 @@ func before_each() -> void:
 	GameState._flags.clear()
 	DialogueManager._dialogue_box.dismiss()
 	PartyManager.remove_temporary_members()
-	BattleParams.return_scene = ""
-	BattleParams.enemies = ""
+	BattleContext.configure()
 	_zone = Area2D.new()
 	_zone.set_script(load("res://scripts/world/cutscene_zone.gd"))
 	_player = CharacterBody2D.new()
@@ -149,46 +148,48 @@ func test_pre_battle_guests_does_not_modify_permanent_members() -> void:
 	assert_eq(PartyManager._permanent_members.size(), before_count)
 
 
-func test_battle_return_scene_sets_battle_params() -> void:
+func test_battle_return_scene_sets_context() -> void:
 	_zone.battle_return_scene = "res://scenes/world/SprawlSafehouse.tscn"
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.return_scene, "res://scenes/world/SprawlSafehouse.tscn")
+	assert_eq(BattleContext.return_scene, "res://scenes/world/SprawlSafehouse.tscn")
 
 
-func test_battle_return_scene_empty_does_not_overwrite_battle_params() -> void:
-	BattleParams.return_scene = "res://scenes/world/SomeOtherScene.tscn"
+func test_empty_battle_return_scene_yields_fresh_empty_context() -> void:
+	BattleContext.return_scene = "res://scenes/world/SomeOtherScene.tscn"
 	_zone.battle_return_scene = ""
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.return_scene, "res://scenes/world/SomeOtherScene.tscn")
+	assert_eq(BattleContext.return_scene, "",
+		"a fresh context must clear a stale return_scene — no carryover")
 
 
 func test_battle_return_spawn_point_defaults_empty() -> void:
 	assert_eq(_zone.battle_return_spawn_point, "")
 
 
-func test_battle_return_spawn_point_sets_battle_params_return_spawn() -> void:
+func test_battle_return_spawn_point_sets_context_return_spawn() -> void:
 	_zone.battle_return_spawn_point = "battle_return"
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.return_spawn, "battle_return")
+	assert_eq(BattleContext.return_spawn, "battle_return")
 
 
-func test_pre_battle_enemies_empty_does_not_set_battle_params() -> void:
+func test_pre_battle_enemies_empty_yields_empty_context() -> void:
 	_zone.pre_battle_enemies = ""
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.enemies, "")
+	assert_eq(BattleContext.enemies, "")
 
 
-func test_pre_battle_enemies_sets_battle_params_enemies() -> void:
+func test_pre_battle_enemies_sets_context_enemies() -> void:
 	_zone.pre_battle_enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.enemies, "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres")
+	assert_eq(BattleContext.enemies, "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres")
 
 
-func test_pre_battle_enemies_empty_does_not_overwrite_existing_battle_params() -> void:
-	BattleParams.enemies = "res://characters/enemies/shade.tres"
+func test_fresh_context_clears_stale_enemies() -> void:
+	BattleContext.enemies = "res://characters/enemies/shade.tres"
 	_zone.pre_battle_enemies = ""
 	_zone._on_dialogue_closed()
-	assert_eq(BattleParams.enemies, "res://characters/enemies/shade.tres")
+	assert_eq(BattleContext.enemies, "",
+		"a fresh context must clear a stale enemy table — no carryover (AC1)")
 
 
 func test_walk_in_zone_fires_on_body_entered() -> void:

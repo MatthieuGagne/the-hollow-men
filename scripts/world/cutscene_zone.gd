@@ -76,12 +76,10 @@ func _on_dialogue_closed() -> void:
 			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
 			c.reset_runtime_state()
 			PartyManager.add_temporary(c)
-	if pre_battle_enemies != "":
-		BattleParams.enemies = pre_battle_enemies
-	if battle_return_scene != "":
-		BattleParams.return_scene = battle_return_scene
-	if battle_return_spawn_point != "":
-		BattleParams.return_spawn = battle_return_spawn_point
+	# Fully populate a FRESH battle context so nothing carries over from a
+	# previous encounter (stale enemy table, background, or return scene).
+	# CutsceneZone has no background override, so background_id stays "" → default.
+	BattleContext.configure(pre_battle_enemies, "", battle_return_scene, battle_return_spawn_point)
 	if next_scene.is_empty():
 		return
 	SceneManager.change_scene(next_scene)
