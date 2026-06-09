@@ -6,8 +6,7 @@ var _scene: Node2D
 func before_each() -> void:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
-	BattleParams.return_scene = ""
-	BattleParams.enemies = ""
+	BattleContext.configure()
 	var reid: Combatant = load("res://characters/reid.tres").duplicate()
 	reid.reset_runtime_state()
 	PartyManager._permanent_members.append(reid)
@@ -15,12 +14,12 @@ func before_each() -> void:
 	add_child_autofree(_scene)
 
 
-func test_battle_params_return_scene_defaults_to_empty() -> void:
-	assert_eq(BattleParams.return_scene, "", "return_scene should default to empty string")
+func test_battle_context_return_scene_defaults_to_empty() -> void:
+	assert_eq(BattleContext.return_scene, "", "return_scene should default to empty string")
 
 
-func test_battle_params_return_spawn_defaults_to_empty() -> void:
-	assert_eq(BattleParams.return_spawn, "", "return_spawn should default to empty string")
+func test_battle_context_return_spawn_defaults_to_empty() -> void:
+	assert_eq(BattleContext.return_spawn, "", "return_spawn should default to empty string")
 
 
 func test_begin_player_turn_sets_awaiting_input() -> void:
@@ -683,8 +682,8 @@ func test_victory_removes_temporary_members() -> void:
 
 
 func test_victory_uses_return_scene_when_set() -> void:
-	BattleParams.return_scene = "res://scenes/world/FourWindsBar.tscn"
-	assert_eq(BattleParams.return_scene, "res://scenes/world/FourWindsBar.tscn")
+	BattleContext.return_scene = "res://scenes/world/FourWindsBar.tscn"
+	assert_eq(BattleContext.return_scene, "res://scenes/world/FourWindsBar.tscn")
 
 
 func test_add_enemy_appends_to_enemies_array() -> void:
@@ -993,22 +992,22 @@ func test_authorised_force_debuff_expires_after_2_turns() -> void:
 func test_spawn_enemies_defaults_to_one_shade_when_params_empty() -> void:
 	assert_eq(_scene.enemies.size(), 1, "default spawn must produce exactly 1 enemy")
 	assert_eq(_scene.enemies[0].character_name, "Shade",
-		"default enemy must be a Shade when BattleParams.enemies is empty")
+		"default enemy must be a Shade when BattleContext.enemies is empty")
 
 
-func test_spawn_enemies_uses_battle_params_enemies_when_set() -> void:
-	BattleParams.enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+func test_spawn_enemies_uses_context_enemies_when_set() -> void:
+	BattleContext.enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
 	assert_eq(scene2.enemies.size(), 2,
-		"must spawn 2 enemies when BattleParams.enemies has 2 paths")
+		"must spawn 2 enemies when BattleContext.enemies has 2 paths")
 	assert_eq(scene2.enemies[0].character_name, "Territory Enforcer")
 	assert_eq(scene2.enemies[1].character_name, "Territory Enforcer")
 
 
-func test_spawn_enemies_clears_battle_params_enemies_after_use() -> void:
-	BattleParams.enemies = "res://characters/enemies/territory_enforcer.tres"
+func test_spawn_enemies_does_not_clear_context_enemies() -> void:
+	BattleContext.enemies = "res://characters/enemies/territory_enforcer.tres"
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
-	assert_eq(BattleParams.enemies, "",
-		"BattleParams.enemies must be cleared after _spawn_enemies consumes it")
+	assert_eq(BattleContext.enemies, "res://characters/enemies/territory_enforcer.tres",
+		"BattleContext.enemies must survive a read so defeat→retry reuses it (AC2)")

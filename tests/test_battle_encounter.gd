@@ -35,3 +35,13 @@ func test_resolve_room_default_used_when_no_override() -> void:
 func test_resolve_fallback_to_default() -> void:
     var result: String = _encounter._resolve_background_id("", "")
     assert_eq(result, "default", "must fall back to 'default' when neither is set")
+
+
+func test_resolve_enemies_uses_custom_when_set() -> void:
+    assert_eq(_encounter._resolve_enemies("a.tres,b.tres"), "a.tres,b.tres")
+
+
+func test_resolve_enemies_falls_back_to_shade_when_empty() -> void:
+    assert_eq(_encounter._resolve_enemies(""),
+        "res://characters/enemies/shade.tres",
+        "empty enemy table must resolve to a Shade explicitly, not via a read-side default")

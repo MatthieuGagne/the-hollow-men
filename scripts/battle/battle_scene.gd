@@ -52,7 +52,7 @@ const FLASH_PULSE_HALF:    float = 0.05   # each pulse = 2 × this (up + down)
 const FLASH_PULSES:        int   = 3      # 3 pulses × 0.1s = 0.3s total
 const FLASH_HOLD:          float = 0.15   # remaining flash after return (0.3 - 0.15)
 const OVERBRIGHT:          Color = Color(2.0, 2.0, 2.0, 1.0)
-const WORLD_SCENE:   String = "res://scenes/world/RoomPOC.tscn"
+const WORLD_SCENE:   String = "res://scenes/world/Rooftop.tscn"
 const BATTLE_SCENE:  String = "res://scenes/battle/BattleScene.tscn"
 const VICTORY_DELAY: float  = 1.5
 
@@ -89,10 +89,8 @@ func _ready() -> void:
 
 
 func _spawn_enemies() -> void:
-	if BattleParams.enemies != "":
-		var paths := BattleParams.enemies
-		BattleParams.enemies = ""
-		for path: String in paths.split(","):
+	if BattleContext.enemies != "":
+		for path: String in BattleContext.enemies.split(","):
 			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
 			c.reset_runtime_state()
 			add_enemy(c)
@@ -103,8 +101,7 @@ func _spawn_enemies() -> void:
 
 
 func _load_background() -> void:
-	var id := BattleParams.background_id if BattleParams.background_id != "" else "default"
-	BattleParams.background_id = ""
+	var id := BattleContext.background_id if BattleContext.background_id != "" else "default"
 	var path := "res://assets/battle_backgrounds/%s.png" % id
 	if not ResourceLoader.exists(path):
 		path = "res://assets/battle_backgrounds/default.png"
@@ -551,8 +548,8 @@ func _on_battle_ended(victory: bool) -> void:
 		_victory_label.show()
 		await get_tree().create_timer(VICTORY_DELAY).timeout
 		if is_inside_tree():
-			var target := BattleParams.return_scene if BattleParams.return_scene != "" else WORLD_SCENE
-			SceneManager.change_scene(target, BattleParams.return_spawn)
+			var target := BattleContext.return_scene if BattleContext.return_scene != "" else WORLD_SCENE
+			SceneManager.change_scene(target, BattleContext.return_spawn)
 	else:
 		_defeat_label.show()
 		_defeat_menu.show()

@@ -47,5 +47,11 @@ func _trigger_encounter() -> void:
 
 
 func _load_battle_scene() -> void:
-	# TODO: pass current enemy table to BattleScene
+	# Populate a fresh context explicitly — never rely on BattleScene's read-side
+	# default. Random world encounters return to the current scene.
+	var return_scene := ""
+	var scene := get_tree().current_scene
+	if scene != null:
+		return_scene = scene.scene_file_path
+	BattleContext.configure("res://characters/enemies/shade.tres", "default", return_scene, "")
 	SceneManager.change_scene("res://scenes/battle/BattleScene.tscn")
