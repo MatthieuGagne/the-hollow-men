@@ -996,18 +996,18 @@ func test_spawn_enemies_defaults_to_one_shade_when_params_empty() -> void:
 
 
 func test_spawn_enemies_uses_context_enemies_when_set() -> void:
-	BattleContext.enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+	BattleContext.enemies = "territory_enforcer,territory_enforcer"
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
 	assert_eq(scene2.enemies.size(), 2,
-		"must spawn 2 enemies when BattleContext.enemies has 2 paths")
+		"must spawn 2 enemies when BattleContext.enemies has 2 ids")
 	assert_eq(scene2.enemies[0].character_name, "Territory Enforcer")
 	assert_eq(scene2.enemies[1].character_name, "Territory Enforcer")
 
 
 func test_spawn_enemies_does_not_clear_context_enemies() -> void:
-	BattleContext.enemies = "res://characters/enemies/territory_enforcer.tres"
+	BattleContext.enemies = "territory_enforcer"
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
-	assert_eq(BattleContext.enemies, "res://characters/enemies/territory_enforcer.tres",
+	assert_eq(BattleContext.enemies, "territory_enforcer",
 		"BattleContext.enemies must survive a read so defeat→retry reuses it (AC2)")

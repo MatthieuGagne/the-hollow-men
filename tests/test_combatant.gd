@@ -536,3 +536,13 @@ func test_security_captain_loads_with_correct_stats() -> void:
 	assert_eq(captain.def_stat, 38)
 	assert_eq(captain.spd_stat, 14)
 	assert_not_null(captain.ai, "Security Captain must have an ai resource")
+
+
+func test_id_defaults_to_empty_string() -> void:
+	var c := Combatant.new()
+	assert_eq(c.id, "")
+
+
+func test_reid_has_correct_id() -> void:
+	var reid: Combatant = load("res://characters/reid.tres")
+	assert_eq(reid.id, "reid")

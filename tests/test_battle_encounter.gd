@@ -38,10 +38,9 @@ func test_resolve_fallback_to_default() -> void:
 
 
 func test_resolve_enemies_uses_custom_when_set() -> void:
-    assert_eq(_encounter._resolve_enemies("a.tres,b.tres"), "a.tres,b.tres")
+    assert_eq(_encounter._resolve_enemies("territory_enforcer,shade"), "territory_enforcer,shade")
 
 
 func test_resolve_enemies_falls_back_to_shade_when_empty() -> void:
-    assert_eq(_encounter._resolve_enemies(""),
-        "res://characters/enemies/shade.tres",
-        "empty enemy table must resolve to a Shade explicitly, not via a read-side default")
+    assert_eq(_encounter._resolve_enemies(""), "shade",
+        "empty enemy table must resolve to the shade id, not via a read-side default")

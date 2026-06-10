@@ -12,7 +12,6 @@ signal pause_toggled(paused: bool)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, SELECTING_ENEMY, PAUSED }
 
-const SHADE_RES     := "res://characters/enemies/shade.tres"
 const SHADE_TEX     := "res://assets/sprites/enemies/shade.png"
 
 const ENEMY_SPRITE_DATA: Dictionary = {
@@ -90,12 +89,12 @@ func _ready() -> void:
 
 func _spawn_enemies() -> void:
 	if BattleContext.enemies != "":
-		for path: String in BattleContext.enemies.split(","):
-			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
+		for id: String in BattleContext.enemies.split(","):
+			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
 			c.reset_runtime_state()
 			add_enemy(c)
 	else:
-		var shade: Combatant = load(SHADE_RES).duplicate()
+		var shade: Combatant = GameData.get_combatant("shade").duplicate()
 		shade.reset_runtime_state()
 		add_enemy(shade)
 

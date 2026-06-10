@@ -10,6 +10,7 @@ pp_cost = 3
 
 [resource]
 script = ExtResource("1_combatant")
+id = "reid"
 character_name = "Reid"
 is_player_controlled = true
 ability = SubResource("ability_reid")

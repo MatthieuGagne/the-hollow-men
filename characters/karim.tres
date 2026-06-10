@@ -11,6 +11,7 @@ targets_party = true
 
 [resource]
 script = ExtResource("1_combatant")
+id = "karim"
 character_name = "Karim"
 is_player_controlled = true
 ability = SubResource("ability_karim")

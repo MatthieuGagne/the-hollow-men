@@ -179,13 +179,13 @@ func test_pre_battle_enemies_empty_yields_empty_context() -> void:
 
 
 func test_pre_battle_enemies_sets_context_enemies() -> void:
-	_zone.pre_battle_enemies = "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres"
+	_zone.pre_battle_enemies = "territory_enforcer,territory_enforcer"
 	_zone._on_dialogue_closed()
-	assert_eq(BattleContext.enemies, "res://characters/enemies/territory_enforcer.tres,res://characters/enemies/territory_enforcer.tres")
+	assert_eq(BattleContext.enemies, "territory_enforcer,territory_enforcer")
 
 
 func test_fresh_context_clears_stale_enemies() -> void:
-	BattleContext.enemies = "res://characters/enemies/shade.tres"
+	BattleContext.enemies = "shade"
 	_zone.pre_battle_enemies = ""
 	_zone._on_dialogue_closed()
 	assert_eq(BattleContext.enemies, "",
