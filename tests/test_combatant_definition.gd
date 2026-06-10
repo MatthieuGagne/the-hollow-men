@@ -21,3 +21,25 @@ func test_combatant_definition_default_fields() -> void:
 	assert_eq(d.sigil_type, CombatantDefinition.SigilType.NONE)
 	assert_eq(d.sprite_path, "")
 	assert_eq(d.sprite_vframes, 1)
+
+
+func test_character_definition_has_ability_field() -> void:
+	var d := CharacterDefinition.new()
+	assert_null(d.ability, "ability must default to null")
+	assert_true(d.is_player_controlled, "CharacterDefinition defaults is_player_controlled=true")
+
+
+func test_enemy_definition_has_ai_field() -> void:
+	var d := EnemyDefinition.new()
+	assert_null(d.ai, "ai must default to null")
+	assert_true(d.is_player_controlled, "EnemyDefinition inherits is_player_controlled default")
+
+
+func test_character_definition_is_combatant_definition() -> void:
+	var d := CharacterDefinition.new()
+	assert_true(d is CombatantDefinition)
+
+
+func test_enemy_definition_is_combatant_definition() -> void:
+	var d := EnemyDefinition.new()
+	assert_true(d is CombatantDefinition)
