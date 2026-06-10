@@ -8,6 +8,7 @@ script = ExtResource("2_enforcer_ai")
 
 [resource]
 script = ExtResource("1_combatant")
+id = "territory_enforcer"
 character_name = "Territory Enforcer"
 is_player_controlled = false
 max_hp = 150

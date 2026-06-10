@@ -8,6 +8,7 @@ script = ExtResource("2_enemy_ai")
 
 [resource]
 script = ExtResource("1_combatant")
+id = "shade"
 character_name = "Shade"
 is_player_controlled = false
 max_hp = 200
