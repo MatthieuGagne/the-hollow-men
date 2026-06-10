@@ -4,7 +4,7 @@ const BATTLE_SCENE := "res://scenes/battle/BattleScene.tscn"
 const DEFAULT_ENEMIES := "shade"
 
 @export var battle_background_override: String = ""
-## Comma-separated enemy resource paths for this encounter. Empty falls back to a
+## Comma-separated enemy ids for this encounter. Empty falls back to a
 ## single Shade — set explicitly here, never via BattleScene's read-side default.
 @export var enemies: String = ""
 

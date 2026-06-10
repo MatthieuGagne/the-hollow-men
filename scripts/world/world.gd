@@ -53,5 +53,5 @@ func _load_battle_scene() -> void:
 	var scene := get_tree().current_scene
 	if scene != null:
 		return_scene = scene.scene_file_path
-	BattleContext.configure("res://characters/enemies/shade.tres", "default", return_scene, "")
+	BattleContext.configure("shade", "default", return_scene, "")
 	SceneManager.change_scene("res://scenes/battle/BattleScene.tscn")
