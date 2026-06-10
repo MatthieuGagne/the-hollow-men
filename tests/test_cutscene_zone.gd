@@ -136,14 +136,14 @@ func test_pre_battle_guests_empty_does_not_add_temporary_members() -> void:
 
 
 func test_pre_battle_guests_adds_iris_to_party() -> void:
-	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone.pre_battle_guests = "iris"
 	_zone._on_dialogue_closed()
 	assert_true(PartyManager.has_member("Iris"))
 
 
 func test_pre_battle_guests_does_not_modify_permanent_members() -> void:
 	var before_count: int = PartyManager._permanent_members.size()
-	_zone.pre_battle_guests = "res://characters/iris.tres"
+	_zone.pre_battle_guests = "iris"
 	_zone._on_dialogue_closed()
 	assert_eq(PartyManager._permanent_members.size(), before_count)
 

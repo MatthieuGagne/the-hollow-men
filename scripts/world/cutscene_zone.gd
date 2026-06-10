@@ -72,8 +72,8 @@ func _fire() -> void:
 
 func _on_dialogue_closed() -> void:
 	if pre_battle_guests != "":
-		for path: String in pre_battle_guests.split(","):
-			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
+		for id: String in pre_battle_guests.split(","):
+			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
 			c.reset_runtime_state()
 			PartyManager.add_temporary(c)
 	# Fully populate a FRESH battle context so nothing carries over from a
