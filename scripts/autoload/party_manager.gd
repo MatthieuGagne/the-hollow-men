@@ -1,15 +1,10 @@
 extends Node
 
-const REID_RES   := "res://characters/reid.tres"
-const IRIS_RES   := "res://characters/iris.tres"
-const KARIM_RES  := "res://characters/karim.tres"
-const MARGOT_RES := "res://characters/margot.tres"
-
 var _permanent_members: Array[Combatant] = []
 var _temporary_members: Array[Combatant] = []
 
 func _ready() -> void:
-	var reid: Combatant = (load(REID_RES) as Combatant).duplicate()
+	var reid: Combatant = GameData.get_combatant("reid").duplicate()
 	reid.reset_runtime_state()
 	_permanent_members.append(reid)
 
