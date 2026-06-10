@@ -265,13 +265,12 @@ func _add_karim_to_party() -> Combatant:
 	var karim: Combatant = Combatant.from_definition(load("res://characters/karim.tres"))
 	_scene.party.append(karim)
 	var idx: int = _scene.party.size() - 1
-	var data: Dictionary = BattleScene.PARTY_SPRITE_DATA["Karim"]
 	var sprite := Sprite2D.new()
-	sprite.vframes = data["vframes"]
+	sprite.vframes = karim.sprite_vframes
 	sprite.frame = 2
 	sprite.flip_h = false
 	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[idx])
-	sprite.texture = load(data["texture"])
+	sprite.texture = load(karim.sprite_path)
 	sprite.modulate = Color.WHITE
 	_scene.get_node("PartyContainer").add_child(sprite)
 	return karim
