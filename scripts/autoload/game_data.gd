@@ -14,6 +14,8 @@ func _ready() -> void:
 		if dir == null:
 			push_warning("GameData: cannot open %s" % dir_path)
 			continue
+		dir.include_navigational = false
+		dir.include_hidden = false
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
 		while file_name != "":

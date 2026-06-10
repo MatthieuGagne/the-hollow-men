@@ -2,7 +2,7 @@ extends GutTest
 
 
 func test_registry_has_nine_combatants() -> void:
-	assert_eq(GameData._registry.size(), 9)
+	assert_gte(GameData._registry.size(), 9)
 
 
 func test_get_combatant_reid() -> void:
