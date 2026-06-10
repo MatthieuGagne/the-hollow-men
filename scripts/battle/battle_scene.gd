@@ -89,8 +89,8 @@ func _ready() -> void:
 
 func _spawn_enemies() -> void:
 	if BattleContext.enemies != "":
-		for path: String in BattleContext.enemies.split(","):
-			var c: Combatant = (load(path.strip_edges()) as Combatant).duplicate()
+		for id: String in BattleContext.enemies.split(","):
+			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
 			c.reset_runtime_state()
 			add_enemy(c)
 	else:

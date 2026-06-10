@@ -1,7 +1,7 @@
 extends Area2D
 
 const BATTLE_SCENE := "res://scenes/battle/BattleScene.tscn"
-const DEFAULT_ENEMIES := "res://characters/enemies/shade.tres"
+const DEFAULT_ENEMIES := "shade"
 
 @export var battle_background_override: String = ""
 ## Comma-separated enemy resource paths for this encounter. Empty falls back to a
