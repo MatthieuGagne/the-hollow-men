@@ -46,3 +46,19 @@ func test_psychic_compute_can_be_negative() -> void:
 	var target := _stats(0, 0, 0, 100) # RES 100
 	assert_eq(e.compute(user, target), -95,
 		"compute returns raw base (un-clamped); variance clamps to 1 later")
+
+
+func test_variance_within_plus_minus_10_percent() -> void:
+	# base 40 -> floor(40*0.9)=36 .. floor(40*1.1)=44
+	for _i in range(200):
+		var d: int = Combatant.apply_damage_variance(40)
+		assert_gte(d, 36, "variance floor for base 40")
+		assert_lte(d, 44, "variance ceil for base 40")
+
+
+func test_variance_clamps_to_minimum_1() -> void:
+	assert_eq(Combatant.apply_damage_variance(0), 1, "base 0 clamps to 1")
+
+
+func test_variance_negative_base_clamps_to_1() -> void:
+	assert_eq(Combatant.apply_damage_variance(-95), 1, "negative base clamps to 1")

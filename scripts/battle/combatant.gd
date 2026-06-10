@@ -201,10 +201,15 @@ func limit_ratio() -> float:
 	return limit_gauge / limit_cap()
 
 
+# Single source of truth for the +-10% damage roll. Clamps to a minimum of 1.
+static func apply_damage_variance(base: int) -> int:
+	return maxi(1, floori(base * randf_range(0.9, 1.1)))
+
+
 static func calculate_damage(attacker: Combatant, target: Combatant) -> int:
 	var atk := attacker.get_effective_stat(StatusEffect.StatAxis.STR)
 	var def_ := target.get_effective_stat(StatusEffect.StatAxis.DEF)
-	return maxi(1, floori((atk - def_) * randf_range(0.9, 1.1)))
+	return apply_damage_variance(atk - def_)
 
 
 static func calculate_piercing_strike(attacker: Combatant) -> int:
