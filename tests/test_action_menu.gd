@@ -14,9 +14,10 @@ func _make_combatant(pp_cost: int, current_pp: int) -> Combatant:
 	var ab: Ability = Ability.new()
 	ab.ability_name = "Test Ability"
 	ab.pp_cost = pp_cost
-	var c: Combatant = Combatant.new()
-	c.ability = ab
-	c.max_pp = 100
+	var d := CharacterDefinition.new()
+	d.max_pp = 100
+	d.ability = ab
+	var c := Combatant.from_definition(d)
 	c.current_pp = current_pp
 	return c
 

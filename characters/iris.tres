@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
 
 [sub_resource type="Resource" id="ability_iris"]
@@ -9,11 +9,10 @@ ability_name = "Static Touch"
 pp_cost = 8
 
 [resource]
-script = ExtResource("1_combatant")
+script = ExtResource("1_chardef")
 id = "iris"
 character_name = "Iris"
 is_player_controlled = true
-ability = SubResource("ability_iris")
 max_hp = 270
 max_pp = 60
 str_stat = 30
@@ -22,3 +21,6 @@ psy_stat = 50
 res_stat = 20
 spd_stat = 50
 sigil_type = 0
+sprite_path = "res://assets/sprites/characters/iris.png"
+sprite_vframes = 8
+ability = SubResource("ability_iris")

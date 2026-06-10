@@ -14,7 +14,6 @@ func _ready() -> void:
 
 func _seed_full_party() -> void:
 	for res_path: String in _PARTY_RESOURCES:
-		var combatant: Combatant = (load(res_path) as Combatant).duplicate()
-		combatant.reset_runtime_state()
+		var combatant: Combatant = Combatant.from_definition(load(res_path) as CombatantDefinition)
 		if not PartyManager.has_member(combatant.character_name):
 			PartyManager.add_member(combatant)

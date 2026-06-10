@@ -4,9 +4,7 @@ var _permanent_members: Array[Combatant] = []
 var _temporary_members: Array[Combatant] = []
 
 func _ready() -> void:
-	var reid: Combatant = GameData.get_combatant("reid").duplicate()
-	reid.reset_runtime_state()
-	_permanent_members.append(reid)
+	_permanent_members.append(Combatant.from_definition(GameData.get_definition("reid")))
 
 func add_member(combatant: Combatant) -> void:
 	_permanent_members.append(combatant)

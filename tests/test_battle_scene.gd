@@ -7,8 +7,7 @@ func before_each() -> void:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
 	BattleContext.configure()
-	var reid: Combatant = load("res://characters/reid.tres").duplicate()
-	reid.reset_runtime_state()
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	PartyManager._permanent_members.append(reid)
 	_scene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(_scene)
@@ -84,8 +83,7 @@ func test_battle_ended_signal_emitted_on_win() -> void:
 
 
 func test_party_sprites_have_1px_vertical_gap() -> void:
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_member(iris)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
@@ -225,8 +223,7 @@ func test_ability_damages_enemy_as_reid() -> void:
 
 
 func test_ability_damages_enemy_as_iris() -> void:
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_member(iris)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
@@ -265,8 +262,7 @@ func test_ability_does_not_damage_when_pp_insufficient() -> void:
 
 
 func _add_karim_to_party() -> Combatant:
-	var karim: Combatant = load("res://characters/karim.tres")
-	karim.reset_runtime_state()
+	var karim: Combatant = Combatant.from_definition(load("res://characters/karim.tres"))
 	_scene.party.append(karim)
 	var idx: int = _scene.party.size() - 1
 	var data: Dictionary = BattleScene.PARTY_SPRITE_DATA["Karim"]
@@ -358,8 +354,7 @@ func test_confirm_party_target_ignores_dead_target() -> void:
 
 
 func test_margot_ability_deals_psy_damage() -> void:
-	var margot: Combatant = load("res://characters/margot.tres").duplicate()
-	margot.reset_runtime_state()
+	var margot: Combatant = Combatant.from_definition(load("res://characters/margot.tres"))
 	PartyManager.add_member(margot)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
@@ -373,8 +368,7 @@ func test_margot_ability_deals_psy_damage() -> void:
 
 
 func test_margot_ability_spends_pp() -> void:
-	var margot: Combatant = load("res://characters/margot.tres").duplicate()
-	margot.reset_runtime_state()
+	var margot: Combatant = Combatant.from_definition(load("res://characters/margot.tres"))
 	PartyManager.add_member(margot)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
@@ -385,8 +379,7 @@ func test_margot_ability_spends_pp() -> void:
 
 
 func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
-	var margot: Combatant = load("res://characters/margot.tres").duplicate()
-	margot.reset_runtime_state()
+	var margot: Combatant = Combatant.from_definition(load("res://characters/margot.tres"))
 	margot.current_pp = 0
 	PartyManager.add_member(margot)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
@@ -664,8 +657,7 @@ func test_party_comes_from_party_manager() -> void:
 
 func test_party_includes_temporary_members() -> void:
 	PartyManager._temporary_members.clear()
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_temporary(iris)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
@@ -674,8 +666,7 @@ func test_party_includes_temporary_members() -> void:
 
 
 func test_victory_removes_temporary_members() -> void:
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_temporary(iris)
 	_scene._on_battle_ended(true)
 	assert_false(PartyManager.has_member("Iris"))
@@ -688,8 +679,7 @@ func test_victory_uses_return_scene_when_set() -> void:
 
 func test_add_enemy_appends_to_enemies_array() -> void:
 	var count_before: int = _scene.enemies.size()
-	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
-	enforcer.reset_runtime_state()
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
 	_scene.add_enemy(enforcer)
 	assert_eq(_scene.enemies.size(), count_before + 1, "add_enemy must append to enemies array")
 	assert_eq(_scene.enemies.back().character_name, "Territory Enforcer")
@@ -698,8 +688,7 @@ func test_add_enemy_appends_to_enemies_array() -> void:
 func test_add_enemy_adds_sprite_to_enemy_container() -> void:
 	var container: Node2D = _scene.get_node("EnemyContainer")
 	var sprites_before: int = container.get_child_count()
-	var captain: Combatant = load("res://characters/enemies/block_captain.tres").duplicate()
-	captain.reset_runtime_state()
+	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/block_captain.tres"))
 	_scene.add_enemy(captain)
 	assert_eq(container.get_child_count(), sprites_before + 1,
 		"add_enemy must add a sprite to EnemyContainer")
@@ -708,13 +697,11 @@ func test_add_enemy_adds_sprite_to_enemy_container() -> void:
 func test_call_backup_adds_captain_when_enemies_outnumbered() -> void:
 	# Party: Reid + Iris (2 living). Enemy: 1 Enforcer. → Call Backup fires, spawns Captain.
 	PartyManager._temporary_members.clear()
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_member(iris)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
-	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
-	enforcer.reset_runtime_state()
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
 	scene2.enemies.clear()
 	scene2.enemies.append(enforcer)
 	var count_before: int = scene2.enemies.size()
@@ -728,13 +715,11 @@ func test_call_backup_adds_captain_when_enemies_outnumbered() -> void:
 func test_call_backup_only_fires_once_per_enforcer() -> void:
 	# Second call when already outnumbered should not spawn a second captain.
 	PartyManager._temporary_members.clear()
-	var iris: Combatant = load("res://characters/iris.tres").duplicate()
-	iris.reset_runtime_state()
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
 	PartyManager.add_member(iris)
 	var scene2: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(scene2)
-	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
-	enforcer.reset_runtime_state()
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
 	scene2.enemies.clear()
 	scene2.enemies.append(enforcer)
 	scene2._resolve_enemy_action(enforcer)
@@ -746,8 +731,7 @@ func test_call_backup_only_fires_once_per_enforcer() -> void:
 
 func test_call_backup_not_called_when_enemies_equal_party() -> void:
 	# Party: 1 Reid. Enemies: 1 Enforcer. → no backup.
-	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
-	enforcer.reset_runtime_state()
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
 	_scene.enemies.clear()
 	_scene.enemies.append(enforcer)
 	var count_before: int = _scene.enemies.size()
@@ -758,8 +742,7 @@ func test_call_backup_not_called_when_enemies_equal_party() -> void:
 
 func test_enforcer_shakedown_deals_damage_when_not_outnumbered() -> void:
 	var reid: Combatant = _scene.party[0]
-	var enforcer: Combatant = load("res://characters/enemies/territory_enforcer.tres").duplicate()
-	enforcer.reset_runtime_state()
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
 	_scene.enemies.clear()
 	_scene.enemies.append(enforcer)
 	var hp_before: int = reid.current_hp
@@ -783,13 +766,11 @@ func test_resolve_enemy_action_default_attacks_party() -> void:
 func _make_captain_scene() -> BattleScene:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
-	var reid: Combatant = load("res://characters/reid.tres").duplicate()
-	reid.reset_runtime_state()
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	PartyManager._permanent_members.append(reid)
 	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(s)
-	var captain: Combatant = load("res://characters/enemies/block_captain.tres").duplicate()
-	captain.reset_runtime_state()
+	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/block_captain.tres"))
 	s.enemies.clear()
 	s.enemies.append(captain)
 	return s
@@ -876,10 +857,13 @@ func test_hold_the_line_raises_effective_def_during_combat() -> void:
 	assert_gt(def_with_buff, def_no_buff,
 		"Hold the Line must increase effective DEF above base")
 	# Damage from Reid against buffed Captain must be lower
+	# Use a zero-def combatant as baseline for unbuffed comparison
+	var d_zero := CombatantDefinition.new()
+	var unbuffed_target := Combatant.from_definition(d_zero)
 	for _i in range(50):
 		var dmg_buffed := Combatant.calculate_damage(reid, captain)
 		captain.current_hp = captain.max_hp  # reset so we can sample repeatedly
-		assert_lte(dmg_buffed, Combatant.calculate_damage(reid, Combatant.new()) + 1,
+		assert_lte(dmg_buffed, Combatant.calculate_damage(reid, unbuffed_target) + 1,
 			"damage against buffed enemy must be lower than against unbuffed")
 
 
@@ -932,13 +916,11 @@ func test_shade_ai_delegates_to_resource() -> void:
 func _make_security_captain_scene() -> BattleScene:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
-	var reid: Combatant = load("res://characters/reid.tres").duplicate()
-	reid.reset_runtime_state()
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	PartyManager._permanent_members.append(reid)
 	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(s)
-	var captain: Combatant = load("res://characters/enemies/security_captain.tres").duplicate()
-	captain.reset_runtime_state()
+	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/security_captain.tres"))
 	s.enemies.clear()
 	s.enemies.append(captain)
 	return s

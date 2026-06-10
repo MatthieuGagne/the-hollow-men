@@ -2,6 +2,4 @@ extends BattleScene
 
 
 func _spawn_enemies() -> void:
-	var enforcer: Combatant = GameData.get_combatant("territory_enforcer").duplicate()
-	enforcer.reset_runtime_state()
-	add_enemy(enforcer)
+	add_enemy(Combatant.from_definition(GameData.get_definition("territory_enforcer")))

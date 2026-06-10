@@ -1,13 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1_enemydef"]
 [ext_resource type="Script" path="res://scripts/battle/enemy_ai.gd" id="2_enemy_ai"]
 
 [sub_resource type="Resource" id="ai_guard"]
 script = ExtResource("2_enemy_ai")
 
 [resource]
-script = ExtResource("1_combatant")
+script = ExtResource("1_enemydef")
 id = "private_security_guard"
 character_name = "Private Security Guard"
 is_player_controlled = false
@@ -19,4 +19,6 @@ psy_stat = 5
 res_stat = 12
 spd_stat = 32
 sigil_type = 0
+sprite_path = "res://assets/sprites/enemies/private_security_guard.png"
+sprite_vframes = 1
 ai = SubResource("ai_guard")

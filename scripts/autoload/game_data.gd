@@ -27,18 +27,18 @@ func _ready() -> void:
 
 func _try_register(path: String) -> void:
 	var res := load(path)
-	if not res is Combatant:
+	if not res is CombatantDefinition:
 		return
-	var c := res as Combatant
-	if c.id == "":
+	var d := res as CombatantDefinition
+	if d.id == "":
 		return
-	if _registry.has(c.id):
-		push_warning("GameData: duplicate id '%s' found in %s — skipping" % [c.id, path])
+	if _registry.has(d.id):
+		push_warning("GameData: duplicate id '%s' found in %s — skipping" % [d.id, path])
 		return
-	_registry[c.id] = c
+	_registry[d.id] = d
 
 
-func get_combatant(id: String) -> Combatant:
+func get_definition(id: String) -> CombatantDefinition:
 	if not _registry.has(id):
 		assert(false, "GameData: unknown combatant id '%s'" % id)
 		return null

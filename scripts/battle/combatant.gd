@@ -1,32 +1,11 @@
 class_name Combatant
-extends Resource
+extends RefCounted
 
-enum SigilType { NONE, BUREAU, JAILBROKEN }
-
-# Identity
-@export var id: String = ""
-@export var character_name: String = ""
-@export var is_player_controlled: bool = true
-@export var ability: Ability = null
-
-# Base stats
-@export var max_hp: int = 100
-@export var max_pp: int = 50
-@export var str_stat: int = 10   # physical attack
-@export var def_stat: int = 10   # physical defense
-@export var psy_stat: int = 10   # psychic attack
-@export var res_stat: int = 10   # psychic resistance
-@export var spd_stat: int = 10   # ATB fill rate
-
-# Sigil
-@export var sigil_type: SigilType = SigilType.NONE
-
-# AI
-@export var ai: EnemyAI = null
+var def: CombatantDefinition
 
 # Runtime state
-var current_hp: int
-var current_pp: int
+var current_hp: int = 0
+var current_pp: int = 0
 var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
@@ -40,15 +19,68 @@ const LIMIT_CAP_BUREAU: float = 80.0
 # ATB fill rate multiplier — spd_stat=10 fills ATB in ~6.67 s (within the 6–8 s design target)
 const ATB_FILL_RATE: float = 1.5
 
+# --- Delegating properties ---
 
-func _init() -> void:
-	current_hp = max_hp
-	current_pp = max_pp
+var id: String:
+	get: return def.id
 
+var character_name: String:
+	get: return def.character_name
+
+var is_player_controlled: bool:
+	get: return def.is_player_controlled
+
+var max_hp: int:
+	get: return def.max_hp
+
+var max_pp: int:
+	get: return def.max_pp
+
+var str_stat: int:
+	get: return def.str_stat
+
+var def_stat: int:
+	get: return def.def_stat
+
+var psy_stat: int:
+	get: return def.psy_stat
+
+var res_stat: int:
+	get: return def.res_stat
+
+var spd_stat: int:
+	get: return def.spd_stat
+
+var sigil_type: CombatantDefinition.SigilType:
+	get: return def.sigil_type
+
+var ability: Ability:
+	get: return (def as CharacterDefinition).ability if def is CharacterDefinition else null
+
+var ai: EnemyAI:
+	get: return (def as EnemyDefinition).ai if def is EnemyDefinition else null
+
+var sprite_path: String:
+	get: return def.sprite_path
+
+var sprite_vframes: int:
+	get: return def.sprite_vframes
+
+# --- Factory ---
+
+static func from_definition(d: CombatantDefinition) -> Combatant:
+	var c := Combatant.new()
+	c.def = d
+	c.current_hp = d.max_hp
+	c.current_pp = d.max_pp
+	return c
+
+
+# --- Runtime methods (unchanged) ---
 
 func reset_runtime_state() -> void:
-	current_hp = max_hp
-	current_pp = max_pp
+	current_hp = def.max_hp
+	current_pp = def.max_pp
 	atb = 0.0
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
@@ -119,7 +151,7 @@ func is_skipping() -> bool:
 
 
 func limit_cap() -> float:
-	return LIMIT_CAP_BUREAU if sigil_type == SigilType.BUREAU else LIMIT_MAX
+	return LIMIT_CAP_BUREAU if sigil_type == CombatantDefinition.SigilType.BUREAU else LIMIT_MAX
 
 
 func is_limit_ready() -> bool:

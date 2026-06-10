@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
 
 [sub_resource type="Resource" id="ability_reid"]
@@ -9,11 +9,10 @@ ability_name = "Piercing Strike"
 pp_cost = 3
 
 [resource]
-script = ExtResource("1_combatant")
+script = ExtResource("1_chardef")
 id = "reid"
 character_name = "Reid"
 is_player_controlled = true
-ability = SubResource("ability_reid")
 max_hp = 350
 max_pp = 20
 str_stat = 45
@@ -22,3 +21,6 @@ psy_stat = 15
 res_stat = 25
 spd_stat = 30
 sigil_type = 0
+sprite_path = "res://assets/sprites/characters/reid.png"
+sprite_vframes = 8
+ability = SubResource("ability_reid")

@@ -90,13 +90,9 @@ func _ready() -> void:
 func _spawn_enemies() -> void:
 	if BattleContext.enemies != "":
 		for id: String in BattleContext.enemies.split(","):
-			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
-			c.reset_runtime_state()
-			add_enemy(c)
+			add_enemy(Combatant.from_definition(GameData.get_definition(id.strip_edges())))
 	else:
-		var shade: Combatant = GameData.get_combatant("shade").duplicate()
-		shade.reset_runtime_state()
-		add_enemy(shade)
+		add_enemy(Combatant.from_definition(GameData.get_definition("shade")))
 
 
 func _load_background() -> void:
