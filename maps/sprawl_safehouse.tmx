@@ -86,7 +86,7 @@
     <property name="height" type="float" value="128"/>
     <property name="next_scene" value="res://scenes/battle/BattleScene.tscn"/>
     <property name="pre_battle_enemies" value="territory_enforcer,territory_enforcer"/>
-    <property name="pre_battle_guests" value="res://characters/iris.tres"/>
+    <property name="pre_battle_guests" value="iris"/>
     <property name="res_path" type="file" value="res://scenes/world/CutsceneZone.tscn"/>
     <property name="width" type="float" value="224"/>
    </properties>
