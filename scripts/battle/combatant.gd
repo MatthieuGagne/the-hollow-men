@@ -4,6 +4,7 @@ extends Resource
 enum SigilType { NONE, BUREAU, JAILBROKEN }
 
 # Identity
+@export var id: String = ""
 @export var character_name: String = ""
 @export var is_player_controlled: bool = true
 @export var ability: Ability = null
