@@ -73,9 +73,7 @@ func _fire() -> void:
 func _on_dialogue_closed() -> void:
 	if pre_battle_guests != "":
 		for id: String in pre_battle_guests.split(","):
-			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
-			c.reset_runtime_state()
-			PartyManager.add_temporary(c)
+			PartyManager.add_temporary(Combatant.from_definition(GameData.get_definition(id.strip_edges())))
 	# Fully populate a FRESH battle context so nothing carries over from a
 	# previous encounter (stale enemy table, background, or return scene).
 	# CutsceneZone has no background override, so background_id stays "" → default.

@@ -12,24 +12,8 @@ signal pause_toggled(paused: bool)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, SELECTING_ENEMY, PAUSED }
 
-const SHADE_TEX     := "res://assets/sprites/enemies/shade.png"
-
-const ENEMY_SPRITE_DATA: Dictionary = {
-	"Shade":                  {"texture": "res://assets/sprites/enemies/shade.png"},
-	"Territory Enforcer":     {"texture": "res://assets/sprites/enemies/shade.png"},
-	"Block Captain":          {"texture": "res://assets/sprites/enemies/shade.png"},
-	"Private Security Guard": {"texture": "res://assets/sprites/enemies/private_security_guard.png"},
-	"Security Captain":       {"texture": "res://assets/sprites/enemies/security_captain.png"},
-}
 const SPRITE_FRAME_HEIGHT: int = 24
 const SPRITE_GAP_PX: int       = 1
-
-const PARTY_SPRITE_DATA: Dictionary = {
-	"Reid":   {"texture": "res://assets/sprites/characters/reid.png",   "vframes": 8},
-	"Iris":   {"texture": "res://assets/sprites/characters/iris.png",   "vframes": 8},
-	"Karim":  {"texture": "res://assets/sprites/characters/karim.png",  "vframes": 8},
-	"Margot": {"texture": "res://assets/sprites/characters/margot.png", "vframes": 8},
-}
 
 const SLOT_POSITIONS: Array[int] = [
 	-2 * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX),
@@ -90,13 +74,9 @@ func _ready() -> void:
 func _spawn_enemies() -> void:
 	if BattleContext.enemies != "":
 		for id: String in BattleContext.enemies.split(","):
-			var c: Combatant = GameData.get_combatant(id.strip_edges()).duplicate()
-			c.reset_runtime_state()
-			add_enemy(c)
+			add_enemy(Combatant.from_definition(GameData.get_definition(id.strip_edges())))
 	else:
-		var shade: Combatant = GameData.get_combatant("shade").duplicate()
-		shade.reset_runtime_state()
-		add_enemy(shade)
+		add_enemy(Combatant.from_definition(GameData.get_definition("shade")))
 
 
 func _load_background() -> void:
@@ -110,16 +90,12 @@ func _load_background() -> void:
 func _setup_sprites() -> void:
 	for i in range(party.size()):
 		var member := party[i]
-		if not PARTY_SPRITE_DATA.has(member.character_name):
-			push_warning("BattleScene: no sprite data for '%s'" % member.character_name)
-			continue
-		var data: Dictionary = PARTY_SPRITE_DATA[member.character_name]
 		var sprite := Sprite2D.new()
-		sprite.vframes = data["vframes"]
+		sprite.vframes = member.sprite_vframes
 		sprite.frame = 2
 		sprite.flip_h = false
 		sprite.position = Vector2(0, SLOT_POSITIONS[i])
-		sprite.texture = load(data["texture"])
+		sprite.texture = load(member.sprite_path)
 		sprite.modulate = Color.WHITE
 		$PartyContainer.add_child(sprite)
 
@@ -128,9 +104,7 @@ func _setup_sprites() -> void:
 func add_enemy(combatant: Combatant) -> void:
 	enemies.append(combatant)
 	var sprite := Sprite2D.new()
-	var data: Dictionary = ENEMY_SPRITE_DATA.get(combatant.character_name,
-		{"texture": SHADE_TEX})
-	sprite.texture = load(data["texture"])
+	sprite.texture = load(combatant.sprite_path)
 	var idx := enemies.size() - 1
 	sprite.position = Vector2(0, idx * (SPRITE_FRAME_HEIGHT + SPRITE_GAP_PX))
 	$EnemyContainer.add_child(sprite)

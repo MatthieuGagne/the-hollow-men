@@ -8,8 +8,7 @@ func before_each() -> void:
 	PartyManager._temporary_members.clear()
 	for path in ["res://characters/reid.tres", "res://characters/iris.tres",
 			"res://characters/karim.tres", "res://characters/margot.tres"]:
-		var c: Combatant = load(path).duplicate()
-		c.reset_runtime_state()
+		var c: Combatant = Combatant.from_definition(load(path))
 		PartyManager.add_member(c)
 	_scene = preload("res://scenes/battle/BattleScene.tscn").instantiate()
 	add_child_autofree(_scene)

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Combatant" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/battle/combatant.gd" id="1_combatant"]
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
 
 [sub_resource type="Resource" id="ability_margot"]
@@ -10,11 +10,10 @@ pp_cost = 15
 targets_party = false
 
 [resource]
-script = ExtResource("1_combatant")
+script = ExtResource("1_chardef")
 id = "margot"
 character_name = "Margot"
 is_player_controlled = true
-ability = SubResource("ability_margot")
 max_hp = 240
 max_pp = 90
 str_stat = 15
@@ -23,3 +22,6 @@ psy_stat = 70
 res_stat = 20
 spd_stat = 40
 sigil_type = 0
+sprite_path = "res://assets/sprites/characters/margot.png"
+sprite_vframes = 8
+ability = SubResource("ability_margot")

@@ -2,6 +2,4 @@ extends BattleScene
 
 func _spawn_enemies() -> void:
 	for _i in range(2):
-		var guard: Combatant = GameData.get_combatant("private_security_guard").duplicate()
-		guard.reset_runtime_state()
-		add_enemy(guard)
+		add_enemy(Combatant.from_definition(GameData.get_definition("private_security_guard")))
