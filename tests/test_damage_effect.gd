@@ -62,3 +62,12 @@ func test_variance_clamps_to_minimum_1() -> void:
 
 func test_variance_negative_base_clamps_to_1() -> void:
 	assert_eq(Combatant.apply_damage_variance(-95), 1, "negative base clamps to 1")
+
+
+func test_ability_holds_effects_array() -> void:
+	var a := Ability.new()
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PIERCING
+	a.effects = [e]
+	assert_eq(a.effects.size(), 1)
+	assert_true(a.effects[0] is DamageEffect)
