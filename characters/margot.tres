@@ -13,7 +13,7 @@ script = ExtResource("2_ability")
 ability_name = "Void Calculus"
 pp_cost = 15
 targets_party = false
-effects = Array[Resource]([SubResource("dmg_margot")])
+effects = Array[AbilityEffect]([SubResource("dmg_margot")])
 
 [resource]
 script = ExtResource("1_chardef")

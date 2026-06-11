@@ -12,7 +12,7 @@ kind = 2
 script = ExtResource("2_ability")
 ability_name = "Static Touch"
 pp_cost = 8
-effects = Array[Resource]([SubResource("dmg_iris")])
+effects = Array[AbilityEffect]([SubResource("dmg_iris")])
 
 [resource]
 script = ExtResource("1_chardef")

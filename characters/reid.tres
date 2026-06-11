@@ -12,7 +12,7 @@ kind = 1
 script = ExtResource("2_ability")
 ability_name = "Piercing Strike"
 pp_cost = 3
-effects = Array[Resource]([SubResource("dmg_reid")])
+effects = Array[AbilityEffect]([SubResource("dmg_reid")])
 
 [resource]
 script = ExtResource("1_chardef")
