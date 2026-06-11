@@ -351,7 +351,11 @@ func confirm_party_target(target: Combatant) -> void:
 		return
 	if not _active.spend_pp(_active.ability.pp_cost):
 		return
-	target.heal(60)
+	var total: int = 0
+	for effect in _active.ability.effects:
+		if effect is HealEffect:
+			total += effect.compute_heal(_active, target)
+	target.heal(total)
 	combatant_updated.emit(target)
 	combatant_updated.emit(_active)
 	var attacker_idx: int = party.find(_active)
