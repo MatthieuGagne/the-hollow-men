@@ -992,3 +992,21 @@ func test_spawn_enemies_does_not_clear_context_enemies() -> void:
 	add_child_autofree(scene2)
 	assert_eq(BattleContext.enemies, "territory_enforcer",
 		"BattleContext.enemies must survive a read so defeat→retry reuses it (AC2)")
+
+
+func test_ability_uses_effects_data_not_character_name() -> void:
+	# Reid with his piercing effect removed deals no ability damage,
+	# proving _resolve_ability reads effects (data), not character_name.
+	# Save and restore effects to avoid polluting the shared CharacterDefinition
+	# cache (ability is a getter that returns def.ability directly — no setter).
+	var reid: Combatant = _scene.party[0]
+	var saved_effects := reid.ability.effects.duplicate()
+	reid.ability.effects = []
+	var shade: Combatant = _scene.enemies[0]
+	var hp_before := shade.current_hp
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
+	reid.ability.effects = saved_effects
+	assert_eq(shade.current_hp, hp_before,
+		"with no DamageEffect, ability deals no damage — dispatch is data-driven, not name-driven")
