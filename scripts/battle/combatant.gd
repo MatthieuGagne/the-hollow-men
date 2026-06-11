@@ -210,13 +210,3 @@ static func calculate_damage(attacker: Combatant, target: Combatant) -> int:
 	var atk := attacker.get_effective_stat(StatusEffect.StatAxis.STR)
 	var def_ := target.get_effective_stat(StatusEffect.StatAxis.DEF)
 	return apply_damage_variance(atk - def_)
-
-
-static func calculate_piercing_strike(attacker: Combatant) -> int:
-	return maxi(1, floori(attacker.get_effective_stat(StatusEffect.StatAxis.STR) * randf_range(0.9, 1.1)))
-
-
-static func calculate_static_touch(attacker: Combatant, target: Combatant) -> int:
-	var atk := attacker.get_effective_stat(StatusEffect.StatAxis.PSY)
-	var res := target.get_effective_stat(StatusEffect.StatAxis.RES)
-	return maxi(1, floori((atk - res) * randf_range(0.9, 1.1)))
