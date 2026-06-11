@@ -443,14 +443,11 @@ func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
 		return 0
 	if not attacker.spend_pp(attacker.ability.pp_cost):
 		return 0
-	match attacker.character_name:
-		"Reid":
-			return Combatant.calculate_piercing_strike(attacker)
-		"Iris":
-			return Combatant.calculate_static_touch(attacker, target)
-		"Margot":
-			return Combatant.calculate_static_touch(attacker, target)
-	return 0  # unknown character — ability not implemented
+	var total: int = 0
+	for effect in attacker.ability.effects:
+		if effect is DamageEffect:
+			total += Combatant.apply_damage_variance(effect.compute(attacker, target))
+	return total
 
 
 func skip_turn() -> void:
