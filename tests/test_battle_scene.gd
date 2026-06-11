@@ -293,6 +293,17 @@ func test_confirm_party_target_heals_target() -> void:
 	assert_gt(reid.current_hp, 100, "Reid HP must increase after Field Suture")
 
 
+func test_confirm_party_target_heals_exact_effect_amount() -> void:
+	var karim := _add_karim_to_party()   # PSY 45 -> heals 38 + 22 = 60
+	var reid: Combatant = _scene.party[0]
+	reid.current_hp = 100
+	_scene._begin_player_turn(karim)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.current_hp, 160,
+		"data-driven HealEffect restores exactly 60 (100 -> 160)")
+
+
 func test_confirm_party_target_caps_at_max_hp() -> void:
 	var karim := _add_karim_to_party()
 	var reid: Combatant = _scene.party[0]
