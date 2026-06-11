@@ -1,12 +1,18 @@
-[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+[ext_resource type="Script" path="res://scripts/battle/damage_effect.gd" id="3_dmg"]
+
+[sub_resource type="Resource" id="dmg_reid"]
+script = ExtResource("3_dmg")
+kind = 1
 
 [sub_resource type="Resource" id="ability_reid"]
 script = ExtResource("2_ability")
 ability_name = "Piercing Strike"
 pp_cost = 3
+effects = Array[Resource]([SubResource("dmg_reid")])
 
 [resource]
 script = ExtResource("1_chardef")

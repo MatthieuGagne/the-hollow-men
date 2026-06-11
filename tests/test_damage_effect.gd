@@ -71,3 +71,27 @@ func test_ability_holds_effects_array() -> void:
 	a.effects = [e]
 	assert_eq(a.effects.size(), 1)
 	assert_true(a.effects[0] is DamageEffect)
+
+
+func _ability_of(path: String) -> Ability:
+	var c: Combatant = Combatant.from_definition(load(path))
+	return c.ability
+
+
+func test_reid_ability_has_piercing_effect() -> void:
+	var a := _ability_of("res://characters/reid.tres")
+	assert_eq(a.effects.size(), 1)
+	assert_true(a.effects[0] is DamageEffect)
+	assert_eq(a.effects[0].kind, DamageEffect.Kind.PIERCING)
+
+
+func test_iris_ability_has_psychic_effect() -> void:
+	var a := _ability_of("res://characters/iris.tres")
+	assert_eq(a.effects.size(), 1)
+	assert_eq(a.effects[0].kind, DamageEffect.Kind.PSYCHIC)
+
+
+func test_margot_ability_has_psychic_effect() -> void:
+	var a := _ability_of("res://characters/margot.tres")
+	assert_eq(a.effects.size(), 1)
+	assert_eq(a.effects[0].kind, DamageEffect.Kind.PSYCHIC)
