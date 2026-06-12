@@ -8,7 +8,7 @@ extends Node
 ## so a defeat→retry reload (which re-enters BattleScene without re-triggering)
 ## reuses the same encounter instead of falling back to a default Shade.
 
-## Comma-separated enemy resource paths. "" → BattleScene spawns its default Shade.
+## Comma-separated combatant ids (resolved via GameData). "" → BattleScene spawns its default Shade.
 var enemies: String = ""
 ## Battle background id (file stem under assets/battle_backgrounds/). "" → "default".
 var background_id: String = ""

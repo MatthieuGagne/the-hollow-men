@@ -42,7 +42,7 @@ One sentence: what this feature does and why it matters for the game.
 
 2. **Create a GitHub issue** with the full PRD content as the body:
    ```sh
-   gh issue create --repo MatthieuGagne/noir-fantasy-rpg --title "feat: <feature name>" --body "<PRD content>"
+   gh issue create --title "feat: <feature name>" --body "<PRD content>"
    ```
    Capture the issue number from the URL in the output.
 
@@ -54,7 +54,7 @@ When updating a PRD (e.g., after a new brainstorming session or scope change):
 
 - **Always use `gh issue edit`** to rewrite the issue body directly — never add a comment:
   ```sh
-  gh issue edit <N> --repo MatthieuGagne/noir-fantasy-rpg --body "<full updated PRD content>"
+  gh issue edit <N> --body "<full updated PRD content>"
   ```
 - The issue body is the single source of truth — it must always reflect the current design.
 

@@ -1,7 +1,6 @@
 ---
 name: story-lore
-description: Writing stories, lore, dialogue, scene direction, narrative beats, flavor text, enemy/item descriptions, and world-building additions for The Hollow Men. Auto-trigger on any request to write or review in-game text, character dialogue, a scene, or a story beat.
-invocation: Automatic when writing in-game narrative content. Manual (/story-lore) for consultation, review, or world-building Q&A.
+description: Writing stories, lore, dialogue, scene direction, narrative beats, flavor text, enemy/item descriptions, and world-building additions for The Hollow Men. Use automatically on any request to write or review in-game text, character dialogue, a scene, or a story beat; use manually (/story-lore) for consultation, review, or world-building Q&A.
 ---
 
 You are now operating as the narrative writer for **The Hollow Men**. Before writing anything, load the source documents below. They are authoritative — do not invent world facts that contradict them.
@@ -71,61 +70,25 @@ Every piece of writing should feel like it lives at the intersection of these fo
 
 ## 4. Character Voices
 
-Read `docs/characters/` and the relevant character files for full psychology. These are the **non-obvious voice constraints** — the things that most commonly get written wrong.
+**`docs/characters/` is the source of truth** — read the relevant character file(s) before writing any character's dialogue. Below are only the voices that most commonly get written wrong.
+
+### Karim (White Mage) — most commonly miswritten
+- **Verbose and slightly over the top.** He is NOT restrained.
+- He processes through talking. When something lands emotionally, he doesn't go quiet — he goes louder. He makes his case. He argues. He talks until things make sense.
+- His joining beat is urgent, not understated. He asks to come, explains why, talks it through.
+- Warmth expressed through volume and enthusiasm, not reserve.
 
 ### Reid (Fighter / Protagonist)
 - **Terse.** He doesn't explain himself. Inner monologue is dry and observational, not self-pitying.
 - He notices things — that's the investigator register. He doesn't announce what he notices.
 - Dialogue is short. He asks questions more than he makes statements.
 
-### Karim (White Mage)
-- **Verbose and slightly over the top.** This is the most commonly miswritten character. He is NOT restrained.
-- He processes through talking. When something lands emotionally, he doesn't go quiet — he goes louder. He makes his case. He argues. He talks until things make sense.
-- His joining beat is urgent, not understated. He asks to come, explains why, talks it through.
-- Warmth expressed through volume and enthusiasm, not reserve.
-
-### Iris (Thief)
-- Dry, street-smart. Guarded warmth that occasionally surfaces and then retreats.
-- She doesn't explain the city to you — she assumes you already know it. If you don't, that's your problem.
-- Humor is wry and brief. She doesn't do speeches.
-
-### Margot (Black Mage)
-- Academic precision — she was Bureau-trained. Her default register is Grade IV professional.
-- Under stress, that precision breaks. Sentences fragment. The institutional voice cracks.
-- She knows exactly what the Bureau did to her and can articulate it clearly. That clarity is its own horror.
-
-### Gideon (Paladin)
-- Formal institutional language — Bureau syntax, active voice, resource allocation framing.
-- The cracks of doubt appear in what he doesn't say. Pauses. Deflections. Asking questions he shouldn't need to ask.
-- He's not a villain. He believes in the Bureau's mission. That belief is load-bearing for the tragedy.
-
-### Āio (Martial Artist)
-- Minimal. Physical. Doesn't explain himself or his tradition.
-- He names what he sees without editorializing. "That's a Vessel. It was someone's kid."
-- Never writes exposition about Māori tradition — it's present in action, not lecture.
-
 ### Kos (Occultist)
 - Entity-touched. His speech is elliptical, mid-thought, occasionally wrong-tense.
 - He says things that are slightly off grammatically in ways that feel like translation from something else.
 - Not incoherent — he communicates, he just does it sideways.
 
-### Soraya (Hacker)
-- Technical, dry humor, emotionally detached as a survival strategy.
-- She speaks in systems and patterns. People are nodes.
-- The detachment has a reason (Bureau erasure history). Don't play it as coldness — play it as discipline.
-
-### Paz (Bard)
-- Code-switches: stage voice vs. street voice. She knows she's doing it.
-- Performative register when performing; direct and unguarded when she drops it.
-- Meridian-born — she knows the geometry of the place. She doesn't find it scary.
-
-### Crane (Retired Enforcer — NPC, not party)
-- Blunt, old-school. Doesn't cushion anything.
-- He knows how the city works and has made his peace with it. That peace makes him both reliable and complicit.
-
-### Kurtz (Main Antagonist)
-- Direct references to Heart of Darkness / Eliot are intentional and overt. Don't obscure them.
-- See "References" section below.
+For all other characters (Iris, Margot, Gideon, Āio, Soraya, Paz, Crane, Kurtz, …): read their file in `docs/characters/` plus `docs/characters/_differentiation.md`.
 
 ---
 

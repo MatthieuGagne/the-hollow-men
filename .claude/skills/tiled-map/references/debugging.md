@@ -1,0 +1,99 @@
+# YATI Debug Workflow
+
+## Reading YATI output
+
+YATI prints to the Godot Output panel during import. Example lines and what they mean:
+
+```
+# Normal progress lines (not errors):
+Importing map 'res://maps/room_poc.tmx'
+Importing tileset 'res://maps/placeholder.tsx'
+
+# Errors that cause partial or broken imports:
+FATAL ERROR: Tiled map file 'res://maps/missing.tmx' not found.
+ERROR: Tileset file 'res://maps/placeholder.tsx' not found. -> Continuing but result may be unusable
+ERROR: Template file '...' not found. -> Continuing but result may be unusable
+Object of class 'instance': Mandatory file property 'res_path' not found or invalid. -> Skipped
+
+# Warnings that skip individual tiles or objects:
+Unknown class 'door'. -> Assuming Default
+Unknown godot_node_type 'wall'. -> Assuming Default
+Tile 999 at 5,3 outside texture range. -> Skipped
+Tile id 999 outside tile count range (0-63). -> Skipped.
+Could not get AtlasSource with id 2 -> Skipped
+Capsule is unusable for NavigationRegion2D/LightOccluder2D/Polygon2D. -> Skipped
+Ellipse is unusable for NavigationRegion2D/LightOccluder2D/Polygon2D. -> Skipped
+'Point' has currently no corresponding collision element in Godot 4. -> Skipped
+Saving tileset returned error 7
+```
+
+## Silent failure modes
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| TileMapLayer appears but all cells empty | GIDs all out of range (wrong firstgid or wrong tileset tilecount) | Recalculate firstgid and tilecount; check image dimensions |
+| Some tiles missing, others present | GID gaps due to incorrect tilecount on a preceding tileset | Verify every tileset's tilecount and recompute firstgid chain |
+| Tiles appear blurry/filtered | `use_default_filter = true` in import options | Set `use_default_filter = false` and reimport |
+| Import produces TileMap instead of TileMapLayer | Using a very old version of YATI | Ensure YATI is from the current version in `addons/YATI/` |
+| Object nodes missing from scene | Object class string not recognized (typo) | Check class string against the mapping table in SKILL.md (case-insensitive) |
+| "instance" object not spawned | Missing or invalid `res_path` custom property | Add file property `res_path = res://scenes/foo.tscn` to the object |
+| Godot freezes during import | Multiple `.tmx` files with "Use multiple threads" enabled | Disable "Use multiple threads" in Project Settings → Advanced → Editor → Import |
+| Scene tree has wrong structure (single layer but expecting Node2D wrapper) | TMX had only 1 child after cleanup — YATI skips wrapping Node2D | Either add a second layer (even empty) or update your scene references |
+| TSX image not found error | `<image source>` accidentally written as absolute or `res://` path | Rewrite as a relative path from the TSX file's directory |
+| NPC sprite visible but interact does nothing | NPC properties (e.g. `yarn_node_id`) placed on a tile object (gid) in the Objects layer — tile objects are visual only; YATI never reads their custom properties into script | Add a second `type="instance"` object in the Interactions layer at the same cell with `res_path` pointing to `NPC.tscn` and the actual custom properties there |
+| Wall check returns false on a wall tile | `class="wall"` set in the TSX but `add_class_as_metadata` is still `false` | Set `add_class_as_metadata=true` in the `.tmx.import` file and reimport |
+
+## YATI warning/error messages reference
+
+Full list of known YATI messages, for copy-paste searching in the Output panel:
+
+```
+FATAL ERROR: Tiled map file '...' not found.
+ERROR: Template file '...' not found. -> Continuing but result may be unusable
+ERROR: Tileset file '...' not found. -> Continuing but result may be unusable
+Object of class 'instance': Mandatory file property 'res_path' not found or invalid. -> Skipped
+Could not get AtlasSource with id ... -> Skipped
+Unknown class '...'. -> Assuming Default
+Unknown godot_node_type '...'. -> Assuming Default
+Capsule is unusable for NavigationRegion2D/LightOccluder2D/Polygon2D. -> Skipped
+Ellipse is unusable for NavigationRegion2D/LightOccluder2D/Polygon2D. -> Skipped
+'Point' has currently no corresponding collision element in Godot 4. -> Skipped
+Tile N at col,row outside texture range. -> Skipped
+Tile id N outside tile count range (0-M). -> Skipped.
+Saving tileset returned error N
+```
+
+## Forcing re-import
+
+YATI caches import results. If you edit a `.tmx` or `.tsx` outside of Godot, the editor may not detect the change automatically. To force re-import:
+
+1. Select the `.tmx` file in the FileSystem dock
+2. Open the Import dock and click **"Reimport"**
+
+Or from the command line (headless):
+```powershell
+godot_console --headless --editor --quit --path .
+```
+
+To reimport a specific file via the editor, you can also delete its `.import` sidecar file (e.g. `maps/room_poc.tmx.import`) and restart Godot — it will re-import from scratch on startup. Note that `.tmx.import` files are gitignored build artifacts (regenerated by headless import) — never commit them.
+
+## Updating a tileset image (PNG)
+
+When a tileset PNG changes (e.g. updated in `art/tilesets/` and copied to `assets/tilesets/`), follow this exact order — **sequence matters**:
+
+1. **Copy** the updated PNG from `art/tilesets/<name>.png` to `assets/tilesets/<name>.png`
+2. **Kill Godot** before touching the cache — if Godot is running when you delete cache files, it will recreate them from memory with stale content:
+   ```powershell
+   Get-Process godot* -ErrorAction SilentlyContinue | Stop-Process -Force
+   ```
+3. **Delete the import cache** for the PNG:
+   ```powershell
+   Remove-Item .godot/imported/<name>.png-*.ctex, .godot/imported/<name>.png-*.md5
+   ```
+4. **Run the headless reimport** to regenerate the cache from the new PNG:
+   ```powershell
+   godot_console --headless --editor --quit --path .
+   ```
+5. **Relaunch the editor** normally.
+
+**Verify the reimport worked:** compare `source_md5` in the regenerated `.md5` file against `(Get-FileHash -Algorithm MD5 assets/tilesets/<name>.png).Hash` — they must match (the hash is case-insensitive; Godot writes lowercase). If they differ, Godot imported a stale version (likely because step 2 was skipped).
