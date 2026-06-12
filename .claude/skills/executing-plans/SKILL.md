@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: The Hollow Men's fork of executing-plans — use instead of superpowers:executing-plans in this project. Executes a written implementation plan in batches with review checkpoints, worktree setup, GUT test gates after every GDScript task, and a lessons-learned gate. Use when you have a written implementation plan to execute.
 ---
 
 # Executing Plans
@@ -26,14 +26,16 @@ pwd
 git worktree list
 ```
 
-If `pwd` output is already under `C:\Code\worktrees\`, you are in a worktree — skip to Step 2.
+Check `git worktree list` rather than assuming a path: project worktrees live at `.worktrees\<branch>` in the repo root, but tool-managed worktrees (`EnterWorktree`) may instead live under `.claude\worktrees\`. If `pwd` is inside any listed worktree, skip to Step 2.
 
-Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then use the `EnterWorktree` tool to create and enter the worktree:
+Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then either use the `EnterWorktree` tool with that branch name, or create it manually:
 
-- Worktree path: `C:\Code\worktrees\<branch-name-with-slashes-as-dashes>`
-- Branch: `feat/issue-<N>-<short-description>`
+```bash
+git worktree add .worktrees/<branch> -b <branch>
+make worktree-init
+```
 
-`EnterWorktree` creates a fresh branch off master — no separate sync step is needed.
+`EnterWorktree` creates a fresh branch off master — no separate sync step is needed. After creating any new worktree, run `make worktree-init` before launching the game.
 
 ### Step 2: Load and Review Plan
 
@@ -86,7 +88,7 @@ Based on feedback:
 
 After all tasks complete and verified, announce: "I'm using the finishing-a-development-branch skill to complete this work."
 
-**REQUIRED SUB-SKILL:** Use superpowers:finishing-a-development-branch
+**REQUIRED SUB-SKILL:** Use the project `finishing-a-development-branch` skill (NOT superpowers:finishing-a-development-branch)
 
 Follow that skill to verify tests, run smoketest, present options, execute choice, and clean up.
 
@@ -98,7 +100,7 @@ After the smoketest passes (inside finishing-a-development-branch), **before pus
 
 **This step is mandatory — do not skip it, even if the implementation felt smooth.**
 
-- If **yes** or the user provides lessons: invoke the `/prd` skill to create a GitHub issue capturing the needed documentation updates. Save anything session-relevant to memory as well.
+- If **yes** or the user provides lessons: create a GitHub issue capturing the needed documentation updates directly with `gh issue create --title "docs: lessons learned from <branch>" --body "<lessons>"`. Save anything session-relevant to memory as well.
 - If the user explicitly says **no lessons**: note that in your response and proceed to push/PR.
 
 Do not push or open the PR until you have received an explicit answer to this question.
@@ -138,6 +140,6 @@ Do not push or open the PR until you have received an explicit answer to this qu
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:writing-plans** — creates the plan this skill executes
-- **superpowers:finishing-a-development-branch** — complete development after all tasks
-- **dispatching-parallel-agents** — consult before any agent dispatch decision
+- **writing-plans** (project fork) — creates the plan this skill executes
+- **finishing-a-development-branch** (project fork) — complete development after all tasks
+- **superpowers:dispatching-parallel-agents** — consult before any agent dispatch decision

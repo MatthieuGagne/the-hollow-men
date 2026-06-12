@@ -1,13 +1,13 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete — verifies GUT tests, runs smoketest, checks docs, presents PR/keep/discard options, and cleans up the worktree
+description: The Hollow Men's fork of finishing-a-development-branch — use instead of superpowers:finishing-a-development-branch in this project. Use when implementation is complete — verifies GUT tests headlessly, runs the visual smoketest, presents PR/keep/discard options (PR-only integration), and cleans up the worktree.
 ---
 
 # Finishing a Development Branch
 
 ## Overview
 
-Verify tests → smoketest → doc check → present options → execute choice → clean up.
+Verify tests → smoketest → present options → execute choice → clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -46,19 +46,7 @@ Tell the user what to look for. Then ask:
 - If issues found: work with user to fix before continuing.
 - If confirmed: continue to Step 4.
 
-### Step 4: Doc Check
-
-Check whether any skill, agent, or CLAUDE.md files were modified in this branch:
-
-```bash
-git diff origin/master --name-only
-```
-
-If any `.claude/skills/`, `.claude/agents/`, or `CLAUDE.md` files appear in the diff → update `docs/dev-workflow.md` to reflect the change. The two are co-authoritative and must agree.
-
-If nothing matched, skip and continue to Step 5.
-
-### Step 5: Present Options
+### Step 4: Present Options
 
 ```
 Implementation complete. What would you like to do?
@@ -72,7 +60,9 @@ Which option?
 
 **Never offer "merge to main locally"** — all work integrates via PR.
 
-### Step 6: Execute Choice
+### Step 5: Execute Choice
+
+First determine the worktree path with `git worktree list` (normally `.worktrees\<branch>` in the repo root; tool-managed worktrees may be under `.claude\worktrees\`). Use that path wherever `<worktree-path>` appears below.
 
 #### Option 1: Push and Create PR
 
@@ -97,15 +87,15 @@ EOF
 After PR is created, report:
 
 > "PR created: <URL>
-> When the PR is merged, let me know and I'll clean up the worktree at `C:\Code\worktrees\<sanitized-branch>`."
+> When the PR is merged, let me know and I'll clean up the worktree at `<worktree-path>`."
 
-**Do NOT run Step 7 yet.** Cleanup only happens after the user confirms the merge.
+**Do NOT run Step 6 yet.** Cleanup only happens after the user confirms the merge.
 
 #### Option 2: Keep As-Is
 
-Report: "Keeping branch `<name>`. Worktree preserved at `C:\Code\worktrees\<sanitized-branch>`."
+Report: "Keeping branch `<name>`. Worktree preserved at `<worktree-path>`."
 
-**Do NOT run Step 7.**
+**Do NOT run Step 6.**
 
 #### Option 3: Discard
 
@@ -115,7 +105,7 @@ Report: "Keeping branch `<name>`. Worktree preserved at `C:\Code\worktrees\<sani
 This will permanently delete:
 - Branch <name>
 - All commits: <commit-list>
-- Worktree at C:\Code\worktrees\<sanitized-branch>
+- Worktree at <worktree-path>
 
 Type 'discard' to confirm.
 ```
@@ -128,15 +118,15 @@ git branch -D <feature-branch>
 
 (Use `-D` directly — user has explicitly confirmed deletion of unmerged work. No `-d` first.)
 
-Then run Step 7 immediately.
+Then run Step 6 immediately.
 
-### Step 7: Cleanup Worktree
+### Step 6: Cleanup Worktree
 
 #### After merge confirmation (Option 1 only)
 
 Only run after the user explicitly confirms the PR was merged — **never preemptively**.
 
-**Step 7-pre: Close linked issue**
+**Step 6-pre: Close linked issue**
 
 Parse the issue number from the branch name and close the issue if found:
 
@@ -150,7 +140,7 @@ else
 fi
 ```
 
-**Step 7a: Exit EnterWorktree session if active**
+**Step 6a: Exit EnterWorktree session if active**
 
 If the current session was started with `EnterWorktree` and is still inside the worktree, use `ExitWorktree` first:
 
@@ -158,45 +148,47 @@ If the current session was started with `EnterWorktree` and is still inside the 
 ExitWorktree(action="remove", discard_changes=true)
 ```
 
-After `ExitWorktree` returns, skip to Step 7d — the worktree is already removed.
+After `ExitWorktree` returns, skip to Step 6d — the worktree is already removed.
 
-If not inside an active `EnterWorktree` session, continue to Step 7b.
+If not inside an active `EnterWorktree` session, continue to Step 6b.
 
-**Step 7b: cd to main repo root**
+**Step 6b: cd to main repo root**
 
-Always `cd` first — if the session CWD is inside a deleted worktree, git panics with "Unable to read current working directory":
+Always `cd` OUT of the worktree first, before any remove command — if the session CWD is inside a deleted worktree, git panics with "Unable to read current working directory":
 
 ```bash
 cd C:\Code\the-hollow-men
 ```
 
-**Step 7c: Remove the worktree**
+**Step 6c: Remove the worktree**
+
+Use the path from `git worktree list`:
 
 ```bash
-git worktree remove C:\Code\worktrees\<sanitized-branch>
+git worktree remove <worktree-path>
 ```
 
 If that fails (dirty working tree):
 ```bash
-git worktree remove --force C:\Code\worktrees\<sanitized-branch>
+git worktree remove --force <worktree-path>
 # Warn: "Worktree had uncommitted changes — removed with --force."
 ```
 
 If `--force` also fails (directory already deleted from disk, stale git ref):
 ```bash
-Remove-Item -Recurse -Force C:\Code\worktrees\<sanitized-branch>
+Remove-Item -Recurse -Force <worktree-path>
 git worktree prune
 # Note: "Worktree directory was already gone — pruned stale ref."
 ```
-Skip Step 7d in this case (prune already ran).
+Skip Step 6d in this case (prune already ran).
 
-**Step 7d: Prune stale refs**
+**Step 6d: Prune stale refs**
 
 ```bash
 git worktree prune
 ```
 
-**Step 7e: Delete local branch**
+**Step 6e: Delete local branch**
 
 ```bash
 git branch -d <feature-branch>
@@ -212,17 +204,15 @@ Report: "Worktree and branch cleaned up. Back on master."
 
 #### Immediately after discard (Option 3)
 
-Run Step 7a → 7b → 7c → 7d in sequence. Skip 7e (branch already deleted with `-D` in Step 6).
+Run Step 6a → 6b → 6c → 6d in sequence. Skip 6e (branch already deleted with `-D` in Step 5).
 
 #### Option 2: Keep As-Is
 
-**Do NOT run Step 7.**
+**Do NOT run Step 6.**
 
 ## Worktree Path Convention
 
-Branch names are sanitized before use as directory names: replace all `/` with `-`.
-
-- Example: `feat/issue-19-worktree` → `C:\Code\worktrees\feat-issue-19-worktree`
+Worktrees live at `.worktrees\<branch>` in the repo root (created via `git worktree add .worktrees/<branch> -b <branch>` then `make worktree-init`). Tool-managed worktrees (`EnterWorktree`) may instead live under `.claude\worktrees\` — always detect the actual path with `git worktree list` rather than assuming.
 
 ## Quick Reference
 
@@ -231,51 +221,6 @@ Branch names are sanitized before use as directory names: replace all `/` with `
 | 1. Push and Create PR | ✓ | After merge confirmed (if branch has issue number) | `git branch -d` → `-D` fallback, after merge | After merge confirmed |
 | 2. Keep as-is | — | — | — | Never |
 | 3. Discard | — | — | `git branch -D` (immediate) | Immediately |
-
-## Common Mistakes
-
-**Using bare `git merge master`**
-- **Fix:** Always `git fetch origin && git merge origin/master`
-
-**Skipping smoketest because it "already ran"**
-- **Fix:** Always re-run — even when called from executing-plans (mandatory, no exceptions)
-
-**Cleaning up worktree immediately after PR creation**
-- **Fix:** After PR creation, tell user the worktree path and wait for merge confirmation
-
-**`git worktree remove` fails with "Unable to read current working directory"**
-- **Fix:** Always `cd C:\Code\the-hollow-men` before any worktree remove command (Step 7b)
-
-**`git worktree remove --force` fails with "is not a working tree"**
-- **Fix:** Fall back to `rm -rf <path> && git worktree prune` to clean up the stale ref
-
-**Merging directly to main**
-- **Fix:** Always use a PR — never `git merge` to main locally
-
-**Forgetting the doc check**
-- **Fix:** Always run `git diff origin/master --name-only` and check for skill/agent/CLAUDE.md changes
-
-## Red Flags
-
-**Never:**
-- Commit directly to `master`
-- Merge feature branch locally without a PR
-- Proceed with failing GUT tests
-- Skip the smoketest (always required — no exceptions)
-- Delete work without typed `discard` confirmation
-- Force-push without explicit request
-- Clean up worktree before merge confirmation (Option 1)
-
-**Always:**
-- Work on a feature branch inside a worktree
-- Integrate via PR only
-- Run GUT tests headlessly before presenting options
-- Run smoketest — launch `godot &`, wait for explicit user confirmation
-- Sanitize branch name (replace `/` with `-`) for worktree paths
-- Infer issue number from branch name before asking
-- Present exactly 3 options
-- Get typed `discard` for Option 3
-- Check for skill/agent/CLAUDE.md diffs and update `docs/dev-workflow.md` if needed
 
 ## Integration
 

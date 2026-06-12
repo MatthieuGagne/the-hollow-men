@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code. Can be used with or without a prior brainstorming session.
+description: The Hollow Men's fork of writing-plans — use instead of superpowers:writing-plans in this project. Turns a spec or GitHub-issue PRD into bite-sized tasks with GUT test gates, smoketest checkpoints, and worktree setup. Use when you have a spec or requirements for a multi-step task, before touching code; works with or without a prior brainstorming session.
 ---
 
 # Writing Plans
@@ -38,9 +38,9 @@ Every task that touches GDScript logic MUST follow this exact sequence — no ex
 
 | Step | Action |
 |------|--------|
-| 1 | Write failing GUT test (`godot --headless -s addons/gut/gut_cmdln.gd` → FAIL) |
+| 1 | Write failing GUT test (`godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → FAIL) |
 | 2 | Write minimal GDScript implementation |
-| 3 | Run tests (`godot --headless -s addons/gut/gut_cmdln.gd` → PASS) |
+| 3 | Run tests (`godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → PASS) |
 | 4 | Refactor checkpoint ("breaks when N > 1?") |
 | 5 | Commit |
 
@@ -73,39 +73,7 @@ After drafting all tasks in a batch, before inserting the Smoketest Checkpoint b
 4. Go back and fill in `**Depends on:**` and `**Parallelizable with:**` on each task
 5. Insert a `#### Parallel Execution Groups` table immediately before the Smoketest Checkpoint block (use the template below)
 
-Use this template for the parallel group table that precedes every checkpoint:
-
-```markdown
-#### Parallel Execution Groups — Smoketest Checkpoint N
-
-| Group | Tasks | Notes |
-|-------|-------|-------|
-| A (parallel) | Task 1, Task 2 | Different output files, no shared state |
-| B (sequential) | Task 3 | Depends on Group A — must run after both complete |
-```
-
-````markdown
-### Smoketest Checkpoint N — [what to verify]
-
-**Step 1: Fetch and merge latest master**
-```bash
-git fetch origin && git merge origin/master
-```
-
-**Step 2: Run all GUT tests**
-```bash
-godot --headless -s addons/gut/gut_cmdln.gd
-```
-Expected: All tests pass, zero failures.
-
-**Step 3: Launch game and verify visually**
-```bash
-godot
-```
-
-**Step 4: Confirm with user**
-Tell the user what to verify in the running game. Wait for confirmation before proceeding to the next batch.
-````
+> Copy the **Parallel Execution Groups table** and **Smoketest Checkpoint** templates verbatim from `references/templates.md`.
 
 ## Plan Document Header
 
@@ -114,7 +82,7 @@ Tell the user what to verify in the running game. Wait for confirmation before p
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use the project `executing-plans` skill (NOT superpowers:executing-plans) to implement this plan task-by-task.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -129,90 +97,9 @@ Tell the user what to verify in the running game. Wait for confirmation before p
 ---
 ```
 
-## GDScript Task Template
+## Task Templates
 
-Use this template for any task that creates or modifies GDScript logic:
-
-````markdown
-### Task N: [Component Name]
-
-**Files:**
-- Create/Modify: `scripts/foo.gd`
-- Test: `tests/test_foo.gd`
-
-**Depends on:** none   ← or "Task N, Task M"
-**Parallelizable with:** none   ← or "Task N, Task M"
-
-**Step 1: Write the failing GUT test**
-
-```gdscript
-extends GutTest
-
-func before_each():
-    pass  # reset autoload state if needed
-
-func test_foo_initial_state():
-    assert_eq(SomeAutoload.get_value(), 0)
-```
-
-**Step 2: Run test to verify it fails**
-
-Run: `godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
-Expected: FAIL (undefined method or assertion error)
-
-**Step 3: Write minimal implementation**
-
-```gdscript
-# scripts/foo.gd
-```
-
-**Step 4: Run tests to verify they pass**
-
-Run: `godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
-Expected: PASS
-
-**Step 5: Refactor checkpoint**
-
-Ask: "Does this implementation generalize, or did I hard-code something that breaks when N > 1?"
-- If generalized: proceed.
-- If hard-coded and not fixing now: open a follow-up GitHub issue immediately before closing this task.
-
-**Step 6: Commit**
-
-```bash
-git add scripts/foo.gd tests/test_foo.gd
-git commit -m "feat: add foo"
-```
-````
-
-## Non-Logic Task Template
-
-Use this template for tasks that do NOT involve GDScript logic (scenes, docs, assets):
-
-````markdown
-### Task N: [Component Name]
-
-**Files:**
-- Create/Modify: `scenes/foo.tscn`
-
-**Depends on:** none   ← or "Task N, Task M"
-**Parallelizable with:** none   ← or "Task N, Task M"
-
-**Step 1: Write the content**
-
-[exact content or description of changes]
-
-**Step 2: Verify**
-
-[manual check or command, e.g. "open in Godot editor and confirm X is visible"]
-
-**Step 3: Commit**
-
-```bash
-git add scenes/foo.tscn
-git commit -m "feat: add foo scene"
-```
-````
+> Copy the **GDScript Task Template** (6-step TDD cycle) and the **Non-Logic Task Template** (scenes, docs, assets) verbatim from `references/templates.md`. Every GDScript-logic task uses the 6-step template; every non-logic task uses the 3-step template.
 
 ## Remember
 - Exact file paths always
@@ -246,18 +133,7 @@ Before offering the execution handoff, run this checklist. Fix any failures befo
 
 ### Incomplete Warning Block (use when check #3 fails)
 
-```markdown
-> ⚠️ **Plan incomplete — unjustified parallelism annotations**
->
-> The following tasks have `**Parallelizable with:** none` with no justification sentence:
-> - Task N: [task name]
->
-> For each: either (a) identify tasks it can parallelize with and update the annotation,
-> or (b) add a one-sentence justification explaining why it cannot parallelize
-> (e.g., "writes same file as Task M", "requires Task M's output").
->
-> Proceed with the plan as-is, or fix these annotations first?
-```
+> Copy the **Incomplete Warning Block** verbatim from `references/templates.md` and insert it immediately after the plan header.
 
 ## Execution Handoff
 
@@ -284,6 +160,6 @@ Only after explicit affirmative, offer execution choice:
 
 **If Parallel Session chosen:**
 - Guide them to open new session
-- **REQUIRED SUB-SKILL:** New session uses superpowers:executing-plans
+- **REQUIRED SUB-SKILL:** New session uses the project `executing-plans` skill (NOT superpowers:executing-plans)
 
 **Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (using `EnterWorktree` after grill-me) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.
