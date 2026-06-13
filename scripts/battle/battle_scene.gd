@@ -451,6 +451,10 @@ func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
 	for effect in attacker.ability.effects:
 		if effect is DamageEffect:
 			total += Combatant.apply_damage_variance(effect.compute(attacker, target))
+		elif effect is ApplyStatusEffect:
+			var inst: StatusEffect = effect.make_instance()
+			if inst != null:
+				effect.resolve_recipient(attacker, target).apply_effect(inst)
 	return total
 
 
