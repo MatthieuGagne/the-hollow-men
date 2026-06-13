@@ -1,7 +1,5 @@
 .DEFAULT_GOAL := assets
 
-MAIN_REPO := $(shell git worktree list --porcelain | head -1 | awk '{print $$2}')
-
 .PHONY: assets copy-art sync-tsx import worktree-init
 
 assets: copy-art sync-tsx import
@@ -28,10 +26,6 @@ import:
 # from the main repo that have no automated export pipeline yet, then imports.
 # Deletes stale TMX import cache so the map reimports with the correct tileset PNG.
 worktree-init:
-	cp $(MAIN_REPO)/assets/tilesets/placeholder.png assets/tilesets/
-	cp $(MAIN_REPO)/dialogue/*.import dialogue/
-	cp $(MAIN_REPO)/.godot/imported/*yarnproject-* .godot/imported/ 2>/dev/null || true
-	cp $(MAIN_REPO)/.godot/imported/*yarn-* .godot/imported/ 2>/dev/null || true
-	rm -f .godot/imported/*.tmx-*.md5 .godot/imported/*.tmx-*.tscn
+	python scripts/worktree_init.py
 	dotnet build
 	$(MAKE) assets
