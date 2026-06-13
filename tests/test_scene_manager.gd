@@ -1,6 +1,13 @@
 extends GutTest
 
 
+func before_each() -> void:
+	# SceneManager is a singleton whose fade tween may still be running from a
+	# prior test. Reset the overlay to a known state so assertions are stable.
+	if SceneManager._overlay:
+		SceneManager._overlay.modulate.a = 0.0
+
+
 func test_scene_manager_is_accessible() -> void:
 	assert_not_null(SceneManager)
 
