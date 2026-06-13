@@ -35,7 +35,7 @@ func test_cursor_hidden_on_player_turn_ended() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	await get_tree().process_frame
-	_scene.execute_action("attack")
+	_scene.player_turn_ended.emit()
 	await get_tree().process_frame
 	var panel: Control = _hud._panels[0]
 	var cursor: Label = panel.get_node("CursorLabel")

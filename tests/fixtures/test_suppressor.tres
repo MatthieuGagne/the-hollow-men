@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+[ext_resource type="Script" path="res://scripts/battle/damage_effect.gd" id="3_dmg"]
+[ext_resource type="Script" path="res://scripts/battle/apply_status_effect.gd" id="4_apply"]
+[ext_resource type="Script" path="res://scripts/battle/status_effect.gd" id="5_status"]
+
+[sub_resource type="Resource" id="dmg_supp"]
+script = ExtResource("3_dmg")
+kind = 0
+
+[sub_resource type="Resource" id="status_supp"]
+script = ExtResource("5_status")
+effect_name = "suppress"
+stat = 0
+modifier = -6
+duration = 2
+
+[sub_resource type="Resource" id="apply_supp"]
+script = ExtResource("4_apply")
+target_mode = 0
+status = SubResource("status_supp")
+
+[sub_resource type="Resource" id="ability_supp"]
+script = ExtResource("2_ability")
+ability_name = "Suppressing Strike"
+pp_cost = 3
+targets_party = false
+effects = Array[AbilityEffect]([SubResource("dmg_supp"), SubResource("apply_supp")])
+
+[resource]
+script = ExtResource("1_chardef")
+id = "test_suppressor"
+character_name = "Suppressor"
+is_player_controlled = true
+max_hp = 200
+max_pp = 30
+str_stat = 60
+def_stat = 30
+psy_stat = 20
+res_stat = 20
+spd_stat = 35
+sigil_type = 0
+sprite_path = "res://assets/sprites/characters/reid.png"
+sprite_vframes = 8
+ability = SubResource("ability_supp")
