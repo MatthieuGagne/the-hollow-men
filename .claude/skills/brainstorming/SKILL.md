@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "Standalone exploration tool for turning ideas into designs — usable at any point in the dev cycle (PRD writing, plan writing, debugging, or standalone exploration). Explores user intent, requirements and design before implementation."
+description: "The Hollow Men's fork of brainstorming — use instead of superpowers:brainstorming in this project. Standalone exploration tool for turning ideas into designs (PRD writing, plan writing, debugging, or standalone exploration), with a Godot constraint checklist and a grill-me gate feeding GitHub-issue PRDs. Explores user intent, requirements and design before implementation."
 ---
 
 # Brainstorming Ideas Into Designs
@@ -24,9 +24,9 @@ Every project goes through this process. A todo list, a single-function utility,
 You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
-2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
+2. **Ask clarifying questions** — one per message, to understand purpose/constraints/success criteria; prefer multiple choice, break multi-part topics into separate questions
+3. **Propose 2-3 approaches** — with trade-offs; lead with your recommendation and explain why
+4. **Present design** — in sections scaled to their complexity (a few sentences if straightforward, up to 200-300 words if nuanced); get user approval after each section; cover architecture, components, data flow, error handling, testing; work through the Godot Constraint Checklist explicitly for any Godot feature; go back and clarify if something doesn't make sense (if the user says no, revise and re-present)
 5. **Invoke grill-me** — use the `grill-me` skill (`Skill` tool, `skill: "grill-me"`) to stress-test the approved design. `grill-me` will NOT re-invoke brainstorming — it produces a Resolved/Unresolved/Risk summary only. Continue only after that summary is generated.
 6. **Resolved / Unresolved / Deferred summary** — output a short bullet list per category:
    - **Resolved:** decisions that are settled
@@ -50,55 +50,6 @@ When designing any Godot feature, explicitly address these in your design:
 | **Mobile renderer** | Any shaders or features incompatible with the Mobile renderer? |
 | **Dialogue** | Does this interact with YarnSpinner? (C# integration TBD — note the open architectural question.) |
 | **Battle/investigation** | Does this touch the ATB battle system or investigation mechanic? Which signals/events? |
-
-## Process Flow
-
-```dot
-digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Invoke grill-me skill" [shape=box];
-    "Resolved/Unresolved/Deferred summary" [shape=box];
-    "Unresolved items?" [shape=diamond];
-    "Done (user invokes /prd or writing-plans when ready)" [shape=doublecircle];
-
-    "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Invoke grill-me skill" [label="yes"];
-    "Invoke grill-me skill" -> "Resolved/Unresolved/Deferred summary";
-    "Resolved/Unresolved/Deferred summary" -> "Unresolved items?";
-    "Unresolved items?" -> "Ask clarifying questions" [label="yes, resolve first"];
-    "Unresolved items?" -> "Done (user invokes /prd or writing-plans when ready)" [label="no"];
-}
-```
-
-## The Process
-
-**Understanding the idea:**
-- Check out the current project state first (files, docs, recent commits)
-- Ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message — if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
-
-**Exploring approaches:**
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
-
-**Presenting the design:**
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Work through the Godot Constraint Checklist explicitly for any Godot feature
-- Be ready to go back and clarify if something doesn't make sense
 
 ## Key Principles
 

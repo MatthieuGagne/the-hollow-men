@@ -17,6 +17,22 @@ ls <worktree_path>/.godot 2>$null && ls <worktree_path>/assets/tilesets/placehol
 
 If either path is missing, run `make worktree-init` from the worktree root first. This copies gitignored build artifacts from the main repo and runs a full headless reimport. Without it the map scene will load empty and sprites may be missing. Wait for it to complete before continuing.
 
+### Worktree Init Troubleshooting
+
+| Missing | Why | Fix |
+|---|---|---|
+| `.godot/` import cache | Generated at runtime, gitignored | Created automatically on first headless import |
+| `assets/tilesets/placeholder.png` | Build artifact, gitignored | Copied from main repo by `make worktree-init` |
+| `dialogue/*.import` + `iris.yarnproject` imported cache | Gitignored YarnSpinner sidecars | Copied from main repo by `make worktree-init` |
+| `iris.yarnproject` fails to import | C# YarnSpinner importer not compiled yet | Run `dotnet build` before `make import` |
+
+If the map still renders empty after init, the TMX cache may be stale — delete and reimport:
+
+```sh
+rm .godot/imported/room_poc.tmx-*.md5 .godot/imported/room_poc.tmx-*.tscn
+godot_console --headless --editor --quit --path .
+```
+
 **Kill any running Godot instance first** (if no Godot process is running, the command completes silently — that is normal, not an error):
 
 ```sh
