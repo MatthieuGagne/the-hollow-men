@@ -20,6 +20,12 @@ func _ready() -> void:
 
 
 func change_scene(path: String, spawn_point: String = "") -> void:
+	# Changing to an empty path is always a bug; guard early so we never start
+	# a fade/transition that resolves to "res://" and fails (and, in tests, so a
+	# leaked coroutine can't fire change_scene_to_file("") into a later test).
+	if path.is_empty():
+		push_warning("SceneManager.change_scene called with empty path — ignoring")
+		return
 	pending_spawn_point = spawn_point
 	pre_scene_change.emit()
 	var tween := create_tween()
