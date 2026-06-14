@@ -1021,3 +1021,27 @@ func test_ability_uses_effects_data_not_character_name() -> void:
 	reid.ability.effects = saved_effects
 	assert_eq(shade.current_hp, hp_before,
 		"with no DamageEffect, ability deals no damage — dispatch is data-driven, not name-driven")
+
+
+# --- SELF target_mode ---
+
+func _make_scene_with_self_buffer() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleContext.configure()
+	PartyManager._permanent_members.append(
+		Combatant.from_definition(load("res://tests/fixtures/test_self_buffer.tres")))
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	return s
+
+
+func test_self_buff_ability_applies_to_caster() -> void:
+	# A SELF ability (status on self) resolves with no target picker.
+	var s := _make_scene_with_self_buffer()
+	var caster: Combatant = s.party[0]
+	s._begin_player_turn(caster)
+	s.execute_action("ability")
+	await wait_for_signal(s.player_turn_ended, 2.0)
+	assert_true(caster.active_effects.any(func(e): return e.effect_name == "guard"),
+		"SELF ability must apply its status to the caster with no selection step")

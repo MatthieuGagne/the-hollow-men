@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+[ext_resource type="Script" path="res://scripts/battle/apply_status_effect.gd" id="3_apply"]
+[ext_resource type="Script" path="res://scripts/battle/status_effect.gd" id="4_status"]
+
+[sub_resource type="Resource" id="status_guard"]
+script = ExtResource("4_status")
+effect_name = "guard"
+stat = 0
+modifier = 10
+duration = 3
+
+[sub_resource type="Resource" id="apply_guard"]
+script = ExtResource("3_apply")
+status = SubResource("status_guard")
+
+[sub_resource type="Resource" id="ability_guard"]
+script = ExtResource("2_ability")
+ability_name = "Guard Up"
+pp_cost = 3
+target_mode = 0
+effects = Array[AbilityEffect]([SubResource("apply_guard")])
+
+[resource]
+script = ExtResource("1_chardef")
+id = "test_self_buffer"
+character_name = "Self Buffer"
+is_player_controlled = true
+max_hp = 200
+max_pp = 30
+str_stat = 40
+def_stat = 30
+psy_stat = 20
+res_stat = 20
+spd_stat = 35
+sigil_type = 0
+sprite_path = "res://assets/sprites/characters/reid.png"
+sprite_vframes = 8
+ability = SubResource("ability_guard")

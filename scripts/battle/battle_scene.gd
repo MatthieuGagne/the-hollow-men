@@ -46,6 +46,7 @@ var _active: Combatant = null
 var _party_target_idx: int = 0
 var _enemy_target_idx: int = 0
 var _pending_action: String = ""
+var _target_all: bool = false
 var _pre_pause_state: BattleState = BattleState.TICKING
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
@@ -280,35 +281,37 @@ func execute_action(action_name: String) -> void:
 		return
 	_action_menu.hide()
 
-	# Healing abilities route through party targeting — no animation
-	if action_name == "ability" \
-			and _active != null \
-			and _active.ability != null \
-			and _active.ability.targets_party_side():
-		_begin_party_targeting()
+	# Abilities route by target_mode through the unified resolution path
+	if action_name == "ability" and _active != null and _active.ability != null:
+		var ab := _active.ability
+		if ab.target_mode == Ability.TargetMode.SELF:
+			_cast_self()
+			return
+		if ab.targets_party_side():
+			_begin_party_targeting()
+			return
+		# Enemy-side: auto-target the lone living enemy when not AoE/switchable
+		var living: Array[Combatant] = enemies.filter(
+			func(e: Combatant) -> bool: return e.is_alive())
+		if not ab.is_all() and not ab.switchable and living.size() == 1:
+			_perform_ability_on(living)
+			return
+		_begin_enemy_targeting("ability")
 		return
 
-	# Multiple living enemies — enter selection UI
+	# Attack — multiple living enemies enter selection UI
 	var living_enemies: Array[Combatant] = enemies.filter(
 		func(e: Combatant) -> bool: return e.is_alive())
 	if living_enemies.size() > 1:
 		_begin_enemy_targeting(action_name)
 		return
 
-	# Resolve damage and PP cost synchronously before any await (dead-enemy safe)
+	# Resolve damage synchronously before any await (dead-enemy safe)
 	var damage: int = 0
 	var target: Combatant = null
 	if not living_enemies.is_empty():
 		target = living_enemies[0]
-		match action_name:
-			"attack":
-				damage = Combatant.calculate_damage(_active, target)
-			"ability":
-				damage = _resolve_ability(_active, target)
-
-	# Emit PP HUD update now — PP was already spent by _resolve_ability
-	if action_name == "ability" and _active != null and _active.ability != null:
-		combatant_updated.emit(_active)
+		damage = Combatant.calculate_damage(_active, target)
 
 	if damage > 0 and target != null:
 		var attacker_idx: int = party.find(_active)
@@ -328,9 +331,6 @@ func execute_action(action_name: String) -> void:
 		target.take_damage(damage)
 		combatant_updated.emit(target)
 		_spawn_damage_number(damage, target_sprite)
-		if action_name == "ability" and _active != null and _active.ability != null:
-			_spawn_damage_number(-_active.ability.pp_cost,
-				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 		_start_enemy_flash(target_sprite)
 
 		# Return to origin — runs concurrently with flash
@@ -341,6 +341,108 @@ func execute_action(action_name: String) -> void:
 
 		# Wait for the remaining flash time before ending turn (flash = 0.3s, return = 0.15s)
 		await get_tree().create_timer(FLASH_HOLD).timeout
+
+	_end_turn()
+	_check_win_loss()
+
+
+# Apply each DamageEffect with variance and sum it (deterministic per call; dead-safe pre-await).
+func _compute_damage_for(recipient: Combatant) -> int:
+	var dmg: int = 0
+	for effect in _active.ability.effects:
+		if effect is DamageEffect:
+			dmg += Combatant.apply_damage_variance(effect.compute(_active, recipient))
+	return dmg
+
+
+# Apply non-damage effects (heal/status) to a recipient. Called at the impact peak.
+# TODO(Task 10): add the SummonEffect branch once that class exists.
+func _apply_nondamage_effects_to(recipient: Combatant) -> void:
+	for effect in _active.ability.effects:
+		if effect is HealEffect:
+			recipient.heal(effect.compute_heal(_active, recipient))
+		elif effect is ApplyStatusEffect:
+			var inst: StatusEffect = effect.make_instance()
+			if inst != null:
+				recipient.apply_effect(inst)
+
+
+# SELF abilities resolve with no selection step and no lunge.
+func _cast_self() -> void:
+	if not _active.spend_pp(_active.ability.pp_cost):
+		_end_turn()
+		return
+	_apply_nondamage_effects_to(_active)
+	combatant_updated.emit(_active)
+	var idx: int = party.find(_active)
+	if idx >= 0:
+		_spawn_damage_number(-_active.ability.pp_cost,
+			$PartyContainer.get_child(idx), PP_COST_COLOR)
+	_end_turn()
+	_check_win_loss()
+
+
+# Resolve an enemy-side ability against its recipient list. Single-target for now;
+# Batch 3 generalizes the body to N recipients (AoE).
+func _perform_ability_on(recipients: Array[Combatant]) -> void:
+	assert(recipients.size() == 1)  # TODO(Batch 3): AoE
+	if _active == null or _active.ability == null:
+		_end_turn()
+		_check_win_loss()
+		return
+	if not _active.spend_pp(_active.ability.pp_cost):
+		_end_turn()
+		_check_win_loss()
+		return
+	combatant_updated.emit(_active)
+
+	# Pre-await damage map keeps results stable across the animation (dead-safe).
+	var dmg: Dictionary = {}
+	var any_damage: bool = false
+	for r: Combatant in recipients:
+		var d: int = _compute_damage_for(r)
+		dmg[r] = d
+		if d > 0:
+			any_damage = true
+
+	var attacker_idx: int = party.find(_active)
+
+	if any_damage:
+		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
+		_state = BattleState.ANIMATING
+
+		var origin_x: float = attacker_sprite.position.x
+		var lunge_tween := create_tween()
+		lunge_tween.tween_property(attacker_sprite, "position:x",
+			origin_x - LUNGE_DISTANCE, LUNGE_DURATION)
+		await lunge_tween.finished
+
+		for r: Combatant in recipients:
+			r.take_damage(dmg[r])
+			_apply_nondamage_effects_to(r)
+			combatant_updated.emit(r)
+			var ridx: int = enemies.find(r)
+			if ridx >= 0:
+				var rsprite: Sprite2D = $EnemyContainer.get_child(ridx)
+				_spawn_damage_number(dmg[r], rsprite)
+				_start_enemy_flash(rsprite)
+		_spawn_damage_number(-_active.ability.pp_cost,
+			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+
+		var return_tween := create_tween()
+		return_tween.tween_property(attacker_sprite, "position:x",
+			origin_x, LUNGE_RETURN_DUR)
+		await return_tween.finished
+
+		await get_tree().create_timer(FLASH_HOLD).timeout
+	else:
+		# Pure debuff/buff on the enemy side — no lunge, straight to TICKING.
+		for r: Combatant in recipients:
+			_apply_nondamage_effects_to(r)
+			combatant_updated.emit(r)
+		if attacker_idx >= 0:
+			_spawn_damage_number(-_active.ability.pp_cost,
+				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 
 	_end_turn()
 	_check_win_loss()
@@ -377,12 +479,13 @@ func confirm_party_target(target: Combatant) -> void:
 		return
 	if not _active.spend_pp(_active.ability.pp_cost):
 		return
-	var total: int = 0
-	for effect in _active.ability.effects:
-		if effect is HealEffect:
-			total += effect.compute_heal(_active, target)
-	target.heal(total)
-	combatant_updated.emit(target)
+	var living_party: Array[Combatant] = party.filter(
+		func(p: Combatant) -> bool: return p.is_alive())
+	var recipients := resolve_recipients(_active.ability.target_mode, _target_all,
+		_active, target, living_party, [])
+	for r: Combatant in recipients:
+		_apply_nondamage_effects_to(r)
+		combatant_updated.emit(r)
 	combatant_updated.emit(_active)
 	var attacker_idx: int = party.find(_active)
 	if attacker_idx >= 0:
@@ -424,17 +527,17 @@ func confirm_enemy_target() -> void:
 
 	enemy_target_changed.emit(null)
 
-	# Resolve damage and PP cost synchronously before any await
-	var damage: int = 0
-	match _pending_action:
-		"attack":
-			damage = Combatant.calculate_damage(_active, target)
-		"ability":
-			damage = _resolve_ability(_active, target)
-
+	# Ability: unified recipient resolution (single now; AoE/switchable in later batches)
 	if _pending_action == "ability" and _active != null and _active.ability != null:
-		combatant_updated.emit(_active)
+		var living: Array[Combatant] = enemies.filter(
+			func(e: Combatant) -> bool: return e.is_alive())
+		var recipients := resolve_recipients(_active.ability.target_mode, _target_all,
+			_active, target, [], living)
+		_perform_ability_on(recipients)
+		return
 
+	# Attack: single-target lunge (attack never AoEs)
+	var damage: int = Combatant.calculate_damage(_active, target)
 	if damage > 0:
 		var attacker_idx: int = party.find(_active)
 		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
@@ -450,9 +553,6 @@ func confirm_enemy_target() -> void:
 		target.take_damage(damage)
 		combatant_updated.emit(target)
 		_spawn_damage_number(damage, target_sprite)
-		if _pending_action == "ability" and _active != null and _active.ability != null:
-			_spawn_damage_number(-_active.ability.pp_cost,
-				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 		_start_enemy_flash(target_sprite)
 
 		var return_tween := create_tween()
@@ -466,22 +566,6 @@ func confirm_enemy_target() -> void:
 
 	_end_turn()
 	_check_win_loss()
-
-
-func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
-	if attacker.ability == null:
-		return 0
-	if not attacker.spend_pp(attacker.ability.pp_cost):
-		return 0
-	var total: int = 0
-	for effect in attacker.ability.effects:
-		if effect is DamageEffect:
-			total += Combatant.apply_damage_variance(effect.compute(attacker, target))
-		elif effect is ApplyStatusEffect:
-			var inst: StatusEffect = effect.make_instance()
-			if inst != null:
-				target.apply_effect(inst)
-	return total
 
 
 func skip_turn() -> void:
