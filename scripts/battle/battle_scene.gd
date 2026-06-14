@@ -57,6 +57,32 @@ var _pre_pause_state: BattleState = BattleState.TICKING
 @onready var _background: Sprite2D = $Background
 
 
+# Pure: maps target_mode (+ live toggle) to the recipient list. No mutation.
+# `expanded` only matters for switchable ONE_* abilities (player toggled single->all).
+static func resolve_recipients(mode: int, expanded: bool, user: Combatant, picked: Combatant,
+		living_party: Array[Combatant], living_enemies: Array[Combatant]) -> Array[Combatant]:
+	match mode:
+		Ability.TargetMode.SELF:
+			var r: Array[Combatant] = [user]
+			return r
+		Ability.TargetMode.ONE_ALLY:
+			if expanded:
+				return living_party
+			var r: Array[Combatant] = [picked]
+			return r
+		Ability.TargetMode.ALL_ALLIES:
+			return living_party
+		Ability.TargetMode.ONE_ENEMY:
+			if expanded:
+				return living_enemies
+			var r: Array[Combatant] = [picked]
+			return r
+		Ability.TargetMode.ALL_ENEMIES:
+			return living_enemies
+	var empty: Array[Combatant] = []
+	return empty
+
+
 func _ready() -> void:
 	_load_background()
 	party = PartyManager.get_active_members()
