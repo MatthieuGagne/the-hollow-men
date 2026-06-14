@@ -145,9 +145,10 @@ func test_is_skipping_false_when_cooldown_zero() -> void:
 	assert_false(c.is_skipping())
 
 
-func test_ability_targets_party_defaults_false() -> void:
+func test_ability_target_mode_defaults_one_enemy() -> void:
 	var ab := Ability.new()
-	assert_false(ab.targets_party, "targets_party must default to false")
+	assert_eq(ab.target_mode, Ability.TargetMode.ONE_ENEMY,
+		"target_mode must default to ONE_ENEMY")
 
 
 func test_heal_increases_hp() -> void:
@@ -179,7 +180,7 @@ func test_karim_loads_with_correct_stats() -> void:
 	assert_true(karim.is_player_controlled)
 	assert_eq(karim.ability.ability_name, "Field Suture")
 	assert_eq(karim.ability.pp_cost, 10)
-	assert_true(karim.ability.targets_party)
+	assert_eq(karim.ability.target_mode, Ability.TargetMode.ONE_ALLY)
 
 
 func test_margot_loads_with_correct_stats() -> void:
@@ -191,7 +192,7 @@ func test_margot_loads_with_correct_stats() -> void:
 	assert_true(margot.is_player_controlled)
 	assert_eq(margot.ability.ability_name, "Void Calculus")
 	assert_eq(margot.ability.pp_cost, 15)
-	assert_false(margot.ability.targets_party)
+	assert_eq(margot.ability.target_mode, Ability.TargetMode.ONE_ENEMY)
 
 
 func test_status_effect_fields_have_correct_defaults() -> void:

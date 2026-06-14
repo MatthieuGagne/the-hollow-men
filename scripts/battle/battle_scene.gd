@@ -258,7 +258,7 @@ func execute_action(action_name: String) -> void:
 	if action_name == "ability" \
 			and _active != null \
 			and _active.ability != null \
-			and _active.ability.targets_party:
+			and _active.ability.targets_party_side():
 		_begin_party_targeting()
 		return
 
@@ -454,7 +454,7 @@ func _resolve_ability(attacker: Combatant, target: Combatant) -> int:
 		elif effect is ApplyStatusEffect:
 			var inst: StatusEffect = effect.make_instance()
 			if inst != null:
-				effect.resolve_recipient(attacker, target).apply_effect(inst)
+				target.apply_effect(inst)
 	return total
 
 

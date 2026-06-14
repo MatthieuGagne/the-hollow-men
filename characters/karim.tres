@@ -12,7 +12,7 @@ amount = 38
 script = ExtResource("2_ability")
 ability_name = "Field Suture"
 pp_cost = 10
-targets_party = true
+target_mode = 1
 effects = Array[AbilityEffect]([SubResource("heal_karim")])
 
 [resource]

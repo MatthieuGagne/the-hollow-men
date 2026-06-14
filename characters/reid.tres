@@ -12,6 +12,7 @@ kind = 1
 script = ExtResource("2_ability")
 ability_name = "Piercing Strike"
 pp_cost = 3
+target_mode = 3
 effects = Array[AbilityEffect]([SubResource("dmg_reid")])
 
 [resource]

@@ -19,14 +19,13 @@ duration = 2
 
 [sub_resource type="Resource" id="apply_supp"]
 script = ExtResource("4_apply")
-target_mode = 0
 status = SubResource("status_supp")
 
 [sub_resource type="Resource" id="ability_supp"]
 script = ExtResource("2_ability")
 ability_name = "Suppressing Strike"
 pp_cost = 3
-targets_party = false
+target_mode = 3
 effects = Array[AbilityEffect]([SubResource("dmg_supp"), SubResource("apply_supp")])
 
 [resource]
