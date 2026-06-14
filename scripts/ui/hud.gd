@@ -26,9 +26,11 @@ func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> 
 	battle.combatant_updated.connect(_on_combatant_updated)
 	battle.enemy_added.connect(_on_enemy_added)
 	battle.enemy_target_changed.connect(_on_enemy_target_changed)
+	battle.enemy_group_target_changed.connect(_on_enemy_group_target_changed)
 	battle.player_turn_started.connect(_on_player_turn_started)
 	battle.player_turn_ended.connect(_on_player_turn_ended)
 	battle.party_target_changed.connect(_on_party_target_changed)
+	battle.party_group_target_changed.connect(_on_party_group_target_changed)
 	_build_enemy_rows(enemies)
 	_build_panels()
 
@@ -199,6 +201,18 @@ func _on_enemy_target_changed(combatant: Combatant) -> void:
 			continue
 		_enemy_panels[i].get_node("CursorLabel").modulate.a = \
 			1.0 if _enemies[i] == combatant else 0.0
+
+
+func _on_enemy_group_target_changed(active: bool) -> void:
+	for panel in _enemy_panels:
+		if panel.has_node("CursorLabel"):
+			panel.get_node("CursorLabel").modulate.a = 1.0 if active else 0.0
+
+
+func _on_party_group_target_changed(active: bool) -> void:
+	for i in range(mini(_party.size(), _panels.size())):
+		if _panels[i].has_node("CursorLabel"):
+			_panels[i].get_node("CursorLabel").modulate.a = 1.0 if active else 0.0
 
 
 func _on_combatant_updated(combatant: Combatant) -> void:

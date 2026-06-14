@@ -5,9 +5,11 @@ signal battle_ended(victory: bool)
 signal combatant_updated(combatant: Combatant)
 signal enemy_added(combatant: Combatant)
 signal enemy_target_changed(combatant: Combatant)
+signal enemy_group_target_changed(active: bool)
 signal player_turn_started(combatant: Combatant)
 signal player_turn_ended()
 signal party_target_changed(combatant: Combatant)
+signal party_group_target_changed(active: bool)
 signal pause_toggled(paused: bool)
 
 enum BattleState { TICKING, AWAITING_INPUT, ANIMATING, ENDED, SELECTING_ALLY, SELECTING_ENEMY, PAUSED }
