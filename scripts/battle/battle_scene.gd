@@ -384,10 +384,13 @@ func _cast_self() -> void:
 	_check_win_loss()
 
 
-# Resolve an enemy-side ability against its recipient list. Single-target for now;
-# Batch 3 generalizes the body to N recipients (AoE).
+# Resolve an enemy-side ability against its recipient list (1..N). A damaging
+# cast plays one shared lunge, then flashes + damages every recipient at once.
 func _perform_ability_on(recipients: Array[Combatant]) -> void:
-	assert(recipients.size() == 1)  # TODO(Batch 3): AoE
+	if recipients.is_empty():
+		_end_turn()
+		_check_win_loss()
+		return
 	if _active == null or _active.ability == null:
 		_end_turn()
 		_check_win_loss()
@@ -457,11 +460,18 @@ func _begin_party_targeting() -> void:
 	if living.is_empty():
 		_end_turn()
 		return
+	# A fixed ALL_ALLIES ability shows the whole party as the group target.
+	_target_all = _active != null and _active.ability != null and _active.ability.is_all()
+	if _target_all:
+		party_group_target_changed.emit(true)
+		return
 	_party_target_idx = party.find(living[0])
 	party_target_changed.emit(party[_party_target_idx])
 
 
 func _navigate_party_target(delta: int) -> void:
+	if _target_all:
+		return
 	var living: Array[Combatant] = party.filter(
 		func(p: Combatant) -> bool: return p.is_alive())
 	if living.is_empty():
@@ -475,7 +485,9 @@ func _navigate_party_target(delta: int) -> void:
 
 
 func confirm_party_target(target: Combatant) -> void:
-	if not target.is_alive():
+	# For a group cast the picked ally is ignored, so only the single-target
+	# path requires a living pick.
+	if not _target_all and not target.is_alive():
 		return
 	if _active == null or _active.ability == null:
 		return
@@ -485,6 +497,8 @@ func confirm_party_target(target: Combatant) -> void:
 		func(p: Combatant) -> bool: return p.is_alive())
 	var recipients := resolve_recipients(_active.ability.target_mode, _target_all,
 		_active, target, living_party, [])
+	if _target_all:
+		party_group_target_changed.emit(false)
 	for r: Combatant in recipients:
 		_apply_nondamage_effects_to(r)
 		combatant_updated.emit(r)
@@ -505,10 +519,18 @@ func _begin_enemy_targeting(action_name: String) -> void:
 		return
 	_enemy_target_idx = enemies.find(living[0])
 	_state = BattleState.SELECTING_ENEMY
+	# A fixed ALL_ENEMIES ability shows the whole enemy group as the target.
+	_target_all = action_name == "ability" and _active != null \
+		and _active.ability != null and _active.ability.is_all()
+	if _target_all:
+		enemy_group_target_changed.emit(true)
+		return
 	enemy_target_changed.emit(enemies[_enemy_target_idx])
 
 
 func _navigate_enemy_target(delta: int) -> void:
+	if _target_all:
+		return
 	var living: Array[Combatant] = enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
 	if living.is_empty():
 		return
@@ -528,8 +550,10 @@ func confirm_enemy_target() -> void:
 		return
 
 	enemy_target_changed.emit(null)
+	if _target_all:
+		enemy_group_target_changed.emit(false)
 
-	# Ability: unified recipient resolution (single now; AoE/switchable in later batches)
+	# Ability: unified recipient resolution (single, AoE, or switchable-expanded)
 	if _pending_action == "ability" and _active != null and _active.ability != null:
 		var living: Array[Combatant] = enemies.filter(
 			func(e: Combatant) -> bool: return e.is_alive())
@@ -581,6 +605,7 @@ func skip_turn() -> void:
 
 
 func _end_turn() -> void:
+	_target_all = false
 	if _active and _active.is_player_controlled:
 		player_turn_ended.emit()
 	if _active:
