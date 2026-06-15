@@ -6,6 +6,7 @@ var def: CombatantDefinition
 # Runtime state
 var current_hp: int = 0
 var current_pp: int = 0
+var level: int = 1
 var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
@@ -30,26 +31,44 @@ var character_name: String:
 var is_player_controlled: bool:
 	get: return def.is_player_controlled
 
+# Returns the CharacterDefinition for player characters, else null (enemies don't grow).
+func _char_def() -> CharacterDefinition:
+	return def as CharacterDefinition
+
 var max_hp: int:
-	get: return def.max_hp
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.max_hp, cd.hp_growth, level) if cd else def.max_hp
 
 var max_pp: int:
-	get: return def.max_pp
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.max_pp, cd.pp_growth, level) if cd else def.max_pp
 
 var str_stat: int:
-	get: return def.str_stat
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.str_stat, cd.str_growth, level) if cd else def.str_stat
 
 var def_stat: int:
-	get: return def.def_stat
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.def_stat, cd.def_growth, level) if cd else def.def_stat
 
 var psy_stat: int:
-	get: return def.psy_stat
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.psy_stat, cd.psy_growth, level) if cd else def.psy_stat
 
 var res_stat: int:
-	get: return def.res_stat
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.res_stat, cd.res_growth, level) if cd else def.res_stat
 
 var spd_stat: int:
-	get: return def.spd_stat
+	get:
+		var cd := _char_def()
+		return Progression.grown_stat(def.spd_stat, cd.spd_growth, level) if cd else def.spd_stat
 
 var sigil_type: CombatantDefinition.SigilType:
 	get: return def.sigil_type
@@ -62,6 +81,9 @@ var ai: EnemyAI:
 
 var summon: SummonEffect:
 	get: return (def as EnemyDefinition).summon if def is EnemyDefinition else null
+
+var xp_reward: int:
+	get: return (def as EnemyDefinition).xp_reward if def is EnemyDefinition else 0
 
 var sprite_path: String:
 	get: return def.sprite_path
@@ -82,13 +104,21 @@ static func from_definition(d: CombatantDefinition) -> Combatant:
 # --- Runtime methods (unchanged) ---
 
 func reset_runtime_state() -> void:
-	current_hp = def.max_hp
-	current_pp = def.max_pp
+	current_hp = max_hp
+	current_pp = max_pp
 	atb = 0.0
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
 	active_effects = []
 	ai_state = {}
+
+
+# Set the character's level and full-heal to the new (grown) maxima. Used on
+# level-up (PRD R6) and when rebuilding a combatant from saved progression.
+func set_level(new_level: int) -> void:
+	level = new_level
+	current_hp = max_hp
+	current_pp = max_pp
 
 
 func apply_effect(effect: StatusEffect) -> void:

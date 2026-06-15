@@ -4,6 +4,10 @@ extends CharacterBody2D
 const TILE_SIZE: int = 16
 const MOVE_DURATION: float = 0.1
 
+## Emitted after the player commits a grid move, with the destination cell.
+## Rooms use this to drive step-based random encounters.
+signal stepped(cell: Vector2i)
+
 var _moving: bool = false
 var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
 var _input_blocked: bool = false
@@ -68,6 +72,7 @@ func _try_move(action: String) -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "position", target_pos, MOVE_DURATION)
 	tween.tween_callback(func() -> void: _moving = false)
+	stepped.emit(target_cell)
 
 
 func _is_wall(world_pos: Vector2) -> bool:

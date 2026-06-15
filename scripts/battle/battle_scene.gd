@@ -108,6 +108,15 @@ static func resolve_recipients(mode: int, expanded: bool, user: Combatant, picke
 	return empty
 
 
+# Builds the post-victory readout text from total XP and the level-up entries
+# ({"name": String, "to": int}) returned by PartyManager.award_xp.
+static func build_victory_text(total_xp: int, leveled: Array) -> String:
+	var lines: PackedStringArray = ["Victory!", "Gained %d XP" % total_xp]
+	for entry: Dictionary in leveled:
+		lines.append("%s reached Lv %d!" % [entry["name"], entry["to"]])
+	return "\n".join(lines)
+
+
 func _ready() -> void:
 	_load_background()
 	party = PartyManager.get_active_members()
@@ -752,7 +761,15 @@ func _on_combatant_updated(combatant: Combatant) -> void:
 func _on_battle_ended(victory: bool) -> void:
 	_action_menu.hide()
 	if victory:
+		# Every enemy is dead on victory; sum their bounties.
+		var total_xp: int = 0
+		for e: Combatant in enemies:
+			total_xp += e.xp_reward
+		var survivors: Array[Combatant] = party.filter(
+			func(p: Combatant) -> bool: return p.is_alive())
+		var leveled := PartyManager.award_xp(survivors, total_xp)
 		PartyManager.remove_temporary_members()
+		_victory_label.text = build_victory_text(total_xp, leveled)
 		_victory_label.show()
 		await get_tree().create_timer(VICTORY_DELAY).timeout
 		if is_inside_tree():

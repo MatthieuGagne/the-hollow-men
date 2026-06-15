@@ -30,3 +30,11 @@ func test_get_definition_all_enemies() -> void:
 
 func test_unknown_id_not_in_registry() -> void:
 	assert_false(GameData._registry.has("nonexistent"))
+
+
+func test_get_player_character_ids_returns_only_characters() -> void:
+	var ids := GameData.get_player_character_ids()
+	assert_true(ids.has("reid"), "reid is a player character")
+	assert_true(ids.has("iris"), "iris is a player character")
+	assert_false(ids.has("shade"), "enemies are excluded")
+	assert_false(ids.has("territory_enforcer"), "enemies are excluded")

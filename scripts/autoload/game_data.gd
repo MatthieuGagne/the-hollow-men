@@ -43,3 +43,12 @@ func get_definition(id: String) -> CombatantDefinition:
 		assert(false, "GameData: unknown combatant id '%s'" % id)
 		return null
 	return _registry[id]
+
+
+## Ids of every registered player character (CharacterDefinition), excluding enemies.
+func get_player_character_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for id: String in _registry:
+		if _registry[id] is CharacterDefinition:
+			ids.append(id)
+	return ids

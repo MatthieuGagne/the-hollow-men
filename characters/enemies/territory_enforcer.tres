@@ -28,3 +28,4 @@ sprite_path = "res://assets/sprites/enemies/shade.png"
 sprite_vframes = 1
 ai = SubResource("ai_enforcer")
 summon = SubResource("summon_backup")
+xp_reward = 60

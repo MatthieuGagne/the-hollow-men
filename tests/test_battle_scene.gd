@@ -1063,3 +1063,20 @@ func test_self_buff_ability_applies_to_caster() -> void:
 	await wait_for_signal(s.player_turn_ended, 2.0)
 	assert_true(caster.active_effects.any(func(e): return e.effect_name == "guard"),
 		"SELF ability must apply its status to the caster with no selection step")
+
+
+func test_build_victory_text_no_levelups() -> void:
+	var text := BattleScene.build_victory_text(36, [])
+	assert_eq(text, "Victory!\nGained 36 XP")
+
+
+func test_build_victory_text_with_levelup() -> void:
+	var text := BattleScene.build_victory_text(40, [{"name": "Reid", "to": 2}])
+	assert_eq(text, "Victory!\nGained 40 XP\nReid reached Lv 2!")
+
+
+func test_build_victory_text_multiple_levelups() -> void:
+	var text := BattleScene.build_victory_text(105,
+		[{"name": "Reid", "to": 2}, {"name": "Iris", "to": 2}])
+	assert_eq(text,
+		"Victory!\nGained 105 XP\nReid reached Lv 2!\nIris reached Lv 2!")

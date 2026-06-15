@@ -485,3 +485,118 @@ func test_id_defaults_to_empty_string() -> void:
 func test_reid_has_correct_id() -> void:
 	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	assert_eq(reid.id, "reid")
+
+
+func _make_growing_character() -> Combatant:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 20
+	d.str_stat = 10
+	d.def_stat = 8
+	d.psy_stat = 6
+	d.res_stat = 4
+	d.spd_stat = 12
+	d.hp_growth = 30
+	d.pp_growth = 5
+	d.str_growth = 4
+	d.def_growth = 3
+	d.psy_growth = 2
+	d.res_growth = 1
+	d.spd_growth = 2
+	return Combatant.from_definition(d)
+
+
+func test_combatant_level_defaults_to_one() -> void:
+	var c := _make_growing_character()
+	assert_eq(c.level, 1)
+
+
+func test_level_one_stats_equal_base() -> void:
+	var c := _make_growing_character()
+	assert_eq(c.max_hp, 100)
+	assert_eq(c.str_stat, 10)
+	assert_eq(c.spd_stat, 12)
+
+
+func test_set_level_applies_growth_to_stats() -> void:
+	var c := _make_growing_character()
+	c.set_level(3)
+	# base + growth * (3 - 1)
+	assert_eq(c.max_hp, 100 + 30 * 2)
+	assert_eq(c.max_pp, 20 + 5 * 2)
+	assert_eq(c.str_stat, 10 + 4 * 2)
+	assert_eq(c.def_stat, 8 + 3 * 2)
+	assert_eq(c.spd_stat, 12 + 2 * 2)
+
+
+func test_set_level_full_heals_to_grown_max() -> void:
+	var c := _make_growing_character()
+	c.current_hp = 5
+	c.current_pp = 1
+	c.set_level(2)
+	assert_eq(c.current_hp, c.max_hp, "set_level must full-heal HP to the grown max")
+	assert_eq(c.current_pp, c.max_pp, "set_level must full-heal PP to the grown max")
+
+
+func test_enemy_stats_unaffected_by_level() -> void:
+	# EnemyDefinition has no growth fields; an enemy stays at its base stats.
+	var enemy: Combatant = Combatant.from_definition(load("res://characters/enemies/shade.tres"))
+	enemy.level = 5
+	assert_eq(enemy.max_hp, 200, "enemy stats must not scale with level")
+
+
+func test_enemy_definition_xp_reward_defaults_zero() -> void:
+	var d := EnemyDefinition.new()
+	assert_eq(d.xp_reward, 0)
+
+
+func test_character_combatant_xp_reward_is_zero() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	assert_eq(reid.xp_reward, 0, "player characters carry no bounty")
+
+
+func test_shade_xp_reward() -> void:
+	var shade: Combatant = Combatant.from_definition(load("res://characters/enemies/shade.tres"))
+	assert_eq(shade.xp_reward, 18)
+
+
+func test_guard_xp_reward() -> void:
+	var guard: Combatant = Combatant.from_definition(load("res://characters/enemies/private_security_guard.tres"))
+	assert_eq(guard.xp_reward, 22)
+
+
+func test_boss_xp_rewards() -> void:
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
+	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/block_captain.tres"))
+	assert_eq(enforcer.xp_reward, 60)
+	assert_eq(captain.xp_reward, 45)
+
+
+func test_reid_levels_up_stats_from_tres_growth() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	reid.set_level(2)
+	# Reid Lv1 max_hp=350, hp_growth=35 -> Lv2 = 385
+	assert_eq(reid.max_hp, 385)
+	# Reid Lv1 str=45, str_growth=5 -> Lv2 = 50
+	assert_eq(reid.str_stat, 50)
+
+
+func test_iris_levels_up_stats_from_tres_growth() -> void:
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
+	iris.set_level(2)
+	# Iris Lv1 max_hp=270, hp_growth=28 -> Lv2 = 298
+	assert_eq(iris.max_hp, 298)
+	# Iris Lv1 psy=50, psy_growth=5 -> Lv2 = 55
+	assert_eq(iris.psy_stat, 55)
+
+
+func test_security_rookie_loads_with_correct_stats() -> void:
+	var rookie: Combatant = Combatant.from_definition(load("res://characters/enemies/security_rookie.tres"))
+	assert_eq(rookie.character_name, "Security Rookie")
+	assert_false(rookie.is_player_controlled)
+	assert_eq(rookie.max_hp, 65)
+	assert_eq(rookie.str_stat, 38)
+	assert_eq(rookie.def_stat, 12)
+	assert_eq(rookie.spd_stat, 20)
+	assert_eq(rookie.xp_reward, 22)
+	assert_not_null(rookie.ai, "rookie must have an ai resource")

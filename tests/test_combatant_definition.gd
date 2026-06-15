@@ -43,3 +43,14 @@ func test_character_definition_is_combatant_definition() -> void:
 func test_enemy_definition_is_combatant_definition() -> void:
 	var d := EnemyDefinition.new()
 	assert_true(d is CombatantDefinition)
+
+
+func test_character_definition_growth_fields_default_zero() -> void:
+	var d := CharacterDefinition.new()
+	assert_eq(d.hp_growth, 0)
+	assert_eq(d.pp_growth, 0)
+	assert_eq(d.str_growth, 0)
+	assert_eq(d.def_growth, 0)
+	assert_eq(d.psy_growth, 0)
+	assert_eq(d.res_growth, 0)
+	assert_eq(d.spd_growth, 0)

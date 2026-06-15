@@ -3,10 +3,12 @@ extends GutTest
 
 func test_defaults() -> void:
 	var data := SaveData.new()
-	assert_eq(data.save_version, 1)
+	assert_eq(data.save_version, 2)
 	assert_eq(data.flags, {})
 	assert_eq(data.current_scene, "")
 	assert_eq(data.spawn_point, "")
+	assert_eq(data.roster, [])
+	assert_eq(data.progression, {})
 
 
 func test_holds_assigned_values() -> void:
@@ -53,4 +55,19 @@ func test_loads_legacy_save_missing_newer_fields_with_defaults() -> void:
 	assert_eq(data.flags["intro_complete"], true)
 	assert_eq(data.current_scene, "", "missing field must default to \"\"")
 	assert_eq(data.spawn_point, "", "missing field must default to \"\"")
+	_cleanup_legacy()
+
+
+func test_loads_legacy_save_defaults_party_runtime() -> void:
+	_cleanup_legacy()
+	var f := FileAccess.open(_LEGACY_PATH, FileAccess.WRITE)
+	f.store_string(_LEGACY_TRES)
+	f.close()
+
+	var data: SaveData = ResourceLoader.load(
+		_LEGACY_PATH, "", ResourceLoader.CACHE_MODE_IGNORE
+	)
+	assert_not_null(data)
+	assert_eq(data.roster, [], "missing roster must default to []")
+	assert_eq(data.progression, {}, "missing progression must default to {}")
 	_cleanup_legacy()
