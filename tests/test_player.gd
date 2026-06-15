@@ -136,3 +136,32 @@ func test_interact_with_no_dialogue_does_not_block_input() -> void:
 	mock_npc.free()
 	player.free()
 	layer.free()
+
+
+func test_try_move_emits_stepped_with_target_cell() -> void:
+	var player := Player.new()
+	var layer := TileMapLayer.new()
+	var tile_set := TileSet.new()
+	tile_set.tile_size = Vector2i(16, 16)
+	# A non-wall floor tile is required at the target: _is_wall() treats an empty
+	# cell (null TileData) as a wall, which would block the move and skip the emit.
+	var atlas := TileSetAtlasSource.new()
+	var tex := PlaceholderTexture2D.new()
+	tex.size = Vector2(16, 16)
+	atlas.texture = tex
+	atlas.texture_region_size = Vector2i(16, 16)
+	atlas.create_tile(Vector2i(0, 0))
+	var source_id: int = tile_set.add_source(atlas)
+	layer.tile_set = tile_set
+	layer.set_cell(Vector2i(1, 0), source_id, Vector2i(0, 0))  # floor at target (1,0)
+	add_child(layer)
+	add_child(player)
+	player.setup(layer)
+	player.position = Vector2(8.0, 8.0)  # tile (0,0)
+	watch_signals(player)
+
+	player._try_move("move_right")  # target tile (1, 0)
+
+	assert_signal_emitted_with_parameters(player, "stepped", [Vector2i(1, 0)])
+	player.free()
+	layer.free()
