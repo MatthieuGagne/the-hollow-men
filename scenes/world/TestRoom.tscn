@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
-[ext_resource type="PackedScene" uid="uid://cqsd50e1c7p52" path="res://maps/room_poc.tmx" id="2_map"]
+[ext_resource type="PackedScene" path="res://maps/test_room.tmx" id="2_map"]
 [ext_resource type="PackedScene" path="res://scenes/world/SpawnPoint.tscn" id="3_spawnpoint"]
 [ext_resource type="Script" path="res://scripts/world/test_room.gd" id="4_testroom"]
 [ext_resource type="Script" path="res://scripts/world/random_encounter_controller.gd" id="5_encounters"]
@@ -23,12 +23,12 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
 [node name="TestRoom" instance=ExtResource("1_baseroom") script=ExtResource("4_testroom")]
-world_layer_path = NodePath("room_poc/World")
+world_layer_path = NodePath("test_room")
 battle_background = "alley"
 default_spawn = "default"
 ambient_color = Color(0.08, 0.08, 0.12, 1)
 
-[node name="room_poc" parent="." instance=ExtResource("2_map")]
+[node name="test_room" parent="." instance=ExtResource("2_map")]
 
 [node name="DefaultSpawn" parent="." instance=ExtResource("3_spawnpoint")]
 position = Vector2(120, 88)
