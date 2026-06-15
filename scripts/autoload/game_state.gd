@@ -17,3 +17,15 @@ func get_flag(key: String, default: Variant = null) -> Variant:
 
 func has_flag(key: String) -> bool:
 	return _flags.has(key)
+
+
+func clear_flags() -> void:
+	_flags.clear()
+
+
+func snapshot_flags() -> Dictionary:
+	return _flags.duplicate(true)
+
+
+func restore_flags(flags: Dictionary) -> void:
+	_flags = flags.duplicate(true)
