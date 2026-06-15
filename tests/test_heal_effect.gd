@@ -58,7 +58,7 @@ func test_karim_ability_has_heal_effect() -> void:
 	var karim: Combatant = Combatant.from_definition(load("res://characters/karim.tres"))
 	var a := karim.ability
 	assert_eq(a.ability_name, "Field Suture")
-	assert_true(a.targets_party, "Field Suture targets the party")
+	assert_eq(a.target_mode, Ability.TargetMode.ONE_ALLY, "Field Suture targets one ally")
 	assert_eq(a.effects.size(), 1, "exactly one effect")
 	assert_true(a.effects[0] is HealEffect, "effect is a HealEffect")
 	assert_eq(a.effects[0].amount, 38, "tuned so 38 + PSY(45)/2 = 60")

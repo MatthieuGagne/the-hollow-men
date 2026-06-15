@@ -25,10 +25,8 @@ func setup(party: Array[Combatant], enemies: Array[Combatant], battle: Node) -> 
 	_party = party
 	battle.combatant_updated.connect(_on_combatant_updated)
 	battle.enemy_added.connect(_on_enemy_added)
-	battle.enemy_target_changed.connect(_on_enemy_target_changed)
 	battle.player_turn_started.connect(_on_player_turn_started)
 	battle.player_turn_ended.connect(_on_player_turn_ended)
-	battle.party_target_changed.connect(_on_party_target_changed)
 	_build_enemy_rows(enemies)
 	_build_panels()
 
@@ -193,14 +191,6 @@ func _on_enemy_added(combatant: Combatant) -> void:
 	_enemy_panels.append(panel)
 
 
-func _on_enemy_target_changed(combatant: Combatant) -> void:
-	for i in range(_enemy_panels.size()):
-		if not _enemy_panels[i].has_node("CursorLabel"):
-			continue
-		_enemy_panels[i].get_node("CursorLabel").modulate.a = \
-			1.0 if _enemies[i] == combatant else 0.0
-
-
 func _on_combatant_updated(combatant: Combatant) -> void:
 	var i := _party.find(combatant)
 	if i >= 0 and i < _panels.size():
@@ -268,11 +258,3 @@ func _on_player_turn_ended() -> void:
 		if not _panels[i].has_node("CursorLabel"):
 			continue
 		_panels[i].get_node("CursorLabel").modulate.a = 0.0
-
-
-func _on_party_target_changed(combatant: Combatant) -> void:
-	for i in range(mini(_party.size(), _panels.size())):
-		if not _panels[i].has_node("CursorLabel"):
-			continue
-		var cursor: Label = _panels[i].get_node("CursorLabel")
-		cursor.modulate.a = 1.0 if _party[i] == combatant else 0.0

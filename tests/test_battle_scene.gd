@@ -38,6 +38,7 @@ func test_execute_action_returns_to_ticking() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
@@ -56,6 +57,7 @@ func test_execute_action_damages_enemy() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Shade HP must decrease after Attack")
 
@@ -66,6 +68,7 @@ func test_execute_action_triggers_win_on_lethal_hit() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.ENDED,
 		"State must be ENDED when all enemies are dead")
@@ -78,6 +81,7 @@ func test_battle_ended_signal_emitted_on_win() -> void:
 	watch_signals(_scene)
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.battle_ended, 2.0)
 	assert_signal_emitted_with_parameters(_scene, "battle_ended", [true])
 
@@ -200,6 +204,7 @@ func test_player_turn_ended_signal_emitted_after_action() -> void:
 	_scene._begin_player_turn(reid)
 	watch_signals(_scene)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_signal_emitted(_scene, "player_turn_ended")
 
@@ -218,6 +223,7 @@ func test_ability_damages_enemy_as_reid() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Piercing Strike must deal damage to Shade")
 
@@ -231,6 +237,7 @@ func test_ability_damages_enemy_as_iris() -> void:
 	var hp_before: int = shade.current_hp
 	scene2._begin_player_turn(iris)
 	scene2.execute_action("ability")
+	scene2.confirm_enemy_target()
 	await wait_for_signal(scene2.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
 
@@ -240,6 +247,7 @@ func test_ability_spends_pp() -> void:
 	var pp_before: int = reid.current_pp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	assert_lt(reid.current_pp, pp_before, "Piercing Strike must spend PP")
 
 
@@ -247,6 +255,7 @@ func test_ability_returns_to_ticking() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
@@ -258,6 +267,7 @@ func test_ability_does_not_damage_when_pp_insufficient() -> void:
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when PP is 0")
 
 
@@ -372,6 +382,7 @@ func test_margot_ability_deals_psy_damage() -> void:
 	var hp_before: int = shade.current_hp
 	scene2._begin_player_turn(margot)
 	scene2.execute_action("ability")
+	scene2.confirm_enemy_target()
 	await wait_for_signal(scene2.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before,
 		"Void Calculus must deal PSY damage to Shade")
@@ -385,6 +396,7 @@ func test_margot_ability_spends_pp() -> void:
 	var pp_before: int = margot.current_pp
 	scene2._begin_player_turn(margot)
 	scene2.execute_action("ability")
+	scene2.confirm_enemy_target()
 	assert_lt(margot.current_pp, pp_before, "Void Calculus must spend 15 PP")
 
 
@@ -398,6 +410,7 @@ func test_margot_ability_does_not_damage_when_pp_insufficient() -> void:
 	var hp_before: int = shade.current_hp
 	scene2._begin_player_turn(margot)
 	scene2.execute_action("ability")
+	scene2.confirm_enemy_target()
 	assert_eq(shade.current_hp, hp_before,
 		"Void Calculus must not deal damage when PP is 0")
 
@@ -407,6 +420,7 @@ func test_ability_emits_combatant_updated_for_attacker() -> void:
 	_scene._begin_player_turn(reid)
 	watch_signals(_scene)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	assert_signal_emitted_with_parameters(_scene, "combatant_updated", [reid])
 
 
@@ -459,6 +473,7 @@ func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	var child_count_before: int = reid_sprite.get_child_count()
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_gt(reid_sprite.get_child_count(), child_count_before,
 		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
@@ -638,14 +653,16 @@ func test_execute_action_enters_animating_state() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("attack")
+	_scene.confirm_enemy_target()
 	assert_eq(_scene._state, _scene.BattleState.ANIMATING,
-		"execute_action must immediately enter ANIMATING before tween completes")
+		"confirming a target must immediately enter ANIMATING before tween completes")
 
 
 func test_offensive_ability_enters_animating_state() -> void:
 	var reid: Combatant = _scene.party[0]
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	assert_eq(_scene._state, _scene.BattleState.ANIMATING,
 		"offensive ability must enter ANIMATING state when attacker has enough PP")
 
@@ -1017,7 +1034,32 @@ func test_ability_uses_effects_data_not_character_name() -> void:
 	var hp_before := shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	reid.ability.effects = saved_effects
 	assert_eq(shade.current_hp, hp_before,
 		"with no DamageEffect, ability deals no damage — dispatch is data-driven, not name-driven")
+
+
+# --- SELF target_mode ---
+
+func _make_scene_with_self_buffer() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleContext.configure()
+	PartyManager._permanent_members.append(
+		Combatant.from_definition(load("res://tests/fixtures/test_self_buffer.tres")))
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	return s
+
+
+func test_self_buff_ability_applies_to_caster() -> void:
+	# A SELF ability (status on self) resolves with no target picker.
+	var s := _make_scene_with_self_buffer()
+	var caster: Combatant = s.party[0]
+	s._begin_player_turn(caster)
+	s.execute_action("ability")
+	await wait_for_signal(s.player_turn_ended, 2.0)
+	assert_true(caster.active_effects.any(func(e): return e.effect_name == "guard"),
+		"SELF ability must apply its status to the caster with no selection step")

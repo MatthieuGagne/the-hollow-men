@@ -10,44 +10,25 @@ func _make_status(axis: int, mod: int, dur: int, ename := "demo") -> StatusEffec
 	s.duration = dur
 	return s
 
-func _make_effect(mode: int, status: StatusEffect) -> ApplyStatusEffect:
+func _make_effect(status: StatusEffect) -> ApplyStatusEffect:
 	var ae := ApplyStatusEffect.new()
-	ae.target_mode = mode
 	ae.status = status
 	return ae
 
 func _make_combatant() -> Combatant:
 	return Combatant.from_definition(CombatantDefinition.new())
 
-# --- resolve_recipient ---
-
-func test_resolve_recipient_target_returns_target() -> void:
-	var ae := _make_effect(ApplyStatusEffect.TargetMode.TARGET,
-		_make_status(StatusEffect.StatAxis.DEF, -6, 2))
-	var user := _make_combatant()
-	var target := _make_combatant()
-	assert_eq(ae.resolve_recipient(user, target), target,
-		"TARGET mode must land on the resolved target")
-
-func test_resolve_recipient_self_returns_user() -> void:
-	var ae := _make_effect(ApplyStatusEffect.TargetMode.SELF,
-		_make_status(StatusEffect.StatAxis.STR, 8, 3))
-	var user := _make_combatant()
-	var target := _make_combatant()
-	assert_eq(ae.resolve_recipient(user, target), user,
-		"SELF mode must land on the caster")
-
 # --- make_instance: fresh, correct, non-aliasing ---
 
 func test_make_instance_is_fresh_not_template() -> void:
 	var tmpl := _make_status(StatusEffect.StatAxis.DEF, -6, 2)
-	var ae := _make_effect(ApplyStatusEffect.TargetMode.TARGET, tmpl)
+	var ae := _make_effect(tmpl)
 	assert_ne(ae.make_instance(), tmpl,
 		"applied instance must NOT be the template object")
 
 func test_make_instance_copies_axis_modifier_duration() -> void:
 	var tmpl := _make_status(StatusEffect.StatAxis.DEF, -6, 2, "suppress")
-	var ae := _make_effect(ApplyStatusEffect.TargetMode.TARGET, tmpl)
+	var ae := _make_effect(tmpl)
 	var inst := ae.make_instance()
 	assert_eq(inst.effect_name, "suppress")
 	assert_eq(inst.stat, StatusEffect.StatAxis.DEF)
@@ -59,8 +40,7 @@ func test_make_instance_null_status_returns_null() -> void:
 	assert_null(ae.make_instance(), "null template must yield null, not crash")
 
 func test_two_targets_do_not_alias() -> void:
-	var ae := _make_effect(ApplyStatusEffect.TargetMode.TARGET,
-		_make_status(StatusEffect.StatAxis.DEF, -6, 2))
+	var ae := _make_effect(_make_status(StatusEffect.StatAxis.DEF, -6, 2))
 	var a := _make_combatant()
 	var b := _make_combatant()
 	a.apply_effect(ae.make_instance())
@@ -90,6 +70,7 @@ func test_offensive_ability_applies_status_to_enemy() -> void:
 	var shade: Combatant = s.enemies[0]
 	s._begin_player_turn(caster)
 	s.execute_action("ability")
+	s.confirm_enemy_target()
 	await wait_for_signal(s.player_turn_ended, 2.0)
 	var debuffed := shade.active_effects.any(func(ef: StatusEffect) -> bool:
 		return ef.effect_name == "suppress")
@@ -103,6 +84,7 @@ func test_offensive_ability_lowers_enemy_effective_def() -> void:
 	var def_before := shade.get_effective_stat(StatusEffect.StatAxis.DEF)
 	s._begin_player_turn(caster)
 	s.execute_action("ability")
+	s.confirm_enemy_target()
 	await wait_for_signal(s.player_turn_ended, 2.0)
 	assert_lt(shade.get_effective_stat(StatusEffect.StatAxis.DEF), def_before,
 		"applied DEF debuff must reduce the enemy's effective DEF")
@@ -114,6 +96,7 @@ func test_offensive_ability_also_deals_damage() -> void:
 	var hp_before := shade.current_hp
 	s._begin_player_turn(caster)
 	s.execute_action("ability")
+	s.confirm_enemy_target()
 	await wait_for_signal(s.player_turn_ended, 2.0)
 	assert_lt(shade.current_hp, hp_before,
 		"Suppressing Strike composes DamageEffect + ApplyStatusEffect in one cast")
@@ -124,6 +107,7 @@ func test_status_ability_spends_pp() -> void:
 	var pp_before := caster.current_pp
 	s._begin_player_turn(caster)
 	s.execute_action("ability")
+	s.confirm_enemy_target()
 	await wait_for_signal(s.player_turn_ended, 2.0)
 	assert_lt(caster.current_pp, pp_before,
 		"status ability must still spend PP exactly once via _resolve_ability")

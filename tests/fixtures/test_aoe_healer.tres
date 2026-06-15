@@ -1,33 +1,33 @@
-[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
 [ext_resource type="Script" path="res://scripts/battle/heal_effect.gd" id="3_heal"]
 
-[sub_resource type="Resource" id="heal_karim"]
+[sub_resource type="Resource" id="heal_aoe"]
 script = ExtResource("3_heal")
-amount = 38
+amount = 40
 
-[sub_resource type="Resource" id="ability_karim"]
+[sub_resource type="Resource" id="ability_aoe_heal"]
 script = ExtResource("2_ability")
-ability_name = "Field Suture"
-pp_cost = 10
-target_mode = 1
-effects = Array[AbilityEffect]([SubResource("heal_karim")])
+ability_name = "Mending Field"
+pp_cost = 12
+target_mode = 2
+effects = Array[AbilityEffect]([SubResource("heal_aoe")])
 
 [resource]
 script = ExtResource("1_chardef")
-id = "karim"
-character_name = "Karim"
+id = "test_aoe_healer"
+character_name = "AoE Healer"
 is_player_controlled = true
-max_hp = 310
-max_pp = 70
+max_hp = 280
+max_pp = 80
 str_stat = 20
-def_stat = 35
-psy_stat = 45
-res_stat = 50
-spd_stat = 22
+def_stat = 30
+psy_stat = 50
+res_stat = 30
+spd_stat = 30
 sigil_type = 0
 sprite_path = "res://assets/sprites/characters/karim.png"
 sprite_vframes = 8
-ability = SubResource("ability_karim")
+ability = SubResource("ability_aoe_heal")

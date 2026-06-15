@@ -6,9 +6,12 @@ func resolve_action(combatant: Combatant, party: Array[Combatant], enemies: Arra
 	var living_enemies := enemies.filter(func(e: Combatant) -> bool: return e.is_alive())
 	var living_party := party.filter(func(p: Combatant) -> bool: return p.is_alive())
 	if living_enemies.size() < living_party.size() and not combatant.ai_state.get("backup_called", false):
-		combatant.ai_state["backup_called"] = true
-		var backup: Combatant = Combatant.from_definition(GameData.get_definition("block_captain"))
-		add_enemy_fn.call(backup)
+		var summon := combatant.summon
+		if summon != null:
+			var backup := summon.make_summon()
+			if backup != null:
+				combatant.ai_state["backup_called"] = true
+				add_enemy_fn.call(backup)
 		return {}
 	if living_party.is_empty():
 		return {}
