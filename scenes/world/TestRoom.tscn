@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
+[ext_resource type="PackedScene" uid="uid://cqsd50e1c7p52" path="res://maps/room_poc.tmx" id="2_map"]
+[ext_resource type="PackedScene" path="res://scenes/world/SpawnPoint.tscn" id="3_spawnpoint"]
+[ext_resource type="Script" path="res://scripts/world/test_room.gd" id="4_testroom"]
+[ext_resource type="Script" path="res://scripts/world/random_encounter_controller.gd" id="5_encounters"]
+[ext_resource type="Script" path="res://scripts/world/boss_trigger.gd" id="6_boss"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boss"]
+size = Vector2(16, 16)
+
+[node name="TestRoom" instance=ExtResource("1_baseroom") script=ExtResource("4_testroom")]
+world_layer_path = NodePath("room_poc/World")
+battle_background = "alley"
+default_spawn = "default"
+ambient_color = Color(0.08, 0.08, 0.12, 1)
+
+[node name="room_poc" parent="." instance=ExtResource("2_map")]
+
+[node name="DefaultSpawn" parent="." instance=ExtResource("3_spawnpoint")]
+position = Vector2(120, 88)
+spawn_id = "default"
+
+[node name="RandomEncounters" type="Node" parent="."]
+script = ExtResource("5_encounters")
+return_scene = "res://scenes/world/TestRoom.tscn"
+return_spawn = "default"
+required_wins = 3
+
+[node name="BossTrigger" type="Area2D" parent="."]
+position = Vector2(56, 88)
+script = ExtResource("6_boss")
+required_wins = 3
+return_scene = "res://scenes/world/TestRoom.tscn"
+return_spawn = "default"
+
+[node name="BossMarker" type="ColorRect" parent="BossTrigger"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.85, 0.1, 0.1, 0.6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger"]
+shape = SubResource("RectangleShape2D_boss")
