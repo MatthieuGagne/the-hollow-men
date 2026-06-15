@@ -83,6 +83,7 @@ func load(slot: int) -> bool:
 ## no-op) and reset to the starting scene. navigate=false (tests) skips travel.
 func new_game(navigate: bool = true) -> void:
 	GameState.clear_flags()
+	PartyManager.reset_to_new_game()
 	game_loaded.emit(-1)
 	if navigate:
 		SceneManager.change_scene(STARTING_SCENE, STARTING_SPAWN)

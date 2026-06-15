@@ -10,14 +10,23 @@ var _progression: Dictionary = {}
 
 
 func _ready() -> void:
-	_seed_progression()
-	_permanent_members.append(Combatant.from_definition(GameData.get_definition("reid")))
+	reset_to_new_game()
 
 
 func _seed_progression() -> void:
 	for id: String in GameData.get_player_character_ids():
 		if not _progression.has(id):
 			_progression[id] = {"level": 1, "xp": 0}
+
+
+# Wipe all party runtime to a clean new-game state: no progression, Reid-only
+# roster at Lv1. Called on boot and by SaveManager.new_game().
+func reset_to_new_game() -> void:
+	_permanent_members.clear()
+	_temporary_members.clear()
+	_progression.clear()
+	_seed_progression()
+	_permanent_members.append(Combatant.from_definition(GameData.get_definition("reid")))
 
 
 # --- Roster ---

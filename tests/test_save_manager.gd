@@ -135,3 +135,14 @@ func test_apply_legacy_v1_data_defaults_to_reid_level_one() -> void:
 	SaveManager.apply(data, false)
 	assert_true(PartyManager.has_member("Reid"))
 	assert_eq(PartyManager.get_level("reid"), 1)
+
+
+func test_new_game_resets_party_progression_and_roster() -> void:
+	PartyManager.set_progression("reid", 5, 30)
+	PartyManager.add_member_at_level("iris", 5)
+	SaveManager.new_game(false)  # navigate = false
+	assert_eq(PartyManager.get_level("reid"), 1, "new game resets Reid to Lv1")
+	assert_false(PartyManager.has_member("Iris"), "new game drops recruited members")
+	var members := PartyManager.get_active_members()
+	assert_eq(members.size(), 1)
+	assert_eq(members[0].id, "reid")

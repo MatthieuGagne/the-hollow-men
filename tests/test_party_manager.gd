@@ -146,3 +146,19 @@ func test_snapshot_progression_is_isolated_from_later_mutation() -> void:
 	PartyManager.set_progression("reid", 9, 99)
 	assert_eq(snap["reid"]["level"], 4, "snapshot must be isolated from later store mutation")
 	assert_eq(snap["reid"]["xp"], 20)
+
+
+func test_reset_to_new_game_clears_progression_roster_and_reseeds_reid() -> void:
+	PartyManager.set_progression("reid", 7, 50)
+	PartyManager.add_member_at_level("iris", 7)
+	PartyManager.reset_to_new_game()
+	# Progression wiped back to Lv1 for everyone.
+	assert_eq(PartyManager.get_level("reid"), 1)
+	assert_eq(PartyManager.get_xp("reid"), 0)
+	assert_eq(PartyManager.get_level("iris"), 1)
+	# Roster is Reid only, freshly rebuilt at Lv1.
+	var members := PartyManager.get_active_members()
+	assert_eq(members.size(), 1)
+	assert_eq(members[0].id, "reid")
+	assert_eq(members[0].level, 1)
+	assert_false(PartyManager.has_member("Iris"), "Iris must not survive a new game")
