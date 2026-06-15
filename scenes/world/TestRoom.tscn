@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
 [ext_resource type="PackedScene" uid="uid://cqsd50e1c7p52" path="res://maps/room_poc.tmx" id="2_map"]
@@ -6,9 +6,21 @@
 [ext_resource type="Script" path="res://scripts/world/test_room.gd" id="4_testroom"]
 [ext_resource type="Script" path="res://scripts/world/random_encounter_controller.gd" id="5_encounters"]
 [ext_resource type="Script" path="res://scripts/world/boss_trigger.gd" id="6_boss"]
+[ext_resource type="Script" path="res://scripts/world/flickering_light.gd" id="7_light"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boss"]
 size = Vector2(16, 16)
+
+[sub_resource type="Gradient" id="Gradient_light"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
+gradient = SubResource("Gradient_light")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [node name="TestRoom" instance=ExtResource("1_baseroom") script=ExtResource("4_testroom")]
 world_layer_path = NodePath("room_poc/World")
@@ -45,3 +57,12 @@ color = Color(0.85, 0.1, 0.1, 0.6)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger"]
 shape = SubResource("RectangleShape2D_boss")
+
+[node name="FlickeringLight" type="PointLight2D" parent="."]
+position = Vector2(120, 88)
+color = Color(1, 0.88, 0.45, 1)
+energy = 3.28
+texture = SubResource("GradientTexture2D_light")
+texture_scale = 8.0
+height = 306.0
+script = ExtResource("7_light")
