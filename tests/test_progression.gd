@@ -53,3 +53,10 @@ func test_grown_stat_level_1_is_base() -> void:
 func test_grown_stat_scales_linearly_per_level() -> void:
 	# 100 + 10 * (3 - 1) = 120
 	assert_eq(Progression.grown_stat(100, 10, 3), 120)
+
+
+func test_apply_xp_from_mid_level_progress_carries() -> void:
+	# Starting partway into level 1 (50/100), a 60 gain reaches level 2 with 10 carried.
+	var r := Progression.apply_xp(1, 50, 60)
+	assert_eq(r["level"], 2)
+	assert_eq(r["xp"], 10)
