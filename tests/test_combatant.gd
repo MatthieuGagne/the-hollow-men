@@ -588,3 +588,15 @@ func test_iris_levels_up_stats_from_tres_growth() -> void:
 	assert_eq(iris.max_hp, 298)
 	# Iris Lv1 psy=50, psy_growth=5 -> Lv2 = 55
 	assert_eq(iris.psy_stat, 55)
+
+
+func test_security_rookie_loads_with_correct_stats() -> void:
+	var rookie: Combatant = Combatant.from_definition(load("res://characters/enemies/security_rookie.tres"))
+	assert_eq(rookie.character_name, "Security Rookie")
+	assert_false(rookie.is_player_controlled)
+	assert_eq(rookie.max_hp, 65)
+	assert_eq(rookie.str_stat, 38)
+	assert_eq(rookie.def_stat, 12)
+	assert_eq(rookie.spd_stat, 20)
+	assert_eq(rookie.xp_reward, 22)
+	assert_not_null(rookie.ai, "rookie must have an ai resource")

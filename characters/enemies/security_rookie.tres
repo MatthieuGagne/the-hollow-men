@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1_enemydef"]
+[ext_resource type="Script" path="res://scripts/battle/enemy_ai.gd" id="2_enemy_ai"]
+
+[sub_resource type="Resource" id="ai_rookie"]
+script = ExtResource("2_enemy_ai")
+
+[resource]
+script = ExtResource("1_enemydef")
+id = "security_rookie"
+character_name = "Security Rookie"
+is_player_controlled = false
+max_hp = 65
+max_pp = 0
+str_stat = 38
+def_stat = 12
+psy_stat = 5
+res_stat = 8
+spd_stat = 20
+sigil_type = 0
+sprite_path = "res://assets/sprites/enemies/private_security_guard.png"
+sprite_vframes = 1
+ai = SubResource("ai_rookie")
+xp_reward = 22

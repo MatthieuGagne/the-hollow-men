@@ -34,6 +34,7 @@ script = ExtResource("6_boss")
 required_wins = 3
 return_scene = "res://scenes/world/TestRoom.tscn"
 return_spawn = "default"
+boss_enemies = "security_captain,security_rookie"
 
 [node name="BossMarker" type="ColorRect" parent="BossTrigger"]
 offset_left = -8.0

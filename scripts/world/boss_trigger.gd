@@ -15,6 +15,7 @@ const COMPLETE_FLAG: String = "test_room_harness_complete"
 @export var battle_background: String = "alley"
 @export var return_scene: String = ""
 @export var return_spawn: String = "default"
+@export var boss_enemies: String = "security_captain,security_rookie"
 
 var _fired: bool = false
 
@@ -42,5 +43,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if not PartyManager.has_member("Iris"):
 		PartyManager.add_member_at_level("iris", PartyManager.get_level("reid"))
 	GameState.set_flag(PENDING_BOSS_FLAG, true)
-	BattleContext.configure("territory_enforcer", battle_background, return_scene, return_spawn)
+	BattleContext.configure(boss_enemies, battle_background, return_scene, return_spawn)
 	SceneManager.change_scene(BATTLE_SCENE)

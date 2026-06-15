@@ -6,7 +6,7 @@ extends Node
 ## a battle against 2 enemies randomly drawn from POOL. Stops once the required
 ## number of random victories has been reached (boss phase).
 
-const POOL: Array[String] = ["shade", "private_security_guard"]
+const POOL: Array[String] = ["security_rookie"]
 const GRACE_STEPS: int = 3
 const TRIGGER_CHANCE: float = 0.25
 const BATTLE_SCENE: String = "res://scenes/battle/BattleScene.tscn"

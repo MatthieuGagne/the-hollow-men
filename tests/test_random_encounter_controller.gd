@@ -16,5 +16,10 @@ func test_no_trigger_after_grace_when_roll_above_chance() -> void:
 
 
 func test_build_comp_joins_two_ids() -> void:
-	assert_eq(RandomEncounterController.build_comp("shade", "private_security_guard"),
-		"shade,private_security_guard")
+	assert_eq(RandomEncounterController.build_comp("security_rookie", "security_rookie"),
+		"security_rookie,security_rookie")
+
+
+func test_pool_is_security_rookie_only() -> void:
+	assert_eq(RandomEncounterController.POOL.size(), 1)
+	assert_eq(RandomEncounterController.POOL[0], "security_rookie")
