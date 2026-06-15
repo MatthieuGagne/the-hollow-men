@@ -47,15 +47,21 @@ func _toggle() -> void:
 
 
 func _debug_save() -> void:
-	SaveManager.save(SAVE_SLOT)
-	print("[debug] saved slot %d" % SAVE_SLOT)
+	var scene := _current_scene_path()
+	var ok := SaveManager.save(SAVE_SLOT)
+	print("[debug] save slot %d: %s (scene=%s)" % [SAVE_SLOT, "OK" if ok else "FAILED", scene])
 
 
 func _debug_load() -> void:
 	if SaveManager.load(SAVE_SLOT):
-		print("[debug] loaded slot %d" % SAVE_SLOT)
+		print("[debug] loaded slot %d (scene=%s)" % [SAVE_SLOT, _current_scene_path()])
 	else:
 		print("[debug] no save in slot %d" % SAVE_SLOT)
+
+
+func _current_scene_path() -> String:
+	var current := get_tree().current_scene
+	return current.scene_file_path if current else "<none>"
 
 
 func _debug_new_game() -> void:
