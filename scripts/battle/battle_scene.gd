@@ -176,10 +176,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("move_down"):
 			_navigate_party_target(1)
 			get_viewport().set_input_as_handled()
-		elif event.is_action_pressed("move_left"):
-			expand_target_to_all()      # party is on the far left
-			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("move_right"):
+			expand_target_to_all()      # party is on the right — push toward it
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_left"):
 			collapse_target_to_single()
 			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("interact"):
@@ -193,10 +193,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("move_down"):
 			_navigate_enemy_target(1)
 			get_viewport().set_input_as_handled()
-		elif event.is_action_pressed("move_right"):
-			expand_target_to_all()      # enemies are on the far right
-			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("move_left"):
+			expand_target_to_all()      # enemies are on the left — push toward them
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_right"):
 			collapse_target_to_single()
 			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("interact"):
