@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+[ext_resource type="Script" path="res://scripts/battle/damage_effect.gd" id="3_dmg"]
+
+[sub_resource type="Resource" id="dmg_switch"]
+script = ExtResource("3_dmg")
+kind = 1
+
+[sub_resource type="Resource" id="ability_switch"]
+script = ExtResource("2_ability")
+ability_name = "Arc Bolt"
+pp_cost = 4
+target_mode = 3
+switchable = true
+effects = Array[AbilityEffect]([SubResource("dmg_switch")])
+
+[resource]
+script = ExtResource("1_chardef")
+id = "test_switch_caster"
+character_name = "Switch Caster"
+is_player_controlled = true
+max_hp = 240
+max_pp = 60
+str_stat = 50
+def_stat = 30
+psy_stat = 30
+res_stat = 20
+spd_stat = 35
+sigil_type = 0
+sprite_path = "res://assets/sprites/characters/reid.png"
+sprite_vframes = 8
+ability = SubResource("ability_switch")

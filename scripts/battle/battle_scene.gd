@@ -176,6 +176,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("move_down"):
 			_navigate_party_target(1)
 			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_left"):
+			expand_target_to_all()      # party is on the far left
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_right"):
+			collapse_target_to_single()
+			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("interact"):
 			confirm_party_target(party[_party_target_idx])
 			get_viewport().set_input_as_handled()
@@ -186,6 +192,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("move_down"):
 			_navigate_enemy_target(1)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_right"):
+			expand_target_to_all()      # enemies are on the far right
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("move_left"):
+			collapse_target_to_single()
 			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("interact"):
 			confirm_enemy_target()
@@ -592,6 +604,35 @@ func confirm_enemy_target() -> void:
 
 	_end_turn()
 	_check_win_loss()
+
+
+# Switchable ONE_* abilities expand to their matching ALL_* live during selection.
+func expand_target_to_all() -> void:
+	if _active == null or _active.ability == null or not _active.ability.switchable:
+		return
+	if _target_all:
+		return
+	_target_all = true
+	if _active.ability.targets_enemy_side():
+		enemy_target_changed.emit(null)          # clear single cursor
+		enemy_group_target_changed.emit(true)
+	else:
+		party_target_changed.emit(null)
+		party_group_target_changed.emit(true)
+
+
+func collapse_target_to_single() -> void:
+	# Only a switchable ability can collapse; a fixed ALL_* stays grouped.
+	if not _target_all or _active == null or _active.ability == null \
+			or not _active.ability.switchable:
+		return
+	_target_all = false
+	if _active.ability.targets_enemy_side():
+		enemy_group_target_changed.emit(false)
+		enemy_target_changed.emit(enemies[_enemy_target_idx])
+	else:
+		party_group_target_changed.emit(false)
+		party_target_changed.emit(party[_party_target_idx])
 
 
 func skip_turn() -> void:
