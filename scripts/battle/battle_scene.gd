@@ -369,8 +369,7 @@ func _compute_damage_for(recipient: Combatant) -> int:
 	return dmg
 
 
-# Apply non-damage effects (heal/status) to a recipient. Called at the impact peak.
-# TODO(Task 10): add the SummonEffect branch once that class exists.
+# Apply non-damage effects (heal/status/summon) to a recipient. Called at impact peak.
 func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 	for effect in _active.ability.effects:
 		if effect is HealEffect:
@@ -379,6 +378,10 @@ func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 			var inst: StatusEffect = effect.make_instance()
 			if inst != null:
 				recipient.apply_effect(inst)
+		elif effect is SummonEffect:
+			var summoned: Combatant = effect.make_summon()
+			if summoned != null:
+				add_enemy(summoned)
 
 
 # SELF abilities resolve with no selection step and no lunge.
