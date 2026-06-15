@@ -44,3 +44,26 @@ func test_save_emits_game_saved() -> void:
 	watch_signals(SaveManager)
 	SaveManager.save(SLOT, "res://scenes/world/Rooftop.tscn", "rooftop_start")
 	assert_signal_emitted_with_parameters(SaveManager, "game_saved", [SLOT])
+
+
+func test_apply_restores_flags_without_navigating() -> void:
+	var data := SaveData.new()
+	data.flags = {"intro_complete": true}
+	data.current_scene = "res://scenes/world/Rooftop.tscn"
+	SaveManager.apply(data, false)  # navigate = false: no scene swap in tests
+	assert_eq(GameState.get_flag("intro_complete"), true)
+
+
+func test_load_round_trip_restores_into_game_state() -> void:
+	GameState.set_flag("intro_complete", true)
+	SaveManager.save(SLOT, "res://scenes/world/Rooftop.tscn", "rooftop_start")
+	GameState.clear_flags()
+
+	var data := SaveManager.read(SLOT)
+	assert_not_null(data)
+	SaveManager.apply(data, false)
+	assert_eq(GameState.get_flag("intro_complete"), true)
+
+
+func test_load_missing_slot_returns_false() -> void:
+	assert_false(SaveManager.load(SLOT))

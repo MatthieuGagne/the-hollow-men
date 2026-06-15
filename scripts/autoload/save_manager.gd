@@ -57,6 +57,24 @@ func read(slot: int) -> SaveData:
 	return data
 
 
+## Restore a SaveData into the running game. navigate=false (tests) skips the
+## scene transition so flag effects are observable without swapping the tree.
+func apply(data: SaveData, navigate: bool = true) -> void:
+	GameState.restore_flags(data.flags)
+	if navigate:
+		SceneManager.change_scene(data.current_scene, data.spawn_point)
+
+
+## Convenience: read a slot and apply it. Returns false if the slot is absent.
+func load(slot: int) -> bool:
+	var data := read(slot)
+	if data == null:
+		return false
+	apply(data)
+	game_loaded.emit(slot)
+	return true
+
+
 func _current_scene_path() -> String:
 	var current := get_tree().current_scene
 	return current.scene_file_path if current else ""
