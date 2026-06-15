@@ -120,3 +120,29 @@ func test_restore_roster_rebuilds_combatants_at_stored_level() -> void:
 func test_restore_roster_empty_defaults_to_reid() -> void:
 	PartyManager.restore_roster([])
 	assert_true(PartyManager.has_member("Reid"), "a legacy/empty roster falls back to Reid")
+
+
+func test_award_xp_multi_member_only_levelers_reported() -> void:
+	# Two members, same XP grant: one crosses the 1->2 threshold (100), one doesn't.
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
+	PartyManager.add_member(reid)
+	PartyManager.add_member(iris)
+	PartyManager.set_progression("iris", 1, 60)  # iris starts 60 into level 1
+	var leveled := PartyManager.award_xp([reid, iris], 50)
+	# reid: 0+50 = 50 -> still level 1; iris: 60+50 = 110 -> level 2 (xp 10)
+	assert_eq(PartyManager.get_level("reid"), 1)
+	assert_eq(PartyManager.get_level("iris"), 2)
+	assert_eq(PartyManager.get_xp("iris"), 10)
+	assert_eq(leveled.size(), 1, "only the member who leveled up is reported")
+	assert_eq(leveled[0]["name"], "Iris")
+	assert_eq(leveled[0]["to"], 2)
+
+
+func test_snapshot_progression_is_isolated_from_later_mutation() -> void:
+	PartyManager.set_progression("reid", 4, 20)
+	var snap := PartyManager.snapshot_progression()
+	# Mutating the store after snapshotting must not change the snapshot (deep copy).
+	PartyManager.set_progression("reid", 9, 99)
+	assert_eq(snap["reid"]["level"], 4, "snapshot must be isolated from later store mutation")
+	assert_eq(snap["reid"]["xp"], 20)
