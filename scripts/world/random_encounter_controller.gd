@@ -22,6 +22,11 @@ var _steps: int = 0
 
 
 func _ready() -> void:
+	# Reconcile harness return flags on every (re)entry. This lives here, not on
+	# the room's root, because a script override on an instanced inherited-scene
+	# root does not bind in Godot (the root keeps BaseRoom's script) — this child
+	# node's script runs reliably.
+	TestRoom.resolve_return_bookkeeping()
 	var player := get_parent().get_node_or_null("Player")
 	if player != null and player.has_signal("stepped"):
 		player.stepped.connect(_on_stepped)
