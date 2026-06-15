@@ -7,7 +7,7 @@ extends Node
 signal game_saved(slot: int)
 signal game_loaded(slot: int)  ## slot == -1 means a fresh new_game()
 
-const CURRENT_VERSION: int = 1
+const CURRENT_VERSION: int = 2
 const STARTING_SCENE: String = "res://scenes/world/Rooftop.tscn"
 const STARTING_SPAWN: String = ""
 
@@ -24,6 +24,8 @@ func save(slot: int, scene: String = "", spawn: String = "") -> bool:
 	data.flags = GameState.snapshot_flags()
 	data.current_scene = scene if not scene.is_empty() else _current_scene_path()
 	data.spawn_point = spawn if not spawn.is_empty() else SceneManager.pending_spawn_point
+	data.roster = PartyManager.snapshot_roster()
+	data.progression = PartyManager.snapshot_progression()
 
 	var validation := KnownFlags.validate(data.flags)
 	for w: String in validation["warnings"]:
@@ -61,6 +63,8 @@ func read(slot: int) -> SaveData:
 ## scene transition so flag effects are observable without swapping the tree.
 func apply(data: SaveData, navigate: bool = true) -> void:
 	GameState.restore_flags(data.flags)
+	PartyManager.restore_progression(data.progression)
+	PartyManager.restore_roster(data.roster)
 	if navigate:
 		SceneManager.change_scene(data.current_scene, data.spawn_point)
 
