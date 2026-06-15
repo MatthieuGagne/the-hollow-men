@@ -3,6 +3,8 @@ extends GutTest
 func before_each() -> void:
 	PartyManager._permanent_members.clear()
 	PartyManager._temporary_members.clear()
+	PartyManager._progression.clear()
+	PartyManager._seed_progression()
 
 func _make_named_combatant(name: String) -> Combatant:
 	var d := CombatantDefinition.new()
@@ -52,3 +54,69 @@ func test_remove_temporary_does_not_affect_permanent() -> void:
 	PartyManager.add_member(perm)
 	PartyManager.remove_temporary_members()
 	assert_true(PartyManager.has_member("Reid"))
+
+
+func test_seed_progression_defaults_all_characters_level_one() -> void:
+	assert_eq(PartyManager.get_level("reid"), 1)
+	assert_eq(PartyManager.get_xp("reid"), 0)
+	assert_eq(PartyManager.get_level("iris"), 1, "non-party characters are tracked too")
+
+
+func test_award_xp_to_living_member_levels_up() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	PartyManager.add_member(reid)
+	var leveled := PartyManager.award_xp([reid], 100)  # exactly the 1->2 threshold
+	assert_eq(PartyManager.get_level("reid"), 2)
+	assert_eq(reid.level, 2, "the live combatant's level is synced")
+	assert_eq(leveled.size(), 1)
+	assert_eq(leveled[0]["name"], "Reid")
+	assert_eq(leveled[0]["to"], 2)
+
+
+func test_award_xp_below_threshold_no_levelup() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	PartyManager.add_member(reid)
+	var leveled := PartyManager.award_xp([reid], 50)
+	assert_eq(PartyManager.get_level("reid"), 1)
+	assert_eq(PartyManager.get_xp("reid"), 50)
+	assert_eq(leveled.size(), 0)
+
+
+func test_add_member_at_level_seeds_progression_and_syncs_combatant() -> void:
+	PartyManager.add_member_at_level("iris", 4)
+	assert_eq(PartyManager.get_level("iris"), 4)
+	assert_eq(PartyManager.get_xp("iris"), 0)
+	assert_true(PartyManager.has_member("Iris"))
+	var members := PartyManager.get_active_members()
+	assert_eq(members[members.size() - 1].level, 4, "the joined combatant is at the matched level")
+
+
+func test_snapshot_and_restore_progression_round_trips() -> void:
+	PartyManager.set_progression("reid", 5, 42)
+	PartyManager.set_progression("iris", 3, 7)
+	var snap := PartyManager.snapshot_progression()
+	PartyManager._progression.clear()
+	PartyManager.restore_progression(snap)
+	assert_eq(PartyManager.get_level("reid"), 5)
+	assert_eq(PartyManager.get_xp("reid"), 42)
+	assert_eq(PartyManager.get_level("iris"), 3)
+
+
+func test_snapshot_roster_lists_permanent_ids() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	PartyManager.add_member(reid)
+	assert_eq(PartyManager.snapshot_roster(), ["reid"])
+
+
+func test_restore_roster_rebuilds_combatants_at_stored_level() -> void:
+	PartyManager.set_progression("reid", 3, 0)
+	PartyManager.restore_roster(["reid"])
+	var members := PartyManager.get_active_members()
+	assert_eq(members.size(), 1)
+	assert_eq(members[0].id, "reid")
+	assert_eq(members[0].level, 3, "restored combatant uses stored level")
+
+
+func test_restore_roster_empty_defaults_to_reid() -> void:
+	PartyManager.restore_roster([])
+	assert_true(PartyManager.has_member("Reid"), "a legacy/empty roster falls back to Reid")
