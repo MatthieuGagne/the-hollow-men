@@ -82,6 +82,9 @@ var ai: EnemyAI:
 var summon: SummonEffect:
 	get: return (def as EnemyDefinition).summon if def is EnemyDefinition else null
 
+var xp_reward: int:
+	get: return (def as EnemyDefinition).xp_reward if def is EnemyDefinition else 0
+
 var sprite_path: String:
 	get: return def.sprite_path
 

@@ -22,3 +22,4 @@ sigil_type = 0
 sprite_path = "res://assets/sprites/enemies/private_security_guard.png"
 sprite_vframes = 1
 ai = SubResource("ai_guard")
+xp_reward = 22

@@ -543,3 +543,30 @@ func test_enemy_stats_unaffected_by_level() -> void:
 	var enemy: Combatant = Combatant.from_definition(load("res://characters/enemies/shade.tres"))
 	enemy.level = 5
 	assert_eq(enemy.max_hp, 200, "enemy stats must not scale with level")
+
+
+func test_enemy_definition_xp_reward_defaults_zero() -> void:
+	var d := EnemyDefinition.new()
+	assert_eq(d.xp_reward, 0)
+
+
+func test_character_combatant_xp_reward_is_zero() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	assert_eq(reid.xp_reward, 0, "player characters carry no bounty")
+
+
+func test_shade_xp_reward() -> void:
+	var shade: Combatant = Combatant.from_definition(load("res://characters/enemies/shade.tres"))
+	assert_eq(shade.xp_reward, 18)
+
+
+func test_guard_xp_reward() -> void:
+	var guard: Combatant = Combatant.from_definition(load("res://characters/enemies/private_security_guard.tres"))
+	assert_eq(guard.xp_reward, 22)
+
+
+func test_boss_xp_rewards() -> void:
+	var enforcer: Combatant = Combatant.from_definition(load("res://characters/enemies/territory_enforcer.tres"))
+	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/block_captain.tres"))
+	assert_eq(enforcer.xp_reward, 60)
+	assert_eq(captain.xp_reward, 45)

@@ -22,3 +22,4 @@ sigil_type = 0
 sprite_path = "res://assets/sprites/enemies/shade.png"
 sprite_vframes = 1
 ai = SubResource("ai_captain")
+xp_reward = 45
