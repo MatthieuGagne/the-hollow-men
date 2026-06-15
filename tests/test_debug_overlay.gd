@@ -1,9 +1,19 @@
 extends GutTest
 
 
+const _SAVE_SLOT_PATH: String = "user://hollow_men_save_0.tres"
+
+
 func after_each() -> void:
 	if FileAccess.file_exists("user://debug.cfg"):
 		DirAccess.remove_absolute("user://debug.cfg")
+	_remove_save_slot()
+	GameState.clear_flags()
+
+
+func _remove_save_slot() -> void:
+	if FileAccess.file_exists(_SAVE_SLOT_PATH):
+		DirAccess.remove_absolute(_SAVE_SLOT_PATH)
 
 
 func test_debug_overlay_is_accessible() -> void:
@@ -75,3 +85,36 @@ func test_load_config_falls_back_to_project_setting_when_no_file() -> void:
 		"without a saved config file, overlay must default to ProjectSettings value (false)")
 	DebugOverlay._visible_flag = false
 	DebugOverlay._canvas.visible = false
+
+
+func test_debug_save_emits_and_writes_slot() -> void:
+	_remove_save_slot()
+	GameState.clear_flags()
+	GameState.set_flag("intro_complete", true)
+	watch_signals(SaveManager)
+	DebugOverlay._debug_save()
+	assert_signal_emitted_with_parameters(SaveManager, "game_saved", [0])
+	assert_true(FileAccess.file_exists(_SAVE_SLOT_PATH),
+		"debug save must write the slot file")
+	_remove_save_slot()
+	GameState.clear_flags()
+
+
+func test_debug_load_missing_save_is_safe_noop() -> void:
+	# No save file present -> load() returns false before navigating. No flake.
+	_remove_save_slot()
+	watch_signals(SaveManager)
+	DebugOverlay._debug_load()
+	assert_signal_not_emitted(SaveManager, "game_loaded",
+		"loading a missing slot must not emit game_loaded or navigate")
+
+
+func test_debug_new_game_clears_flags() -> void:
+	GameState.set_flag("intro_complete", true)
+	DebugOverlay._debug_new_game()
+	# Kill the SceneManager fade tween so the leaked change_scene coroutine
+	# never swaps the runner scene mid-suite. Flags are already cleared.
+	for t in get_tree().get_processed_tweens():
+		t.kill()
+	assert_eq(GameState._flags, {})
+	GameState.clear_flags()
