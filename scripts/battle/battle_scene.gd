@@ -37,6 +37,25 @@ const FLASH_PULSE_HALF:    float = 0.05   # each pulse = 2 × this (up + down)
 const FLASH_PULSES:        int   = 3      # 3 pulses × 0.1s = 0.3s total
 const FLASH_HOLD:          float = 0.15   # remaining flash after return (0.3 - 0.15)
 const OVERBRIGHT:          Color = Color(2.0, 2.0, 2.0, 1.0)
+# FF-style pointing hand, sits left of the target with the index finger toward it.
+const TARGET_CURSOR_OFFSET: Vector2 = Vector2(-17.0, 2.0)
+# 'X' = black outline, '#' = white fill; baked to a texture at runtime (no asset
+# pipeline needed). A generic gloved hand pointing right (index finger extended,
+# thumb below) — same size/gesture as a classic JRPG target cursor, not a copy.
+const HAND_BITMAP: Array[String] = [
+	".....XXXXX.....",
+	"....X#####X....",
+	"....X#####XXXX.",
+	"...X##########X",
+	"...X##########X",
+	"...X#####XXXXX.",
+	"..X#####X......",
+	".X######X......",
+	"X#######X......",
+	".X######X......",
+	"..X####X.......",
+	"...XXXX........",
+]
 const WORLD_SCENE:   String = "res://scenes/world/Rooftop.tscn"
 const BATTLE_SCENE:  String = "res://scenes/battle/BattleScene.tscn"
 const VICTORY_DELAY: float  = 1.5
@@ -49,6 +68,9 @@ var _party_target_idx: int = 0
 var _enemy_target_idx: int = 0
 var _pending_action: String = ""
 var _target_all: bool = false
+var _target_cursors: Array[Sprite2D] = []
+var _cursor_layer: Node2D
+var _hand_texture: ImageTexture
 var _pre_pause_state: BattleState = BattleState.TICKING
 
 @onready var _action_menu: ActionMenu = $UI/HUD/ActionMenu
@@ -98,6 +120,15 @@ func _ready() -> void:
 	_defeat_menu.retry_requested.connect(func(): SceneManager.change_scene(BATTLE_SCENE))
 	_defeat_menu.quit_requested.connect(func(): get_tree().quit())
 	combatant_updated.connect(_on_combatant_updated)
+	# Targeting cursor renders as a finger on the target sprite (not the HUD list).
+	_cursor_layer = Node2D.new()
+	_cursor_layer.name = "TargetCursors"
+	add_child(_cursor_layer)
+	_hand_texture = _build_hand_texture()
+	enemy_target_changed.connect(_on_enemy_target_cursor)
+	party_target_changed.connect(_on_party_target_cursor)
+	enemy_group_target_changed.connect(_on_enemy_group_cursor)
+	party_group_target_changed.connect(_on_party_group_cursor)
 
 
 func _spawn_enemies() -> void:
@@ -304,60 +335,12 @@ func execute_action(action_name: String) -> void:
 		if ab.targets_party_side():
 			_begin_party_targeting()
 			return
-		# Enemy-side: auto-target the lone living enemy when not AoE/switchable
-		var living: Array[Combatant] = enemies.filter(
-			func(e: Combatant) -> bool: return e.is_alive())
-		if not ab.is_all() and not ab.switchable and living.size() == 1:
-			_perform_ability_on(living)
-			return
+		# Enemy-side: always show the target cursor, even for a lone enemy.
 		_begin_enemy_targeting("ability")
 		return
 
-	# Attack — multiple living enemies enter selection UI
-	var living_enemies: Array[Combatant] = enemies.filter(
-		func(e: Combatant) -> bool: return e.is_alive())
-	if living_enemies.size() > 1:
-		_begin_enemy_targeting(action_name)
-		return
-
-	# Resolve damage synchronously before any await (dead-enemy safe)
-	var damage: int = 0
-	var target: Combatant = null
-	if not living_enemies.is_empty():
-		target = living_enemies[0]
-		damage = Combatant.calculate_damage(_active, target)
-
-	if damage > 0 and target != null:
-		var attacker_idx: int = party.find(_active)
-		var attacker_sprite: Sprite2D = $PartyContainer.get_child(attacker_idx)
-		var enemy_idx: int = enemies.find(target)
-		var target_sprite: Sprite2D = $EnemyContainer.get_child(enemy_idx)
-		_state = BattleState.ANIMATING
-
-		# Lunge toward enemy (negative x = left toward EnemyContainer)
-		var origin_x: float = attacker_sprite.position.x
-		var lunge_tween := create_tween()
-		lunge_tween.tween_property(attacker_sprite, "position:x",
-			origin_x - LUNGE_DISTANCE, LUNGE_DURATION)
-		await lunge_tween.finished
-
-		# Impact peak: apply damage, spawn numbers, start flash
-		target.take_damage(damage)
-		combatant_updated.emit(target)
-		_spawn_damage_number(damage, target_sprite)
-		_start_enemy_flash(target_sprite)
-
-		# Return to origin — runs concurrently with flash
-		var return_tween := create_tween()
-		return_tween.tween_property(attacker_sprite, "position:x",
-			origin_x, LUNGE_RETURN_DUR)
-		await return_tween.finished
-
-		# Wait for the remaining flash time before ending turn (flash = 0.3s, return = 0.15s)
-		await get_tree().create_timer(FLASH_HOLD).timeout
-
-	_end_turn()
-	_check_win_loss()
+	# Attack — always pick a target so the cursor shows (even for a lone enemy).
+	_begin_enemy_targeting(action_name)
 
 
 # Apply each DamageEffect with variance and sum it (deterministic per call; dead-safe pre-await).
@@ -669,6 +652,72 @@ func _check_win_loss() -> void:
 	elif all_party_dead:
 		_state = BattleState.ENDED
 		battle_ended.emit(false)
+
+
+# --- Target cursor: a finger rendered on the targeted sprite (FF-style) ---
+
+func _clear_target_cursors() -> void:
+	for cursor in _target_cursors:
+		cursor.queue_free()
+	_target_cursors.clear()
+
+
+func _build_hand_texture() -> ImageTexture:
+	var h: int = HAND_BITMAP.size()
+	var w: int = HAND_BITMAP[0].length()
+	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0.0, 0.0, 0.0, 0.0))
+	for y in range(h):
+		var row: String = HAND_BITMAP[y]
+		for x in range(row.length()):
+			match row[x]:
+				"#":
+					img.set_pixel(x, y, Color.WHITE)
+				"X":
+					img.set_pixel(x, y, Color.BLACK)
+	return ImageTexture.create_from_image(img)
+
+
+func _add_target_cursor(container: Node2D, idx: int) -> void:
+	if idx < 0 or idx >= container.get_child_count():
+		return
+	var sprite: Node2D = container.get_child(idx)
+	var hand := Sprite2D.new()
+	hand.texture = _hand_texture
+	hand.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	# Parent to a dedicated layer (not the sprite container, whose child order the
+	# damage-number/flash code indexes by enemy index).
+	hand.position = container.position + sprite.position + TARGET_CURSOR_OFFSET
+	_cursor_layer.add_child(hand)
+	_target_cursors.append(hand)
+
+
+func _on_enemy_target_cursor(combatant: Combatant) -> void:
+	_clear_target_cursors()
+	if combatant != null:
+		_add_target_cursor($EnemyContainer, enemies.find(combatant))
+
+
+func _on_party_target_cursor(combatant: Combatant) -> void:
+	_clear_target_cursors()
+	if combatant != null:
+		_add_target_cursor($PartyContainer, party.find(combatant))
+
+
+func _on_enemy_group_cursor(active: bool) -> void:
+	_clear_target_cursors()
+	if active:
+		for i in range(enemies.size()):
+			if enemies[i].is_alive():
+				_add_target_cursor($EnemyContainer, i)
+
+
+func _on_party_group_cursor(active: bool) -> void:
+	_clear_target_cursors()
+	if active:
+		for i in range(mini(party.size(), $PartyContainer.get_child_count())):
+			if party[i].is_alive():
+				_add_target_cursor($PartyContainer, i)
 
 
 func _spawn_damage_number(amount: int, container: Node2D, color: Color = Color.WHITE) -> void:
