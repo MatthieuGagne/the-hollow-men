@@ -570,3 +570,21 @@ func test_boss_xp_rewards() -> void:
 	var captain: Combatant = Combatant.from_definition(load("res://characters/enemies/block_captain.tres"))
 	assert_eq(enforcer.xp_reward, 60)
 	assert_eq(captain.xp_reward, 45)
+
+
+func test_reid_levels_up_stats_from_tres_growth() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	reid.set_level(2)
+	# Reid Lv1 max_hp=350, hp_growth=35 -> Lv2 = 385
+	assert_eq(reid.max_hp, 385)
+	# Reid Lv1 str=45, str_growth=5 -> Lv2 = 50
+	assert_eq(reid.str_stat, 50)
+
+
+func test_iris_levels_up_stats_from_tres_growth() -> void:
+	var iris: Combatant = Combatant.from_definition(load("res://characters/iris.tres"))
+	iris.set_level(2)
+	# Iris Lv1 max_hp=270, hp_growth=28 -> Lv2 = 298
+	assert_eq(iris.max_hp, 298)
+	# Iris Lv1 psy=50, psy_growth=5 -> Lv2 = 55
+	assert_eq(iris.psy_stat, 55)
