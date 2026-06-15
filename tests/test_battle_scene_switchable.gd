@@ -50,6 +50,29 @@ func test_single_cast_hits_only_one_enemy() -> void:
 	assert_eq(hit, 1, "a non-expanded switchable cast must hit exactly one enemy")
 
 
+func test_switchable_heal_single_then_expanded_heals_all() -> void:
+	# A switchable ONE_ALLY heal: single by default, expands to the whole party.
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleContext.configure()
+	PartyManager._permanent_members.append(
+		Combatant.from_definition(load("res://tests/fixtures/test_switch_healer.tres")))
+	PartyManager.add_temporary(Combatant.from_definition(load("res://characters/reid.tres")))
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	for p in s.party:
+		p.current_hp = 1
+	var hp_before: Array = s.party.map(func(p): return p.current_hp)
+	s._begin_player_turn(s.party[0])
+	s.execute_action("ability")     # ONE_ALLY switchable -> SELECTING_ALLY, single
+	assert_false(s._target_all, "switchable heal starts single")
+	s.expand_target_to_all()        # push toward the party group
+	assert_true(s._target_all, "switchable heal must expand to the whole party")
+	s.confirm_party_target(s.party[0])
+	for i in range(s.party.size()):
+		assert_gt(s.party[i].current_hp, hp_before[i], "expanded heal must restore every ally")
+
+
 func test_expand_noop_for_non_switchable() -> void:
 	# Reid's ability is ONE_ENEMY but NOT switchable — expand must be ignored.
 	PartyManager._permanent_members.clear()

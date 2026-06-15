@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
+[ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
+[ext_resource type="Script" path="res://scripts/battle/heal_effect.gd" id="3_heal"]
+
+[sub_resource type="Resource" id="heal_switch"]
+script = ExtResource("3_heal")
+amount = 40
+
+[sub_resource type="Resource" id="ability_switch_heal"]
+script = ExtResource("2_ability")
+ability_name = "Triage"
+pp_cost = 8
+target_mode = 1
+switchable = true
+effects = Array[AbilityEffect]([SubResource("heal_switch")])
+
+[resource]
+script = ExtResource("1_chardef")
+id = "test_switch_healer"
+character_name = "Switch Healer"
+is_player_controlled = true
+max_hp = 260
+max_pp = 70
+str_stat = 20
+def_stat = 30
+psy_stat = 50
+res_stat = 30
+spd_stat = 32
+sigil_type = 0
+sprite_path = "res://assets/sprites/characters/karim.png"
+sprite_vframes = 8
+ability = SubResource("ability_switch_heal")
