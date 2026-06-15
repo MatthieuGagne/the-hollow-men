@@ -9,6 +9,11 @@ const MANIFEST: Dictionary = {
 	"intro_complete": TYPE_BOOL,
 	"case_1_beat3_complete": TYPE_BOOL,
 	"case_1_beat4_complete": TYPE_BOOL,
+	# Experience-loop harness (#141)
+	"test_room_random_wins": TYPE_INT,
+	"test_room_pending_random": TYPE_BOOL,
+	"test_room_pending_boss": TYPE_BOOL,
+	"test_room_harness_complete": TYPE_BOOL,
 }
 
 
