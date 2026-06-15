@@ -75,6 +75,15 @@ func load(slot: int) -> bool:
 	return true
 
 
+## Start a fresh game: clear flags directly (the Yarn bridge's Clear() is a
+## no-op) and reset to the starting scene. navigate=false (tests) skips travel.
+func new_game(navigate: bool = true) -> void:
+	GameState.clear_flags()
+	game_loaded.emit(-1)
+	if navigate:
+		SceneManager.change_scene(STARTING_SCENE, STARTING_SPAWN)
+
+
 func _current_scene_path() -> String:
 	var current := get_tree().current_scene
 	return current.scene_file_path if current else ""

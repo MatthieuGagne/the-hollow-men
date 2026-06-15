@@ -67,3 +67,16 @@ func test_load_round_trip_restores_into_game_state() -> void:
 
 func test_load_missing_slot_returns_false() -> void:
 	assert_false(SaveManager.load(SLOT))
+
+
+func test_new_game_clears_all_flags() -> void:
+	GameState.set_flag("intro_complete", true)
+	GameState.set_flag("case_1_beat3_complete", true)
+	SaveManager.new_game(false)  # navigate = false: assert state only
+	assert_eq(GameState._flags, {})
+
+
+func test_new_game_emits_game_loaded_sentinel() -> void:
+	watch_signals(SaveManager)
+	SaveManager.new_game(false)
+	assert_signal_emitted_with_parameters(SaveManager, "game_loaded", [-1])
