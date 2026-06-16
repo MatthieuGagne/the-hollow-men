@@ -1,0 +1,54 @@
+extends GutTest
+
+## Regression guard for the script-override-as-header-attribute bug (#141 follow-up).
+##
+## A script override on an instanced inherited-scene root MUST be written as a
+## property line (`script = ExtResource(...)` below the node header), NOT as a
+## `[node ... script=ExtResource(...)]` header attribute. The header form is
+## silently ignored on load, so the override never binds and the root keeps the
+## base scene's script — e.g. RoomPOC kept BaseRoom's script and room_poc.gd's
+## _ready (full-party seed) never ran.
+
+
+func test_roompoc_root_carries_room_poc_script() -> void:
+	# instantiate() (without entering the tree) is enough to read the bound script,
+	# and avoids running _ready side effects (party seeding) during the test.
+	var room: Node = load("res://scenes/world/RoomPOC.tscn").instantiate()
+	var scr: Script = room.get_script()
+	assert_not_null(scr, "RoomPOC root must have a script")
+	assert_eq(scr.resource_path, "res://scripts/world/room_poc.gd",
+		"RoomPOC root must carry the room_poc.gd override, not BaseRoom's script")
+	room.free()
+
+
+func test_no_scene_declares_script_as_node_header_attribute() -> void:
+	var offenders: Array[String] = []
+	for path: String in _all_tscn_paths("res://scenes"):
+		var text: String = FileAccess.get_file_as_string(path)
+		for line: String in text.split("\n"):
+			var trimmed: String = line.strip_edges()
+			if trimmed.begins_with("[node") and trimmed.contains("script=ExtResource"):
+				offenders.append(path)
+				break
+	assert_eq(offenders.size(), 0,
+		"script overrides must be a `script = ExtResource(...)` property line, " +
+		"never a [node ...] header attribute (it is silently ignored). Offenders: %s"
+		% str(offenders))
+
+
+func _all_tscn_paths(root: String) -> Array[String]:
+	var result: Array[String] = []
+	var dir: DirAccess = DirAccess.open(root)
+	if dir == null:
+		return result
+	dir.list_dir_begin()
+	var entry: String = dir.get_next()
+	while entry != "":
+		var full: String = root.path_join(entry)
+		if dir.current_is_dir():
+			result.append_array(_all_tscn_paths(full))
+		elif entry.ends_with(".tscn"):
+			result.append(full)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return result
