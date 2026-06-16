@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bnfn12dyfatem"]
 
 [ext_resource type="PackedScene" path="res://scenes/world/BaseRoom.tscn" id="1_baseroom"]
-[ext_resource type="PackedScene" uid="uid://cqsd50e1c7p52" path="res://maps/room_poc.tmx" id="2_map"]
+[ext_resource type="PackedScene" path="res://maps/room_poc.tmx" id="2_map"]
 [ext_resource type="Script" uid="uid://b21dbg1d6q6kx" path="res://scripts/world/flickering_light.gd" id="3_flickering_light"]
 [ext_resource type="PackedScene" path="res://scenes/world/SpawnPoint.tscn" id="4_spawnpoint"]
 [ext_resource type="Script" path="res://scripts/world/room_poc.gd" id="5_room_poc"]
@@ -17,7 +17,8 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1.0, 0.5)
 
-[node name="RoomPOC" instance=ExtResource("1_baseroom") script=ExtResource("5_room_poc")]
+[node name="RoomPOC" instance=ExtResource("1_baseroom")]
+script = ExtResource("5_room_poc")
 world_layer_path = NodePath("room_poc/World")
 music_path = "res://assets/audio/music/NoirCafe.ogg"
 battle_background = "alley"
