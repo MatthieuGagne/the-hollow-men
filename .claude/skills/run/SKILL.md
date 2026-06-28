@@ -29,7 +29,7 @@ If either path is missing, run `make worktree-init` from the worktree root first
 If the map still renders empty after init, the TMX cache may be stale — delete and reimport:
 
 ```sh
-rm .godot/imported/room_poc.tmx-*.md5 .godot/imported/room_poc.tmx-*.tscn
+rm .godot/imported/test_room.tmx-*.md5 .godot/imported/test_room.tmx-*.tscn
 godot_console --headless --editor --quit --path .
 ```
 

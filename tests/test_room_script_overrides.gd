@@ -1,24 +1,14 @@
 extends GutTest
 
-## Regression guard for the script-override-as-header-attribute bug (#141 follow-up).
+## Regression guard for the script-override-as-header-attribute bug (#141).
 ##
 ## A script override on an instanced inherited-scene root MUST be written as a
 ## property line (`script = ExtResource(...)` below the node header), NOT as a
 ## `[node ... script=ExtResource(...)]` header attribute. The header form is
 ## silently ignored on load, so the override never binds and the root keeps the
-## base scene's script — e.g. RoomPOC kept BaseRoom's script and room_poc.gd's
-## _ready (full-party seed) never ran.
-
-
-func test_roompoc_root_carries_room_poc_script() -> void:
-	# instantiate() (without entering the tree) is enough to read the bound script,
-	# and avoids running _ready side effects (party seeding) during the test.
-	var room: Node = load("res://scenes/world/RoomPOC.tscn").instantiate()
-	var scr: Script = room.get_script()
-	assert_not_null(scr, "RoomPOC root must have a script")
-	assert_eq(scr.resource_path, "res://scripts/world/room_poc.gd",
-		"RoomPOC root must carry the room_poc.gd override, not BaseRoom's script")
-	room.free()
+## base scene's script (e.g. an inherited-BaseRoom scene would keep BaseRoom's
+## script and its own `_ready` would never run). This guard scans every scene so
+## the pattern stays enforced for all current and future inherited-scene roots.
 
 
 func test_no_scene_declares_script_as_node_header_attribute() -> void:
