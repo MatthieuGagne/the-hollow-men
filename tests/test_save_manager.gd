@@ -90,8 +90,8 @@ func test_new_game_emits_game_loaded_sentinel() -> void:
 	assert_signal_emitted_with_parameters(SaveManager, "game_loaded", [-1])
 
 
-func test_current_version_is_two() -> void:
-	assert_eq(SaveManager.CURRENT_VERSION, 2)
+func test_current_version_is_three() -> void:
+	assert_eq(SaveManager.CURRENT_VERSION, 3)
 
 
 func test_save_round_trips_progression_for_party_and_non_party() -> void:
@@ -117,6 +117,7 @@ func test_save_round_trips_progression_for_party_and_non_party() -> void:
 
 func test_apply_restores_roster_combatant_at_saved_level_full_hp() -> void:
 	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	reid.set_level(3)  # mirror award_xp: live HP is synced to level before any save (#123)
 	PartyManager.add_member(reid)
 	PartyManager.set_progression("reid", 3, 0)
 	SaveManager.save(SLOT)

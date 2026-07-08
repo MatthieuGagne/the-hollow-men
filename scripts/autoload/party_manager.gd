@@ -127,3 +127,33 @@ func restore_roster(ids: Array) -> void:
 		var c := Combatant.from_definition(GameData.get_definition(id))
 		c.set_level(get_level(id))
 		_permanent_members.append(c)
+
+
+# Snapshot volatile runtime state (HP/PP/limit/status) for each permanent member.
+# Ephemeral fields (atb, skip_cooldown, ai_state) are intentionally excluded, so
+# they reset to defaults on the next load.
+func snapshot_party_runtime() -> Array[PartyMemberSave]:
+	var result: Array[PartyMemberSave] = []
+	for m: Combatant in _permanent_members:
+		var pms := PartyMemberSave.new()
+		pms.definition_id = m.id
+		pms.current_hp = m.current_hp
+		pms.current_pp = m.current_pp
+		pms.limit_gauge = m.limit_gauge
+		pms.active_effects = m.active_effects.duplicate()
+		result.append(pms)
+	return result
+
+
+# Overlay saved runtime state onto already-rebuilt permanent members, matched by
+# definition_id. Call AFTER restore_roster(). Entries with no matching member are
+# skipped; members with no entry keep their full-HP rebuilt state (legacy saves).
+func restore_party_runtime(runtime: Array) -> void:
+	for entry: PartyMemberSave in runtime:
+		for m: Combatant in _permanent_members:
+			if m.id == entry.definition_id:
+				m.current_hp = entry.current_hp
+				m.current_pp = entry.current_pp
+				m.limit_gauge = entry.limit_gauge
+				m.active_effects = entry.active_effects
+				break

@@ -3,12 +3,13 @@ extends GutTest
 
 func test_defaults() -> void:
 	var data := SaveData.new()
-	assert_eq(data.save_version, 2)
+	assert_eq(data.save_version, 3)
 	assert_eq(data.flags, {})
 	assert_eq(data.current_scene, "")
 	assert_eq(data.spawn_point, "")
 	assert_eq(data.roster, [])
 	assert_eq(data.progression, {})
+	assert_eq(data.party_runtime, [])
 
 
 func test_holds_assigned_values() -> void:
@@ -70,4 +71,5 @@ func test_loads_legacy_save_defaults_party_runtime() -> void:
 	assert_not_null(data)
 	assert_eq(data.roster, [], "missing roster must default to []")
 	assert_eq(data.progression, {}, "missing progression must default to {}")
+	assert_eq(data.party_runtime, [], "missing party_runtime must default to []")
 	_cleanup_legacy()
