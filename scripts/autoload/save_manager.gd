@@ -7,7 +7,7 @@ extends Node
 signal game_saved(slot: int)
 signal game_loaded(slot: int)  ## slot == -1 means a fresh new_game()
 
-const CURRENT_VERSION: int = 3
+const CURRENT_VERSION: int = 4
 const STARTING_SCENE: String = "res://scenes/world/Rooftop.tscn"
 const STARTING_SPAWN: String = ""
 
@@ -18,7 +18,13 @@ func _save_path(slot: int) -> String:
 
 ## Snapshot current state to a slot. scene/spawn default to the live scene tree
 ## + SceneManager's pending spawn when omitted (so production callers pass nothing).
+## Only succeeds inside a BaseRoom — mid-battle (or any non-room screen) saves are
+## rejected with no file written (#146).
 func save(slot: int, scene: String = "", spawn: String = "") -> bool:
+	var room := get_tree().current_scene
+	if not (room is BaseRoom):
+		return false
+
 	var data := SaveData.new()
 	data.save_version = CURRENT_VERSION
 	data.flags = GameState.snapshot_flags()
@@ -27,6 +33,11 @@ func save(slot: int, scene: String = "", spawn: String = "") -> bool:
 	data.roster = PartyManager.snapshot_roster()
 	data.progression = PartyManager.snapshot_progression()
 	data.party_runtime = PartyManager.snapshot_party_runtime()
+
+	var player := room.get_node("Player") as Player
+	data.player_position = player.position
+	data.player_facing = player.facing
+	data.has_player_position = true
 
 	var validation := KnownFlags.validate(data.flags)
 	for w: String in validation["warnings"]:
@@ -67,6 +78,10 @@ func apply(data: SaveData, navigate: bool = true) -> void:
 	PartyManager.restore_progression(data.progression)
 	PartyManager.restore_roster(data.roster)
 	PartyManager.restore_party_runtime(data.party_runtime)
+	if data.has_player_position:
+		SceneManager.pending_position = data.player_position
+		SceneManager.pending_facing = data.player_facing
+		SceneManager.has_pending_position = true
 	if navigate:
 		SceneManager.change_scene(data.current_scene, data.spawn_point)
 
