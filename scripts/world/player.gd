@@ -9,7 +9,9 @@ const MOVE_DURATION: float = 0.1
 signal stepped(cell: Vector2i)
 
 var _moving: bool = false
-var _facing: Vector2i = Vector2i(0, 1)  # default: facing down
+## Public so external code (SaveManager, BaseRoom) can read/write it — mirrors
+## how `position` is already externally read/written. Default: facing down.
+var facing: Vector2i = Vector2i(0, 1)
 var _input_blocked: bool = false
 var _interact_awaiting_release: bool = false
 var _world_layer: TileMapLayer
@@ -63,7 +65,7 @@ func _try_interact() -> void:
 
 func _try_move(action: String) -> void:
 	var offset: Vector2i = direction_to_offset(action)
-	_facing = offset
+	facing = offset
 	var target_pos: Vector2 = position + Vector2(offset) * TILE_SIZE
 	var target_cell: Vector2i = _world_layer.local_to_map(target_pos)
 	if _is_wall(target_pos) or CellRegistry.is_blocked(target_cell):
@@ -84,7 +86,11 @@ func _is_wall(world_pos: Vector2) -> bool:
 
 
 func get_facing_cell() -> Vector2i:
-	return _world_layer.local_to_map(position) + _facing
+	return _world_layer.local_to_map(position) + facing
+
+
+func set_facing(dir: Vector2i) -> void:
+	facing = dir
 
 
 func _on_dialogue_opened() -> void:
