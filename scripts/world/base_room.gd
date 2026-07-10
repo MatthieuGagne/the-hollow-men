@@ -27,6 +27,13 @@ func _ready() -> void:
 
 
 func _resolve_spawn() -> void:
+	# A load restores the exact saved position/facing ahead of any SpawnPoint
+	# lookup (#146). SaveManager.apply() is the only writer of these fields.
+	if SceneManager.has_pending_position:
+		$Player.position = Player.snap_to_grid(SceneManager.pending_position, 16)
+		$Player.set_facing(SceneManager.pending_facing)
+		SceneManager.has_pending_position = false
+		return
 	var target_id: String = SceneManager.pending_spawn_point
 	if target_id == "":
 		target_id = default_spawn
