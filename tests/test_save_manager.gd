@@ -2,6 +2,27 @@ extends GutTest
 
 const SLOT: int = 0
 
+var _room: BaseRoom = null
+var _prev_scene: Node = null
+
+
+func _install_base_room() -> BaseRoom:
+	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
+	room.default_spawn = ""  # set BEFORE add: _ready() runs on entering the tree
+	_prev_scene = get_tree().current_scene
+	get_tree().root.add_child(room)
+	get_tree().current_scene = room
+	_room = room
+	return room
+
+
+func _teardown_base_room() -> void:
+	if _room == null:
+		return
+	get_tree().current_scene = _prev_scene
+	_room.free()
+	_room = null
+
 
 func before_each() -> void:
 	GameState.clear_flags()
@@ -10,9 +31,11 @@ func before_each() -> void:
 	PartyManager._temporary_members.clear()
 	PartyManager._progression.clear()
 	PartyManager._seed_progression()
+	_install_base_room()
 
 
 func after_each() -> void:
+	_teardown_base_room()
 	_remove_slot(SLOT)
 	GameState.clear_flags()
 	PartyManager._permanent_members.clear()
@@ -90,8 +113,8 @@ func test_new_game_emits_game_loaded_sentinel() -> void:
 	assert_signal_emitted_with_parameters(SaveManager, "game_loaded", [-1])
 
 
-func test_current_version_is_three() -> void:
-	assert_eq(SaveManager.CURRENT_VERSION, 3)
+func test_current_version_is_four() -> void:
+	assert_eq(SaveManager.CURRENT_VERSION, 4)
 
 
 func test_save_round_trips_progression_for_party_and_non_party() -> void:
@@ -147,3 +170,61 @@ func test_new_game_resets_party_progression_and_roster() -> void:
 	var members := PartyManager.get_active_members()
 	assert_eq(members.size(), 1)
 	assert_eq(members[0].id, "reid")
+
+
+func test_save_rejected_when_current_scene_not_base_room() -> void:
+	# Swap the before_each room for a non-room scene; save must refuse.
+	_teardown_base_room()
+	var plain := Node2D.new()
+	_prev_scene = get_tree().current_scene
+	get_tree().root.add_child(plain)
+	get_tree().current_scene = plain
+	_remove_slot(SLOT)
+
+	assert_false(SaveManager.save(SLOT), "save must fail when not in a BaseRoom")
+	assert_false(
+		FileAccess.file_exists(SaveManager._save_path(SLOT)),
+		"no file may be written when the guard rejects the save"
+	)
+
+	get_tree().current_scene = _prev_scene
+	plain.free()
+
+
+func test_save_captures_player_position_and_facing() -> void:
+	var player := _room.get_node("Player") as Player
+	player.position = Vector2(120, 88)
+	player.set_facing(Vector2i(-1, 0))
+
+	assert_true(SaveManager.save(SLOT), "save succeeds inside a BaseRoom")
+	var data := SaveManager.read(SLOT)
+	assert_not_null(data)
+	assert_eq(data.player_position, Vector2(120, 88))
+	assert_eq(data.player_facing, Vector2i(-1, 0))
+	assert_true(data.has_player_position)
+
+
+func test_apply_sets_scene_manager_pending_fields_when_position_saved() -> void:
+	var data := SaveData.new()
+	data.player_position = Vector2(64, 48)
+	data.player_facing = Vector2i(1, 0)
+	data.has_player_position = true
+
+	SaveManager.apply(data, false)  # navigate=false: no scene swap in tests
+
+	assert_eq(SceneManager.pending_position, Vector2(64, 48))
+	assert_eq(SceneManager.pending_facing, Vector2i(1, 0))
+	assert_true(SceneManager.has_pending_position)
+	SceneManager.has_pending_position = false  # avoid leaking into other tests
+
+
+func test_apply_leaves_pending_position_flag_false_for_legacy_save() -> void:
+	SceneManager.has_pending_position = false
+	var data := SaveData.new()  # has_player_position defaults false (legacy shape)
+
+	SaveManager.apply(data, false)
+
+	assert_false(
+		SceneManager.has_pending_position,
+		"legacy save must not arm the pending-position path"
+	)

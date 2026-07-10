@@ -6,6 +6,11 @@ const FADE_DURATION: float = 0.3
 
 var _overlay: ColorRect
 var pending_spawn_point: String = ""
+## Set ONLY by SaveManager.apply() before change_scene(); consumed + reset by
+## BaseRoom._resolve_spawn(). Never touched by door transitions (#146).
+var pending_position: Vector2 = Vector2.ZERO
+var pending_facing: Vector2i = Vector2i(0, 1)
+var has_pending_position: bool = false
 
 
 func _ready() -> void:

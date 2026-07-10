@@ -111,7 +111,7 @@ func test_interact_with_no_dialogue_does_not_block_input() -> void:
 	add_child(layer)
 	add_child(player)
 	player.setup(layer)
-	# Player snapped to tile center; default _facing is (0,1) → down.
+	# Player snapped to tile center; default facing is (0,1) → down.
 	# Position (8,8) maps to tile (0,0); facing cell = (0,0)+(0,1) = (0,1).
 	player.position = Vector2(8.0, 8.0)
 	player._input_blocked = false
@@ -124,7 +124,7 @@ func test_interact_with_no_dialogue_does_not_block_input() -> void:
 	mock_npc.set_script(script)
 	add_child(mock_npc)
 
-	var facing_cell: Vector2i = layer.local_to_map(player.position) + player._facing
+	var facing_cell: Vector2i = layer.local_to_map(player.position) + player.facing
 	CellRegistry.register_interactable(facing_cell, mock_npc)
 
 	player._try_interact()
@@ -165,3 +165,11 @@ func test_try_move_emits_stepped_with_target_cell() -> void:
 	assert_signal_emitted_with_parameters(player, "stepped", [Vector2i(1, 0)])
 	player.free()
 	layer.free()
+
+
+func test_set_facing_updates_public_field() -> void:
+	var player := Player.new()
+	assert_eq(player.facing, Vector2i(0, 1), "facing defaults to down")
+	player.set_facing(Vector2i(-1, 0))
+	assert_eq(player.facing, Vector2i(-1, 0), "set_facing updates the public field")
+	player.free()
