@@ -40,3 +40,29 @@ func test_change_scene_stores_spawn_point() -> void:
 func test_pending_spawn_point_defaults_empty() -> void:
 	SceneManager.pending_spawn_point = ""
 	assert_eq(SceneManager.pending_spawn_point, "")
+
+
+func test_pending_position_defaults_to_zero() -> void:
+	SceneManager.pending_position = Vector2.ZERO
+	assert_eq(SceneManager.pending_position, Vector2.ZERO)
+
+
+func test_pending_facing_defaults_to_down() -> void:
+	SceneManager.pending_facing = Vector2i(0, 1)
+	assert_eq(SceneManager.pending_facing, Vector2i(0, 1))
+
+
+func test_has_pending_position_defaults_false() -> void:
+	SceneManager.has_pending_position = false
+	assert_false(SceneManager.has_pending_position)
+
+
+func test_pending_fields_are_assignable() -> void:
+	SceneManager.pending_position = Vector2(200, 120)
+	SceneManager.pending_facing = Vector2i(-1, 0)
+	SceneManager.has_pending_position = true
+	assert_eq(SceneManager.pending_position, Vector2(200, 120))
+	assert_eq(SceneManager.pending_facing, Vector2i(-1, 0))
+	assert_true(SceneManager.has_pending_position)
+	# Reset so this test does not leak state into others.
+	SceneManager.has_pending_position = false
