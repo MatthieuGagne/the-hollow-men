@@ -3,13 +3,16 @@ extends GutTest
 
 func test_defaults() -> void:
 	var data := SaveData.new()
-	assert_eq(data.save_version, 3)
+	assert_eq(data.save_version, 4)
 	assert_eq(data.flags, {})
 	assert_eq(data.current_scene, "")
 	assert_eq(data.spawn_point, "")
 	assert_eq(data.roster, [])
 	assert_eq(data.progression, {})
 	assert_eq(data.party_runtime, [])
+	assert_eq(data.player_position, Vector2.ZERO)
+	assert_eq(data.player_facing, Vector2i(0, 1))
+	assert_false(data.has_player_position)
 
 
 func test_holds_assigned_values() -> void:
@@ -72,4 +75,20 @@ func test_loads_legacy_save_defaults_party_runtime() -> void:
 	assert_eq(data.roster, [], "missing roster must default to []")
 	assert_eq(data.progression, {}, "missing progression must default to {}")
 	assert_eq(data.party_runtime, [], "missing party_runtime must default to []")
+	_cleanup_legacy()
+
+
+func test_loads_legacy_save_defaults_player_position_fields() -> void:
+	_cleanup_legacy()
+	var f := FileAccess.open(_LEGACY_PATH, FileAccess.WRITE)
+	f.store_string(_LEGACY_TRES)
+	f.close()
+
+	var data: SaveData = ResourceLoader.load(
+		_LEGACY_PATH, "", ResourceLoader.CACHE_MODE_IGNORE
+	)
+	assert_not_null(data)
+	assert_eq(data.player_position, Vector2.ZERO, "missing field defaults to Vector2.ZERO")
+	assert_eq(data.player_facing, Vector2i(0, 1), "missing field defaults to facing-down")
+	assert_false(data.has_player_position, "legacy save has no player position")
 	_cleanup_legacy()
