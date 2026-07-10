@@ -92,7 +92,16 @@ func test_debug_save_emits_and_writes_slot() -> void:
 	GameState.clear_flags()
 	GameState.set_flag("intro_complete", true)
 	watch_signals(SaveManager)
+	# SaveManager.save() now guards on current_scene being a BaseRoom (#146) —
+	# install one so this F5-path test still exercises the real save.
+	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
+	room.default_spawn = ""
+	var prev_scene := get_tree().current_scene
+	get_tree().root.add_child(room)
+	get_tree().current_scene = room
 	DebugOverlay._debug_save()
+	get_tree().current_scene = prev_scene
+	room.free()
 	assert_signal_emitted_with_parameters(SaveManager, "game_saved", [0])
 	assert_true(FileAccess.file_exists(_SAVE_SLOT_PATH),
 		"debug save must write the slot file")
