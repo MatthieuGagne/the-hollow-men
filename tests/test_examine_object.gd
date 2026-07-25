@@ -87,3 +87,55 @@ func test_interact_does_not_set_flag_when_sets_flag_empty() -> void:
 	obj.interact()
 	assert_eq(GameState._flags.size(), 0)
 	obj.free()
+
+
+func test_narration_defaults_to_false() -> void:
+	add_child(_obj)
+	assert_false(_obj.narration)
+
+
+func test_narration_read_from_meta_on_ready() -> void:
+	_obj.set_meta("narration", true)
+	add_child(_obj)
+	assert_true(_obj.narration)
+
+
+func test_interact_with_narration_renders_italic() -> void:
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/examine_object.gd"))
+	obj.examine_text = "Active when it shouldn't be."
+	obj.narration = true
+	add_child(obj)
+
+	obj.interact()
+	DialogueManager.skip_or_dismiss()
+	assert_true(DialogueManager._dialogue_box._is_narration, "narration mode must set _is_narration")
+	assert_eq(DialogueManager._dialogue_box.get_displayed_text(), "Active when it shouldn't be.")
+
+	obj.free()
+
+
+func test_interact_without_narration_is_plain_text() -> void:
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/examine_object.gd"))
+	obj.examine_text = "A dusty shelf."
+	obj.narration = false
+	add_child(obj)
+
+	obj.interact()
+	DialogueManager.skip_or_dismiss()
+	assert_false(DialogueManager._dialogue_box._is_narration, "default must stay plain text")
+
+	obj.free()
+
+
+func test_narration_still_sets_flag() -> void:
+	var obj := Node2D.new()
+	obj.set_script(load("res://scripts/world/examine_object.gd"))
+	obj.examine_text = "Active when it shouldn't be."
+	obj.narration = true
+	obj.sets_flag = "ley_terminal_noticed"
+	add_child(obj)
+	obj.interact()
+	assert_true(GameState.has_flag("ley_terminal_noticed"))
+	obj.free()
