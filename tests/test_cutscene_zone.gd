@@ -270,24 +270,6 @@ func test_fire_on_scene_load_does_not_refire_on_scene_reload() -> void:
 	assert_false(_zone._fired, "_fired must stay false on reload — auto-flag guard must have blocked the second fire")
 
 
-func test_fire_on_scene_load_with_next_scene_blocks_when_flag_already_set() -> void:
-	# The rooftop's exact shipped configuration (issue #93): fire_on_scene_load
-	# AND next_scene set together — no shipped zone exercises both at once.
-	# Pre-set the auto-flag (as if a prior _fire() already ran) so _fire()
-	# exits BEFORE reaching DialogueManager.run_node() — dialogue_node
-	# "rooftop_surveillance" is not yet a compiled Yarn node (it ships in a
-	# later task of this issue), so actually invoking it would throw
-	# Yarn.DialogueException and fail the test even with correct assertions
-	# (confirmed empirically; same pitfall as the two tests above).
-	_zone.dialogue_node = "rooftop_surveillance"
-	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
-	_zone.fire_on_scene_load = true
-	GameState.set_flag("zone_played_rooftop_surveillance", true)
-	_zone._fire()
-	assert_false(_zone._fired, "auto-flag guard must block even with next_scene configured")
-	assert_true(_zone.monitoring, "early return must happen before monitoring is disabled")
-
-
 func test_fire_on_scene_load_with_next_scene_does_not_wire_dialogue_closed_when_blocked() -> void:
 	# Regression guard specific to the next_scene combination: if the auto-flag
 	# guard were ever bypassed, _fire() would wire _on_dialogue_closed (which
@@ -303,3 +285,31 @@ func test_fire_on_scene_load_with_next_scene_does_not_wire_dialogue_closed_when_
 		DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed),
 		"blocked zone must not wire dialogue_closed — would cause a stray scene transition"
 	)
+
+
+func test_fire_on_scene_load_with_next_scene_fires_and_wires_dialogue_closed() -> void:
+	# The rooftop's exact shipped configuration (issue #93): fire_on_scene_load
+	# AND next_scene set together, with NO guard flag pre-set — this is the
+	# actual runtime path the combination exists for (the rooftop hits this on
+	# first scene load). Uses vera_placeholder, a compiled one-line Yarn node,
+	# so DialogueManager.run_node() succeeds instead of throwing
+	# Yarn.DialogueException (which happens for not-yet-shipped nodes like
+	# "rooftop_surveillance" — see the blocked-path tests above).
+	_zone.dialogue_node = "vera_placeholder"
+	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
+	_zone.fire_on_scene_load = true
+	_zone._fire()
+	assert_true(_zone._fired, "zone must fire when no guard flag is set")
+	assert_true(GameState.has_flag("zone_played_vera_placeholder"),
+		"persistent auto-flag must be set on the positive-path first fire")
+	assert_true(
+		DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed),
+		"next_scene transition must be wired via dialogue_closed on the positive path"
+	)
+	# Safety: do NOT let the dialogue actually close during the test — that
+	# would call SceneManager.change_scene(next_scene), a known cross-test
+	# flake source. Disconnect the one-shot connection BEFORE dismissing the
+	# dialogue box so the dismiss's closed signal cannot reach _on_dialogue_closed.
+	if DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed):
+		DialogueManager.dialogue_closed.disconnect(_zone._on_dialogue_closed)
+	DialogueManager._dialogue_box.dismiss()
