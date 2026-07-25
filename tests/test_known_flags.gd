@@ -39,3 +39,28 @@ func test_harness_flags_are_known() -> void:
 	var result := KnownFlags.validate(flags)
 	assert_eq(result["warnings"].size(), 0, "harness flags must be in the manifest")
 	assert_eq(result["errors"].size(), 0, "harness flag types must match")
+
+
+func test_intro_beat_flags_are_known() -> void:
+	var flags := {
+		"rooftop_beat_complete": true,
+		"beat2_vera_spoken": true,
+		"heights_notice_examined": true,
+		"heights_shopfront_examined": true,
+		"ley_terminal_noticed": true,
+	}
+	var result := KnownFlags.validate(flags)
+	assert_eq(result["warnings"].size(), 0, "intro beat flags must be in the manifest")
+	assert_eq(result["errors"].size(), 0, "intro beat flag types must match")
+
+
+func test_cutscene_zone_auto_flags_are_known() -> void:
+	# CutsceneZone._fire() sets "zone_played_<dialogue_node>" for any
+	# fire_on_scene_load zone. Every such zone in the game must be registered.
+	var flags := {
+		"zone_played_rooftop_surveillance": true,
+		"zone_played_sprawl_aftermath_beat4": true,
+	}
+	var result := KnownFlags.validate(flags)
+	assert_eq(result["warnings"].size(), 0, "zone auto-flags must be in the manifest")
+	assert_eq(result["errors"].size(), 0)
