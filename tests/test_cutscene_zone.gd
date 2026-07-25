@@ -268,3 +268,38 @@ func test_fire_on_scene_load_does_not_refire_on_scene_reload() -> void:
 	_zone._fire()
 	# _fired stays false because the early return ran before _fired = true.
 	assert_false(_zone._fired, "_fired must stay false on reload — auto-flag guard must have blocked the second fire")
+
+
+func test_fire_on_scene_load_with_next_scene_blocks_when_flag_already_set() -> void:
+	# The rooftop's exact shipped configuration (issue #93): fire_on_scene_load
+	# AND next_scene set together — no shipped zone exercises both at once.
+	# Pre-set the auto-flag (as if a prior _fire() already ran) so _fire()
+	# exits BEFORE reaching DialogueManager.run_node() — dialogue_node
+	# "rooftop_surveillance" is not yet a compiled Yarn node (it ships in a
+	# later task of this issue), so actually invoking it would throw
+	# Yarn.DialogueException and fail the test even with correct assertions
+	# (confirmed empirically; same pitfall as the two tests above).
+	_zone.dialogue_node = "rooftop_surveillance"
+	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
+	_zone.fire_on_scene_load = true
+	GameState.set_flag("zone_played_rooftop_surveillance", true)
+	_zone._fire()
+	assert_false(_zone._fired, "auto-flag guard must block even with next_scene configured")
+	assert_true(_zone.monitoring, "early return must happen before monitoring is disabled")
+
+
+func test_fire_on_scene_load_with_next_scene_does_not_wire_dialogue_closed_when_blocked() -> void:
+	# Regression guard specific to the next_scene combination: if the auto-flag
+	# guard were ever bypassed, _fire() would wire _on_dialogue_closed (which
+	# triggers the next_scene transition). Confirm a blocked fire leaves that
+	# connection untouched — a stray connection here would fire an unwanted
+	# scene change the next time ANY dialogue box closes.
+	_zone.dialogue_node = "rooftop_surveillance"
+	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
+	_zone.fire_on_scene_load = true
+	GameState.set_flag("zone_played_rooftop_surveillance", true)
+	_zone._fire()
+	assert_false(
+		DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed),
+		"blocked zone must not wire dialogue_closed — would cause a stray scene transition"
+	)
