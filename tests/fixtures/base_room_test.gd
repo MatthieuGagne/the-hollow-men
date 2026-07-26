@@ -31,3 +31,4 @@ func _teardown_base_room() -> void:
 	_room.free()
 	_room = null
 	_prev_scene = null
+	_prev_scene = null
