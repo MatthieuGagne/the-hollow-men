@@ -313,3 +313,12 @@ func test_fire_on_scene_load_with_next_scene_fires_and_wires_dialogue_closed() -
 	if DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed):
 		DialogueManager.dialogue_closed.disconnect(_zone._on_dialogue_closed)
 	DialogueManager._dialogue_box.dismiss()
+	# dismiss() only resets the GDScript DialogueBox — the C# DialogueRunner
+	# stays active, and yarn_dialogue_bridge.start_dialogue() short-circuits
+	# while IsDialogueRunning is true. Without this stop, every later
+	# run_node() in the same GUT process silently no-ops.
+	var runner: Node = DialogueManager._yarn_bridge._runner
+	runner.StopForget()
+	await get_tree().process_frame
+	assert_false(runner.IsDialogueRunning,
+		"runner must be stopped in cleanup or later run_node() calls no-op process-wide")
