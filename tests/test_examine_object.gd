@@ -139,3 +139,33 @@ func test_narration_still_sets_flag() -> void:
 	obj.interact()
 	assert_true(GameState.has_flag("ley_terminal_noticed"))
 	obj.free()
+
+
+func test_sprite_texture_defaults_to_empty() -> void:
+	add_child(_obj)
+	assert_eq(_obj.sprite_texture, "")
+
+
+func test_sprite_texture_read_from_meta_on_ready() -> void:
+	_obj.set_meta("sprite_texture", "res://assets/objects/notice_placeholder.png")
+	add_child(_obj)
+	assert_eq(_obj.sprite_texture, "res://assets/objects/notice_placeholder.png")
+
+
+func test_sprite_texture_loads_into_sprite_node() -> void:
+	var obj := preload("res://scenes/world/ExamineObject.tscn").instantiate()
+	obj.position = Vector2(80.0, 64.0)
+	obj.set_meta("sprite_texture", "res://assets/objects/notice_placeholder.png")
+	add_child(obj)
+	var spr: Sprite2D = obj.get_node("Sprite2D")
+	assert_not_null(spr.texture, "sprite_texture must be loaded into the Sprite2D")
+	obj.free()
+
+
+func test_no_sprite_texture_leaves_texture_null() -> void:
+	var obj := preload("res://scenes/world/ExamineObject.tscn").instantiate()
+	obj.position = Vector2(80.0, 64.0)
+	add_child(obj)
+	var spr: Sprite2D = obj.get_node("Sprite2D")
+	assert_null(spr.texture, "an examinable with no sprite_texture must stay invisible")
+	obj.free()
