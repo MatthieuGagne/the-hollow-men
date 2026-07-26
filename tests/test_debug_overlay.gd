@@ -9,6 +9,7 @@ func after_each() -> void:
 		DirAccess.remove_absolute("user://debug.cfg")
 	_remove_save_slot()
 	GameState.clear_flags()
+	_teardown_base_room()
 
 
 func _remove_save_slot() -> void:

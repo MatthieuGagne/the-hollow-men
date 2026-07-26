@@ -12,6 +12,9 @@ var _prev_scene: Node = null
 
 
 func _install_base_room() -> BaseRoom:
+	assert(_room == null,
+		"_install_base_room() called twice without an intervening _teardown_base_room() — " +
+		"the first room's _prev_scene would be clobbered and leaked")
 	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
 	room.default_spawn = ""  # set BEFORE add: _ready() runs on entering the tree
 	_prev_scene = get_tree().current_scene
@@ -27,3 +30,4 @@ func _teardown_base_room() -> void:
 	get_tree().current_scene = _prev_scene
 	_room.free()
 	_room = null
+	_prev_scene = null

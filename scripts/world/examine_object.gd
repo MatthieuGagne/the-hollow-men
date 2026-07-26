@@ -7,6 +7,7 @@ const TILE_SIZE: int = 16
 @export var sets_flag: String = ""
 ## When true, examine_text renders as italic narration instead of plain text.
 @export var narration: bool = false
+## Path to the Sprite2D's texture; an empty value leaves the examinable invisible.
 @export var sprite_texture: String = ""
 
 

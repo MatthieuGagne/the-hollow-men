@@ -44,14 +44,15 @@ func test_beat2_vera_spoken_round_trips() -> void:
 
 
 func test_all_intro_flags_survive_save_without_warnings() -> void:
-	for flag: String in [
+	var flags: Array[String] = [
 		"rooftop_beat_complete",
 		"beat2_vera_spoken",
 		"heights_notice_examined",
 		"heights_shopfront_examined",
 		"ley_terminal_noticed",
 		"zone_played_rooftop_surveillance",
-	]:
+	]
+	for flag: String in flags:
 		GameState.set_flag(flag, true)
 
 	var result := KnownFlags.validate(GameState.snapshot_flags())
@@ -60,4 +61,4 @@ func test_all_intro_flags_survive_save_without_warnings() -> void:
 
 	assert_true(SaveManager.save(SLOT))
 	var data := SaveManager.read(SLOT)
-	assert_eq(data.flags.size(), 6)
+	assert_eq(data.flags.size(), flags.size())

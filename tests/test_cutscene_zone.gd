@@ -293,8 +293,8 @@ func test_fire_on_scene_load_with_next_scene_fires_and_wires_dialogue_closed() -
 	# actual runtime path the combination exists for (the rooftop hits this on
 	# first scene load). Uses vera_placeholder, a compiled one-line Yarn node,
 	# so DialogueManager.run_node() succeeds instead of throwing
-	# Yarn.DialogueException (which happens for not-yet-shipped nodes like
-	# "rooftop_surveillance" — see the blocked-path tests above).
+	# Yarn.DialogueException — deliberately short so the runner has minimal
+	# work to unwind (see the blocked-path tests above for the exception case).
 	_zone.dialogue_node = "vera_placeholder"
 	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
 	_zone.fire_on_scene_load = true

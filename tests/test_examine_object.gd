@@ -16,6 +16,7 @@ func after_each() -> void:
 	if is_instance_valid(_obj):
 		_obj.free()
 	CellRegistry.clear()
+	DialogueManager._dialogue_box.dismiss()
 
 
 func test_registers_interactable_on_ready() -> void:
