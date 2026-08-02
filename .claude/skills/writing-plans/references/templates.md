@@ -25,13 +25,13 @@ git fetch origin && git merge origin/master
 
 **Step 2: Run all GUT tests**
 ```bash
-godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
+$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
 ```
 Expected: All tests pass, zero failures.
 
 **Step 3: Launch game and verify visually**
 ```powershell
-Start-Process godot_console
+Start-Process (& ./scripts/godot_path.ps1)
 ```
 (Or use the `/run` skill — it handles worktree pre-flight and cache invalidation.)
 
@@ -67,7 +67,7 @@ func test_foo_initial_state():
 
 **Step 2: Run test to verify it fails**
 
-Run: `godot_console --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
+Run: `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
 Expected: FAIL (undefined method or assertion error)
 
 **Step 3: Write minimal implementation**
@@ -78,7 +78,7 @@ Expected: FAIL (undefined method or assertion error)
 
 **Step 4: Run tests to verify they pass**
 
-Run: `godot_console --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
+Run: `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_foo.gd`
 Expected: PASS
 
 **Step 5: Refactor checkpoint**

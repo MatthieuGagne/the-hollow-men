@@ -24,7 +24,7 @@ If merge conflicts occur: resolve them, commit the merge, then continue.
 ### Step 2: Run GUT Tests
 
 ```bash
-godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
+$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
 ```
 
 If tests fail: stop, show failures. Do not proceed until they pass.
@@ -34,7 +34,7 @@ If tests fail: stop, show failures. Do not proceed until they pass.
 Launch the game in the background (always run this step, even when called from executing-plans):
 
 ```bash
-Start-Process godot_console
+Start-Process (& ./scripts/godot_path.ps1)
 ```
 
 Tell the user what to look for. Then ask:

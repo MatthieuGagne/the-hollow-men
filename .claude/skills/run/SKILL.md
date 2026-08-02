@@ -30,7 +30,7 @@ If the map still renders empty after init, the TMX cache may be stale — delete
 
 ```sh
 rm .godot/imported/test_room.tmx-*.md5 .godot/imported/test_room.tmx-*.tscn
-godot_console --headless --editor --quit --path .
+& (& ./scripts/godot_path.ps1) --headless --editor --quit --path .
 ```
 
 **Kill any running Godot instance first** (if no Godot process is running, the command completes silently — that is normal, not an error):
@@ -75,7 +75,7 @@ fi
 Then run the headless import and wait for it to finish (run this if either TMX cache was cleared OR Yarn cache was invalidated above):
 
 ```sh
-godot_console --headless --editor --quit --path <project_path>
+& (& ./scripts/godot_path.ps1) --headless --editor --quit --path <project_path>
 ```
 
 **Determine the mode** from the user's request:
@@ -101,15 +101,15 @@ godot_console --headless --editor --quit --path <project_path>
 **If inside a worktree** (path contains `worktrees/`), launch from the worktree path:
 
 ```sh
-Start-Process godot_console -ArgumentList "[--editor] --path <worktree_path> [scene_path]"
-Start-Sleep 3; Get-Process godot_console -ErrorAction SilentlyContinue
+Start-Process (& ./scripts/godot_path.ps1) -ArgumentList "[--editor] --path <worktree_path> [scene_path]"
+Start-Sleep 3; Get-Process Godot* -ErrorAction SilentlyContinue
 ```
 
 **If in the main repo**, launch from the project root:
 
 ```sh
-Start-Process godot_console -ArgumentList "[--editor] --path C:\Code\the-hollow-men [scene_path]"
-Start-Sleep 3; Get-Process godot_console -ErrorAction SilentlyContinue
+Start-Process (& ./scripts/godot_path.ps1) -ArgumentList "[--editor] --path C:\Code\the-hollow-men [scene_path]"
+Start-Sleep 3; Get-Process Godot* -ErrorAction SilentlyContinue
 ```
 
 Verify that `Get-Process` returns a result. If it does not, Godot exited silently — report the failure.

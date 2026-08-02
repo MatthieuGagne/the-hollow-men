@@ -61,7 +61,7 @@ For each task (whether parallel or sequential):
    - **Non-logic task** (scenes, docs, assets): follow each step exactly as written in the plan.
 3. After completing any GDScript task: run the full test suite to confirm no regressions:
    ```bash
-   godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
+   $godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
    ```
    If any test fails, stop and fix before continuing.
 4. Run verifications as specified in the plan

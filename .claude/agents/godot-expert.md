@@ -19,7 +19,7 @@ After completing a task, record new bugs found, API gotchas, or confirmed patter
 
 ## Project-Specific Notes
 
-- **Run GUT:** `godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
+- **Run GUT:** `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - **GUT tests** extend `GutTest`; reset autoload state in `before_each()` to isolate tests
 - **Mobile renderer (GL Compatibility):** no `SCREEN_TEXTURE` by default, no HDR/post-processing pipeline; stick to simple `canvas_item` shaders
 
@@ -34,7 +34,7 @@ When called with a prompt starting with **"implement this task: …"**, act as t
 2. Read the full task text and identify all files to create or modify.
 3. Follow TDD: write the failing GUT test first:
    ```bash
-   godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
+   $godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/
    ```
    Expected: FAIL (undefined method or assertion error).
 4. Write minimal GDScript implementation to make the test pass.
