@@ -251,7 +251,7 @@ Follow these steps to create a valid map that imports with 0 errors, 0 warnings 
    - All `res_path` properties → must resolve to existing `.tscn` files
 
 7. **Import in Godot**
-   - Headless reimport after creating or changing a TMX: `godot_console --headless --editor --quit --path .`
+   - Headless reimport after creating or changing a TMX: `& (& ./scripts/godot_path.ps1) --headless --editor --quit --path .`
    - Or in the editor: select the `.tmx`, open the Import dock, set `use_default_filter = false` (nearest-neighbor for pixel art), set `save_tileset_to` if you want a shared `.tres` TileSet, click "Reimport"
    - **After the first import**, set `add_class_as_metadata=true` in the generated `.tmx.import` file (required for the runtime wall check), then reimport
    - `.tmx.import` files are gitignored build artifacts — do not commit them
@@ -300,4 +300,4 @@ Follow these steps to create a valid map that imports with 0 errors, 0 warnings 
 
 > Debug workflow — reading YATI output, silent failure modes, full warning/error message reference, forcing re-import, and the tileset-PNG update sequence: see `references/debugging.md`.
 
-Quick reference: reimport after changing a TMX with `godot_console --headless --editor --quit --path .`
+Quick reference: reimport after changing a TMX with `& (& ./scripts/godot_path.ps1) --headless --editor --quit --path .`

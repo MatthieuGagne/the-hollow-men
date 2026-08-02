@@ -38,9 +38,9 @@ Every task that touches GDScript logic MUST follow this exact sequence — no ex
 
 | Step | Action |
 |------|--------|
-| 1 | Write failing GUT test (`godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → FAIL) |
+| 1 | Write failing GUT test (`$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → FAIL) |
 | 2 | Write minimal GDScript implementation |
-| 3 | Run tests (`godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → PASS) |
+| 3 | Run tests (`$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/` → PASS) |
 | 4 | Refactor checkpoint ("breaks when N > 1?") |
 | 5 | Commit |
 

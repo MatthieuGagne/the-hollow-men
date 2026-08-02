@@ -4,7 +4,7 @@ Turn-based cyberpunk noir horror JRPG. Protagonist Reid investigates a missing p
 NOX — a perpetually rain-soaked city — uncovering an ancient non-Euclidean entity.
 Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun influence).
 
-**Engine:** Godot 4.6 / GDScript — runtime is GDScript only; C# used for editor tooling (YATI importer)
+**Engine:** Godot 4.7 / GDScript — runtime is GDScript only; C# used for editor tooling (YATI importer)
 **Renderer:** Mobile (GL Compatibility)
 **Resolution:** 320×180 → upscaled to 1280×720 (4:3)
 
@@ -24,7 +24,8 @@ Listed under `[autoload]` in `project.godot`. SceneManager (`scripts/autoload/sc
 - Worktree base: `.worktrees/` (project-local, gitignored)
 - **After creating a new worktree**, run `make worktree-init` before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
 - TDD for all GDScript logic: write failing GUT test first
-- Run GUT: `godot_console --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
+- Run GUT: `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
+- **Never invoke `godot_console` directly** — it is a winget symlink in `WinGet\Links\`, and Godot resolves its bundled `GodotSharp/Api/Debug/` assemblies relative to the launched executable, so it dies with `.NET: Assemblies not found` + signal 11. Always resolve the real path via `scripts/godot_path.ps1` first.
 - PR-only integration — never merge locally to master
 - Use `/run` to launch the game or editor — handles worktree init checks and stale-instance cleanup
 

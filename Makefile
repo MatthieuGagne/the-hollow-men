@@ -24,7 +24,7 @@ sync-tsx:
 import:
 	if (-not (Test-Path .godot/mono/temp/bin/Debug/TheHollowMen.dll)) { Write-Host 'ERROR: .NET assemblies not built. Run: dotnet build'; exit 1 }
 	if (-not (Test-Path dialogue/iris.yarnproject.import)) { Write-Host 'ERROR: dialogue not initialized. Run: make worktree-init'; exit 1 }
-	godot_console --headless --editor --quit --path .
+	& (& scripts/godot_path.ps1) --headless --editor --quit --path .
 
 # Run once after creating a new worktree — copies gitignored build artifacts
 # from the main repo that have no automated export pipeline yet, then imports.
