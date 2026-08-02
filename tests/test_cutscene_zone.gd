@@ -268,3 +268,57 @@ func test_fire_on_scene_load_does_not_refire_on_scene_reload() -> void:
 	_zone._fire()
 	# _fired stays false because the early return ran before _fired = true.
 	assert_false(_zone._fired, "_fired must stay false on reload — auto-flag guard must have blocked the second fire")
+
+
+func test_fire_on_scene_load_with_next_scene_does_not_wire_dialogue_closed_when_blocked() -> void:
+	# Regression guard specific to the next_scene combination: if the auto-flag
+	# guard were ever bypassed, _fire() would wire _on_dialogue_closed (which
+	# triggers the next_scene transition). Confirm a blocked fire leaves that
+	# connection untouched — a stray connection here would fire an unwanted
+	# scene change the next time ANY dialogue box closes.
+	_zone.dialogue_node = "rooftop_surveillance"
+	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
+	_zone.fire_on_scene_load = true
+	GameState.set_flag("zone_played_rooftop_surveillance", true)
+	_zone._fire()
+	assert_false(
+		DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed),
+		"blocked zone must not wire dialogue_closed — would cause a stray scene transition"
+	)
+
+
+func test_fire_on_scene_load_with_next_scene_fires_and_wires_dialogue_closed() -> void:
+	# The rooftop's exact shipped configuration (issue #93): fire_on_scene_load
+	# AND next_scene set together, with NO guard flag pre-set — this is the
+	# actual runtime path the combination exists for (the rooftop hits this on
+	# first scene load). Uses vera_placeholder, a compiled one-line Yarn node,
+	# so DialogueManager.run_node() succeeds instead of throwing
+	# Yarn.DialogueException — deliberately short so the runner has minimal
+	# work to unwind (see the blocked-path tests above for the exception case).
+	_zone.dialogue_node = "vera_placeholder"
+	_zone.next_scene = "res://scenes/world/HeightsStreet.tscn"
+	_zone.fire_on_scene_load = true
+	_zone._fire()
+	assert_true(_zone._fired, "zone must fire when no guard flag is set")
+	assert_true(GameState.has_flag("zone_played_vera_placeholder"),
+		"persistent auto-flag must be set on the positive-path first fire")
+	assert_true(
+		DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed),
+		"next_scene transition must be wired via dialogue_closed on the positive path"
+	)
+	# Safety: do NOT let the dialogue actually close during the test — that
+	# would call SceneManager.change_scene(next_scene), a known cross-test
+	# flake source. Disconnect the one-shot connection BEFORE dismissing the
+	# dialogue box so the dismiss's closed signal cannot reach _on_dialogue_closed.
+	if DialogueManager.dialogue_closed.is_connected(_zone._on_dialogue_closed):
+		DialogueManager.dialogue_closed.disconnect(_zone._on_dialogue_closed)
+	DialogueManager._dialogue_box.dismiss()
+	# dismiss() only resets the GDScript DialogueBox — the C# DialogueRunner
+	# stays active, and yarn_dialogue_bridge.start_dialogue() short-circuits
+	# while IsDialogueRunning is true. Without this stop, every later
+	# run_node() in the same GUT process silently no-ops.
+	var runner: Node = DialogueManager._yarn_bridge._runner
+	runner.StopForget()
+	await get_tree().process_frame
+	assert_false(runner.IsDialogueRunning,
+		"runner must be stopped in cleanup or later run_node() calls no-op process-wide")

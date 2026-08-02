@@ -1,27 +1,6 @@
-extends GutTest
+extends BaseRoomTest
 
 const SLOT: int = 0
-
-var _room: BaseRoom = null
-var _prev_scene: Node = null
-
-
-func _install_base_room() -> BaseRoom:
-	var room := load("res://scenes/world/BaseRoom.tscn").instantiate() as BaseRoom
-	room.default_spawn = ""  # set BEFORE add: _ready() runs on entering the tree
-	_prev_scene = get_tree().current_scene
-	get_tree().root.add_child(room)
-	get_tree().current_scene = room
-	_room = room
-	return room
-
-
-func _teardown_base_room() -> void:
-	if _room == null:
-		return
-	get_tree().current_scene = _prev_scene
-	_room.free()
-	_room = null
 
 
 func before_each() -> void:

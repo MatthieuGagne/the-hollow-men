@@ -1,0 +1,24 @@
+title: vera_intro_beat2
+---
+PRACTITIONER: Don't. Please — don't call it in yet.
+REID: I'm not Bureau.
+PRACTITIONER: You were. It's in how you came through the door.
+REID: Someone's paying me to find you. That's all this is.
+PRACTITIONER: The creditor.
+REID: You know how this goes, then.
+PRACTITIONER: I know how it's supposed to go. I file, I work, I pay. That's the whole arrangement.
+PRACTITIONER: I stopped being able to work.
+REID: Grade II doesn't just stop.
+PRACTITIONER: No. It doesn't.
+PRACTITIONER: It drains while I'm asleep. I wake up and there's less of me. Not tired. Less.
+PRACTITIONER: Four assessments. Every one came back inside tolerance.
+REID: When did it start?
+PRACTITIONER: After I tried to stop using it.
+PRACTITIONER: I didn't know how to say that to anyone. It sounds like a person making excuses.
+PRACTITIONER: It still does. I can hear it.
+REID: Stay here. Don't go out the front.
+PRACTITIONER: You're not calling it in.
+REID: I'm deciding.
+<<show_narration "I'd heard a hundred people lie about why they couldn't pay. None of them had ever gotten the details wrong in that particular direction.">>
+<<set $beat2_vera_spoken = true>>
+===

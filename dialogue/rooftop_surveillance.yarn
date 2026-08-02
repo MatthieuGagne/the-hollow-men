@@ -1,0 +1,10 @@
+title: rooftop_surveillance
+---
+<<show_narration "Three in the morning. The rain had been going nine hours and would keep going. In the Heights they build the gutters so you never hear it land.">>
+<<show_narration "Twenty years I walked these streets with a badge. Now I watch them from a roof, on someone else's money, for a fee that clears in three days if the client's honest.">>
+<<show_narration "The work is simple. Locate. Confirm. Collect. Nobody pays you to ask why a licensed practitioner walks out of a Heights address and doesn't come back.">>
+<<show_narration "She came out of the stairwell at 3:04. No umbrella. Heights people always have umbrellas.">>
+<<show_narration "She crossed the Promenade and went into an office building that had no business being lit at that hour.">>
+<<show_narration "I gave her two minutes. Then I went down.">>
+<<set $rooftop_beat_complete = true>>
+===

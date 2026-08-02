@@ -9,6 +9,15 @@ const MANIFEST: Dictionary = {
 	"intro_complete": TYPE_BOOL,
 	"case_1_beat3_complete": TYPE_BOOL,
 	"case_1_beat4_complete": TYPE_BOOL,
+	# Intro Beats 1-2 (#93)
+	"rooftop_beat_complete": TYPE_BOOL,
+	"beat2_vera_spoken": TYPE_BOOL,
+	"heights_notice_examined": TYPE_BOOL,
+	"heights_shopfront_examined": TYPE_BOOL,
+	"ley_terminal_noticed": TYPE_BOOL,
+	# CutsceneZone auto-flags — set by _fire() for every fire_on_scene_load zone
+	"zone_played_rooftop_surveillance": TYPE_BOOL,
+	"zone_played_sprawl_aftermath_beat4": TYPE_BOOL,
 	# Experience-loop harness (#141)
 	"test_room_random_wins": TYPE_INT,
 	"test_room_pending_random": TYPE_BOOL,

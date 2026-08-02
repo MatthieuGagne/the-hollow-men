@@ -1,4 +1,5 @@
 title: vera_placeholder
 ---
+// tests/test_cutscene_zone.gd depends on this node existing and compiled.
 ...
 ===
