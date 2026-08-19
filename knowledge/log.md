@@ -1,0 +1,3 @@
+# Log
+
+- 2026-08-18 — Scaffolded the wiki (schema `CLAUDE.md`, `index.md`, `log.md`, `raw/`) and migrated the durable knowledge out of the Claude Code memory store (`godot-expert.md` split into 10 topical pages; `godot-instanced-scene-script-override.md` → [[scene-and-resource-serialization]]; `gut-scene-manager-flake.md` → [[gut-testing]]; issue #125/#128 settled design decisions → [[ability-effect-system]]/[[battle-scene-state-machine]]). Created [[combatants-and-definitions]], [[ability-effect-system]], [[battle-scene-state-machine]], [[enemy-ai-dispatch]], [[battle-context-and-world-triggers]], [[save-system]], [[progression-and-party]], [[dialogue-and-cutscenes]], [[scene-and-resource-serialization]], [[gut-testing]], [[development-environment]].
