@@ -21,7 +21,8 @@ tags: [battle, godot, gdscript, ai]
 ## Testing & gotchas
 
 - Test pattern: `_make_*_scene()` helpers seed effects via `apply_effect` directly before calling `_resolve_enemy_action`; duration-expiry tests call `tick_effects()` directly N times — see [[gut-testing]]
-- Nested lambda gotcha: the `)` closing `enemies.any(func(e):` must come AFTER the inner lambda body, not on a new line
+> Engine-generic rules promoted to the shared wiki: C:\Code\knowledge\godot-gdscript-gotchas.md (nested-lambda closing-paren gotcha)
+
 - Embedding an EnemyAI in a `.tres`: see [[scene-and-resource-serialization]]
 
 ## Related

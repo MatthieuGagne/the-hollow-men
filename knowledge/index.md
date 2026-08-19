@@ -21,11 +21,11 @@ Catalog of all wiki pages. Every page appears under exactly one category.
 
 ## Godot Engine & Serialization
 
-- [[scene-and-resource-serialization]] — .tscn/.tres gotchas, stale class registry, instanced-scene script override, YATI/TMX
+- [[scene-and-resource-serialization]] — EnemyAI .tres embedding, #141 script-override incident, Windows cache cleanup; generic rules promoted to the shared wiki
 
 ## Testing & GUT
 
-- [[gut-testing]] — GUT API pitfalls, isolation, leaked-coroutine flake, BaseRoomTest fixture, suite baseline history
+- [[gut-testing]] — DebugOverlay isolation, SceneManager leaked-coroutine flake, BaseRoomTest fixture, suite baseline history; generic GUT pitfalls promoted to the shared wiki
 
 ## Development Environment
 
