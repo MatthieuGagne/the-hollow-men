@@ -72,6 +72,8 @@ func test_encounter2_zone_is_gated_on_encounter1() -> void:
 		"BattleScene drops temporaries on victory; Iris must be re-added")
 	assert_eq(zone.get_meta("pre_battle_enemies", ""),
 		"private_security_guard,security_captain")
+	assert_eq(zone.get_meta("battle_return_spawn_point", ""), "office_entrance",
+		"Encounter 2 must return the player to the lobby entrance")
 	root.free()
 
 
