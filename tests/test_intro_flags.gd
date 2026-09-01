@@ -62,3 +62,44 @@ func test_all_intro_flags_survive_save_without_warnings() -> void:
 	assert_true(SaveManager.save(SLOT))
 	var data := SaveManager.read(SLOT)
 	assert_eq(data.flags.size(), flags.size())
+
+
+func test_intro_complete_round_trips() -> void:
+	GameState.set_flag("intro_complete", true)
+	assert_true(SaveManager.save(SLOT), "save must succeed with a BaseRoom current_scene")
+	GameState.clear_flags()
+
+	var data := SaveManager.read(SLOT)
+	assert_not_null(data)
+	assert_true(data.flags.has("intro_complete"))
+	assert_eq(data.flags["intro_complete"], true)
+
+
+func test_office_encounter1_complete_round_trips() -> void:
+	GameState.set_flag("office_encounter1_complete", true)
+	assert_true(SaveManager.save(SLOT))
+	GameState.clear_flags()
+
+	var data := SaveManager.read(SLOT)
+	assert_not_null(data)
+	assert_eq(data.flags["office_encounter1_complete"], true)
+
+
+func test_all_beats_3_6_flags_survive_save_without_warnings() -> void:
+	var flags: Array[String] = [
+		"office_encounter1_complete",
+		"office_encounter2_complete",
+		"intro_complete",
+		"zone_played_iris_intro_exit",
+		"zone_played_intro_four_winds_beat6",
+	]
+	for flag: String in flags:
+		GameState.set_flag(flag, true)
+
+	var result := KnownFlags.validate(GameState.snapshot_flags())
+	assert_eq(result["warnings"], [], "no Beats 3-6 flag may be unregistered")
+	assert_eq(result["errors"], [])
+
+	assert_true(SaveManager.save(SLOT))
+	var data := SaveManager.read(SLOT)
+	assert_eq(data.flags.size(), flags.size())
