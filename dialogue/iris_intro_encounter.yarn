@@ -1,0 +1,17 @@
+title: iris_intro_encounter
+---
+<<show_narration "The back room was a cache. Somebody's inventory, racked and lit and inventoried down to the shelf label, and a woman standing in front of it with the panel already off and half the rack already cold.">>
+<<show_narration "She didn't look up when I came through. She finished the cut she was on first.">>
+IRIS: That door was locked.
+REID: It was.
+IRIS: Then we're both having the same kind of night.
+<<show_narration "Red hair cut like a decision. Teal, no jewelry, nothing on her a hand could close around. She'd read my whole silhouette before I cleared the frame and filed me somewhere that wasn't the top of her list.">>
+REID: I'm not here for the rack.
+IRIS: I know. You'd have named a number by now.
+<<show_narration "Boots in the corridor. Three sets, unhurried, spread wide enough to own a hallway. Private security walks like it's already been paid.">>
+IRIS: Four. One of them's carrying, and they came up the service stair, so the lobby's covered too.
+IRIS: This room has one door.
+<<show_narration "She said it the way you read a receipt. No proposal attached. There wasn't one to make.">>
+<<show_narration "I went toward the sound.">>
+<<set $office_encounter1_complete = true>>
+===
