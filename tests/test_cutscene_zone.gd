@@ -322,3 +322,34 @@ func test_fire_on_scene_load_with_next_scene_fires_and_wires_dialogue_closed() -
 	await get_tree().process_frame
 	assert_false(runner.IsDialogueRunning,
 		"runner must be stopped in cleanup or later run_node() calls no-op process-wide")
+
+
+func test_next_spawn_point_defaults_to_empty() -> void:
+	assert_eq(_zone.next_spawn_point, "", "new zones must not force a spawn point")
+
+
+func test_next_spawn_point_hydrates_from_meta() -> void:
+	_zone.set_meta("next_spawn_point", "four_winds_entrance")
+	_zone.add_child(CollisionShape2D.new())
+	_zone._ready()
+	assert_eq(_zone.next_spawn_point, "four_winds_entrance",
+		"Tiled property must override the export default")
+
+
+func test_next_spawn_point_is_passed_to_scene_manager() -> void:
+	# _on_dialogue_closed() is the only caller of change_scene; assert the spawn
+	# reaches SceneManager rather than being dropped on the floor.
+	_zone.next_scene = "res://scenes/world/FourWindsBar.tscn"
+	_zone.next_spawn_point = "four_winds_entrance"
+	_zone._on_dialogue_closed()
+	assert_eq(SceneManager.pending_spawn_point, "four_winds_entrance",
+		"next_spawn_point must reach SceneManager.pending_spawn_point")
+	# Kill the SceneManager fade tween so the leaked change_scene coroutine
+	# never swaps the runner scene mid-suite (see test_debug_overlay.gd idiom).
+	for t in get_tree().get_processed_tweens():
+		t.kill()
+	# pending_spawn_point is autoload state that outlives this test otherwise —
+	# reset it so a later test (e.g. test_debug_overlay's BaseRoom fixture)
+	# doesn't inherit "four_winds_entrance" and fail resolving a spawn point
+	# that doesn't exist in its generic test scene.
+	SceneManager.pending_spawn_point = ""
