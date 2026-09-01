@@ -57,6 +57,8 @@ func test_encounter1_zone_is_self_disarming() -> void:
 	assert_eq(zone.get_meta("pre_battle_guests", ""), "iris")
 	assert_eq(zone.get_meta("battle_return_spawn_point", ""), "office_backroom",
 		"returning to the lobby would trip Encounter 2 immediately")
+	assert_eq(zone.get_meta("width", 0.0), 224.0,
+		"zone must span the full walkable width or the player can slip past the gate")
 	root.free()
 
 
@@ -74,6 +76,8 @@ func test_encounter2_zone_is_gated_on_encounter1() -> void:
 		"private_security_guard,security_captain")
 	assert_eq(zone.get_meta("battle_return_spawn_point", ""), "office_entrance",
 		"Encounter 2 must return the player to the lobby entrance")
+	assert_eq(zone.get_meta("width", 0.0), 224.0,
+		"zone must span the full walkable width or the player can slip past the gate")
 	root.free()
 
 

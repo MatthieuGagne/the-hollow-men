@@ -23,6 +23,7 @@ func after_each() -> void:
 	if is_instance_valid(_player):
 		_player.free()
 	GameState._flags.clear()
+	SceneManager.pending_spawn_point = ""
 
 
 func test_zone_is_area2d() -> void:
@@ -348,8 +349,3 @@ func test_next_spawn_point_is_passed_to_scene_manager() -> void:
 	# never swaps the runner scene mid-suite (see test_debug_overlay.gd idiom).
 	for t in get_tree().get_processed_tweens():
 		t.kill()
-	# pending_spawn_point is autoload state that outlives this test otherwise —
-	# reset it so a later test (e.g. test_debug_overlay's BaseRoom fixture)
-	# doesn't inherit "four_winds_entrance" and fail resolving a spawn point
-	# that doesn't exist in its generic test scene.
-	SceneManager.pending_spawn_point = ""
