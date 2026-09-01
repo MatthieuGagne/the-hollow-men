@@ -1,0 +1,21 @@
+title: iris_intro_exit
+---
+<<show_narration "She went back to the rack and took what she'd come for. Four cuts, into seams I couldn't see until she used them, and when she straightened up the suit looked exactly the way it had looked before. No bag. Nothing to set down and nothing to drop.">>
+IRIS: You're going back up for her.
+REID: Yes.
+IRIS: I'm going that way anyway.
+PRACTITIONER: You came back.
+REID: The stairs are clear. Front's clear for about ten minutes.
+PRACTITIONER: It happened again while I was sitting here. I wasn't asleep. I was just sitting.
+PRACTITIONER: It's a ward-cut. Grade II, standard hardware, filed eleven years ago. It isn't supposed to do anything at all while I'm sitting still.
+PRACTITIONER: It went cold, and then it went warm, and there was less of me on the other side of it.
+<<show_narration "The woman in teal stopped moving. Not much, and not for long. The way you stop when a number you weren't listening for comes up right.">>
+<<show_narration "She looked at me. I looked at her. Two people who'd heard the same sentence and were filing it in different drawers. Neither of us said anything about it.">>
+<<show_narration "The client would have a location and a confirmation inside the hour. Locate, confirm, collect. Three days for the fee if he was honest, and he'd been honest twice.">>
+REID: What did it feel like exactly?
+PRACTITIONER: Like something was taking notes.
+<<show_narration "I stayed with that a second longer than the job was paying for.">>
+<<show_narration "When I turned around the back room was empty. No goodbye, no name, no reason she'd have given me either one. Just a panel sliding back into place somewhere under the floor, and the rain on the glass going the way it had been going for nine hours and would keep going.">>
+<<set $office_encounter2_complete = true>>
+<<set $intro_complete = true>>
+===
