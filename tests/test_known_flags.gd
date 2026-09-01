@@ -64,3 +64,29 @@ func test_cutscene_zone_auto_flags_are_known() -> void:
 	var result := KnownFlags.validate(flags)
 	assert_eq(result["warnings"].size(), 0, "zone auto-flags must be in the manifest")
 	assert_eq(result["errors"].size(), 0)
+
+
+func test_office_encounter_flags_are_known() -> void:
+	var result := KnownFlags.validate({
+		"office_encounter1_complete": true,
+		"office_encounter2_complete": true,
+	})
+	assert_eq(result["warnings"], [], "office encounter flags must be registered")
+	assert_eq(result["errors"], [])
+
+
+func test_beats_3_6_auto_flags_are_known() -> void:
+	# CutsceneZone._fire() sets "zone_played_<dialogue_node>" for every
+	# fire_on_scene_load zone; each needs a manifest entry.
+	var result := KnownFlags.validate({
+		"zone_played_iris_intro_exit": true,
+		"zone_played_intro_four_winds_beat6": true,
+	})
+	assert_eq(result["warnings"], [], "every fire_on_scene_load zone needs a manifest entry")
+	assert_eq(result["errors"], [])
+
+
+func test_bar_examined_is_known() -> void:
+	# Set by three ExamineObjects in maps/four_winds_bar.tmx.
+	var result := KnownFlags.validate({"bar_examined": true})
+	assert_eq(result["warnings"], [], "bar_examined must not warn on save")
