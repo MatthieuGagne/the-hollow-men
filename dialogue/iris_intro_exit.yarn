@@ -15,7 +15,7 @@ PRACTITIONER: It went cold, and then it went warm, and there was less of me on t
 REID: What did it feel like exactly?
 PRACTITIONER: Like something was taking notes.
 <<show_narration "I stayed with that a second longer than the job was paying for.">>
-<<show_narration "When I turned around the back room was empty. No goodbye, no name, no reason she'd have given me either one. Just a panel sliding back into place somewhere under the floor, and the rain on the glass going the way it had been going for nine hours and would keep going.">>
+<<show_narration "When I turned around the room was empty. No goodbye, no name, no reason she'd have given me either one. Just a panel sliding back into place somewhere under the floor, and the rain on the glass going the way it had been going for nine hours and would keep going.">>
 <<set $office_encounter2_complete = true>>
 <<set $intro_complete = true>>
 ===
