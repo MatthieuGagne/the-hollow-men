@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="10">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="11">
  <tileset firstgid="1" source="placeholder.tsx"/>
  <tileset firstgid="13" source="objects.tsx"/>
  <layer id="1" name="World" width="16" height="12">
@@ -67,6 +67,16 @@
    <properties>
     <property name="spawn_id" value="four_winds_entrance"/>
     <property name="res_path" type="file" value="res://scenes/world/SpawnPoint.tscn"/>
+   </properties>
+  </object>
+  <object id="10" type="instance" x="16" y="16" width="224" height="160">
+   <properties>
+    <property name="dialogue_node" value="intro_four_winds_beat6"/>
+    <property name="fire_on_scene_load" type="bool" value="true"/>
+    <property name="height" type="float" value="160"/>
+    <property name="required_flag" value="intro_complete"/>
+    <property name="res_path" type="file" value="res://scenes/world/CutsceneZone.tscn"/>
+    <property name="width" type="float" value="224"/>
    </properties>
   </object>
  </objectgroup>

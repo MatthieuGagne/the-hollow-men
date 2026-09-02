@@ -1,0 +1,7 @@
+title: iris_intro_lobby_ambush
+---
+<<show_narration "The lobby wasn't empty anymore. Two of them under the dead ceiling panels, still wet through the shoulders, which meant they'd come in off the street after I did.">>
+<<show_narration "One was doing the talking. Short sentences, no names, hands doing the work the words weren't. The other one moved when he stopped, and didn't move at all until he did.">>
+<<show_narration "They'd put themselves between me and the doors. Whatever else the night was paying them for, that part was the job.">>
+<<set $office_encounter2_complete = true>>
+===

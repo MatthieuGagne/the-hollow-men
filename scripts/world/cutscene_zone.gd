@@ -3,6 +3,7 @@ extends Area2D
 
 @export var dialogue_node: String = ""
 @export var next_scene: String = ""
+@export var next_spawn_point: String = ""
 @export var required_flag: String = ""
 @export var forbidden_flag: String = ""
 @export var pre_battle_guests: String = ""
@@ -17,6 +18,7 @@ var _fired: bool = false
 func _ready() -> void:
 	dialogue_node       = get_meta("dialogue_node",       dialogue_node)
 	next_scene          = get_meta("next_scene",          next_scene)
+	next_spawn_point    = get_meta("next_spawn_point",    next_spawn_point)
 	required_flag       = get_meta("required_flag",       required_flag)
 	forbidden_flag      = get_meta("forbidden_flag",      forbidden_flag)
 	pre_battle_guests   = get_meta("pre_battle_guests",   pre_battle_guests)
@@ -80,4 +82,4 @@ func _on_dialogue_closed() -> void:
 	BattleContext.configure(pre_battle_enemies, "", battle_return_scene, battle_return_spawn_point)
 	if next_scene.is_empty():
 		return
-	SceneManager.change_scene(next_scene)
+	SceneManager.change_scene(next_scene, next_spawn_point)
