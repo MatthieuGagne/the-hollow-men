@@ -23,12 +23,12 @@ Resolve any conflicts before proceeding.
 
 **Second: run grill-me.** Always invoke the `grill-me` skill before writing — it surfaces requirements, acceptance criteria, scope, and constraints. Once grill-me is satisfied, continue below.
 
-**Third: create a git worktree.** After grill-me and before writing the plan file, use `EnterWorktree` to create a feature branch:
+**Third: create a git worktree.** After grill-me and before writing the plan file, create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Name it after the feature branch:
 
 - **With issue number:** branch = `feat/issue-<N>-<short-description>` — use the GitHub issue number from the arguments; derive the short description from the issue title or grill-me output.
 - **Without issue number:** branch = `feat/<short-description>` — derive the slug from grill-me output.
 
-Use the `EnterWorktree` tool with the branch name as the `name` parameter. All subsequent work — including saving the plan file — happens inside the worktree.
+Orca worktrees live under `~\orca\workspaces\<repo>\<name>`. Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories. All subsequent work — including saving the plan file — happens inside the worktree.
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md` (inside the worktree)
 
@@ -162,4 +162,4 @@ Only after explicit affirmative, offer execution choice:
 - Guide them to open new session
 - **REQUIRED SUB-SKILL:** New session uses the project `executing-plans` skill (NOT superpowers:executing-plans)
 
-**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (using `EnterWorktree` after grill-me) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.
+**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (through Orca via the `orca-cli` skill, after grill-me) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.

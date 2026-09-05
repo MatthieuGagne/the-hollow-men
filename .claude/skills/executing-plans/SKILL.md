@@ -22,20 +22,16 @@ Before reading the plan or touching any file, check whether you are already insi
 > **Note:** The `writing-plans` skill creates the worktree before saving the plan file. If this plan was written in a separate session using `writing-plans`, you may already be inside the correct worktree. The check below handles both cases — skip to Step 2 if already inside.
 
 ```bash
-pwd
 git worktree list
+git rev-parse --git-dir
+git rev-parse --git-common-dir
 ```
 
-Check `git worktree list` rather than assuming a path: project worktrees live at `.worktrees\<branch>` in the repo root, but tool-managed worktrees (`EnterWorktree`) may instead live under `.claude\worktrees\`. If `pwd` is inside any listed worktree, skip to Step 2.
+If `--git-dir` and `--git-common-dir` differ, you are inside a linked worktree — skip to Step 2. Don't path-match: Orca worktrees live under `~\orca\workspaces\<repo>\<name>`, not inside the repo.
 
-Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then either use the `EnterWorktree` tool with that branch name, or create it manually:
+Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories.
 
-```bash
-git worktree add .worktrees/<branch> -b <branch>
-make worktree-init
-```
-
-`EnterWorktree` creates a fresh branch off master — no separate sync step is needed. After creating any new worktree, run `make worktree-init` before launching the game.
+After creating any new worktree, run `make worktree-init` inside it before launching the game.
 
 ### Step 2: Load and Review Plan
 
@@ -124,7 +120,7 @@ Do not push or open the PR until you have received an explicit answer to this qu
 **Don't force through blockers** — stop and ask.
 
 ## Remember
-- Enter worktree FIRST before any other action — writing-plans may have already created it; use `EnterWorktree` only if not already inside one
+- Enter worktree FIRST before any other action — writing-plans may have already created it; create one through Orca (`orca-cli` skill) only if not already inside one
 - Review plan critically before starting
 - Follow plan steps exactly
 - Don't skip verifications
