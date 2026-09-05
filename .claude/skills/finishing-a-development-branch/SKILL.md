@@ -62,7 +62,7 @@ Which option?
 
 ### Step 5: Execute Choice
 
-First determine the worktree path with `git worktree list` (normally `.worktrees\<branch>` in the repo root; tool-managed worktrees may be under `.claude\worktrees\`). Use that path wherever `<worktree-path>` appears below.
+First determine the worktree path with `git worktree list` (Orca-managed worktrees live under `~\orca\workspaces\<repo>\<name>`; legacy pre-Orca worktrees may still sit at `.worktrees\<branch>` or `.claude\worktrees\`). Use that path wherever `<worktree-path>` appears below.
 
 #### Option 1: Push and Create PR
 
@@ -140,17 +140,11 @@ else
 fi
 ```
 
-**Step 6a: Exit EnterWorktree session if active**
+**Step 6a: Remove Orca-managed worktree via the Orca CLI**
 
-If the current session was started with `EnterWorktree` and is still inside the worktree, use `ExitWorktree` first:
+If the worktree is Orca-managed (lives under `~\orca\workspaces\`), remove it through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). After Orca removes it, skip to Step 6d.
 
-```
-ExitWorktree(action="remove", discard_changes=true)
-```
-
-After `ExitWorktree` returns, skip to Step 6d — the worktree is already removed.
-
-If not inside an active `EnterWorktree` session, continue to Step 6b.
+Only for a legacy pre-Orca worktree (`.worktrees\` or `.claude\worktrees\`), continue to Step 6b.
 
 **Step 6b: cd to main repo root**
 
@@ -160,7 +154,7 @@ Always `cd` OUT of the worktree first, before any remove command — if the sess
 cd C:\Code\the-hollow-men
 ```
 
-**Step 6c: Remove the worktree**
+**Step 6c: Remove the worktree (legacy pre-Orca worktrees only)**
 
 Use the path from `git worktree list`:
 
@@ -212,7 +206,7 @@ Run Step 6a → 6b → 6c → 6d in sequence. Skip 6e (branch already deleted wi
 
 ## Worktree Path Convention
 
-Worktrees live at `.worktrees\<branch>` in the repo root (created via `git worktree add .worktrees/<branch> -b <branch>` then `make worktree-init`). Tool-managed worktrees (`EnterWorktree`) may instead live under `.claude\worktrees\` — always detect the actual path with `git worktree list` rather than assuming.
+Worktrees are created through Orca (`orca-cli` skill; commands from `ORCA skills get orca-cli`) and live under `~\orca\workspaces\<repo>\<name>`. Legacy pre-Orca worktrees may still sit at `.worktrees\<branch>` or `.claude\worktrees\` — always detect the actual path with `git worktree list` rather than assuming.
 
 ## Quick Reference
 
