@@ -26,8 +26,6 @@ in a different project) goes to `C:\Code\knowledge` instead, using this same lay
   them instead.
 - Sources go in `raw/` unmodified; wiki pages cite them with a relative link.
 - Append one line to `log.md` on every substantive change.
-- After larger additions, regenerate the graph with `/understand-knowledge`. Its output
-  (`.understand-anything/`) is a derived index — never hand-edit it.
 
 ## Scope test
 

@@ -104,8 +104,8 @@ For all other characters (Iris, Margot, Gideon, Āio, Soraya, Paz, Crane, Kurtz,
 
 ### Don't
 - **Don't write purple prose.** The noir register keeps it grounded. Long sentences must earn their length.
-- **Don't explain the entity.** Ever. Not fully. Description breaks down. That is intentional.
-- **Don't make the Bureau cartoonishly evil.** It's procedurally evil. The paperwork is the point.
+- **Don't explain the entity.** Ever, or fully — descriptions break down by design (see §2 Lovecraftian Horror).
+- **Don't make the Bureau cartoonishly evil.** It's procedurally evil — the paperwork is the point (see §3 World Rules).
 - **Don't make Karim quiet.** See Section 4.
 - **Don't invent new world facts without flagging them.** If you're adding a new NOX location, faction, or mechanic, note it explicitly for the user to approve. The world is defined — additions need to fit.
 - **Don't write Reid's inner monologue as self-pitying or sentimental.** He's seen enough that emotion is compressed into observation.
@@ -117,9 +117,9 @@ For all other characters (Iris, Margot, Gideon, Āio, Soraya, Paz, Crane, Kurtz,
 
 When the user approves a scene for implementation:
 - Prose narrative → write in GDScript (cutscene-style Godot scene or in-engine text)
-- Branching or extended character dialogue → use the **yarnspinner** agent for `.yarn` script authoring
+- Branching or extended character dialogue → author `.yarn` through the GDScript implementation workflow (in Claude Code: the `godot-expert` agent; see CLAUDE.md "Skills & Agents")
 
-Do not implement dialogue in `.yarn` directly from this skill — hand off to the yarnspinner agent with the full scene spec.
+Do not author `.yarn` directly from this skill — hand the full scene spec to that implementation context.
 
 ---
 

@@ -24,6 +24,7 @@ with "Resource file not found: res://" from `scene_manager.gd` — but that test
 - **Cause:** a unit test calls `SceneManager.change_scene(path)` (which `await`s a fade tween before `get_tree().change_scene_to_file(path)`); the coroutine outlives the test — the shared wiki's leaked-coroutine flake class
 - **Fix (shipped in #128):** `SceneManager.change_scene` early-returns on an empty path (`if path.is_empty(): push_warning(...); return`) — changing to an empty scene is always a bug, and the guard stops the leaked coroutine from erroring. Suite went green 10/10 runs after
 - Same flake class: the CutsceneZone disconnect-before-dismiss cleanup order ([[dialogue-and-cutscenes]]) and the debug-driver `get_processed_tweens()` kill ([[save-system]]) both exist to prevent leaked async work from swapping the runner scene mid-suite
+- **`pending_spawn_point` is not cleared by tween-kill.** `SceneManager.change_scene(path, spawn)` sets `pending_spawn_point` synchronously before the fade `await`, so asserting right after a `change_scene` call is safe without awaiting — but `.kill()`ing the tweens (via `get_processed_tweens()`) does NOT reset it. A later test loading a different `BaseRoom`-based scene then fails `no SpawnPoint with spawn_id=...`. Always set `SceneManager.pending_spawn_point = ""` after the tween-kill in any test that exercised a `change_scene(path, spawn)` call (confirmed 2026-08-31, issue #94 task 1).
 
 ## BaseRoomTest shared fixture (issue #93, Task 9, 2026-07-26)
 
@@ -38,6 +39,7 @@ with "Resource file not found: res://" from `scene_manager.gd` — but that test
 
 - Baseline is fully green; do not expect any failures. (Re-verified 2026-06-15 on feat/issue-141: 508 tests, 508 pass. Earlier: master 412; feat/issue-122 448; feat/issue-141 508 after Task 18 added 3 tests to the prior 505. Later counts: 540/540 then 548/548 during issue #93, 2026-07.)
 - Always run the full GUT suite as a final gate even when every individual task's targeted tests were green — indirect callers in unrelated test files are what the per-task runs miss (see [[save-system]], issue #146/#147)
+- Headless shutdown noise is not always your bug — before flagging `ERROR: N resources still in use at exit` as a regression from your edit, reproduce it against the pre-change tree with `git stash` / `git stash pop` around the same `--quit-after` command (confirmed 2026-09-01, issue #94 tasks 8–9: `FourWindsBar.tscn` printed it with and without the TMX changes)
 
 ## Related
 

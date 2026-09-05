@@ -120,18 +120,9 @@ Do not push or open the PR until you have received an explicit answer to this qu
 **Don't force through blockers** — stop and ask.
 
 ## Remember
-- Enter worktree FIRST before any other action — writing-plans may have already created it; create one through Orca (`orca-cli` skill) only if not already inside one
-- Review plan critically before starting
-- Follow plan steps exactly
-- Don't skip verifications
-- Between batches: just report and wait
-- Stop when blocked, don't guess
-- Never start implementation on master branch
-- GDScript tasks: TDD cycle — failing test → implementation → passing test → refactor → commit
-- Run full test suite after every GDScript task to catch regressions
-- When merging (e.g. resolving conflicts): `git fetch origin && git merge origin/master`
-- Parallel implementers: read `#### Parallel Execution Groups` table first; dispatch parallel groups as concurrent Agent calls (max 3); batch atomicity — if any fails, ALL discard and retry from scratch
-- Parallel reviewers: fire spec + quality in one message after each implementer commit
+- Never implement on the master branch — work in a worktree
+- Between batches: just report and wait; stop when blocked or a verification fails — don't guess
+- Merging / resolving conflicts: `git fetch origin && git merge origin/master`
 
 ## Integration
 
