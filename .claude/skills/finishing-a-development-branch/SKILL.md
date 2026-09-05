@@ -204,18 +204,6 @@ Run Step 6a → 6b → 6c → 6d in sequence. Skip 6e (branch already deleted wi
 
 **Do NOT run Step 6.**
 
-## Worktree Path Convention
-
-Worktrees are created through Orca (`orca-cli` skill; commands from `ORCA skills get orca-cli`) and live under `~\orca\workspaces\<repo>\<name>`. Legacy pre-Orca worktrees may still sit at `.worktrees\<branch>` or `.claude\worktrees\` — always detect the actual path with `git worktree list` rather than assuming.
-
-## Quick Reference
-
-| Option | Push | Close Issue | Delete Branch | Cleanup Worktree |
-|--------|------|-------------|--------------|-----------------|
-| 1. Push and Create PR | ✓ | After merge confirmed (if branch has issue number) | `git branch -d` → `-D` fallback, after merge | After merge confirmed |
-| 2. Keep as-is | — | — | — | Never |
-| 3. Discard | — | — | `git branch -D` (immediate) | Immediately |
-
 ## Integration
 
 **Called by:**

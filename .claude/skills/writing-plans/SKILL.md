@@ -21,12 +21,12 @@ git fetch origin && git merge origin/master
 ```
 Resolve any conflicts before proceeding.
 
-**Second: run grill-me.** Always invoke the `grill-me` skill before writing — it surfaces requirements, acceptance criteria, scope, and constraints. Once grill-me is satisfied, continue below.
+**Second: run grilling.** Always invoke the `grilling` skill before writing — it surfaces requirements, acceptance criteria, scope, and constraints. Once grilling is satisfied, continue below.
 
-**Third: create a git worktree.** After grill-me and before writing the plan file, create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Name it after the feature branch:
+**Third: create a git worktree.** After grilling and before writing the plan file, create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Name it after the feature branch:
 
-- **With issue number:** branch = `feat/issue-<N>-<short-description>` — use the GitHub issue number from the arguments; derive the short description from the issue title or grill-me output.
-- **Without issue number:** branch = `feat/<short-description>` — derive the slug from grill-me output.
+- **With issue number:** branch = `feat/issue-<N>-<short-description>` — use the GitHub issue number from the arguments; derive the short description from the issue title or grilling output.
+- **Without issue number:** branch = `feat/<short-description>` — derive the slug from grilling output.
 
 Orca worktrees live under `~\orca\workspaces\<repo>\<name>`. Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories. All subsequent work — including saving the plan file — happens inside the worktree.
 
@@ -65,15 +65,7 @@ A good batch boundary = any point where the game should visually work end-to-end
 
 ### Dependency Analysis (required before writing each smoketest checkpoint block)
 
-After drafting all tasks in a batch, before inserting the Smoketest Checkpoint block:
-
-1. List all output files for each task in the batch
-2. Mark as **sequential** any two tasks that write the same file, or where Task B depends on a symbol Task A defines
-3. Group remaining tasks into independent layers — tasks with the same `Depends on` set are parallelizable with each other
-4. Go back and fill in `**Depends on:**` and `**Parallelizable with:**` on each task
-5. Insert a `#### Parallel Execution Groups` table immediately before the Smoketest Checkpoint block (use the template below)
-
-> Copy the **Parallel Execution Groups table** and **Smoketest Checkpoint** templates verbatim from `references/templates.md`.
+After drafting all tasks in a batch and before inserting its Smoketest Checkpoint, run the Dependency Analysis procedure and insert the `#### Parallel Execution Groups` table — see `references/templates.md` (steps 1–5).
 
 ## Plan Document Header
 
@@ -117,23 +109,7 @@ After drafting all tasks in a batch, before inserting the Smoketest Checkpoint b
 
 ## Plan Self-Review Checklist (HARD STOP before presenting to user)
 
-Before offering the execution handoff, run this checklist. Fix any failures before proceeding.
-
-| # | Check | Pass criteria |
-|---|-------|---------------|
-| 1 | **No hardcoded values** | Every numeric constant, node path, or resource ID is sourced from a named constant or explicit reference — never a magic value |
-| 2 | **All tasks have explicit test criteria** | Every task states exactly how to verify it passes (command + expected output, or visual check description) |
-| 3 | **Parallel annotations justified** | Every task has `**Depends on:**` and `**Parallelizable with:**` filled in. Any `**Parallelizable with:** none` MUST be followed by a one-sentence justification. An unjustified `none` is a plan defect. |
-| 4 | **Parallel Execution Groups tables present** | Every batch that precedes a Smoketest Checkpoint has a `#### Parallel Execution Groups` table |
-| 5 | **No implementation details leaked from brainstorming** | Plan contains file paths and task steps, not design narrative or requirement rationale (those belong in the GitHub issue) |
-
-**Failure handling:**
-- Checks #1, #2, #4, #5 fail → fix the plan now and re-run the checklist from the top.
-- Check #3 fails (unjustified `none`) → do NOT silently fix. Present the plan WITH the Incomplete Warning block below, immediately after the plan header. The user decides whether to proceed or fix first.
-
-### Incomplete Warning Block (use when check #3 fails)
-
-> Copy the **Incomplete Warning Block** verbatim from `references/templates.md` and insert it immediately after the plan header.
+Before offering the execution handoff, run the checklist in `references/templates.md` and fix any failures before proceeding. If check #3 fails (unjustified `none`), do NOT silently fix — insert the **Incomplete Warning Block** (in `references/templates.md`) immediately after the plan header and present the plan as-is.
 
 ## Execution Handoff
 
@@ -162,4 +138,4 @@ Only after explicit affirmative, offer execution choice:
 - Guide them to open new session
 - **REQUIRED SUB-SKILL:** New session uses the project `executing-plans` skill (NOT superpowers:executing-plans)
 
-**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (through Orca via the `orca-cli` skill, after grill-me) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.
+**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (through Orca via the `orca-cli` skill, after grilling) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.

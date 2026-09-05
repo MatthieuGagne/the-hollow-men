@@ -33,7 +33,7 @@ Expected: All tests pass, zero failures.
 ```powershell
 Start-Process (& ./scripts/godot_path.ps1)
 ```
-(Or use the `/run` skill — it handles worktree pre-flight and cache invalidation.)
+(Or use the `run` skill — it handles worktree pre-flight and cache invalidation.)
 
 **Step 4: Confirm with user**
 Tell the user what to verify in the running game. Wait for confirmation before proceeding to the next batch.
@@ -138,3 +138,27 @@ git commit -m "feat: add foo scene"
 >
 > Proceed with the plan as-is, or fix these annotations first?
 ```
+
+## Dependency Analysis (run per smoketest-checkpoint batch, before inserting the checkpoint)
+
+1. List all output files for each task in the batch
+2. Mark as **sequential** any two tasks that write the same file, or where Task B depends on a symbol Task A defines
+3. Group remaining tasks into independent layers — tasks with the same `Depends on` set are parallelizable with each other
+4. Go back and fill in `**Depends on:**` and `**Parallelizable with:**` on each task
+5. Insert a `#### Parallel Execution Groups` table immediately before the Smoketest Checkpoint block (template above)
+
+## Plan Self-Review Checklist (HARD STOP before presenting to user)
+
+Run this before offering the execution handoff. Fix any failures before proceeding.
+
+| # | Check | Pass criteria |
+|---|-------|---------------|
+| 1 | **No hardcoded values** | Every numeric constant, node path, or resource ID is sourced from a named constant or explicit reference — never a magic value |
+| 2 | **All tasks have explicit test criteria** | Every task states exactly how to verify it passes (command + expected output, or visual check description) |
+| 3 | **Parallel annotations justified** | Every task has `**Depends on:**` and `**Parallelizable with:**` filled in. Any `**Parallelizable with:** none` MUST be followed by a one-sentence justification. An unjustified `none` is a plan defect. |
+| 4 | **Parallel Execution Groups tables present** | Every batch that precedes a Smoketest Checkpoint has a `#### Parallel Execution Groups` table |
+| 5 | **No implementation details leaked from brainstorming** | Plan contains file paths and task steps, not design narrative or requirement rationale (those belong in the GitHub issue) |
+
+**Failure handling:**
+- Checks #1, #2, #4, #5 fail → fix the plan now and re-run the checklist from the top.
+- Check #3 fails (unjustified `none`) → do NOT silently fix. Present the plan WITH the Incomplete Warning Block above, immediately after the plan header.

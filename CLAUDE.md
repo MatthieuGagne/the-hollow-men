@@ -5,11 +5,9 @@ NOX — a perpetually rain-soaked city — uncovering an ancient non-Euclidean e
 Themes: film noir, Lovecraftian horror, corporate magic bureaucracy (Shadowrun influence).
 
 **Engine:** Godot 4.7 / GDScript — runtime is GDScript only; C# used for editor tooling (YATI importer)
-**Renderer:** Mobile (GL Compatibility)
-**Resolution:** 320×180 → upscaled to 1280×720 (4:3)
 
 ## Autoloads
-Listed under `[autoload]` in `project.godot`. SceneManager (`scripts/autoload/scene_manager.gd`) handles fade transitions via `SceneManager.change_scene(path)`.
+SceneManager (`scripts/autoload/scene_manager.gd`) is the scene-transition autoload — use `SceneManager.change_scene(path)` for fade transitions (full list in `[autoload]` in `project.godot`).
 
 ## Architecture
 - Scenes: `scenes/` — battle, world, UI
@@ -25,9 +23,9 @@ Listed under `[autoload]` in `project.godot`. SceneManager (`scripts/autoload/sc
 - **After creating a new worktree**, run `make worktree-init` (inside the new Orca worktree) before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
 - TDD for all GDScript logic: write failing GUT test first
 - Run GUT: `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
-- **Never invoke `godot_console` directly** — it is a winget symlink in `WinGet\Links\`, and Godot resolves its bundled `GodotSharp/Api/Debug/` assemblies relative to the launched executable, so it dies with `.NET: Assemblies not found` + signal 11. Always resolve the real path via `scripts/godot_path.ps1` first.
+- **Never invoke `godot_console` directly** — launching it via its install symlink dies with `.NET: Assemblies not found` + signal 11. Always resolve the real Godot path via `scripts/godot_path.ps1` first.
 - PR-only integration — never merge locally to master
-- Use `/run` to launch the game or editor — handles worktree init checks and stale-instance cleanup
+- Use the `run` skill to launch the game or editor — handles worktree init checks and stale-instance cleanup
 
 ## Feature Lifecycle
 
@@ -35,12 +33,12 @@ Listed under `[autoload]` in `project.godot`. SceneManager (`scripts/autoload/sc
 idea → brainstorm → PRD (GitHub issue) → plan → worktree → implement → finish → PR → merge → cleanup
 ```
 
-1. `/brainstorming` — explore the idea
-2. `/prd` — write a GitHub issue spec
-3. `/writing-plans` — turn spec into step-by-step tasks
+1. `brainstorming` skill — explore the idea
+2. `prd` skill — write a GitHub issue spec
+3. `writing-plans` skill — turn spec into step-by-step tasks
 4. Create worktree via Orca (`orca-cli` skill), then `make worktree-init` inside it
-5. `/executing-plans` — implement with checkpoints
-6. `/finishing-a-development-branch` — tests, smoketest, PR, cleanup
+5. `executing-plans` skill — implement with checkpoints
+6. `finishing-a-development-branch` skill — tests, smoketest, PR, cleanup
 
 ## Skills & Agents
 
@@ -51,12 +49,11 @@ idea → brainstorm → PRD (GitHub issue) → plan → worktree → implement �
 
 | Agent | When to use |
 |---|---|
-| `godot-expert` | GDScript implementation and TDD with GUT |
+| `godot-expert` | GDScript implementation and TDD with GUT — **Claude Code only** (omp does not load `.claude/agents`; in omp sessions run the TDD workflow via the `executing-plans` skill) |
 
 ## YarnSpinner
 
-- `dialogue/*.import` files are gitignored — copied from main repo by `make worktree-init`
-- After editing `.yarn` files, use `/run` — it deletes the stale compiled yarnproject cache and reimports automatically
+Dialogue is YarnSpinner-based (C# runtime bridge). After editing `.yarn`, use the `run` skill — it clears the stale compiled yarnproject cache and reimports. `dialogue/*.import` build artifacts come from the main repo via `make worktree-init`.
 
 ## C# / GDScript Bridge
 

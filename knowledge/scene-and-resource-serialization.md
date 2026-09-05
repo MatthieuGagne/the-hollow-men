@@ -19,6 +19,7 @@ the shared wiki (see the pointers per section).
 > Engine-generic rules promoted to the shared wiki: C:\Code\knowledge\godot-stale-class-registry.md
 
 - The project observations backing each rule are preserved in the topic pages: [[combatants-and-definitions]] (CharacterDefinition growth fields, Combatant getters, EnemyDefinition.xp_reward), [[battle-context-and-world-triggers]] (RandomEncounterController, BossTrigger, TestRoom, Player.stepped signal), [[progression-and-party]] (Progression), [[save-system]] (SaveData, KnownFlags MANIFEST, PartyMemberSave), [[battle-scene-state-machine]] (build_victory_text), [[gut-testing]] (BaseRoomTest)
+- **`@export` on a `class_name` is a registry-surface change** — headless `--import` must run before the next GUT run or the new property is invisible to tests (`Invalid access to property or key`). Confirmed 2026-08-31 (`CutsceneZone.next_spawn_point`).
 
 ## Instanced-scene script override (bug found in #141)
 
@@ -33,6 +34,8 @@ the shared wiki (see the pointers per section).
 
 > Engine-generic rules promoted to the shared wiki: C:\Code\knowledge\godot-yati-tmx.md (import-cache scene location, CollisionShape2D sizing, stale `.tmx` UIDs, Tiled property ordering)
 
+- **Editing a `.tmx` file directly** leaves YATI's cached `.tscn` under `.godot/imported/` stale — `load("res://maps/x.tmx")` in a test returns the OLD scene until `--headless --import` runs. Always reimport after every `.tmx` edit (both a temporary flip and its revert), or a "failing"/"passing" run may be testing stale data (confirmed 2026-09-01, issue #94 task 11).
+- **Revert a temporary TMX edit with `git checkout -- <file>`**, not a `cp` backup dance (a `cp` revert silently failed to take effect once) — but only once the real fix is committed: if the fix is still uncommitted, `git checkout` reverts to the last commit and wipes it too. Commit the fix before flip-testing, or hand-edit the single line back (confirmed 2026-09-01, issue #94 final fix wave).
 - Use PowerShell `Remove-Item` with wildcards for stale cache deletion (bash `del` doesn't expand globs on Windows paths) — see [[development-environment]]
 
 ## Related
