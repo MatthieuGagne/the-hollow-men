@@ -142,7 +142,14 @@ fi
 
 **Step 6a: Remove Orca-managed worktree via the Orca CLI**
 
-If the worktree is Orca-managed (lives under `~\orca\workspaces\`), remove it through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). After Orca removes it, skip to Step 6d.
+If the worktree is Orca-managed (lives under `~\orca\workspaces\`), remove it through the Orca CLI — from the repo root, never from inside the directory being removed:
+
+```bash
+cd C:\Code\the-hollow-men
+orca worktree rm --worktree path:<absoluteWorktreePath> --force --json
+```
+
+After Orca removes it, skip to Step 6d.
 
 Only for a legacy pre-Orca worktree (`.worktrees\` or `.claude\worktrees\`), continue to Step 6b.
 
