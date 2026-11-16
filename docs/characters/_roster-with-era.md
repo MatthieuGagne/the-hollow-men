@@ -40,11 +40,16 @@ the Fringe is described in `world.md` as a location that predates the Bureau, wi
 visit marked *"TBD — Case 5 or later."* They have no present-day recruitment hook in the
 docs because the hook is marked TBD.
 
-**The change:** Āio is a revolution-era fighter. The Bureau's administrative destruction of
-their community — the core wound, currently a Bureau sweep — becomes the **Patrimony's**
-tithe-collection of their island community, or the new Office of Civic Output's first
-census. Same wound, same machine, two hundred years earlier: *the machine didn't hate it,
-it processed it.* That sentence works in either century without edit.
+**The change:** Āio is a revolution-era fighter. Their core wound becomes **both
+regimes** `[DECIDED]`: the Patrimony tithed their island community as religious due, the
+revolution promised that was over, and then the new Office of Civic Output arrived with
+the founding census and counted them anyway. **They watched the regime change and the
+extraction not change.** Same wound, same machine, new letterhead: *the machine didn't
+hate it, it processed it* — a sentence that now applies twice in their lifetime.
+
+This is why they join the party and why they are not a revolutionary. They have already
+watched a revolution happen. It did not help. Their scepticism is earned, not temperamental,
+and it makes them the one voice in the era who is not moved by the broadsheet.
 
 **The payoff:** they found the school in the era. They come forward with the party. The
 dojo is **still standing in the Fringe**, run by inheritors who never knew them, teaching
@@ -52,26 +57,37 @@ their forms slightly wrong. The grief-made-functional place outlived the grief a
 person. Nothing in `world.md` needs to change — it already describes the dojo as older
 than the Bureau.
 
-### Paz — relocated to the past
+### Paz — past-native, self-travelled `[DECIDED]`
 
-Iris's file: she is "a fan of Paz specifically, whose work she knows from the Sprawl
-underground before they ever meet," and "Paz doesn't know Iris exists. The asymmetry is the
-dynamic."
+**She is from the revolution. She travelled forward on her own, years before Episode 1,
+and built a life in the Sprawl.** She is not recruited in the past — she is already here,
+fronting a band, and she has never told anyone where she is from.
 
-**If Paz is a revolutionary,** Iris is a fan of **two-hundred-year-old banned songs that
-survived in the underground**. The asymmetry stops being a fandom joke and becomes the best
-scene available to either character: Paz learns her music outlived the revolution, the
-Bureau, and herself — and that the woman in front of her knows every word.
+This resolves the relocation cost. Nothing in her file is lost:
 
-Her core wound (the Regularization — "they processed it, forms filed correctly, several
-didn't come back") transfers intact to the era's first census. Her anti-establishment
-position stops being a stance and becomes biography: she fought the founding and lost.
-Her "won't examine" — that she moves people without consent the way the Bureau harvests
-without consent — is *sharper* in a revolution, where that is literally what a
-revolutionary song does.
+- **The Meridian.** She didn't grow up there — she *arrived* there. The membrane is
+  thinnest in the Meridian, so that is where a crossing lands. She stayed because it was
+  the one district that didn't ask for papers. "Grew up in the Meridian" becomes "arrived
+  in the Meridian and made it home," and every instinct the file gives her still holds.
+- **The Kos recognition beat survives intact.** She lived in the Meridian as an adult and
+  noticed him in the deeper geometry. No change.
+- **The Regularization wound gets stronger.** She watched the Patrimony tithe, she watched
+  the founding census, and then she watched the Bureau process the Meridian in the present.
+  **She has seen the same machine do the same thing three times, across two centuries.**
+  Her anger stops being a conclusion she reached at twelve and becomes the only sane
+  response to a pattern nobody else has lived long enough to see.
+- **The Iris beat doubles.** Paz wrote songs during the revolution that survived as
+  anonymous folk music in the underground — and she fronts a current Sprawl band. Iris
+  loves both and has never connected them. The scene isn't "your music outlived you," it's
+  Iris realising the woman in front of her wrote both, and that the oldest songs she knows
+  are not traditional.
 
-**Cost:** her Meridian childhood and the Kos recognition beat ("she recognizes him before
-he recognizes her") are lost or rewritten. That's the real price of this relocation.
+**What this makes her:** the only person in the present who already knows the era exists.
+She has been sitting in a Sprawl bar with the answer to the party's central question for
+years. Her recruitment is no longer "she arrives independently at the same conclusion" —
+it is **she has been withholding**, and she has good reasons, and Reid will not like them.
+
+**Open:** how she crossed, and why she stayed in the present (see Travel Rules below).
 
 ### Soraya — reworked for the era
 
@@ -85,24 +101,84 @@ explains the hook that finds the era: her forty-seven terminals include signatur
 **predate their own installation dates** — she has been reading a network older than the
 Bureau without knowing it.
 
-### Kos — open question
+### Kos — cannot travel `[DECIDED]`
 
-He is entity-touched. In the era the entity is nearer the surface and the Meridian — the
-only place what's in him goes quiet — does not yet exist in its modern form. Two options,
-both good, and they are mutually exclusive:
+**The past is unbearable to him.** What came through during his calibration gets *louder*
+the closer the era is to the entity's surface. He stays present-side, always.
 
-- **He can't travel.** The past is unbearable; what came through during his calibration
-  gets *louder*. He stays present-side. Makes the era feel genuinely dangerous.
-- **He's the only one who can find the door.** The thing in him remembers the century.
-  He's the party's compass and it costs him every crossing.
+The cruelty is structural and worth keeping deliberate: his mechanic learns abilities only
+from entity and entity-adjacent attacks, and the revolution is where the entity is nearest
+the surface. **The one place he would grow strongest is the one place he cannot go.**
 
-### Vesper — open question
+**What this gives the structure:** a present-day anchor. With Kos unable to cross, episodes
+can run a present-side team against an era-side team instead of marching the whole roster
+through one door. He is the reason the present never goes quiet while the party is away.
 
-The entity is in her and the entity is **across time**. Whether she can be glimpsed in the
-revolution — the same face, in a crowd, two hundred years early — is the single biggest
-unexploited idea in this structure. It would make the manifestation something that has
-always been happening rather than something arriving. **Flagged, not decided.** Her file's
-rule stands: every scene is a question of which presence is speaking.
+### Vesper — appears in the revolution `[DECIDED]`
+
+**She went back.** `story.md` already says: *"The missing Summoner didn't disappear. She
+went. Deliberately. Because she found something and couldn't look away."* That sentence
+was written before this structure existed and it needs no edit. The missing-person case is
+a missing-in-time case.
+
+Consequences, in order of weight:
+
+1. **Case 3 needs no rewrite.** The existing beat — Vesper glimpsed at the far edge of the
+   wound, Reid tries to cross, "the geometry won't close," whatever looks back is aware —
+   becomes the game's first time-travel sighting, retroactively. She wasn't across a room.
+   She was across two centuries.
+2. **She is more herself in the past.** The entity's manifestation is two hundred years
+   less advanced there. The rule from her file still governs every scene — which presence
+   is speaking — but in the era the answer is *mostly her*. **The only place in the game
+   the party can speak to the real Vesper is before she was born.** That is the answer to
+   Reid's arc: he let her walk, and she walked somewhere he cannot bring her back from.
+3. **She may be the door.** Her crossing is the most likely reason the era is reachable at
+   all — the passage she made, left ajar. This competes with the Lain/Soraya hook; see
+   Travel Rules.
+4. **The manifestation was always happening.** An entity present in both centuries stops
+   being something that arrives and becomes something that has always been arriving. The
+   endgame's "stop it short" goal survives; the dread scales.
+
+---
+
+## Travel Rules `[NEW — needs approval]`
+
+Two decisions force this section into existence: Vesper reached the past alone, and Paz
+reached the present alone. **Crossing is something individuals do.** That needs a rule, or
+the question "why doesn't everyone do it" has no answer.
+
+**Proposed rule: metered output is a tether.**
+
+A practitioner whose output runs through the ley architecture is anchored to the moment
+the architecture is collecting in. The harvest doesn't only take your power — **it takes
+your ability to leave.** Only the unmetered cross.
+
+| Character | Status | Can cross |
+|---|---|---|
+| **Reid** | Non-practitioner, no output at all | **Yes** — nothing to tether. The man the system deemed beneath it is free precisely because it never wanted anything from him. |
+| **Iris** | Never registered, never metered | Yes |
+| **Paz** | Channel the Bureau never thought to meter | Yes — which is how she arrived |
+| **Vesper** | Anchor revoked, off-scale output | Yes — which is how she left |
+| **Āio** | Unmeterable, output loops inward | Yes |
+| **Lain** | Unregistered; her resonance opens the way | Yes — and she is the engine |
+| **Margot** | Jailbroken — return channel cut | Yes, and the jailbreak is *why* |
+| **Karim** | Unlicensed, never processed | Yes |
+| **Soraya** | No file, self-erased | Yes |
+| **Gideon** | Licensed Grade III, fully metered | **No** — until he stops being Bureau. His crossing *is* his arc break. |
+| **Kos** | Tethered by the entity itself, not the Bureau | **No** — permanently |
+
+**Why this rule is worth keeping:** it converts the game's thesis into a mechanic. The
+Bureau's harvest is revealed to do something worse than theft — it pins people to a single
+present. Everyone who can move through time is someone the system failed to capture. And
+it makes Gideon's defection load-bearing rather than symbolic: the moment he can cross is
+the moment he is no longer theirs.
+
+**It also resolves the door question.** Vesper's crossing left the passage ajar; Lain's
+unregistered resonance is what keeps it open; Soraya's forty-seven terminals are how the
+party *finds* it. All three hooks survive, in sequence, without competing.
+
+**Open:** whether Paz can cross back (she has not in years — is that choice or one-way?),
+and whether the Bureau knows any of this.
 
 ---
 
@@ -292,17 +368,30 @@ Registrar) **+ 1 optional** (the Lieutenant).
 
 ---
 
+## Decided (2026-11-15)
+
+1. **Kos cannot travel.** The past is unbearable; he is the present-day anchor.
+2. **Vesper appears in the revolution.** She went back. The missing-person case is a
+   missing-in-time case; Case 3 needs no rewrite.
+3. **Paz is past-native and self-travelled** — from the revolution, crossed forward on her
+   own years before Episode 1, built a life and a band in the Sprawl. Nothing in her file
+   is lost; the Meridian and the Kos recognition beat both survive.
+4. **Āio's wound is both regimes** — the Patrimony's tithe *and* the founding census. They
+   watched the regime change and the extraction continue.
+
 ## Open Questions Before This Can Be Approved
 
-1. **Kos** — can he travel, or is the past unbearable for him? (Both options are good; they
-   are exclusive.)
-2. **Vesper** — does she appear in the revolution? Biggest unexploited idea here.
-3. **Paz's Meridian childhood** — relocating her costs the Kos recognition beat. Accept, or
-   preserve by keeping her present-day and finding another past recruit?
-4. **Āio's community** — is their wound the Patrimony's tithe-collection or the new
-   Office's first census? Changes who they blame.
-5. **Thibault forward?** — he is written to stay and be quieted. An alternative exists where
-   the party extracts him to the present, which breaks the iron rule deliberately and has
-   consequences. Currently **not** recommended.
-6. **Working names** — Thibault, Sabine, Varenne, the Patrimony, the Accountants, the
-   Registrar, the Office of Civic Output, the quieting, the Deep Patron.
+1. **Travel Rules** — the "metered output is a tether" rule above is new and load-bearing.
+   It is the largest single thing in this document still needing approval.
+2. **Paz's withholding** — she has known about the era for years. Why has she said nothing,
+   and can she cross back? Her recruitment beat depends on the answer.
+3. **Vesper in the era — how much contact?** A glimpse, a conversation, or a playable
+   stretch where the party has the real Vesper back? The third is the most powerful and the
+   most expensive, and it affects whether she is a Tier-1 or Tier-2 presence in the era.
+4. **Thibault forward?** `[TBD]` — written to stay and be quieted. An alternative extracts
+   him to the present, deliberately breaking the iron rule, with consequences. Currently
+   **not** recommended.
+5. **Working names** `[TBD]` — Thibault, Sabine, Varenne, the Patrimony, the Accountants,
+   the Registrar, the Office of Civic Output, the quieting, the Deep Patron.
+6. **Reveal ownership** — does the era take the charter-acronym reveal from Act 3?
+   Recommended: yes, with Act 3 gaining *WARDEN is still editing*.
