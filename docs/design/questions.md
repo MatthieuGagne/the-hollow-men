@@ -12,7 +12,8 @@ Design decisions and story threads that need to be resolved.
 ## Characters
 
 - [ ] Reid: was his psychic output being metered through his Bureau-issued equipment — does he have any suspicion of this, or is the revelation entirely new?
-- [ ] Who are the remaining 8 party members? What is each person's relationship to the revelation that their power was always their own — and what does their breaking point look like at its worst? *(Reid and Mara established.)*
+- [x] ~~Who are the remaining 8 party members?~~ **Resolved** — ten-character roster defined in `docs/characters/_overview.md`, each with a unique combat verb (see `docs/design/mechanics.md` § Character Abilities). Still open per character: relationship to the revelation that their power was always their own, and what their breaking point looks like at its worst.
+- [ ] Party members 11 and 12 — the roster is designed for ten; two more slots are intended. Verb-first design, filling gaps in the uniqueness grid.
 - [ ] Party Summoner: who are they, what is their arc, what does their being look like?
 - [ ] Vesper's being: appearance and register
 

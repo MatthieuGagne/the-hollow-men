@@ -1,6 +1,6 @@
-# Doc Karim — White Mage
+# Doc Karim — Medic
 
-**Class:** White Mage
+**Class:** Medic. No healing magic and no innate spell list — he carries **devices**, three equipped at a time, found and upgraded during investigation. The only in-combat source of PP restoration. See `docs/design/mechanics.md` § Character Abilities.
 
 **Bureau status:** Unlicensed — tolerated. The Sprawl needs healers. That arrangement ends the moment he associates with Reid's group. He knows this. He joins anyway.
 

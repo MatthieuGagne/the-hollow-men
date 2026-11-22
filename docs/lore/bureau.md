@@ -58,7 +58,7 @@ The trap is elegant: the practitioners the Bureau harvests most efficiently are 
 
 ### Exceptions — What the System Can't Read
 
-**Mara** has no Grade. No assessment, no file, no rating. The ley terminals never got a clean read — she was never near one long enough, and nobody sent the paperwork. Her output isn't lower than a Grade IV. It's *unmetered*, which is different. The system has no category for that. When a Bureau assessor eventually encounters her, the instrument returns an error before a number.
+**Iris** has no Grade. No assessment, no file, no rating. The ley terminals never got a clean read — she was never near one long enough, and nobody sent the paperwork. Her output isn't lower than a Grade IV. It's *unmetered*, which is different. The system has no category for that. When a Bureau assessor eventually encounters her, the instrument returns an error before a number.
 
 **The Martial Artist** has no Grade for the opposite reason. Their output loops inward — it never reaches the ley architecture. The Bureau's assessment protocol requires outward resonance to function. They get a reading of zero, filed as "non-practitioner," forgotten. The Martial Artist knows this. They counted on it.
 
@@ -155,7 +155,7 @@ The Bureau does not advertise the criteria. The criteria are whatever the Bureau
 
 Officially: no. The Bureau's position is that deep-bonded calibration is permanent and that reversal attempts carry severe risk of ley architecture damage and practitioner harm.
 
-Unofficially: the jailbreaking community has theories. Mara has heard things — a name, a district, an incomplete account of something that happened in the Warrens that may or may not have worked. Nobody has done it cleanly. The difference between *nobody has done it cleanly* and *it cannot be done* is the difference between a closed door and a locked one.
+Unofficially: the jailbreaking community has theories. Iris has heard things — a name, a district, an incomplete account of something that happened in the Warrens that may or may not have worked. Nobody has done it cleanly. The difference between *nobody has done it cleanly* and *it cannot be done* is the difference between a closed door and a locked one.
 
 ### Character Implications
 

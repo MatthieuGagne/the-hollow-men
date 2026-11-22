@@ -1,6 +1,6 @@
-# Gideon — Paladin
+# Gideon — Defender
 
-**Class:** Paladin
+**Class:** Defender. (Formerly "Paladin — fighter/healer hybrid"; that made him a union of Reid and Karim with nothing of his own, so the healing is gone. He is the wall: Interpose, Bulwark, Hold the Line, and real damage on a slow gauge. See `docs/design/mechanics.md` § Character Abilities.)
 
 **Bureau status:** Active — licensed Grade III enforcer
 
@@ -40,7 +40,7 @@ Gideon is in the Lowline on his own initiative — not assigned. He saw the inci
 
 He and Reid's party work the same blocks in Zone 2. He sees Margot. Neither speaks first. The silence is sustained through the entire dungeon.
 
-In Zone 4 he fights alongside the party as a guest — the only option when The Node uses his Bureau-standard neural interface as a relay. Phase 2: The Node hijacks his Paladin healing output as self-regeneration. The party breaks the relay. He survives. His kit is introduced here: Fighter/Healer hybrid, battlefield positioning, the cyberware that connects him to a machine he still trusts.
+In Zone 4 he fights alongside the party as a guest — the only option when The Node uses his Bureau-standard neural interface as a relay. Phase 2: The Node hijacks his Interpose output, feeding on every hit he absorbs for the party and converting it to self-regeneration. Protecting them is what powers it. The party breaks the relay. He survives. His kit is introduced here: the wall, battlefield positioning, and the cyberware that connects him to a machine he still trusts.
 
 Post-boss: one practical exchange with Margot. Neither names what they're carrying.
 
