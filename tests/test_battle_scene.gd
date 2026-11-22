@@ -1111,3 +1111,32 @@ func test_select_ability_out_of_range_selects_nothing() -> void:
 	_scene.select_ability(3)
 	assert_null(_scene._selected_ability,
 		"An out-of-range index must not crash and must select nothing")
+
+
+func test_execute_action_ability_uses_the_menu_selected_row() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [a1, a2] as Array[Ability]
+	var c := Combatant.from_definition(d)
+	_scene._begin_player_turn(c)
+	_scene._action_menu._selected_idx = 2  # row 2 = abilities[1]
+
+	_scene.execute_action("ability")
+	assert_eq(_scene._selected_ability.ability_name, "Second",
+		"execute_action must cast the ability on the menu's selected row")
+
+
+func test_end_turn_clears_the_selected_ability() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_not_null(_scene._selected_ability,
+		"an ability is selected once the player chooses it")
+	_scene.confirm_enemy_target()
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
+	assert_null(_scene._selected_ability,
+		"_end_turn must clear the selection so it cannot leak into the next turn")
