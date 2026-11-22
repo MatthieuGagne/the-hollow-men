@@ -1,100 +1,69 @@
-# Discussion — How Much Vesper Does the Era Give Back?
+# Discussion — Vesper Contact
 
-**Question (A2):** The party reaches the revolution. Vesper is there. How much contact?
-**Status:** in discussion · opened 2026-11-15
-**Forced by:** decision 17 — Vesper went back.
+**Question (A2):** How much of Vesper does the era give back? Glimpse, conversation, or a playable
+stretch. It sets the era's emotional ceiling and its scope.
+**Status:** resolved in discussion · 2026-11-20
 
----
-
-## Why this is the most consequential open question
-
-Vesper is the game's absent centre. `story-lore` rule: *"Vesper is absent throughout. She
-is the missing person at the story's center. She can only be known through others'
-descriptions, documents, and traces."*
-
-The era threatens that rule — and may be the one place it *should* break.
-
-**The core fact that makes this hard and good:** the entity's manifestation is two hundred
-years less advanced in the revolution. Her file's governing rule — *every scene is a
-question of which presence is speaking* — still applies, but in the era the answer tilts
-toward **her**.
-
-> The only place in the game where the party can speak to the real Vesper
-> is two centuries before she was born.
-
-That is either the emotional centre of the entire game or a single devastating scene. The
-choice decides the era's scope and Reid's arc resolution.
+**Held from canon:** Crane's daughter. Her being was trying to show her the truth — her power was
+always hers, every licensed summon was a tithe — and following that thread took her somewhere the
+entity noticed. **There is more than one presence in her now.** The being is still underneath,
+still trying to reach her, still the thread Reid can pull. Every scene with Vesper is a question
+of *which one is speaking*. The Bureau revoked her anchor as punishment, and that is what cut her
+loose from the century. She went back **deliberately**. Case 3 already spends a glimpse beat: the
+party sees her at the far edge of a ley wound, and whatever looks back is aware.
 
 ---
 
-## The three options
+## Resolution: **A and B** — glimpses throughout, one conversation late `[DECIDED]`
 
-### 1. A glimpse
-She is seen and not reached. The Case 3 beat repeated at era scale — present, aware,
-unreachable. Preserves the absence rule completely.
+Contact **escalates across the era visits** and resolves once.
 
-- **For:** cheapest; keeps the mystery intact; the ache is the point.
-- **Against:** the player has crossed two centuries and gets the same beat they already got
-  in Case 3. Risks feeling like a withheld payoff rather than a deliberate one.
+| Stage | What the party gets |
+|---|---|
+| **Early visits** | Glimpses and traces only. A figure at a distance in a crowd. A name in the Accountants' minutes that should not be there. A door already open. A witness describing a woman who was not supposed to be present. Never a conversation. |
+| **Late, once** | **One scene.** They reach her, and it is genuinely her — the being surfacing long enough to speak — and then it is not, and she is lost again. |
 
-### 2. One conversation
-A single scene, late in the era arc, where the party speaks with her — mostly her. She
-explains what she found and why she went. Then the geometry closes.
+### Why both, and not either alone
 
-- **For:** one unrepeatable scene carries enormous weight; preserves scarcity; affordable.
-- **Against:** a conversation answers questions, and the entity works best unexplained.
-  Needs careful writing so she illuminates without exposition-dumping.
+- **A alone** is the most faithful to how she has been written (known entirely through evidence,
+  Laura Palmer), but four era visits of nothing but glimpses reads as *the design* withholding
+  rather than *the story* withholding. Case 3 already spent the pure-glimpse beat in the present.
+- **B alone** throws away the dread that makes the one scene land. The conversation is only
+  devastating if the player has spent visits failing to reach her.
+- Together they form an escalation with a single payoff: the missing-person case pays off **once,
+  properly**, and the loss afterward is worse because it was real.
 
-### 3. A playable stretch
-She joins the party **in the era** — temporarily. The Summoner kit, the shared-turn
-mechanic, the being. The party has her back, and loses her again at the era's end.
+### Rules for the conversation
 
-- **For:** the strongest version of the FF6 General Leo slot in the whole design. The player
-  doesn't hear about the loss; they play it and then it is taken. It also lets her unique
-  battle mechanic exist *before* her late-game permanent join, which is good pacing.
-- **Against:** most expensive; risks spending her mystery early; and if she is permanent
-  later, the era version must feel meaningfully different or it is a preview rather than a
-  loss.
+- **Brief and unstable.** The being surfaces; it does not hold.
+- **Not clarifying.** She does not explain what happened to her. She tells them something about
+  **the century they are standing in** — which is worse, because it means she is not there by
+  accident and she knows why.
+- The question *which one is speaking* stays live inside the scene itself.
 
----
+**Rejected: a playable stretch (C).** The payoff is enormous and so is the cost — the moment she
+is controllable she is a party member, the mystery converts into a companion, and *which one is
+speaking* stops being a question because the player answers it from a menu.
 
-## Arguments in play
-
-**For going big (option 3):** the game's thesis is *reclaiming what was taken*. Giving the
-player Vesper and then taking her back is that thesis delivered as play rather than theme.
-And it solves a real structural problem — Vesper joins "later" in the current docs with no
-established relationship for the player to miss.
-
-**For restraint (options 1–2):** the absence rule is load-bearing and the game has resisted
-the temptation so far. Every character's view of Vesper differs; meeting her collapses those
-views into one. The horror of the Summoner thread is partly that nobody can agree who she was.
-
-**The hybrid nobody has argued yet:** she is playable but **the player cannot tell which
-presence is acting.** The shared-turn mechanic already alternates Vesper and the being; a
-third, unannounced actor could be folded in. The party gets her back and never gets to be
-sure. That preserves the mystery *and* spends the time with her.
+**Rejected: she is the reason the era is reachable (D).** Makes her an agent rather than a
+destination, but hands the party's mobility to the person they are trying to save.
 
 ---
 
-## Knock-on effects to check
+## Knock-ons
 
-- **Reid's arc.** He let her walk. If he reaches her, does his wound resolve in the era?
-  His file: *"he did the right thing, it cost him everything, and he'd do it again — the
-  certainty is the problem."* Meeting her could confirm the certainty or break it.
-- **Crane.** Her father. He is in the present and cannot cross (status unexamined — he is
-  retired Bureau with a still-registered sigil, so under the tether rule **he is anchored**).
-  If Reid speaks to Vesper and Crane never can, that is a scene.
-- **The late-game permanent join.** If she joins for real later, how does the era version
-  differ? Suggested: in the era she is mostly herself; by the time she joins permanently,
-  she is mostly not.
-- **Scope.** Option 3 means era-specific Summoner content, the being's era appearance, and
-  a loss sequence. Material, not catastrophic.
+- **Reid.** He let her walk once, at the cost of his career. The one scene is the only time he
+  gets to find out what that bought. It should not absolve him.
+- **Karim.** He treated her for years without a category for what he was seeing. The conversation
+  is the only chance he gets to ask — and he is the one most likely to waste it arguing.
+- **Crane.** He never crosses. Whatever the party learns, somebody has to decide what to tell her
+  father, and that is its own scene.
+- **Kos.** Both entity-touched; wrongness recognises wrongness. He cannot cross, so he is the one
+  person who would recognise what is speaking — and he will not be in the room.
 
----
+## Still open
 
-## To settle
-
-- [ ] Glimpse, conversation, playable stretch, or the unannounced-presence hybrid?
-- [ ] Does Reid's arc resolve here, or is this the midpoint of it?
-- [ ] Does Crane ever learn the party spoke to her?
-- [ ] If playable: how does the era Vesper differ from the permanent late-game Vesper?
+- [ ] What she actually says about the era — the content of the one scene
+- [ ] Which visit carries it (needs the episode map, B3)
+- [ ] Whether the entity permits the contact or fails to prevent it
+- [ ] Does the party ever learn she *chose* to go back, and how that lands on Reid

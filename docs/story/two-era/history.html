@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hollow Men — The Story</title>
+<style>
+  :root{
+    --bg:#08090c; --ink:#e2e6ec; --dim:#98a1ae; --faint:#626b78;
+    --line:#1d222a; --line2:#2a313b; --panel:#101419; --panel2:#151a21;
+    --gold:#d2a94f; --blue:#5a8fd8; --red:#c05a64; --green:#62a87b; --accent:#7fd1c8;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:"Inter","Segoe UI",system-ui,sans-serif;
+    --mono:"Cascadia Code",Consolas,monospace;
+    --measure:38rem;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:70px}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--serif); font-size:19px; line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(210,169,79,.28)}
+
+  /* ====== top bar ====== */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:40; height:54px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:0 22px; background:rgba(8,9,12,.82); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line); font-family:var(--sans); font-size:13px;
+  }
+  .topbar .mark{font-family:var(--serif); font-size:17px; letter-spacing:.01em}
+  .topbar .mark span{color:var(--gold)}
+  .progress{
+    position:fixed; top:0; left:0; height:2px; width:100%; z-index:41; transform:scaleX(0);
+    transform-origin:0 50%; background:linear-gradient(90deg,var(--blue),var(--gold));
+    animation:grow linear; animation-timeline:scroll(root);
+  }
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  details.toc{position:relative}
+  details.toc > summary{
+    list-style:none; cursor:pointer; color:var(--dim); padding:6px 12px;
+    border:1px solid var(--line2); border-radius:3px; letter-spacing:.14em;
+    text-transform:uppercase; font-size:10.5px;
+  }
+  details.toc > summary::-webkit-details-marker{display:none}
+  details.toc > summary:hover{color:var(--ink); border-color:var(--gold)}
+  details.toc[open] > summary{color:var(--gold); border-color:var(--gold)}
+  details.toc .panel{
+    position:absolute; right:0; top:42px; width:290px; background:#0c0f14;
+    border:1px solid var(--line2); padding:14px; box-shadow:0 24px 60px rgba(0,0,0,.6);
+  }
+  details.toc .panel a{
+    display:block; padding:7px 10px; color:var(--dim); text-decoration:none; font-size:13px;
+    border-left:2px solid transparent;
+  }
+  details.toc .panel a:hover{color:var(--ink); background:var(--panel); border-left-color:var(--gold)}
+  details.toc .panel a i{font-style:normal; color:var(--faint); margin-right:10px; font-size:11px}
+
+  /* ====== hero ====== */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:center;
+    overflow:hidden; padding:90px 22px 60px;
+  }
+  .hero .skyline{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+  .hero .veil{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 20%, rgba(90,143,216,.20), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 85%, rgba(210,169,79,.16), transparent 62%),
+      linear-gradient(90deg, rgba(8,9,12,.92) 0%, rgba(8,9,12,.55) 46%, rgba(8,9,12,.18) 70%),
+      linear-gradient(180deg, rgba(8,9,12,.10) 0%, rgba(8,9,12,.55) 76%, var(--bg) 100%);
+  }
+  .hero .rain{
+    position:absolute; inset:-20% -10%; opacity:.16; pointer-events:none;
+    background:repeating-linear-gradient(103deg, transparent 0 7px, rgba(190,210,235,.5) 7px 8px);
+    animation:fall 1.6s linear infinite;
+  }
+  @keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(60px)}}
+  .hero .inner{position:relative; max-width:1000px; margin:0 auto; width:100%}
+  .hero .eyebrow{
+    font-family:var(--sans); font-size:11px; letter-spacing:.42em; text-transform:uppercase;
+    color:var(--dim); margin-bottom:26px;
+  }
+  .hero h1{
+    font-size:clamp(50px,11vw,124px); line-height:.92; margin:0 0 26px; font-weight:400;
+    letter-spacing:-.035em;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold); display:block}
+  .hero .tag{font-size:clamp(19px,2.3vw,25px); color:var(--ink); max-width:30ch; margin:0 0 38px; line-height:1.45}
+  .hero .scroll{font-family:var(--sans); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--faint)}
+
+  /* ====== layout ====== */
+  .band{padding:0 22px}
+  .col{max-width:var(--measure); margin:0 auto}
+  .wide{max-width:960px; margin:0 auto}
+
+  /* ====== chapter openers ====== */
+  .chapter{
+    max-width:calc(var(--measure) + 44px); margin:130px auto 46px; padding:0 22px; display:block;
+  }
+  .chapter .num{
+    font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.34em;
+    color:var(--gold); margin-bottom:16px; display:flex; align-items:center; gap:14px;
+  }
+  .chapter .num::after{content:""; flex:1; height:1px; background:linear-gradient(90deg,rgba(210,169,79,.45),transparent)}
+  .chapter .head{border-bottom:1px solid var(--line2); padding-bottom:18px}
+  .chapter h2{font-size:clamp(34px,5.4vw,58px); line-height:1.02; margin:0; font-weight:400; letter-spacing:-.025em}
+  .chapter p{margin:12px 0 0; color:var(--dim); font-size:17px}
+
+  p{margin:0 0 24px}
+  .col > p:first-of-type::first-letter{
+    float:left; font-size:62px; line-height:.86; padding:6px 12px 0 0; color:var(--gold);
+  }
+  .nodrop > p:first-of-type::first-letter{float:none; font-size:inherit; padding:0; color:inherit}
+  strong{color:#fff; font-weight:600}
+  .wipbar{
+    border:1px solid #4a2a30; background:linear-gradient(180deg,#160f12,#111015);
+    padding:18px 22px; margin:34px 0 10px; font-family:var(--sans); font-size:14.5px;
+    line-height:1.65; color:var(--dim);
+  }
+  .wipbar b{
+    display:block; color:var(--red); font-size:10.5px; letter-spacing:.26em;
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .wipbar p{margin:0}
+  .wipbar strong{color:var(--ink)}
+  em{color:#eef1f5}
+
+  /* ====== pull quotes & artifacts ====== */
+  .pull{
+    max-width:820px; margin:62px auto; padding:0 22px; text-align:center;
+    font-size:clamp(24px,3.4vw,38px); line-height:1.24; letter-spacing:-.015em;
+  }
+  .pull span{color:var(--gold)}
+  .pull cite{
+    display:block; margin-top:20px; font-family:var(--sans); font-size:11px; font-style:normal;
+    letter-spacing:.24em; text-transform:uppercase; color:var(--faint);
+  }
+
+  .artifact{
+    max-width:720px; margin:52px auto; border:1px solid var(--line2); background:var(--panel);
+    padding:34px 38px; position:relative;
+  }
+  .artifact::before{
+    content:attr(data-label); position:absolute; top:-9px; left:26px; background:var(--bg);
+    padding:0 10px; font-family:var(--sans); font-size:10px; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--gold);
+  }
+  .artifact .broadsheet{
+    font-family:var(--sans); font-weight:700; font-size:clamp(20px,3vw,30px); letter-spacing:.04em;
+    line-height:1.3; text-align:center; margin:0; color:#f2ece0;
+  }
+  .artifact p:last-child{margin-bottom:0}
+
+  /* ====== disclosure ====== */
+  details.more{
+    max-width:var(--measure); margin:30px auto; border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  details.more > summary{
+    list-style:none; cursor:pointer; padding:15px 2px; font-family:var(--sans); font-size:13px;
+    letter-spacing:.06em; color:var(--dim); display:flex; justify-content:space-between; gap:16px;
+  }
+  details.more > summary::-webkit-details-marker{display:none}
+  details.more > summary::after{content:"＋"; color:var(--gold); font-size:15px}
+  details.more[open] > summary::after{content:"−"}
+  details.more > summary:hover{color:var(--ink)}
+  details.more .inner{padding:4px 0 22px; font-size:17px}
+  details.more .inner p:last-child{margin-bottom:0}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:15.5px; font-family:var(--sans)}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .c-gold{color:var(--gold)} .c-blue{color:var(--blue)} .yes{color:var(--green)} .no{color:var(--red)}
+
+  ul.clean{list-style:none; padding:0; margin:18px 0}
+  ul.clean li{padding:10px 0 10px 24px; border-bottom:1px solid var(--line); position:relative}
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:"—"; position:absolute; left:0; color:var(--gold)}
+  code{font-family:var(--mono); font-size:.82em; color:var(--accent); background:#12161c; padding:1px 5px}
+
+  /* ====== full-bleed statement ====== */
+  .statement{
+    margin:92px 0; padding:86px 22px; text-align:center;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 55% 120% at 50% 50%, rgba(210,169,79,.09), transparent 70%);
+  }
+  .statement p{font-size:clamp(26px,4vw,44px); line-height:1.22; margin:0 auto; max-width:17ch; letter-spacing:-.02em}
+  .statement .em{color:var(--gold)}
+
+  /* ====== beats ====== */
+  .beats{max-width:820px; margin:40px auto; padding:0 22px}
+  .beat{display:grid; grid-template-columns:54px 1fr; gap:22px; padding:22px 0; border-top:1px solid var(--line)}
+  .beat:last-child{border-bottom:1px solid var(--line)}
+  .beat .n{font-family:var(--sans); font-size:26px; color:var(--line2); font-weight:600; line-height:1}
+  .beat h4{margin:0 0 8px; font-size:20px; font-weight:400}
+  .beat p{margin:0; font-size:17px; color:var(--dim)}
+  .beat p b{color:var(--ink)}
+  .beat:hover .n{color:var(--gold); transition:color .25s}
+
+  /* ====== timeline ====== */
+  .timeline{max-width:880px; margin:46px auto; padding:0 22px}
+  .tl{display:grid; grid-template-columns:150px 1fr; gap:26px; padding:18px 0; border-top:1px solid var(--line); align-items:start}
+  .tl .when{font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint); padding-top:5px}
+  .tl.era .when{color:var(--gold)} .tl.now .when{color:var(--blue)}
+  .tl .what{font-size:17px; color:var(--dim)}
+  .tl .what b{color:var(--ink)}
+
+  /* ====== cast ====== */
+  .cast{max-width:1000px; margin:40px auto; padding:0 22px; display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:14px}
+  a.person{
+    display:block; text-decoration:none; color:inherit; border:1px solid var(--line);
+    background:var(--panel); padding:20px 20px 22px; transition:border-color .2s, transform .2s, background .2s;
+  }
+  a.person:hover{border-color:var(--c,#999); transform:translateY(-3px); background:var(--panel2)}
+  a.person .sigil{
+    width:46px; height:46px; border-radius:50%; display:grid; place-items:center; margin:26px 0 12px;
+    font-family:var(--sans); font-size:18px; font-weight:600; color:#0a0c10;
+    background:var(--c,#888); box-shadow:0 0 0 1px rgba(255,255,255,.07), 0 0 22px -6px var(--c,#888);
+  }
+  a.person h4{margin:0; font-size:21px; font-weight:400}
+  a.person .role{font-family:var(--sans); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--c,#999); margin:5px 0 10px}
+  a.person p{margin:0; font-size:15px; color:var(--dim); line-height:1.5}
+  a.person .open{display:block; margin-top:12px; font-family:var(--sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint)}
+  a.person:hover .open{color:var(--c,#999)}
+  a.person .sprite{
+    width:48px; height:72px; margin-bottom:12px; display:block; image-rendering:pixelated;
+    filter:drop-shadow(0 0 16px rgba(0,0,0,.6));
+  }
+  .modal .sheet .sprite{
+    float:right; width:64px; height:96px; margin:0 0 14px 22px; image-rendering:pixelated;
+    filter:drop-shadow(0 6px 18px rgba(0,0,0,.7));
+  }
+
+  /* ====== modal ====== */
+  .modal{position:fixed; inset:0; z-index:60; display:none}
+  .modal:target{display:block}
+  .modal .backdrop{position:absolute; inset:0; background:rgba(4,5,7,.82); backdrop-filter:blur(5px); display:block}
+  .modal .sheet{
+    position:relative; max-width:660px; margin:7vh auto; max-height:86vh; overflow-y:auto;
+    background:#0d1116; border:1px solid var(--line2); padding:38px 42px 44px;
+    box-shadow:0 40px 120px rgba(0,0,0,.7);
+  }
+  .modal .sheet::before{content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--c,#888)}
+  .modal .sheet h3{margin:0; font-size:34px; font-weight:400; letter-spacing:-.015em}
+  .modal .sheet .role{font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--c,#999); margin:8px 0 20px}
+  .modal .sheet dl{margin:0 0 20px; font-family:var(--sans); font-size:14px}
+  .modal .sheet dl div{display:flex; gap:14px; padding:7px 0; border-bottom:1px solid var(--line)}
+  .modal .sheet dt{color:var(--faint); min-width:120px; flex:none; font-size:11px; letter-spacing:.12em; text-transform:uppercase; padding-top:3px}
+  .modal .sheet dd{margin:0}
+  .modal .sheet p{font-size:17.5px}
+  .modal .close{
+    position:absolute; top:14px; right:18px; text-decoration:none; color:var(--faint);
+    font-size:26px; line-height:1; font-family:var(--sans);
+  }
+  .modal .close:hover{color:var(--ink)}
+
+  /* ====== figure ====== */
+  figure{max-width:900px; margin:56px auto; padding:0 22px}
+  figure svg{width:100%; height:auto; display:block}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--faint); margin-top:14px; text-align:center}
+
+  footer{
+    margin-top:110px; border-top:1px solid var(--line); padding:40px 22px 70px;
+    font-family:var(--sans); font-size:12.5px; color:var(--faint); line-height:1.8;
+  }
+  footer .wide{display:flex; gap:40px; flex-wrap:wrap; justify-content:space-between}
+  footer a{color:var(--dim)}
+
+  @media (max-width:760px){
+    body{font-size:17.5px}
+    .chapter{grid-template-columns:1fr; gap:10px}
+    .tl{grid-template-columns:1fr; gap:4px}
+    .beat{grid-template-columns:34px 1fr; gap:14px}
+    .modal .sheet{margin:0; max-height:100vh; padding:34px 24px}
+    details.toc .panel{position:fixed; left:12px; right:12px; width:auto; top:60px}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"></div>
+
+<div class="topbar">
+  <div class="mark">The Hollow <span>Men</span></div>
+  <details class="toc">
+    <summary>Contents</summary>
+    <div class="panel">
+      <a href="#c1"><i>I</i>The City That Has No Morning</a>
+      <a href="#c2"><i>II</i>The Thing That Got Stuck</a>
+      <a href="#c3"><i>III</i>The Religion of the Tithe</a>
+      <a href="#c4"><i>IV</i>The Crime</a>
+      <a href="#c5"><i>V</i>The Truth, In Public</a>
+      <a href="#c6"><i>VI</i>The Night of the Lamps</a>
+      <a href="#c7"><i>VII</i>The Signing</a>
+      <a href="#c8"><i>VIII</i>Two Hundred Years of Forgetting</a>
+      <a href="#c9"><i>IX</i>The Doors Are Wounds</a>
+      <a href="#c10"><i>X</i>The People</a>
+      <a href="#appendix"><i>·</i>Timeline &amp; Appendices</a>
+      <a href="breakdown.html"><i>↗</i>Story Breakdown</a>
+    </div>
+  </details>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <svg class="skyline" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0d1420"/><stop offset="55%" stop-color="#0a0e15"/><stop offset="100%" stop-color="#08090c"/>
+      </linearGradient>
+      <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#20293a"/><stop offset="100%" stop-color="#0d111a"/>
+      </linearGradient>
+      <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#171f2b"/><stop offset="100%" stop-color="#0a0d13"/>
+      </linearGradient>
+      <linearGradient id="near" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0e131b"/><stop offset="100%" stop-color="#07080b"/>
+      </linearGradient>
+      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#d2a94f" stop-opacity=".30"/><stop offset="100%" stop-color="#d2a94f" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#5a8fd8" stop-opacity=".26"/><stop offset="100%" stop-color="#5a8fd8" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1600" height="900" fill="url(#sky)"/>
+    <ellipse cx="430" cy="520" rx="330" ry="240" fill="url(#glow2)"/>
+    <ellipse cx="1180" cy="600" rx="300" ry="220" fill="url(#glow)"/>
+
+    <!-- far towers -->
+    <g fill="url(#far)">
+      <rect x="40" y="430" width="90" height="470"/><rect x="150" y="500" width="64" height="400"/>
+      <rect x="236" y="380" width="110" height="520"/><rect x="370" y="470" width="78" height="430"/>
+      <rect x="470" y="330" width="96" height="570"/><rect x="590" y="440" width="70" height="460"/>
+      <rect x="690" y="300" width="128" height="600"/><rect x="840" y="420" width="84" height="480"/>
+      <rect x="948" y="360" width="104" height="540"/><rect x="1076" y="470" width="72" height="430"/>
+      <rect x="1170" y="400" width="118" height="500"/><rect x="1310" y="480" width="86" height="420"/>
+      <rect x="1420" y="420" width="140" height="480"/>
+    </g>
+    <!-- the cathedral: Bureau HQ -->
+    <g>
+      <rect x="700" y="236" width="112" height="664" fill="#161d29" stroke="#242d3c"/>
+      <polygon points="700,236 756,182 812,236" fill="#161d29" stroke="#242d3c"/>
+      <rect x="750" y="300" width="12" height="104" fill="#d2a94f" opacity=".45"/>
+      <rect x="750" y="430" width="12" height="104" fill="#d2a94f" opacity=".28"/>
+      <rect x="750" y="560" width="12" height="104" fill="#d2a94f" opacity=".18"/>
+    </g>
+    <!-- mid towers -->
+    <g fill="url(#mid)">
+      <rect x="0" y="560" width="150" height="340"/><rect x="178" y="610" width="120" height="290"/>
+      <rect x="330" y="540" width="140" height="360"/><rect x="500" y="620" width="110" height="280"/>
+      <rect x="640" y="580" width="96" height="320"/><rect x="860" y="560" width="150" height="340"/>
+      <rect x="1040" y="620" width="118" height="280"/><rect x="1190" y="540" width="160" height="360"/>
+      <rect x="1380" y="600" width="130" height="300"/>
+    </g>
+    <!-- windows -->
+    <g fill="#d2a94f" opacity=".34">
+      <rect x="60" y="600" width="4" height="9"/><rect x="78" y="640" width="4" height="9"/><rect x="96" y="590" width="4" height="9"/>
+      <rect x="210" y="660" width="4" height="9"/><rect x="246" y="700" width="4" height="9"/><rect x="360" y="580" width="4" height="9"/>
+      <rect x="392" y="630" width="4" height="9"/><rect x="430" y="676" width="4" height="9"/><rect x="530" y="668" width="4" height="9"/>
+      <rect x="668" y="620" width="4" height="9"/><rect x="890" y="600" width="4" height="9"/><rect x="930" y="648" width="4" height="9"/>
+      <rect x="975" y="592" width="4" height="9"/><rect x="1070" y="664" width="4" height="9"/><rect x="1220" y="580" width="4" height="9"/>
+      <rect x="1268" y="628" width="4" height="9"/><rect x="1310" y="596" width="4" height="9"/><rect x="1420" y="640" width="4" height="9"/>
+    </g>
+    <g fill="#5a8fd8" opacity=".30">
+      <rect x="120" y="690" width="4" height="9"/><rect x="300" y="700" width="4" height="9"/><rect x="470" y="710" width="4" height="9"/>
+      <rect x="700" y="690" width="4" height="9"/><rect x="900" y="720" width="4" height="9"/><rect x="1150" y="690" width="4" height="9"/>
+      <rect x="1340" y="712" width="4" height="9"/>
+    </g>
+    <!-- near silhouettes -->
+    <g fill="url(#near)">
+      <rect x="-20" y="740" width="260" height="180"/><rect x="270" y="770" width="200" height="150"/>
+      <rect x="520" y="748" width="230" height="172"/><rect x="800" y="784" width="210" height="136"/>
+      <rect x="1060" y="744" width="250" height="176"/><rect x="1350" y="776" width="280" height="144"/>
+    </g>
+  </svg>
+  <div class="rain"></div>
+  <div class="veil"></div>
+  <div class="inner">
+    <div class="eyebrow">A turn-based noir horror JRPG · Story document, working draft</div>
+    <h1>The Hollow<em>Men</em></h1>
+    <p class="tag">In a city that has never had a morning, magic is licensed, graded, taxed —
+    and quietly taken.</p>
+    <div class="scroll">Scroll ↓</div>
+  </div>
+</section>
+
+<!-- ============ OPENING ============ -->
+<div class="band"><div class="col nodrop" style="padding-top:90px">
+  <p class="lede" style="font-size:24px; line-height:1.5">A disgraced enforcer takes a
+  missing-person case. The missing woman turns out not to have been taken.</p>
+  <p>She <em>went</em> — deliberately, because she found something and couldn't look away. Finding
+  out where leads through a bureaucracy that harvests human minds, a city built around a wound, and
+  a century that already knew everything this one has forgotten.</p>
+</div></div>
+
+<div class="band"><div class="col nodrop">
+  <div class="wipbar">
+    <b>Work in progress</b>
+    <p>This is a <strong>living design document for an unfinished game</strong>, not a finished
+    story. The present-day material is settled; the revolution era and everything before it are
+    active drafts, argued out session by session and still changing. Names marked as working
+    names will change. Several decisions on this page contradict each other on purpose, because
+    they have not been reconciled yet — see <a href="#status">Canon Status</a> for what is
+    settled, what is draft, and what is still open, and <a href="breakdown.html">the Story
+    Breakdown</a> for the episode structure.</p>
+  </div>
+</div></div>
+
+<div class="statement">
+  <p>The power was always human.<br><span class="em">They just convinced you to give it away.</span></p>
+</div>
+
+<!-- ============ I ============ -->
+<div class="chapter" id="c1">
+  <div class="num">CHAPTER I</div>
+  <div class="head">
+    <h2>The City That Has No Morning</h2>
+    <p>NOX — Latin for night. The dark is not weather. It is an arrangement.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>Nobody in NOX has seen a sunrise, and nobody finds that strange, because there has never been
+  one to miss. The rain is constant. The neon is permanent. The thing beneath the city finds the
+  night useful, and the city has no morning to compare it to.</p>
+
+  <p>It is a working metropolis: megacorp towers, licensed practitioners, Bureau enforcers in
+  pressed uniforms, ley terminals lining the boulevards like metro stations. Everything functions
+  exactly as intended. <strong>That is the horror.</strong> In the Heights there is no visible
+  wrongness — no broken geometry, no rain falling sideways. There is only the absence of friction,
+  of dirt, of the human mess that lives everywhere else, and people content in a way that looks
+  like something was quietly removed.</p>
+
+  <p>The city is built in a vertical stack, and the deeper you go, the more honest it gets.</p>
+</div></div>
+
+<figure>
+<svg viewBox="0 0 900 400" role="img" aria-label="Cross-section of NOX from the Heights down to the Ruins.">
+  <defs>
+    <linearGradient id="lv" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a212b"/><stop offset="100%" stop-color="#0a0d12"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="400" fill="url(#lv)"/>
+  <g font-family="Inter,sans-serif">
+    <g>
+      <rect x="0" y="0" width="900" height="74" fill="#161c26"/>
+      <text x="40" y="34" fill="#e2e6ec" font-size="15">THE HEIGHTS</text>
+      <text x="40" y="56" fill="#98a1ae" font-size="12.5">Bureau command. Licensed zones. Clean, and wrong in ways you feel before you can name.</text>
+      <text x="860" y="44" fill="#5a8fd8" font-size="11" text-anchor="end" letter-spacing="2">PRESENT</text>
+    </g>
+    <g>
+      <rect x="0" y="76" width="900" height="74" fill="#131922"/>
+      <text x="40" y="110" fill="#e2e6ec" font-size="15">THE SPRAWL</text>
+      <text x="40" y="132" fill="#98a1ae" font-size="12.5">Where people live. Brand wars and turf disputes, engineered to keep them busy.</text>
+    </g>
+    <g>
+      <rect x="0" y="152" width="900" height="74" fill="#11161e"/>
+      <text x="40" y="186" fill="#e2e6ec" font-size="15">THE MERIDIAN</text>
+      <text x="40" y="208" fill="#98a1ae" font-size="12.5">Wrong geometry at street level. A district you go to, never live in. The membrane is thinnest here.</text>
+    </g>
+    <g>
+      <rect x="0" y="228" width="900" height="74" fill="#0e1218"/>
+      <text x="40" y="262" fill="#e2e6ec" font-size="15">THE WARRENS</text>
+      <text x="40" y="284" fill="#98a1ae" font-size="12.5">Old foundations. The ley architecture made physical. The pipes.</text>
+    </g>
+    <g>
+      <rect x="0" y="304" width="900" height="96" fill="#0a0c10"/>
+      <text x="40" y="340" fill="#d2a94f" font-size="15">THE RUINS</text>
+      <text x="40" y="362" fill="#98a1ae" font-size="12.5">Pre-city. First contact. The crash site. Not somewhere you go by accident.</text>
+      <text x="860" y="350" fill="#d2a94f" font-size="11" text-anchor="end" letter-spacing="2">OLDEST</text>
+    </g>
+  </g>
+  <line x1="0" y1="74" x2="900" y2="74" stroke="#2a313b"/><line x1="0" y1="150" x2="900" y2="150" stroke="#2a313b"/>
+  <line x1="0" y1="226" x2="900" y2="226" stroke="#2a313b"/><line x1="0" y1="302" x2="900" y2="302" stroke="#2a313b"/>
+</svg>
+<figcaption>The city did not choose this shape. It accreted around something.</figcaption>
+</figure>
+
+<div class="band"><div class="col nodrop">
+  <p>Three layers of people run it, and only one of them knows what it is for.</p>
+</div></div>
+
+<details class="more">
+  <summary>Who actually runs NOX <span>Bureau · megacorps · WARDEN</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Layer</th><th>Who</th><th>What they know</th></tr>
+      <tr><td><strong>WARDEN</strong></td><td>Ancient, small, hidden. No office, no public face, no acronym on any door.</td><td>Everything.</td></tr>
+      <tr><td><strong>The Bureau &amp; megacorps</strong></td><td>Administrators, executives, teachers, enforcers.</td><td>They run the machine without knowing what it is for. They inherited it.</td></tr>
+      <tr><td><strong>Everyone else</strong></td><td>The city.</td><td>Nothing. That is the design.</td></tr>
+    </table>
+    <p>The corporate war in the Sprawl is real, violent, and deliberately arranged — a conflict
+    that keeps the city divided and looking sideways. WARDEN is not a conspiracy; conspiracies can
+    be exposed. <strong>WARDEN is infrastructure.</strong></p>
+  </div>
+</details>
+
+<!-- ============ II ============ -->
+<div class="chapter" id="c2">
+  <div class="num">CHAPTER II</div>
+  <div class="head">
+    <h2>The Thing That Got Stuck</h2>
+    <p>It is not evil. It is not even hostile. It is <em>immobilised</em>.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>Long before there were people here, something attempted to cross between registers — from the
+  space between things into physical presence — and it <strong>failed</strong>. Caught partway,
+  unable to finish and unable to withdraw, it went inert. Not asleep by choice. The way a body in
+  shock goes still.</p>
+
+  <p>Everything the city believes about the thing beneath it assumes intent. It has none. A being
+  that could cross freely would need no city, no charter, no Bureau and no Grade system. The entire
+  two-century machine exists because <strong>the thing at the centre of it cannot move.</strong>
+  Patience reads as strategy. It is a splint.</p>
+
+  <p>What leaked out of something stuck halfway through was never a lure. It was a wound bleeding
+  into the local register — and human minds are precisely the instrument that registers that bleed.
+  Nobody heard a call. People felt a place that felt <em>significant</em>, and significance is
+  enough; settlements form around the uncanny all the time.</p>
+</div></div>
+
+<div class="pull">
+  It drew settlement the way a magnet draws filings.<br><span>No wanting involved.</span>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>And then there were enough minds, close enough, for long enough — and a stranded thing with
+  one remaining input began, dimly, to register them. Not malevolence. <strong>Stimulus.</strong></p>
+
+  <p>Nobody trespassed. Nobody touched it. Nobody read a forbidden word or struck a bargain. The
+  crime was demographic: we were here, in numbers, paying attention. Gathering and looking is not a
+  sin anyone can be warned against.</p>
+
+  <p>Then an expedition went down into what would later be called the Ruins, and someone
+  died — a fall, a collapse, the ordinary way people die underground. And the thing took what
+  spilled.</p>
+</div></div>
+
+<div class="artifact" data-label="First contact">
+  <p style="margin-bottom:18px">The survivors watched a death become an <em>input</em>. No bargain
+  was struck, no relic taken, no reply given. They observed a mechanism, and came back up holding
+  the one fact nobody else in the world had:</p>
+  <p class="broadsheet" style="color:var(--gold)">It takes this,<br>and this is how it arrives.</p>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>Their inheritors became <strong>WARDEN</strong>. What they inherited is not a relic and not a
+  secret — it is a <em>method</em>, and that is the hard part. You can burn a document and bury an
+  object. You cannot un-know what something eats.</p>
+
+  <p>Two centuries of harvest infrastructure are the industrialisation of an accident witnessed
+  once.</p>
+</div></div>
+
+<details class="more">
+  <summary>Three things that deliberately never happen <span>rules of the horror</span></summary>
+  <div class="inner">
+    <ul class="clean">
+      <li><strong>The entity never speaks.</strong> Not at first contact, not ever. No reply, no
+      bargain, no contract. Every "relationship" the city believes it has is a human invention laid
+      over a mechanism.</li>
+      <li><strong>No artifact comes up from first contact.</strong> The one object that travels
+      through the whole story — an unregistered blade — belongs to a much later century.</li>
+      <li><strong>The first victim has no name.</strong> No ceremony, no martyr, no monument.
+      Nobody down there died <em>for</em> anything.</li>
+    </ul>
+  </div>
+</details>
+
+<!-- ============ III ============ -->
+<div class="chapter" id="c3">
+  <div class="num">CHAPTER III</div>
+  <div class="head">
+    <h2>The Religion of the Tithe</h2>
+    <p>How a mechanism became a faith — and why the faith had evidence.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>People kept dying near the site, and the deaths got read as a debt. Giving became prevention.
+  Nobody could disprove it, because the city kept standing. The founders of what became the
+  <strong>Patrimony</strong> were not cynics and not fanatics. They were insurers.</p>
+
+  <p>And then something actually got better. The site quieted. The night became liveable. The
+  settlement grew where it had no business growing. <strong>The appeasement acquired evidence</strong>,
+  and gratitude layered itself on top of fear.</p>
+
+  <p>So for centuries, NOX was run by a temple-mercantile order that did not hide the harvest — it
+  <em>preached</em> it. Psychic output was tithed to the Deep Patron as public religion. You gave
+  because giving was holy, and because the Patron's appetite was understood to be the price of the
+  city existing at all. Collection ran through shrine reliquaries: bulky, crude ancestors of the
+  modern sigil.</p>
+
+  <p>Their extraction was no gentler than what replaced it. It was simply <em>honest about
+  existing</em>. Everyone knew they were giving something away. The argument was about whether they
+  should — never about whether they were.</p>
+</div></div>
+
+<div class="pull">
+  Entirely sincere. Entirely correct about the mechanism.<br><span>Wrong about every reason.</span>
+</div>
+
+<!-- ============ IV ============ -->
+<div class="chapter" id="c4">
+  <div class="num">CHAPTER IV</div>
+  <div class="head">
+    <h2>The Crime</h2>
+    <p>A bad year, a raised quota, and the cheapest yield available.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>Quotas rise. They always do. And in one bad year the order began tithing <strong>children</strong>,
+  because untrained output is the cheapest thing to take — it doesn't resist, it doesn't notice, and
+  a child has no professional life to disrupt. It was not malice. It was actuarial.</p>
+
+  <p>They piloted it in one district, the way any policy is piloted before it is extended. And one
+  generation of that quarter grew up <strong>blank</strong>: breathing, functional, answering
+  questions correctly, and gone.</p>
+
+  <p>The crime is not the harvest. The crime is what came next. The order did not admit an error —
+  it declared the district <em>blessed</em>. The children who gave most were nearest the Patron.
+  Sanctification was how the quarter got quarantined, and quarantine was how it got forgotten.</p>
+
+  <p>Admission was never available to them. To concede that the tithe had a <em>limit</em> was to
+  concede that it was not holy. They were sincere, and that is exactly why they could not be
+  honest.</p>
+</div></div>
+
+<div class="artifact" data-label="Internal correspondence, recovered">
+  <p>Tolerance figures, known. Quota raised anyway. For years. The word <em>children</em> appears
+  nowhere in any of it.</p>
+  <p style="margin-bottom:0">The clerks wrote <strong class="c-gold">"untrained yield"</strong> —
+  ancestors of the clerks who would draft consent forms two centuries later, with the house style
+  already in place.</p>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>The quarter is still there, sealed, when the party walks into it. It is the one place in that
+  century where what lives under the city is visible without descending to the Ruins. And standing
+  in it, somebody finally says the words that give this game its title — two hundred years before
+  the game they are playing.</p>
+</div></div>
+
+<!-- ============ V ============ -->
+<div class="chapter" id="c5">
+  <div class="num">CHAPTER V</div>
+  <div class="head">
+    <h2>The Truth, In Public</h2>
+    <p>The revelation this story spends its whole length excavating was once printed on paper and sold in the street.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>The revolution overthrew the Patrimony on a single sentence, and the sentence was correct.</p>
+</div></div>
+
+<div class="artifact" data-label="Broadsheet · Festival of the Night's End">
+  <p class="broadsheet">THE POWER IS YOURS.<br>IT ALWAYS WAS.<br>THE TITHE WAS THEFT.</p>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>This is the heart of the whole design. The thing the present-day city treats as a conspiracy
+  theory — that magic is human, internal, and always was yours — was not secret knowledge. It was
+  <strong>common knowledge</strong>. It was shouted in a flooded square by people who were right,
+  during a festival celebrating the abolition of the tithe.</p>
+
+  <p>And then it was buried. Not by a coup, not by a monster — in public, by committee, over about
+  six months, by people quoting that same broadsheet back at each other. The lie that runs the
+  present day was built entirely out of true words, and the party is there to watch it
+  happen.</p>
+
+  <p>For a few weeks, the city was the freest it has ever been, or will ever be again.</p>
+</div></div>
+
+<details class="more">
+  <summary>The three factions <span>radicals · moderates · the clerks nobody watched</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Faction</th><th>Position</th><th>What becomes of them</th></tr>
+      <tr><td><strong>The Radicals</strong></td><td>Abolish all metering. The power belongs to the people who generate it. No licensing, no registry, no exceptions.</td><td>Purged as counter-revolutionary. The first quietings are performed on them — by people who believe it is mercy.</td></tr>
+      <tr><td><strong>The Moderates</strong></td><td>License and protect. People need shielding from what they carry, and unregulated output is a genuine danger.</td><td>They win. Their framework is the Bureau's framework, drafted before the Bureau has a name.</td></tr>
+      <tr><td><strong>The Accountants</strong></td><td>No position at all. Old tithe clerks who survived the revolution by changing coats and continuing to write things down.</td><td>They write <em>both</em> sides' minutes. They become WARDEN, and nobody notices, because nobody has ever noticed the person taking the notes.</td></tr>
+    </table>
+  </div>
+</details>
+
+<!-- ============ VI ============ -->
+<div class="chapter" id="c6">
+  <div class="num">CHAPTER VI</div>
+  <div class="head">
+    <h2>The Night of the Lamps</h2>
+    <p>Freedom was won. Then freedom produced a horror. Then the horror wrote a charter.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>There was a survivor of the child tithe. Not one of the blanked — <strong>the one it failed
+  on</strong>: partially drained as a child, never trained, carrying output nobody metered and
+  nobody taught.</p>
+
+  <p>After abolition there was no Patrimony left to contain them and no Bureau yet to license them.
+  The revolution's victory removed the only thing that had been holding them. And they came apart.</p>
+</div></div>
+
+<div class="beats">
+  <div class="beat"><div class="n">1</div><div>
+    <h4>The quarter wakes up</h4>
+    <p>They don't attack. They come apart, and the coming-apart has a radius. It begins in the
+    sanctified quarter, where the rest of their generation is still standing around breathing and
+    blank. The city's first sign is that the blank ones have begun <b>moving in step</b>.</p>
+  </div></div>
+  <div class="beat"><div class="n">2</div><div>
+    <h4>The General does the correct thing</h4>
+    <p>Cordon, evacuate outward, contain inward. Textbook — and built for an enemy that occupies
+    space, where this one occupies <b>people</b>. The cordon holds about an hour. Then it is inside
+    the cordon, because it was always inside the cordon: it came in on the men he posted there.</p>
+  </div></div>
+  <div class="beat"><div class="n">3</div><div>
+    <h4>The hour he loses</h4>
+    <p>He is not stupid and not slow. He is <b>out of category</b>. Discipline, position, numbers,
+    nerve — every instrument he owns is the wrong instrument, and he spends an hour learning that
+    at the cost of the people who trusted him most. A man who has never lost has no framework for
+    <i>this was not losable</i>.</p>
+  </div></div>
+  <div class="beat"><div class="n">4</div><div>
+    <h4>The lamps</h4>
+    <p>Permanent night; the quarter runs on oil. Somebody — <b>not him</b> — fires the district to
+    break the spread. It half-works. Burning rain, a quarter alight under a sky that never lightens,
+    and figures walking in step through it, unbothered, because nobody is home to mind the fire.</p>
+  </div></div>
+  <div class="beat"><div class="n">5</div><div>
+    <h4>He finds them, and it is already over</h4>
+    <p>Spent. A young adult sitting in the wet, <b>lucid</b> — probably for the first time in the
+    whole event — and aware of what has happened. The only person in the city who both caused this
+    and understands it. And no longer dangerous. Nothing is about to happen.</p>
+  </div></div>
+  <div class="beat"><div class="n">6</div><div>
+    <h4>He kills them anyway</h4>
+    <p>With a blade. Unregistered, no serial — the one that ends up in an archive, and then on a
+    very different man's hip, two centuries later.</p>
+  </div></div>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>He gives a different reason at different points for the rest of his life: that a thing which
+  did this cannot be allowed to exist; that they asked him to; that he had just watched his own men
+  die for nothing and needed the night to have an ending.</p>
+
+  <p>The fourth reason he never says aloud. A living survivor means testimony, and testimony means
+  the city learns the Patrimony made this, and the city is two days from tearing itself apart. The
+  party can prove that one from the minutes.</p>
+</div></div>
+
+<div class="pull">
+  He did everything right, and it did nothing,<br>and then he killed a victim in the rain
+  <span>and called it four different things.</span>
+</div>
+
+<details class="more">
+  <summary>Where Output Calibration actually comes from <span>the Bureau's worst instrument</span></summary>
+  <div class="inner">
+    <p>The Committee's argument afterward writes itself: <em>the army could not stop it; the army
+    could only kill it afterward; we will not be reduced to that again.</em></p>
+    <p>So the procedure — a bonded sigil that quietly routes a practitioner's output away from them
+    forever — is drafted as a <strong>humane alternative to what the General did.</strong> Invented
+    so that nobody would ever again have to put a blade in a victim. The clerk who writes it is
+    sincerely preventing a murder.</p>
+    <p>That is why, two centuries later, it still has a consent form, a clinical pathway, a
+    forty-minute schedule and a follow-up appointment. The cruellest thing the Bureau does was
+    designed by people reacting <strong>in horror at violence</strong>.</p>
+  </div>
+</details>
+
+<!-- ============ VII ============ -->
+<div class="chapter" id="c7">
+  <div class="num">CHAPTER VII</div>
+  <div class="head">
+    <h2>The Signing</h2>
+    <p>The revolution ends with a quorum, not a battle.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>The moderates win. A charter is drafted. The city's new administrative body is named in
+  language so neutral it passes without objection, and the city itself is given an official
+  designation that has been an accurate description of its function ever since.</p>
+</div></div>
+
+<div class="artifact" data-label="The founding charter">
+  <p class="broadsheet" style="font-size:clamp(18px,2.6vw,26px)">NOX<br>
+  <span style="color:var(--gold)">Neural Output eXchange</span></p>
+  <p style="margin:20px 0 0; text-align:center; color:var(--dim); font-size:16px">They did not hide
+  what the city was. They named it correctly, in public, and trusted that nobody would read the
+  charter. For two centuries, nobody has.</p>
+</div>
+
+<div class="band"><div class="col nodrop">
+  <p>Three things are born in the same room: the office that becomes the License Bureau, the first
+  census of practitioners, and the procedure drafted to prevent another Night of the Lamps.</p>
+
+  <p>And at the signing, a gold coat is fitted and saluted — the first. The General takes it as a
+  promotion. It is a receipt: the designation an older, quieter organisation uses to mark assets it
+  intends to use until there is nothing left to use.</p>
+</div></div>
+
+<div class="statement">
+  <p>The tithe, the revolution and the metering are <span class="em">the same machine under three managers.</span></p>
+</div>
+
+<!-- ============ VIII ============ -->
+<div class="chapter" id="c8">
+  <div class="num">CHAPTER VIII</div>
+  <div class="head">
+    <h2>Two Hundred Years of Forgetting</h2>
+    <p>Nothing was refuted. It was reclassified.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>The office becomes the <strong>License Bureau</strong>. Reliquaries shrink into
+  <strong>sigils</strong> that slot into flesh and hardware. The census becomes a Grade system, I
+  through V, measuring how efficiently your output interfaces with the collection grid — sold to
+  you as a measure of your talent. The procedure gets a diagnostic code.</p>
+
+  <p>The Bureau funds Academies that are, genuinely, excellent schools. The teachers believe what
+  they teach. Nobody in the pipeline is lying, and that is worse than lying. A licensed practitioner
+  who came up through the Academy doesn't experience the Bureau as constraint. It's identity.</p>
+
+  <p>And the broadsheet sentence was never argued down. It simply moved: from common knowledge, to
+  radical slogan, to crank theory, to nothing. By the present day a man can say <em>the power was
+  always yours</em> out loud in a bar and be ignored as a drunk.</p>
+</div></div>
+
+<details class="more">
+  <summary>How the system works today <span>Grades · the Grays · calibration · gold</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Grade</th><th>Who</th><th>What the Bureau does about it</th></tr>
+      <tr><td><strong>I</strong></td><td>Detectable output, below practice threshold.</td><td>Register and report changes. Otherwise ignored.</td></tr>
+      <tr><td><strong>II</strong></td><td>The working licensed tier.</td><td>Annual assessment. Standard sigil assignment.</td></tr>
+      <tr><td><strong>III</strong></td><td>Elevated output. Likely Academy-trained.</td><td>Quarterly assessment. The Bureau develops opinions about your employer.</td></tr>
+      <tr><td><strong>IV</strong></td><td>High-output, rare. Best placement, most attention.</td><td>Mandatory reporting. Outside employment needs approval. The framing is prestige; the function is control.</td></tr>
+      <tr><td><strong>V</strong></td><td>Exceptional.</td><td>Classified. The public record stops here.</td></tr>
+    </table>
+    <p>The trap is elegant: the practitioners harvested most efficiently are the ones who identify
+    most deeply with the institution. Grade IVs don't resent the system. They <em>are</em> it.</p>
+    <table>
+      <tr><th>Coat</th><th>Meaning</th></tr>
+      <tr><td><strong class="c-blue">Blue</strong></td><td>Regular enforcement. General law. Reid's old job.</td></tr>
+      <tr><td><strong>Grey</strong></td><td>Assessment Division — <em>the Grays</em>. Practitioner-specific enforcement, entry without standard warrant on a documented "output irregularity". The threshold is low.</td></tr>
+      <tr><td><strong class="c-gold">Gold</strong></td><td>Not a Bureau rank. It predates the Bureau. <em>Gold coat defers to no Grey. Gold coat defers to no Blue.</em></td></tr>
+    </table>
+    <p><strong>Output Calibration:</strong> a deep-bonded sigil anchored below the layer a
+    practitioner can reach, routing substantially all of their output away and leaving just enough
+    to pass as a person. Officially irreversible. The calibrated describe it the same way, often
+    enough that the description travels as a warning: <em>"Like a quiet. Not pain. Not absence.
+    More like something that was always moving — you never noticed it until it stopped."</em></p>
+  </div>
+</details>
+
+<div class="band"><div class="col nodrop">
+  <p>Which brings the story to now. The harvest is so efficient it is invisible. The most productive
+  collection node in the city presents as a transit hub. And the thing under the Meridian is
+  <strong>almost through</strong> — two centuries of accumulated output have very nearly finished
+  what it could never finish alone.</p>
+
+  <p>The city has spent its entire existence working a splint loose.</p>
+
+  <p>A few years ago, the Bureau sent a team to silence a Summoner named Vesper. An enforcer named
+  Reid let her walk, put down the colleague who tried to stop him, and filed a false report. He was
+  stripped for it. He would do it again — and the certainty, not the regret, is his problem.</p>
+
+  <p>Now she's gone. Her father asks him to find her. He takes the case because it's Crane asking,
+  and because some things you don't leave alone.</p>
+</div></div>
+
+<!-- ============ IX ============ -->
+<div class="chapter" id="c9">
+  <div class="num">CHAPTER IX</div>
+  <div class="head">
+    <h2>The Doors Are Wounds</h2>
+    <p>The two centuries are not joined by a machine or a place. They are joined by injuries.</p>
+  </div>
+</div>
+
+<div class="band"><div class="col">
+  <p>When the newly chartered office first ran extraction at industrial scale, it cut deep enough to
+  leave holes in the thing it was drawing from — and two centuries of continuous harvest have kept
+  those holes from closing. A scar you keep drawing from is a scar that never heals.</p>
+
+  <p>Those holes are the doors. To cross between centuries is to walk through the wound, which means
+  walking <em>inside</em> the thing itself. And because a wound only connects to the moment it was
+  made, there is exactly one past era to reach — the founding. The doors lead back to the crime
+  because the crime made them.</p>
+</div></div>
+
+<div class="pull">
+  The founding crime cut the only holes<br>through which the founding crime can be witnessed.
+  <span>The crime is the evidence of itself.</span>
+</div>
+
+<figure>
+<svg viewBox="0 0 860 300" role="img" aria-label="Diagram: the founding harvest cuts wounds in the entity, and those wounds are the doors between centuries.">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#626b78"/></marker>
+    <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d2a94f"/></marker>
+  </defs>
+  <text x="18" y="34" fill="#d2a94f" font-family="Inter,sans-serif" font-size="11" letter-spacing="2.6">REVOLUTION ERA</text>
+  <text x="698" y="34" fill="#5a8fd8" font-family="Inter,sans-serif" font-size="11" letter-spacing="2.6">PRESENT DAY</text>
+  <line x1="18" y1="48" x2="320" y2="48" stroke="#d2a94f" stroke-width="1.5" opacity=".6"/>
+  <line x1="560" y1="48" x2="842" y2="48" stroke="#5a8fd8" stroke-width="1.5" opacity=".6"/>
+  <line x1="320" y1="48" x2="560" y2="48" stroke="#2a313b" stroke-width="1.5" stroke-dasharray="3 6"/>
+  <text x="372" y="40" fill="#626b78" font-family="Inter,sans-serif" font-size="10.5" letter-spacing="2">TWO CENTURIES</text>
+  <rect x="18" y="84" width="248" height="58" fill="#101419" stroke="#d2a94f" stroke-opacity=".45"/>
+  <text x="34" y="108" fill="#e2e6ec" font-family="Inter,sans-serif" font-size="13">The founding harvest</text>
+  <text x="34" y="127" fill="#98a1ae" font-family="Inter,sans-serif" font-size="11.5">first extraction at industrial scale</text>
+  <path d="M266 113 C 320 113, 340 150, 392 150" stroke="#d2a94f" stroke-width="1.4" fill="none" marker-end="url(#arg)" opacity=".85"/>
+  <ellipse cx="470" cy="150" rx="82" ry="58" fill="#151a21" stroke="#2a313b"/>
+  <text x="470" y="147" fill="#e2e6ec" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle">the entity</text>
+  <text x="470" y="165" fill="#626b78" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle">the between-space</text>
+  <path d="M414 112 l 9 14 l -8 11 l 10 13" stroke="#d2a94f" stroke-width="1.6" fill="none"/>
+  <path d="M528 190 l -10 -13 l 9 -12 l -10 -13" stroke="#d2a94f" stroke-width="1.6" fill="none"/>
+  <text x="470" y="234" fill="#d2a94f" font-family="Inter,sans-serif" font-size="11" text-anchor="middle">wounds — kept open by the harvest</text>
+  <rect x="596" y="84" width="246" height="58" fill="#101419" stroke="#5a8fd8" stroke-opacity=".45"/>
+  <text x="612" y="108" fill="#e2e6ec" font-family="Inter,sans-serif" font-size="13">Two centuries of metering</text>
+  <text x="612" y="127" fill="#98a1ae" font-family="Inter,sans-serif" font-size="11.5">the same cut, never allowed to close</text>
+  <path d="M596 113 C 548 113, 530 150, 548 150" stroke="#5a8fd8" stroke-width="1.4" fill="none" marker-end="url(#ar)" opacity=".7"/>
+  <rect x="596" y="214" width="246" height="62" fill="#101419" stroke="#2a313b"/>
+  <text x="612" y="238" fill="#e2e6ec" font-family="Inter,sans-serif" font-size="13">The party, unmetered</text>
+  <text x="612" y="257" fill="#98a1ae" font-family="Inter,sans-serif" font-size="11.5">nothing holds them to this century</text>
+  <path d="M596 245 C 566 245, 560 212, 552 198" stroke="#626b78" stroke-width="1.4" fill="none" marker-end="url(#ar)"/>
+  <text x="120" y="288" fill="#626b78" font-family="Inter,sans-serif" font-size="11.5">they cross by walking through the injury</text>
+  <path d="M404 190 C 364 220, 346 262, 320 278" stroke="#626b78" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/>
+</svg>
+<figcaption>The harvest cut the doors. The harvest keeps them open. The doors lead back to the harvest.</figcaption>
+</figure>
+
+<div class="band"><div class="col nodrop">
+  <p>Not everyone can use them. Metered output is a tether: if your power runs through the
+  collection grid, you are anchored to the century the grid is collecting in. The harvest doesn't
+  only take your power — <strong>it takes your ability to leave.</strong></p>
+
+  <p>Which means everyone who can move through time is someone the system failed to capture. Reid
+  crosses because the system deemed him beneath it: no Grade, no Academy, nothing it ever wanted.
+  His disgrace, reframed as the thing that saves him.</p>
+
+  <p>And the past cannot be changed. The charter was signed, the coat was taken, the quarter burned.
+  What the party can do is witness, document, and come back carrying evidence that changes what the
+  present <em>means</em>. The past is a crime you can only read, never prevent.</p>
+</div></div>
+
+<details class="more">
+  <summary>Who can cross, and who is stuck <span>the tether rule</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Character</th><th>Status</th><th>Crosses</th></tr>
+      <tr><td>Reid</td><td>Non-practitioner, no output</td><td class="yes">Yes — nothing to tether</td></tr>
+      <tr><td>Iris</td><td>Never registered</td><td class="yes">Yes</td></tr>
+      <tr><td>Doc Karim</td><td>Unlicensed, tolerated</td><td class="yes">Yes</td></tr>
+      <tr><td>Margot</td><td>Jailbroken, channel cut</td><td class="yes">Yes</td></tr>
+      <tr><td>Soraya</td><td>No file, self-erased</td><td class="yes">Yes</td></tr>
+      <tr><td>Āio · Paz</td><td>Unmeterable · never metered</td><td class="yes">Native to the era</td></tr>
+      <tr><td>Vesper</td><td>Anchor revoked by the Bureau</td><td class="yes">Yes — it is how she left</td></tr>
+      <tr><td>Gideon</td><td>Licensed, fully metered</td><td class="no">No — until he leaves the Bureau</td></tr>
+      <tr><td>Kos</td><td>Deep-bonded calibration sigil</td><td class="no">No — permanently</td></tr>
+    </table>
+    <p>The symmetry is the point: the Bureau <strong>trapped the man it failed to calibrate</strong>
+    and <strong>freed the woman it tried to erase.</strong></p>
+    <p>One more rule, which is a lie: the party is told early that scar tissue is numb and the thing
+    cannot feel them crossing. Later, a door they have used before is <em>attended</em> when they
+    arrive. Nothing is being counted. It notices when it notices.</p>
+  </div>
+</details>
+
+<!-- ============ X ============ -->
+<div class="chapter" id="c10">
+  <div class="num">CHAPTER X</div>
+  <div class="head">
+    <h2>The People</h2>
+    <p>Ten of them, each with a different relationship to the machine. Select anyone to read further.</p>
+  </div>
+</div>
+
+<div class="cast">
+
+  <a class="person" href="#p-reid" style="--c:#c48c46"><img class="sprite" src="portraits/reid.png" alt="Reid, in-game sprite">
+    <h4>Reid</h4><div class="role">Fighter · Protagonist</div>
+    <p>Twenty years of enforcement, filed under <em>former</em>. He saw the order clearly and chose wrong.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-iris" style="--c:#35a69d"><img class="sprite" src="portraits/iris.png" alt="Iris, in-game sprite">
+    <h4>Iris</h4><div class="role">Thief · Fixer</div>
+    <p>Off-grid from birth. Runs every morning. Stayed for a kid, and won't examine why.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-karim" style="--c:#6c9460"><img class="sprite" src="portraits/karim.png" alt="Doc Karim, in-game sprite">
+    <h4>Doc Karim</h4><div class="role">White Mage · Healer</div>
+    <p>Decades patching the damage of a machine he could never name.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-margot" style="--c:#a33349"><img class="sprite" src="portraits/margot.png" alt="Margot, in-game sprite">
+    <h4>Margot</h4><div class="role">Black Mage · Fugitive</div>
+    <p>She filed the form correctly. The person she loved came back polite, and empty.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-soraya" style="--c:#8fc4e8"><div class="sigil">S</div>
+    <h4>Soraya</h4><div class="role">Hacker · The map</div>
+    <p>Decades in the deep Grid. She knows its shape without knowing its name.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-paz" style="--c:#e0702a"><div class="sigil">P</div>
+    <h4>Paz</h4><div class="role">Bard · Past-native</div>
+    <p>She wrote the first banned song, ran during the purge, and has never told anyone where she is from.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-aio" style="--c:#a07a4e"><div class="sigil">Ā</div>
+    <h4>Āio</h4><div class="role">Martial Artist · Past-native</div>
+    <p>A tradition older than first contact. They founded a school, left for one trip, and never got back.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-kos" style="--c:#8673c4"><div class="sigil">K</div>
+    <h4>Kos</h4><div class="role">Occultist · Entity-touched</div>
+    <p>A calibration that didn't take. Something came back the other way.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-gideon" style="--c:#5a8fd8"><div class="sigil">G</div>
+    <h4>Gideon</h4><div class="role">Paladin · True believer</div>
+    <p>Not corrupt. Not cruel. Loyal to something that was always a machine.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-vesper" style="--c:#8a6fc9"><div class="sigil">V</div>
+    <h4>Vesper</h4><div class="role">Summoner · The case</div>
+    <p>She didn't disappear. She went. There is more than one presence in her now.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-kurtz" style="--c:#d2a94f"><div class="sigil">✦</div>
+    <h4>Kurtz</h4><div class="role">Gold Coat · Antagonist</div>
+    <p>Reid's peer. He wears a receipt and believes it is a promotion.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-varenne" style="--c:#b8923f"><div class="sigil">✧</div>
+    <h4>General Varenne</h4><div class="role">Era · The first Gold Coat</div>
+    <p>Undefeated, beloved, and out of category exactly once.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-thibault" style="--c:#8891a0"><div class="sigil">T</div>
+    <h4>Thibault</h4><div class="role">Era · Charter clerk</div>
+    <p>He wrote the walls believing they were a shield. Someone else wrote the lock.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-sabine" style="--c:#c09a66"><div class="sigil">A</div>
+    <h4>Sabine</h4><div class="role">Era · The Almoner</div>
+    <p>She didn't discover her god was evil. She discovered it never noticed.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-crane" style="--c:#7f8792"><div class="sigil">C</div>
+    <h4>Crane</h4><div class="role">Retired · Vesper's father</div>
+    <p>The mentor who couldn't stop being a handler.</p>
+    <span class="open">Read →</span></a>
+
+  <a class="person" href="#p-warden" style="--c:#5b6470"><div class="sigil">W</div>
+    <h4>WARDEN</h4><div class="role">The layer underneath</div>
+    <p>Not a conspiracy. Conspiracies can be exposed.</p>
+    <span class="open">Read →</span></a>
+
+</div>
+
+<!-- ============ APPENDIX ============ -->
+<div class="chapter" id="appendix">
+  <div class="num">APPENDIX</div>
+  <div class="head">
+    <h2>Timeline &amp; Reference</h2>
+    <p>Everything above, compressed — plus the parts that belong in a design document rather than a story.</p>
+  </div>
+</div>
+
+<div class="timeline">
+  <div class="tl"><div class="when">Before people</div><div class="what">The entity attempts the crossing. <b>It fails.</b> Stranded between registers, it goes inert. The crash site will later be called the Ruins.</div></div>
+  <div class="tl"><div class="when">The bleed</div><div class="what">Its wound leaks into the local register. Human minds read the leak as significance. Settlement accretes around the uncanny.</div></div>
+  <div class="tl"><div class="when">The waking</div><div class="what">Minds in proximity, in numbers, over generations. Stimulus, not summons. <b>The crime is demographic.</b></div></div>
+  <div class="tl era"><div class="when">First contact</div><div class="what">An expedition descends. Someone dies by accident. <b>The survivors watch a death become an input</b> and come back with a method.</div></div>
+  <div class="tl"><div class="when">Appeasement</div><div class="what">Deaths read as debt. Giving becomes prevention — and then the night becomes liveable, and the rite acquires evidence.</div></div>
+  <div class="tl"><div class="when">The Patrimony</div><div class="what">A temple-mercantile order tithing output to the Deep Patron, openly, as religion. The meter before the meter.</div></div>
+  <div class="tl era"><div class="when">The child tithe</div><div class="what"><b>Incident One.</b> A raised quota, children taken as the cheapest untrained yield, one district left blank — then declared blessed, quarantined, forgotten.</div></div>
+  <div class="tl era"><div class="when">The rising</div><div class="what">The revolution overthrows the Patrimony on a true sentence. The tithe is abolished. The city is briefly the freest it will ever be.</div></div>
+  <div class="tl era"><div class="when">The Night of the Lamps</div><div class="what"><b>Incident Two.</b> The survivor the tithe failed on comes apart. The cordon fails, the quarter burns, and the General kills them when it is already over.</div></div>
+  <div class="tl era"><div class="when">The founding</div><div class="what">The charter. <b>Neural Output eXchange.</b> The first census, the first quieting, the first gold coat. The harvest resumes at industrial scale — and cuts the doors.</div></div>
+  <div class="tl now"><div class="when">Two centuries</div><div class="what">Reliquaries become sigils, the census becomes Grades, the quieting becomes Output Calibration. The megacorps are seeded as a distraction. <b>The city forgets.</b></div></div>
+  <div class="tl now"><div class="when">A few years ago</div><div class="what">The Bureau moves to silence Vesper. Reid lets her walk, scars Kurtz, files a false report, and is stripped.</div></div>
+  <div class="tl now"><div class="when">Now</div><div class="what">Vesper is gone. The entity is almost through. <b>The city has spent its whole existence working a splint loose.</b></div></div>
+</div>
+
+<details class="more">
+  <summary>Episode One, as it stands <span>the playable shape</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Beat</th><th>What happens</th></tr>
+      <tr><td><strong>Rooftop, 3AM</strong></td><td>Six beats before the case exists. A practitioner whose licensed sigil has been draining her in her sleep. A fixer with jailbroken sigils. A lobby terminal that pulses once, wrong, and goes dark. <em>(Built.)</em></td></tr>
+      <tr><td><strong>Wandering Star</strong></td><td>A recovery job from a Gray with leverage. Ends at a Sprawl clinic where Vesper's name is said twice in ten seconds — by a healer, and by an encrypted call.</td></tr>
+      <tr><td><strong>She's Lost Control</strong></td><td>Vesper's abandoned apartment, Margot's document case, a bar fight with the Grays, and the first descent into the Meridian.</td></tr>
+      <tr><td><strong>Inside the cable temple</strong></td><td>Four zones of escalating wrong geometry down to a ley architecture wound — the harvest mechanism physically exposed. Vesper is glimpsed, and whatever looks back is aware.</td></tr>
+      <tr><td><strong>The Great Below</strong></td><td>Forty years of a neighbourhood sleeping beside a pipeline. Gideon works the same blocks from the other side of the city's trust hierarchy. Soraya signs the terminal log: <em>I have the map.</em></td></tr>
+    </table>
+    <p>Roughly a third of Episode One is playable today, on one placeholder tileset, with four of
+    ten characters built. The two-era structure is designed now and built after Episode One plays
+    end to end — overhauling is cheap precisely because so little exists to discard.</p>
+  </div>
+</details>
+
+<details class="more">
+  <summary>The arc, episode by episode <span>working shape, not final</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>#</th><th>Episode</th><th>Century</th><th>Spine</th></tr>
+      <tr><td>1</td><td><strong>The Missing Woman</strong></td><td>Present</td><td>The case, four investigations deep, ending on a wound that is not only deeper but <em>earlier</em>.</td></tr>
+      <tr><td>2</td><td><strong>The Festival of the Night's End</strong></td><td>Era</td><td>First crossing. The broadsheet on wet stone, the Accountants taking names at the edges, and a quarantined quarter nobody will explain. Āio joins.</td></tr>
+      <tr><td>3</td><td><strong>Two Fronts</strong></td><td>Both</td><td>The party breaks. Era-side works the Committee while the quieting is drafted; present-side holds the city as the harvest accelerates. Paz's silence breaks. Soraya joins.</td></tr>
+      <tr><td>4</td><td><strong>The Night of the Lamps</strong></td><td>Era</td><td>The survivor comes apart, the cordon fails, the quarter burns. Meanwhile a file lands on a Bureau desk in the present.</td></tr>
+      <tr><td>5</td><td><strong>The Last Report</strong></td><td>Present</td><td>Gideon cannot write it — and then a door works for him, which is how the leash gets named out loud.</td></tr>
+      <tr><td>6</td><td><strong>The Signing</strong></td><td>Era</td><td>The charter, the acronym, the clause nobody wrote, the first gold coat. The one conversation with Vesper. The party comes home with the oldest pages of the case.</td></tr>
+      <tr><td>7</td><td><strong>The Status Quo Ante</strong></td><td>Present</td><td>The city is the dungeon. Not a victory — the thing put back exactly as it was before anyone settled here.</td></tr>
+    </table>
+    <p>Era and present alternate rather than interleave, so the player always knows which game
+    they are in — and the present never goes dark, because the one party member who can never
+    cross is working it the whole time. One reveal per episode: the quarter, Paz's origin, the
+    quieting's invention, the leash, the charter, and finally what the ending actually means.</p>
+  </div>
+</details>
+
+<details class="more">
+  <summary>What the two eras say to each other <span>the rhyme table</span></summary>
+  <div class="inner">
+    <table>
+      <tr><th>Revolution era</th><th>Present day</th><th>What changed</th></tr>
+      <tr><td>The Patrimony's open tithe</td><td>The ley architecture as civic infrastructure</td><td>Only the honesty.</td></tr>
+      <tr><td>Temple reliquaries in shrines</td><td>Sigils in flesh and hardware</td><td>Portability.</td></tr>
+      <tr><td>The first census of practitioners</td><td>Grades I–V</td><td>A list became a career ladder.</td></tr>
+      <tr><td>The quieting, drafted to prevent a murder</td><td>Output Calibration, with a consent form</td><td>A diagnostic code and forty minutes.</td></tr>
+      <tr><td>The Accountants taking minutes</td><td>WARDEN, which has no door</td><td>Nothing.</td></tr>
+      <tr><td>Varenne, given the first gold coat</td><td>Kurtz, wearing one</td><td>Tragedy, then farce.</td></tr>
+      <tr><td>"The power is yours. It always was."</td><td>A crank theory, if anyone says it at all</td><td>Two centuries of nobody reading the charter.</td></tr>
+    </table>
+  </div>
+</details>
+
+<details class="more">
+  <summary>Glossary <span>terms used above</span></summary>
+  <div class="inner">
+    <table>
+      <tr><td><strong>Ley architecture</strong></td><td>Not natural. A constructed collection system built to receive human psychic output and deliver it. Administered as civic infrastructure.</td></tr>
+      <tr><td><strong>Sigil</strong></td><td>An amplifier that makes output easier to collect. Official sigils split the gain with the harvest; <em>jailbroken</em> sigils have the return channel cut. What you equip is a political act.</td></tr>
+      <tr><td><strong>Resonance Index</strong></td><td>How efficiently your output interfaces with the grid. Sold as talent. It is a meter reading.</td></tr>
+      <tr><td><strong>The Grays</strong></td><td>Assessment Division — practitioner-specific enforcement under a lower warrant threshold.</td></tr>
+      <tr><td><strong>The quieting</strong></td><td>Output Calibration's revolution-era ancestor, drafted as the humane alternative to killing.</td></tr>
+      <tr><td><strong>Gold coat</strong></td><td>WARDEN's designation for human operational assets. Not a promotion. A receipt.</td></tr>
+      <tr><td><strong>Summoner</strong></td><td>Someone selected by a displaced being. The bond is real; the power is the Summoner's own. The leverage is not over the Summoner — it is over the being.</td></tr>
+      <tr><td><strong>The Regularization</strong></td><td>An administrative sweep through the Meridian. No arrests, no scenes — forms, filed correctly. Several people didn't come back.</td></tr>
+    </table>
+  </div>
+</details>
+
+<details class="more">
+  <summary>Canon status <span>what is settled, what is draft</span></summary>
+  <div class="inner">
+    <p><strong>Established canon:</strong> the city, the Bureau, the Grade system, calibration, the
+    gold coat, WARDEN, the entity's two registers, the present-day cast and Episode One's cases.</p>
+    <p><strong>Draft — designed, not yet propagated:</strong> everything about the revolution era
+    and the prehistory. The Patrimony, the Deep Patron, the Accountants, the child tithe, the Night
+    of the Lamps, Varenne, Thibault, Sabine, the Registrar, and the entity's stranded state. Working
+    names throughout.</p>
+    <p><strong>Known conflict:</strong> existing lore says the entity <em>"wanted to be built
+    around."</em> A stranded, inert thing cannot want anything — the fact survives, the intention
+    does not, and that line needs rewording before any of this becomes canon.</p>
+    <p><strong>Open:</strong> who speaks the prehistory aloud and where; what stands on the
+    quarantined quarter today; whether the Night of the Lamps is played or witnessed; the survivor's
+    name; and the episode map.</p>
+  </div>
+</details>
+
+<footer>
+  <div class="wide">
+    <div>
+      <strong style="color:var(--dim)">The Hollow Men</strong><br>
+      Turn-based cyberpunk noir horror JRPG · Godot 4<br>
+      Story document — history and character only.
+    </div>
+    <div>
+      Canon: <code>docs/lore/</code> · <code>docs/story/</code> · <code>docs/characters/</code><br>
+      Draft: <code>docs/story/two-era/</code><br>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODALS ============ -->
+
+<div class="modal" id="p-reid" style="--c:#c48c46"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <img class="sprite" src="portraits/reid.png" alt="Reid, in-game sprite">
+    <h3>Reid</h3><div class="role">Fighter · Protagonist</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Disgraced — stripped</dd></div>
+      <div><dt>Grade</dt><dd>None. Non-practitioner.</dd></div>
+      <div><dt>Crosses time</dt><dd class="yes">Yes — nothing ever wanted anything from him</dd></div>
+    </dl>
+    <p>Born, trained and disgraced in the Heights. He knows which noodle stand opens at 3am and
+    which clerk takes bribes in the form of good whisky. He was never a practitioner — no Grade, no
+    sigil, no Academy — and spent twenty years working beside people who were, which means he knows
+    exactly what the system looks like from outside it.</p>
+    <p>The night the Bureau sent a team to disappear Vesper, Reid was on it as borrowed muscle. He
+    let her walk. When a colleague moved to stop him, he put the man down and left a scar through
+    his left brow, then filed a false report that couldn't be challenged without someone admitting
+    they'd been physically obstructed. The Bureau took the report at face value and stripped him.
+    Cleaner that way.</p>
+    <p><strong>His wound:</strong> he did the right thing, it cost him everything, and he'd do it
+    again. The certainty is the problem, not the regret. What he won't examine is whether the life
+    he built afterward is actually living.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-iris" style="--c:#35a69d"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <img class="sprite" src="portraits/iris.png" alt="Iris, in-game sprite">
+    <h3>Iris</h3><div class="role">Thief · Grey-market fixer</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Never registered</dd></div>
+      <div><dt>Grade</dt><dd>Instruments return an error before a number</dd></div>
+      <div><dt>Crosses time</dt><dd class="yes">Yes</dd></div>
+    </dl>
+    <p>She moves jailbroken sigils — Bureau hardware with the return channel cut — to people who
+    need to stop being metered. Off-grid from birth: no license, no file, no record. The Bureau has
+    nothing on her because it has nothing <em>of</em> her, and she has been operating at full output
+    her whole life without knowing the gap exists.</p>
+    <p>She is genuinely funny, likes loud rooms, and runs every morning — rain, no rain, 3am after a
+    job. It isn't fitness. She learned young that stopping is how you get caught.</p>
+    <p>Eighteen months ago she stepped into a fight to help a fourteen-year-old called Lain and then
+    couldn't walk away. Lain is her at that age, same city, same margins. Staying for Lain means
+    looking at herself, which she doesn't do.</p>
+    <p><strong>Her wound:</strong> she has run so many covers for so long that she doesn't know
+    what's underneath. The question exists. She doesn't ask it.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-karim" style="--c:#6c9460"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <img class="sprite" src="portraits/karim.png" alt="Doc Karim, in-game sprite">
+    <h3>Doc Karim</h3><div class="role">White Mage · Unlicensed healer</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Unlicensed — tolerated</dd></div>
+      <div><dt>On file</dt><dd>Nowhere</dd></div>
+      <div><dt>Crosses time</dt><dd class="yes">Yes</dd></div>
+    </dl>
+    <p>Sprawl-born, Sprawl-stayed. For decades he has treated megacorp workers with industrial
+    injuries, people who can't afford licensed care, and practitioners who were calibrated and lost
+    more than their output. The Bureau tolerates him because the Sprawl needs healers and he has
+    never been worth the paperwork.</p>
+    <p>He treated Vesper for years — first ordinary injuries, then presentations he had no category
+    for, getting worse each visit. She gave him pieces and he didn't push. Then she stopped coming,
+    and he filed it under <em>not my business</em>.</p>
+    <p><strong>His wound:</strong> he has been the cleanup crew for a machine he couldn't name,
+    patching the aftermath and never touching the cause. He processes out loud, at length, and
+    argues with things until they make sense. What he won't examine is whether staying in his lane
+    was wisdom or avoidance.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-margot" style="--c:#a33349"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <img class="sprite" src="portraits/margot.png" alt="Margot, in-game sprite">
+    <h3>Margot</h3><div class="role">Black Mage · Fugitive</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Jailbroken — an asset gone dark</dd></div>
+      <div><dt>Grade</dt><dd>IV (former)</dd></div>
+      <div><dt>Crosses time</dt><dd class="yes">Yes — her arc requires it</dd></div>
+    </dl>
+    <p>Academy-trained from early detection, Grade IV by graduation — not merely trained by the
+    institution but claimed by it. For years she was good in every sense the Bureau meant: precise,
+    powerful, compliant.</p>
+    <p>A junior practitioner under her supervision showed irregular output. She filed a welfare
+    referral, through standard protocol, because twelve years of formation had made the correct
+    response feel like the responsible one. They were lovers. She did not understand what the
+    referral triggered until it was done — and then they came back, did their job fine, were polite,
+    and said there was nothing to apologise for. Whatever in them had wanted things was gone.</p>
+    <p>She swapped her sigil for a jailbroken one. The ideology came afterward, rebuilt around what
+    she couldn't undo. She has since reconstructed hundreds of calibration records trying to find
+    one person, and found a pattern instead.</p>
+    <p><strong>Her wound:</strong> she was the instrument of her own loss. She filed the form
+    correctly.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-soraya" style="--c:#8fc4e8"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Soraya</h3><div class="role">Hacker · The map</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>No file — self-erased</dd></div>
+      <div><dt>Crosses time</dt><dd class="yes">Yes</dd></div>
+    </dl>
+    <p>Self-taught, no Academy, no formation. She has been in the deep Grid longer than most of the
+    party has been alive, and she was there when it changed — when something began to be felt at
+    depth. Rather than pulling back, she went deeper, methodically, over decades.</p>
+    <p>She has mapped the entity's information layer with more precision than anyone alive: forty-
+    seven terminals across the city exhibiting the same pattern. She knows its shape without knowing
+    its name. Some of those terminals carry signatures that <strong>predate their own installation
+    dates</strong> — she has been reading a network older than the Bureau without knowing it.</p>
+    <p>She erases her own Grid traces. The Bureau knows someone goes very deep. They don't know who,
+    and she intends to keep it that way.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-paz" style="--c:#e0702a"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Paz</h3><div class="role">Bard · Past-native</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Uncategorized — no file</dd></div>
+      <div><dt>Crossed</dt><dd>Forward, alone, during the purge</dd></div>
+      <div><dt>Can go back</dt><dd>Yes. Never has.</dd></div>
+    </dl>
+    <p>Her output expresses through performance — specifically a heavily modified electric guitar
+    whose body predates her. Nobody ever thought to meter that channel, so the terminals register
+    something and the assessment protocol returns an error before a number.</p>
+    <p><strong>She is from the revolution.</strong> Her songs were on the barricades — she wrote
+    the first one anyone bothered to ban. Then the moderates won, the radicals she had written for
+    were purged as counter-revolutionary, and the quieting began: performed on true believers, as
+    mercy. Unregisterable and highly visible at the same time, she was on a list, and she ran
+    mid-collapse.</p>
+    <p>Which is the crossing rule working exactly as intended, and it is the worst thing about her
+    life. She was unmetered, so nothing held her. Her comrades were practitioners — metered,
+    registered, anchored. <strong>Everyone who could have escaped the quieting was already too
+    metered to leave.</strong> She is the only one the door worked for.</p>
+    <p>She left before the signing, so she never saw the shape it finally took. She has the truth
+    and not the proof: <em>it was public, we printed it, we said it out loud, and we lost.</em> No
+    charter, no acronym, no gold coat — a memory nobody in this century would believe.</p>
+    <p>And her door is still there. Nothing stops her going back; she has had years of nights to
+    do it. Her exile is a choice she re-makes every morning, which is why she has never said any of
+    this out loud — saying it makes it real that she left them. When the party finally crosses,
+    Paz is the only one who isn't discovering anything.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-aio" style="--c:#a07a4e"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Āio</h3><div class="role">Martial Artist · Past-native</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Unmeterable — filed as non-practitioner</dd></div>
+      <div><dt>Pronouns</dt><dd>They / them</dd></div>
+      <div><dt>Can go back</dt><dd>No. And they would.</dd></div>
+    </dl>
+    <p>No sigils, no cyberware — not as a political stance, but because the tradition they carry
+    simply doesn't include external tools. Their output loops inward as physical enhancement, and
+    the assessment protocol requires outward resonance to function. It reads zero. They counted on
+    that.</p>
+    <p>The tradition predates first contact itself — older than the Patrimony, older than the
+    harvest, formed somewhere the wound never reached. <strong>They are the one party member
+    operating from a framework the entity has no model for.</strong></p>
+    <p><strong>Their wound spans both regimes.</strong> The Patrimony tithed their island community
+    as religious due; the revolution promised that was finished; and then the new republic arrived
+    with a census and counted them anyway. They watched the regime change and the extraction not
+    change — which makes them the one voice in that century unmoved by the broadsheet.</p>
+    <p>The party meets them mid-collapse. The tithe is gone, the census has arrived, people are
+    scattering — and Āio is the one staying. <strong>The school is founded in front of you</strong>,
+    out of necessity rather than ceremony: the forms will die with the generation that still knows
+    them unless somebody holds a room open. The census does not make them. They were already this.
+    It only made the school necessary.</p>
+    <p>Then they hand it to a senior student, with instructions and a timeframe, and cross —
+    because the machine that processed their people is what the party is chasing, and the wound has
+    never had anything to aim at before. <strong>The door does not give them the trip back.</strong>
+    They do not abandon the school. They fail to return to it.</p>
+    <p>Which is why the dojo still standing in the Fringe, two centuries on, is not a pleasant
+    epilogue. It is the only way they will ever find out what happened — and the answer is that it
+    survived, run by strangers who never knew them, teaching their forms slightly wrong. How wrong
+    the forms have drifted is the measure of how long they have been gone. Everyone else in the
+    party cannot change the past. <strong>Āio cannot go home.</strong></p>
+  </div>
+</div>
+
+<div class="modal" id="p-kos" style="--c:#8673c4"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Kos</h3><div class="role">Occultist · Entity-touched</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Classified — escaped</dd></div>
+      <div><dt>Crosses time</dt><dd class="no">Never. Permanently tethered.</dd></div>
+    </dl>
+    <p>The Bureau identified him as high-output and attempted Output Calibration. During the bonding
+    the entity used the procedure as a channel, and instead of his output routing outward, something
+    came back the other way. He survived. What came through is still there.</p>
+    <p>He hides in the deep Meridian because it is the only place in the city where that something
+    is quiet. He doesn't know what it is. He knows the Meridian is the only place it doesn't press.</p>
+    <p>He learns abilities only from entity and entity-adjacent attacks — every power he has is
+    something that was done to him first. He starts with almost nothing. Nobody understands the
+    pattern at first, including him, and by the time he does the transformation is already underway.</p>
+    <p><strong>The cruelty is structural:</strong> the one century where the entity sits nearest the
+    surface — the one place he would grow strongest — is the one place his calibration sigil will
+    never let him go.</p>
+    <p>So while half the party is two centuries away, <strong>Kos runs the present.</strong> The
+    investigation doesn't pause because they stepped out of the era: Kurtz is still accelerating,
+    people are still disappearing, and the case gets worked by whoever didn't cross. He stops being
+    the man who can't go and becomes the man who stayed to work.</p>
+    <p>And the thing barring him was never the entity. It is the <strong>Bureau</strong> — a
+    deep-bonded sigil anchored below any layer he can reach, which makes him technically the most
+    thoroughly metered person in the cast. The procedure failed in its purpose and succeeded in its
+    plumbing. He was processed, and the paperwork is still executing.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-gideon" style="--c:#5a8fd8"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Gideon</h3><div class="role">Paladin · True believer</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Active, licensed enforcer</dd></div>
+      <div><dt>Grade</dt><dd>III, field-tested</dd></div>
+      <div><dt>Crosses time</dt><dd class="no">Not while he is theirs</dd></div>
+    </dl>
+    <p>He came up through the Academy and it gave him something real: structure, purpose, a
+    framework for justice in a city that otherwise has none. He is not wrong that it did.</p>
+    <p>He has been present for operations that were not clean. He knows what calibration is and has
+    watched it administered. He hasn't made peace with it — he built a framework around it:
+    <em>the institution requires difficult tools, the alternative is worse, someone has to hold the
+    line.</em> The framework is load-bearing, and examining it would mean dismantling everything he
+    has organised his life around.</p>
+    <p>He and Margot were Academy classmates. He knew what her report triggered and said nothing.
+    When they meet again, neither speaks first.</p>
+    <p><strong>His wound:</strong> his entire identity is organised around an institution that
+    doesn't deserve it. The moment he can no longer write a report that makes sense to himself is
+    the moment he stops being Bureau — and under the crossing rules, that is the same moment he
+    becomes able to leave the century.</p>
+    <p><strong>The report is the disappearance cohort.</strong> Kurtz's operation reaches his desk
+    as routine paperwork: calibrated Grade III+ practitioners, transferred, no subsequent output
+    readings, no assessments filed. He is asked to write the clean version of people being
+    consumed — and he can write it truthfully or he can write it correctly, and for the first time
+    in his life those are different documents. His faith rests on procedure describing reality.
+    This procedure exists specifically in order not to. The horror is a missing field on a form.</p>
+    <p>The order to bring in Margot lands the same week. The cohort tells him the institution is
+    false; she tells him what acting on it will cost. She is in the room and she is not the reason.</p>
+    <p>Then he stops being Bureau — and <em>then</em> a door works for him. Nobody told him it
+    would. That is how he learns what the licence actually bought: every metered practitioner in
+    NOX is pinned to a single century, the registry is a leash, and he spent a career
+    administering it. The people in that cohort file were not only emptied. <strong>They were
+    pinned, and he helped.</strong></p>
+  </div>
+</div>
+
+<div class="modal" id="p-vesper" style="--c:#8a6fc9"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Vesper</h3><div class="role">Summoner · The case</div>
+    <dl>
+      <div><dt>Bureau status</dt><dd>Anchor revoked</dd></div>
+      <div><dt>Where</dt><dd>The revolution. She went back.</dd></div>
+    </dl>
+    <p>Crane's daughter, and the reason Reid has no career. A Summoner is someone a displaced being
+    selected — the bond is real, and the power is the Summoner's own, though no licensed Summoner is
+    ever told so. The Bureau's leverage is not over the Summoner; it is over the being. Revoke the
+    license and the anchor breaks.</p>
+    <p>Her being was trying to show her the truth: that her power was always hers, that every
+    licensed summon had been a tithe, that she was fuel. Following that thread took her somewhere
+    the entity noticed, and it moved in.</p>
+    <p>There is more than one presence in her now. The being is still underneath, still trying to
+    reach her — still the thread Reid can pull. <strong>Every scene with Vesper is a question of
+    which one is speaking.</strong></p>
+    <p>And the Bureau, by cutting her loose as punishment, freed her from the century. The
+    missing-person case is a missing-<em>in-time</em> case, and nobody knows it yet.</p>
+    <p>The era gives her back <strong>slowly, and only once.</strong> Early visits are glimpses
+    and traces: a figure at a distance in a crowd, a name in the Accountants' minutes that should
+    not be there, a door already open, a witness describing a woman who was not supposed to be
+    present. Never a conversation.</p>
+    <p>Then, late, one scene. They reach her and it is genuinely her — the being surfacing long
+    enough to speak — and then it isn't, and she is lost again. It is brief, unstable, and it
+    explains nothing about what happened to her. What she talks about is <em>the century they are
+    standing in</em>, which is worse: it means she is not there by accident, and she knows why.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-kurtz" style="--c:#d2a94f"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Kurtz</h3><div class="role">Gold Coat · Principal antagonist</div>
+    <dl>
+      <div><dt>Designation</dt><dd>Aurum — defers to no Grey, no Blue</dd></div>
+      <div><dt>Grade</dt><dd>III. Not the point anymore.</dd></div>
+    </dl>
+    <p>Reid's peer: same age, same cohort, same team the night Vesper walked. Reid put him down and
+    left a scar through his left brow, then filed a report Kurtz couldn't contest without admitting
+    he'd been physically obstructed. He took the damage on the record and kept the scar off it. Every
+    morning it is Reid's name on his face.</p>
+    <p>He climbed on cold patience, and seniority gave him access. In the restricted archive beneath
+    headquarters he found documents older than the Bureau's current framing — the city's real name,
+    the original charter, and an organisation that has no door. He believes he found them. He was
+    let in.</p>
+    <p>He is accelerating the harvest beyond what anyone planned, because he intends to be standing
+    in the room when the thing finishes crossing. He thinks that is the seat of power.</p>
+    <p><strong>What he won't examine:</strong> whether what he found is managing him rather than the
+    other way around. The gold in his eyes is the answer, and he does not look at it. He wears a
+    receipt and believes it is a promotion — and at his hip hangs an unregistered blade that came out
+    of the archive with him, two centuries after it killed a child the previous regime had already
+    ruined.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-varenne" style="--c:#b8923f"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>General Varenne</h3><div class="role">Era · The first Gold Coat</div>
+    <dl>
+      <div><dt>Status</dt><dd>Non-practitioner. No Grade, never needed one.</dd></div>
+      <div><dt>Fate</dt><dd>Takes the coat. Salutes.</dd></div>
+    </dl>
+    <p>The revolution's best soldier — undefeated, beloved, and pointedly not a practitioner. The
+    clerks court him because the Committee cannot control what the army loves, and because he is
+    clean: nothing the machine wants.</p>
+    <p>He is made by one night. He did everything correctly at the Night of the Lamps and it
+    accomplished nothing; he lost his own men to a thing his training had no category for; and then
+    he found the cause of it sitting lucid in the wet, no longer dangerous, and killed them anyway.</p>
+    <p>So when he is taken down to the Ruins and shown what the tithe fed, he is not a man being
+    seduced. He already believes nobody is holding anything. He looks, and it looks back, and the
+    offer — <em>be the one who holds this together</em> — lands on ground that was prepared by his
+    own failure.</p>
+    <p><strong>His speech founds every Bureau catechism</strong>, delivered once as conviction rather
+    than propaganda: the people must be licensed for their own protection; the tithe returns as a
+    fee; the truth is filed until they are ready. He is lying about his reasons and telling the truth
+    about the stakes. Two centuries later, another man gives the same speech and doesn't know he is
+    an echo.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-thibault" style="--c:#8891a0"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Thibault</h3><div class="role">Era · Charter clerk · Temporary party member</div>
+    <dl>
+      <div><dt>Writes</dt><dd>The walls</dd></div>
+      <div><dt>Fate</dt><dd>Quieted — the city's first calibration</dd></div>
+    </dl>
+    <p>He drafts the charter clause that makes output a licensed resource, and he does it believing
+    he is building a <strong>shield</strong> — registration as protection, so that no one is ever
+    dragged out of a house by a tithe-collector again. Every clause is defensible on its own. That is
+    the horror: the cage was drafted in good faith by a careful man.</p>
+    <p>His defection comes when he reads the engrossed copy and finds two sentences he did not write,
+    inserted between committee and quorum, in a hand he doesn't recognise. <strong>He wrote the
+    walls. Someone else wrote the lock.</strong></p>
+    <p>He tries to get the clause struck — files objections, requests review, follows the rules
+    against the people who wrote them. The player knows he fails, because the charter exists and Reid
+    has lived under it for twenty years.</p>
+    <p>When he refuses to sign, they quiet him: the first calibration in the city's history,
+    performed on the author of the document that authorises it. He is polite afterward. He goes back
+    to his desk. He does his job fine — which is, word for word, how Margot describes the person she
+    lost, two centuries early.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-sabine" style="--c:#c09a66"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Sabine</h3><div class="role">Era · The Almoner · Temporary party member</div>
+    <dl>
+      <div><dt>Was</dt><dd>Patrimony tithe-priest, thirty years</dd></div>
+      <div><dt>Fate</dt><dd>Stays in her century. Keeps working.</dd></div>
+    </dl>
+    <p>Thirty years administering the tithe as worship. Not a fraud and not a sadist — she believed
+    the Deep Patron received what her congregation gave, and that the giving meant something. She
+    held people's hands while they were harvested and told them it was grace. Some died comforted.
+    She does not think that comfort was nothing.</p>
+    <p>Her apostasy is not moral. <strong>She did not discover her god was evil. She discovered it
+    never noticed.</strong> Thirty years of liturgy addressed to something with no apparatus for
+    knowing her name.</p>
+    <p>She keeps the rites anyway — all of them, correctly, pointed at nothing — because the rites
+    are the only thing she has that works on people. She is also the only living person who can read
+    the reliquaries, which makes the Patrimony's liturgy an operating manual for the harvest's first
+    interface.</p>
+    <p>When the revolution ends and the Bureau begins, she goes on tending people under new
+    management, knowing it is the same machine with better paperwork, because people still need
+    hands. The most noir ending available to anyone in the game.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-crane" style="--c:#7f8792"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>Crane</h3><div class="role">Retired enforcer · Reid's mentor · Vesper's father</div>
+    <dl>
+      <div><dt>Status</dt><dd>Retired, and out of access</dd></div>
+    </dl>
+    <p>The closest thing Reid has to a father. He reaches out off the record: his daughter is
+    missing, the Bureau knows, and the Bureau is not looking.</p>
+    <p>He knows more than he admits. Before she disappeared Vesper warned him — not with speeches,
+    with instructions. Move the pension out of the Bureau system. Stop using your licensed sigil.
+    Stay out of the Heights for a while. He thought she was being paranoid, and followed none of it.
+    Every instruction has since turned out to make perfect sense.</p>
+    <p>He gives Reid the case and nothing else, because he needs to know Reid is in before he hands
+    over the weight of what he knows.</p>
+    <p><strong>What he won't examine:</strong> whether protecting people from the truth is care or
+    control. He loses that argument. There is a scene where Reid discovers he was being managed from
+    the start — the mentor who couldn't stop being a handler.</p>
+  </div>
+</div>
+
+<div class="modal" id="p-warden" style="--c:#5b6470"><a class="backdrop" href="#c10"></a>
+  <div class="sheet"><a class="close" href="#c10">×</a>
+    <h3>WARDEN</h3><div class="role">Welfare Authority for Resource Development and Exchange Networks</div>
+    <dl>
+      <div><dt>Founded</dt><dd>At first contact, by the survivors' inheritors</dd></div>
+      <div><dt>Public face</dt><dd>None, ever</dd></div>
+    </dl>
+    <p>They are the inheritors of the expedition that watched a death become an input. Whatever was
+    learned down there, they learned it first and kept it.</p>
+    <p>The Bureau was built by them as a management layer. The megacorps were seeded by them as a
+    distraction layer. The ley architecture was designed by them as a collection layer. Each one
+    staffed by people who believe they are doing something else.</p>
+    <p>They are not a conspiracy — conspiracies can be exposed. <strong>WARDEN is
+    infrastructure.</strong> The name exists only in documents so old and so buried that finding one
+    is itself suspicious.</p>
+    <p>The gold coat is how they label a human asset they intend to use until there is nothing left
+    to use. The wearer always thinks it is a promotion.</p>
+  </div>
+</div>
+
+</body>
+</html>

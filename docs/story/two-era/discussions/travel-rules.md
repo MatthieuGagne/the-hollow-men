@@ -6,6 +6,54 @@
 Crossing is something *individuals* do, so the game needs a rule or the question has no answer.
 
 ---
+## Session 3 — 2026-11-15 — what a door is (draft, agreed in conversation)
+
+The tether rule says who *can* cross. It never said what they cross *through*. Settled here:
+
+**Doors are wounds in the entity, not places in the city.** The between-space is its body;
+a door is a scar. Crossing is a trespass inside the thing.
+
+**The scars were cut by the founding harvest, during the revolution.** Not by the revolution
+itself and not by the entity's own surfacing — by the first industrial-scale extraction, the
+one the city's charter authorised. Consequences that fall out for free:
+
+- **Why only one era.** A wound connects only to the moment it was made. There is no medieval
+  NOX to visit because nobody was cutting then. The era is the scar tissue's address — and that
+  address is exactly where the charter, the Gold Coat and WARDEN's origin all sit.
+- **Why doors are rare, and why they move.** They exist only where the harvest cut deep. A scar
+  marks where it was hurt, not where it lives.
+- **The tether rule gets a mechanism.** Metered output runs to the ley architecture; the
+  architecture feeds the entity. Being metered means being held by the same thing whose body you
+  would have to walk through. The leash now has a visible other end.
+- **Vesper, in character.** She didn't find a passage. She found a wound and went in.
+- **The thesis.** The founding crime cut the holes that are the only way to go back and witness
+  the founding crime. *The crime is the evidence of itself.*
+
+**New canon fact requiring approval before propagation:** the entity can be wounded, and
+two centuries of harvest have been keeping those wounds open.
+
+### Sub-question — settled: what the entity does about crossers
+
+**A-then-B.** The *stated* rule is A: scar tissue is numb, it cannot feel you. Said plainly
+in-world by Soraya or Sabine on an early crossing — which discharges objection 4. What turns
+out to be true is B: the wound is not as dead as they said, and at some point it is **attended**.
+
+**Attention is story-scripted, never usage-tracked.** No per-door use count, no threshold, no
+accumulating meter. The beat lands when the narrative places it — a door that worked a hundred
+times and a door used once are equally liable, because nothing is being counted. When the beat
+comes, **the door cannot be used**, and that is a plot event, not a cost the player paid.
+
+Why the counter was rejected: it implies attention accrues in proportion to traffic, which is a
+*mechanism* — players would ration crossings to stay under it, and the entity would become a
+system to be managed rather than a thing that notices when it notices.
+
+Rejected: (C) indifference, no escalation curve; (D) the entity permits because it wants
+witnesses — the "antagonist as taxi" failure mode.
+
+The structural point: **the rule the game teaches is the rule that stops being true.** That is
+the horror shape the project already runs on everywhere else.
+
+---
 
 ## The proposal on the table
 
