@@ -11,6 +11,7 @@ var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
 var active_effects: Array[StatusEffect] = []
+var pressure: int = 0
 var ai_state: Dictionary = {}
 
 const ATB_MAX: float = 100.0
@@ -19,6 +20,13 @@ const LIMIT_MAX: float = 100.0
 const LIMIT_CAP_BUREAU: float = 80.0
 # ATB fill rate multiplier — spd_stat=10 fills ATB in ~6.67 s (within the 6–8 s design target)
 const ATB_FILL_RATE: float = 1.5
+
+# Pressure — Reid's verb. Stacks erode the target's defences for every
+# attacker, not just Reid, and persist for the whole battle.
+const MAX_PRESSURE_STACKS: int = 5
+const PRESSURE_REDUCTION_PER_STACK: float = 0.2
+# Additive cap: defences can never be reduced by more than 100%.
+const MAX_DEFENSE_REDUCTION: float = 1.0
 
 # --- Delegating properties ---
 
@@ -112,6 +120,7 @@ func reset_runtime_state() -> void:
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
 	active_effects = []
+	pressure = 0
 	ai_state = {}
 
 
@@ -131,6 +140,21 @@ func apply_effect(effect: StatusEffect) -> void:
 	active_effects.append(effect)
 
 
+func add_pressure(stacks: int) -> void:
+	pressure = mini(pressure + stacks, MAX_PRESSURE_STACKS)
+
+
+func consume_pressure() -> int:
+	var held := pressure
+	pressure = 0
+	return held
+
+
+# Fraction of DEF/RES removed by the current stack, clamped to the additive cap.
+func defense_reduction() -> float:
+	return minf(float(pressure) * PRESSURE_REDUCTION_PER_STACK, MAX_DEFENSE_REDUCTION)
+
+
 func tick_effects() -> void:
 	var i := active_effects.size() - 1
 	while i >= 0:
@@ -145,6 +169,8 @@ func get_effective_stat(stat: StatusEffect.StatAxis) -> int:
 	for effect in active_effects:
 		if effect.stat == stat:
 			base += effect.modifier
+	if pressure > 0 and stat in [StatusEffect.StatAxis.DEF, StatusEffect.StatAxis.RES]:
+		base = int(round(float(base) * (1.0 - defense_reduction())))
 	return maxi(0, base)
 
 

@@ -757,3 +757,67 @@ func test_pp_ratio_is_one_for_a_full_pp_character() -> void:
 	var c := _make_combatant(100, 50)
 	assert_almost_eq(c.pp_ratio(), 1.0, 0.001,
 		"A full PP bar still reports 1.0, so the guard cannot invert")
+
+
+func test_pressure_starts_at_zero() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	assert_eq(c.pressure, 0, "Enemies start unpressured")
+
+
+func test_add_pressure_caps_at_max_stacks() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(99)
+	assert_eq(c.pressure, Combatant.MAX_PRESSURE_STACKS,
+		"Pressure never exceeds the stack cap")
+
+
+func test_pressure_reduces_def_and_res() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	d.res_stat = 100
+	var c := Combatant.from_definition(d)
+	c.add_pressure(1)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 80,
+		"One stack removes 20% of DEF")
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.RES), 80,
+		"One stack removes 20% of RES")
+
+
+func test_pressure_reduction_never_exceeds_the_cap() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	c.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 0,
+		"Full stacks remove at most 100% of DEF, never more")
+
+
+func test_pressure_does_not_affect_other_stats() -> void:
+	var d := EnemyDefinition.new()
+	d.str_stat = 50
+	var c := Combatant.from_definition(d)
+	c.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.STR), 50,
+		"Pressure erodes defences only")
+
+
+func test_consume_pressure_returns_and_clears_the_stack() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(3)
+	assert_eq(c.consume_pressure(), 3, "Returns the stack that was held")
+	assert_eq(c.pressure, 0, "Stack is cleared")
+
+
+func test_pressure_survives_tick_effects() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(2)
+	c.tick_effects()
+	c.tick_effects()
+	assert_eq(c.pressure, 2, "Pressure persists for the whole battle")
+
+
+func test_reset_runtime_state_clears_pressure() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(2)
+	c.reset_runtime_state()
+	assert_eq(c.pressure, 0, "Pressure does not leak between battles")
