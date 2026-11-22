@@ -213,13 +213,6 @@ func heal(amount: int) -> void:
 	current_hp = mini(current_hp + amount, max_hp)
 
 
-func spend_pp(cost: int) -> bool:
-	if current_pp < cost:
-		return false
-	current_pp -= cost
-	return true
-
-
 # True when the user can pay both costs. An HP cost is never allowed to kill
 # the user — Reid bleeds for his abilities, he does not die for them.
 func can_pay(ability: Ability) -> bool:

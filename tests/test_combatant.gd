@@ -664,3 +664,31 @@ func test_pay_cost_of_free_ability_changes_nothing() -> void:
 	assert_true(c.pay_cost(_ability_costing(0, 0)), "Free abilities are always payable")
 	assert_eq(c.current_hp, 100, "HP unchanged")
 	assert_eq(c.current_pp, 50, "PP unchanged")
+
+
+func test_pay_cost_is_atomic_when_hp_leg_is_lethal() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_false(c.pay_cost(_ability_costing(10, 30)),
+		"A lethal HP leg fails the whole payment")
+	assert_eq(c.current_pp, 50, "PP must not be spent when the HP leg is rejected")
+	assert_eq(c.current_hp, 30, "HP must not be spent when the HP leg is rejected")
+
+
+func test_pay_cost_is_atomic_when_pp_leg_is_short() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_false(c.pay_cost(_ability_costing(60, 5)),
+		"An unaffordable PP leg fails the whole payment")
+	assert_eq(c.current_pp, 50, "PP must not be spent when the PP leg is rejected")
+	assert_eq(c.current_hp, 30, "HP must not be spent when the PP leg is rejected")
+
+
+func test_can_pay_null_is_false() -> void:
+	var d := CharacterDefinition.new()
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(null), "No ability means no payable cost")
