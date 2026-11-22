@@ -13,6 +13,11 @@ var _row_count: int = 1
 var _ability_affordable: bool = false
 var _is_paused: bool = false
 
+# Maps the cursor row to an index into the combatant's abilities array.
+# Row 0 is Attack, so ability i lives on row i + 1.
+var selected_ability_index: int:
+	get: return _selected_idx - 1
+
 
 func _ready() -> void:
 	_cursor = Label.new()

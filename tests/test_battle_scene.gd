@@ -1080,3 +1080,34 @@ func test_build_victory_text_multiple_levelups() -> void:
 		[{"name": "Reid", "to": 2}, {"name": "Iris", "to": 2}])
 	assert_eq(text,
 		"Victory!\nGained 105 XP\nReid reached Lv 2!\nIris reached Lv 2!")
+
+
+func test_selected_ability_defaults_to_null_between_turns() -> void:
+	assert_null(_scene._selected_ability,
+		"No ability is selected before the player picks one")
+
+
+func test_select_ability_by_index_picks_from_the_array() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [a1, a2] as Array[Ability]
+	_scene._active = Combatant.from_definition(d)
+
+	_scene.select_ability(1)
+	assert_eq(_scene._selected_ability.ability_name, "Second",
+		"select_ability(i) must pick abilities[i]")
+
+
+func test_select_ability_out_of_range_selects_nothing() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [] as Array[Ability]
+	_scene._active = Combatant.from_definition(d)
+
+	_scene.select_ability(3)
+	assert_null(_scene._selected_ability,
+		"An out-of-range index must not crash and must select nothing")

@@ -67,6 +67,7 @@ var _active: Combatant = null
 var _party_target_idx: int = 0
 var _enemy_target_idx: int = 0
 var _pending_action: String = ""
+var _selected_ability: Ability = null
 var _target_all: bool = false
 var _target_cursors: Array[Sprite2D] = []
 var _cursor_layer: Node2D
@@ -330,14 +331,33 @@ func _select_enemy_target() -> Combatant:
 	return living[randi() % living.size()]
 
 
+# Picks which of the active combatant's abilities the pending action uses.
+# Out-of-range indices select nothing rather than crashing.
+func select_ability(index: int) -> void:
+	_selected_ability = null
+	if _active == null:
+		return
+	var list: Array[Ability] = _active.abilities
+	if index >= 0 and index < list.size():
+		_selected_ability = list[index]
+
+
 func execute_action(action_name: String) -> void:
 	if _state != BattleState.AWAITING_INPUT:
 		return
 	_action_menu.hide()
 
 	# Abilities route by target_mode through the unified resolution path
-	if action_name == "ability" and _active != null and _active.ability != null:
-		var ab := _active.ability
+	if action_name == "ability":
+		var index: int = _action_menu.selected_ability_index
+		# A direct invocation (tests, scripted actions) has no ability row
+		# selected, so it uses the first ability.
+		if index < 0:
+			index = 0
+		select_ability(index)
+		if _selected_ability == null:
+			return
+		var ab := _selected_ability
 		if ab.target_mode == Ability.TargetMode.SELF:
 			_cast_self()
 			return
@@ -355,7 +375,7 @@ func execute_action(action_name: String) -> void:
 # Apply each DamageEffect with variance and sum it (deterministic per call; dead-safe pre-await).
 func _compute_damage_for(recipient: Combatant) -> int:
 	var dmg: int = 0
-	for effect in _active.ability.effects:
+	for effect in _selected_ability.effects:
 		if effect is DamageEffect:
 			dmg += Combatant.apply_damage_variance(effect.compute(_active, recipient))
 	return dmg
@@ -363,7 +383,7 @@ func _compute_damage_for(recipient: Combatant) -> int:
 
 # Apply non-damage effects (heal/status/summon) to a recipient. Called at impact peak.
 func _apply_nondamage_effects_to(recipient: Combatant) -> void:
-	for effect in _active.ability.effects:
+	for effect in _selected_ability.effects:
 		if effect is HealEffect:
 			recipient.heal(effect.compute_heal(_active, recipient))
 		elif effect is ApplyStatusEffect:
@@ -378,14 +398,14 @@ func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 
 # SELF abilities resolve with no selection step and no lunge.
 func _cast_self() -> void:
-	if not _active.spend_pp(_active.ability.pp_cost):
+	if not _active.spend_pp(_selected_ability.pp_cost):
 		_end_turn()
 		return
 	_apply_nondamage_effects_to(_active)
 	combatant_updated.emit(_active)
 	var idx: int = party.find(_active)
 	if idx >= 0:
-		_spawn_damage_number(-_active.ability.pp_cost,
+		_spawn_damage_number(-_selected_ability.pp_cost,
 			$PartyContainer.get_child(idx), PP_COST_COLOR)
 	_end_turn()
 	_check_win_loss()
@@ -398,11 +418,11 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 		_end_turn()
 		_check_win_loss()
 		return
-	if _active == null or _active.ability == null:
+	if _active == null or _selected_ability == null:
 		_end_turn()
 		_check_win_loss()
 		return
-	if not _active.spend_pp(_active.ability.pp_cost):
+	if not _active.spend_pp(_selected_ability.pp_cost):
 		_end_turn()
 		_check_win_loss()
 		return
@@ -438,7 +458,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 				var rsprite: Sprite2D = $EnemyContainer.get_child(ridx)
 				_spawn_damage_number(dmg[r], rsprite)
 				_start_enemy_flash(rsprite)
-		_spawn_damage_number(-_active.ability.pp_cost,
+		_spawn_damage_number(-_selected_ability.pp_cost,
 			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 
 		var return_tween := create_tween()
@@ -453,7 +473,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 			_apply_nondamage_effects_to(r)
 			combatant_updated.emit(r)
 		if attacker_idx >= 0:
-			_spawn_damage_number(-_active.ability.pp_cost,
+			_spawn_damage_number(-_selected_ability.pp_cost,
 				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 
 	_end_turn()
@@ -468,7 +488,7 @@ func _begin_party_targeting() -> void:
 		_end_turn()
 		return
 	# A fixed ALL_ALLIES ability shows the whole party as the group target.
-	_target_all = _active != null and _active.ability != null and _active.ability.is_all()
+	_target_all = _active != null and _selected_ability != null and _selected_ability.is_all()
 	if _target_all:
 		party_group_target_changed.emit(true)
 		return
@@ -496,13 +516,13 @@ func confirm_party_target(target: Combatant) -> void:
 	# path requires a living pick.
 	if not _target_all and not target.is_alive():
 		return
-	if _active == null or _active.ability == null:
+	if _active == null or _selected_ability == null:
 		return
-	if not _active.spend_pp(_active.ability.pp_cost):
+	if not _active.spend_pp(_selected_ability.pp_cost):
 		return
 	var living_party: Array[Combatant] = party.filter(
 		func(p: Combatant) -> bool: return p.is_alive())
-	var recipients := resolve_recipients(_active.ability.target_mode, _target_all,
+	var recipients := resolve_recipients(_selected_ability.target_mode, _target_all,
 		_active, target, living_party, [])
 	if _target_all:
 		party_group_target_changed.emit(false)
@@ -512,7 +532,7 @@ func confirm_party_target(target: Combatant) -> void:
 	combatant_updated.emit(_active)
 	var attacker_idx: int = party.find(_active)
 	if attacker_idx >= 0:
-		_spawn_damage_number(-_active.ability.pp_cost,
+		_spawn_damage_number(-_selected_ability.pp_cost,
 			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
 	_end_turn()
 	_check_win_loss()
@@ -528,7 +548,7 @@ func _begin_enemy_targeting(action_name: String) -> void:
 	_state = BattleState.SELECTING_ENEMY
 	# A fixed ALL_ENEMIES ability shows the whole enemy group as the target.
 	_target_all = action_name == "ability" and _active != null \
-		and _active.ability != null and _active.ability.is_all()
+		and _selected_ability != null and _selected_ability.is_all()
 	if _target_all:
 		enemy_group_target_changed.emit(true)
 		return
@@ -561,10 +581,10 @@ func confirm_enemy_target() -> void:
 		enemy_group_target_changed.emit(false)
 
 	# Ability: unified recipient resolution (single, AoE, or switchable-expanded)
-	if _pending_action == "ability" and _active != null and _active.ability != null:
+	if _pending_action == "ability" and _active != null and _selected_ability != null:
 		var living: Array[Combatant] = enemies.filter(
 			func(e: Combatant) -> bool: return e.is_alive())
-		var recipients := resolve_recipients(_active.ability.target_mode, _target_all,
+		var recipients := resolve_recipients(_selected_ability.target_mode, _target_all,
 			_active, target, [], living)
 		_perform_ability_on(recipients)
 		return
@@ -603,12 +623,12 @@ func confirm_enemy_target() -> void:
 
 # Switchable ONE_* abilities expand to their matching ALL_* live during selection.
 func expand_target_to_all() -> void:
-	if _active == null or _active.ability == null or not _active.ability.switchable:
+	if _active == null or _selected_ability == null or not _selected_ability.switchable:
 		return
 	if _target_all:
 		return
 	_target_all = true
-	if _active.ability.targets_enemy_side():
+	if _selected_ability.targets_enemy_side():
 		enemy_target_changed.emit(null)          # clear single cursor
 		enemy_group_target_changed.emit(true)
 	else:
@@ -618,11 +638,11 @@ func expand_target_to_all() -> void:
 
 func collapse_target_to_single() -> void:
 	# Only a switchable ability can collapse; a fixed ALL_* stays grouped.
-	if not _target_all or _active == null or _active.ability == null \
-			or not _active.ability.switchable:
+	if not _target_all or _active == null or _selected_ability == null \
+			or not _selected_ability.switchable:
 		return
 	_target_all = false
-	if _active.ability.targets_enemy_side():
+	if _selected_ability.targets_enemy_side():
 		enemy_group_target_changed.emit(false)
 		enemy_target_changed.emit(enemies[_enemy_target_idx])
 	else:
@@ -642,6 +662,7 @@ func skip_turn() -> void:
 
 func _end_turn() -> void:
 	_target_all = false
+	_selected_ability = null
 	if _active and _active.is_player_controlled:
 		player_turn_ended.emit()
 	if _active:
