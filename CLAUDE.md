@@ -16,6 +16,7 @@ SceneManager (`scripts/autoload/scene_manager.gd`) is the scene-transition autol
 - Maps: Tiled → YATI importer (`addons/YATI`); tileset PNG at `assets/tilesets/`
   - Art sources in `art/tilesets/` (committed); `assets/tilesets/` is a gitignored build-artifact dir
   - Build pipeline: export XCF manually in GIMP → `make` (copies PNGs → Godot reimport)
+- Story doc: `docs/story/two-era/history.html` — presentation-grade narrative document (chapters, cast overlays, appendices). **Any settled story/lore decision updates it in the same session**; `docs/story/two-era/discussions/` holds the arguments, the HTML holds the result. Editing rules in the `story-lore` skill §6.
 
 ## Dev Workflow
 - Feature branches in worktrees: `feat/issue-<N>-<description>`

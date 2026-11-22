@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hollow Men — Story Breakdown</title>
+<style>
+  :root{
+    --bg:#08090c; --ink:#e2e6ec; --dim:#98a1ae; --faint:#626b78;
+    --line:#1d222a; --line2:#2a313b; --panel:#101419; --panel2:#151a21;
+    --gold:#d2a94f; --blue:#5a8fd8; --red:#c05a64; --green:#62a87b; --accent:#7fd1c8;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:"Inter","Segoe UI",system-ui,sans-serif;
+    --mono:"Cascadia Code",Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:70px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:18px; line-height:1.7}
+  a{color:var(--accent)}
+
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:40; height:54px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px; padding:0 22px; background:rgba(8,9,12,.85);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line); font-family:var(--sans); font-size:13px;
+  }
+  .topbar .mark{font-family:var(--serif); font-size:17px}
+  .topbar .mark span{color:var(--gold)}
+  .topbar nav{display:flex; gap:4px; flex-wrap:wrap}
+  .topbar nav a{
+    color:var(--dim); text-decoration:none; padding:5px 9px; border:1px solid transparent; border-radius:3px;
+    font-size:12px; letter-spacing:.08em;
+  }
+  .topbar nav a:hover{color:var(--ink); border-color:var(--line2)}
+  .progress{position:fixed; top:0; left:0; height:2px; width:100%; z-index:41; transform:scaleX(0);
+    transform-origin:0 50%; background:linear-gradient(90deg,var(--blue),var(--gold));
+    animation:grow linear; animation-timeline:scroll(root)}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  header.head{padding:110px 22px 44px; max-width:1040px; margin:0 auto}
+  header.head .eyebrow{font-family:var(--sans); font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--faint); margin-bottom:18px}
+  header.head h1{font-size:clamp(36px,6vw,62px); line-height:1.02; margin:0 0 18px; font-weight:400; letter-spacing:-.025em}
+  header.head h1 em{font-style:normal; color:var(--gold)}
+  header.head p{color:var(--dim); max-width:62ch; margin:0 0 14px; font-size:18px}
+  .statusline{
+    font-family:var(--sans); font-size:12.5px; color:var(--dim); border-left:2px solid var(--red);
+    background:var(--panel); padding:12px 16px; margin-top:24px; max-width:70ch; line-height:1.6;
+  }
+  .statusline b{color:var(--ink)}
+
+  .wrap{max-width:1040px; margin:0 auto; padding:0 22px 120px}
+
+  /* overview */
+  table{width:100%; border-collapse:collapse; margin:24px 0; font-size:15px; font-family:var(--sans)}
+  th,td{text-align:left; padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td .ep{color:var(--faint); font-variant-numeric:tabular-nums}
+
+  .tag{display:inline-block; font-family:var(--sans); font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; padding:2px 8px; border:1px solid var(--line2); border-radius:2px; color:var(--dim)}
+  .tag.era{border-color:#5c4a22; color:var(--gold)}
+  .tag.now{border-color:#2b4668; color:var(--blue)}
+  .tag.both{border-color:#3f4654; color:var(--ink)}
+  .tag.built{border-color:#2f5a42; color:var(--green)}
+
+  h2.sec{font-family:var(--sans); font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+    color:var(--faint); font-weight:600; margin:72px 0 10px; padding-top:22px; border-top:1px solid var(--line)}
+
+  /* episode block */
+  .ep-block{margin:46px 0; border:1px solid var(--line); background:var(--panel); position:relative}
+  .ep-block::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--c,#555)}
+  .ep-block .ep-head{padding:26px 30px 20px; border-bottom:1px solid var(--line)}
+  .ep-block .ep-no{font-family:var(--sans); font-size:11px; letter-spacing:.3em; color:var(--c,#999); margin-bottom:10px}
+  .ep-block h3{margin:0 0 10px; font-size:clamp(26px,3.4vw,38px); font-weight:400; letter-spacing:-.02em; line-height:1.08}
+  .ep-block .logline{margin:0; color:var(--dim); font-size:17px; max-width:70ch}
+  .ep-body{padding:22px 30px 28px; display:grid; grid-template-columns:1fr 268px; gap:34px}
+  .ep-body .main p{margin:0 0 16px; font-size:17px}
+  .ep-body .main p:last-child{margin-bottom:0}
+
+  .beats{list-style:none; margin:14px 0 0; padding:0; counter-reset:b}
+  .beats li{position:relative; padding:12px 0 12px 42px; border-top:1px solid var(--line); font-size:16.5px; color:var(--dim)}
+  .beats li:last-child{border-bottom:1px solid var(--line)}
+  .beats li::before{
+    counter-increment:b; content:counter(b); position:absolute; left:0; top:12px;
+    font-family:var(--sans); font-size:12px; color:var(--c,#888); border:1px solid var(--line2);
+    width:24px; height:24px; display:grid; place-items:center; border-radius:50%;
+  }
+  .beats li b{color:var(--ink)}
+
+  aside.side{font-family:var(--sans); font-size:13.5px}
+  aside.side h4{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);
+    margin:0 0 8px; font-weight:600}
+  aside.side .box{border:1px solid var(--line); background:var(--panel2); padding:14px 16px; margin-bottom:14px}
+  aside.side ul{margin:0; padding-left:16px} aside.side li{margin-bottom:5px}
+  aside.side .who{display:flex; flex-wrap:wrap; gap:6px}
+  aside.side .who span{border:1px solid var(--line2); padding:3px 8px; font-size:11.5px; color:var(--dim)}
+  aside.side .who span.new{border-color:var(--green); color:var(--green)}
+  aside.side .who span.out{border-color:#4a2a30; color:var(--red); text-decoration:line-through}
+  aside.side .reveal{color:var(--gold)}
+
+  .warn{border:1px solid #4a2a30; background:#151012; padding:14px 16px; margin:18px 0 0; font-family:var(--sans); font-size:13.5px; color:var(--dim)}
+  .warn b{color:var(--red); letter-spacing:.14em; text-transform:uppercase; font-size:10.5px; display:block; margin-bottom:6px}
+
+  details.more{border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin:28px 0}
+  details.more > summary{list-style:none; cursor:pointer; padding:14px 2px; font-family:var(--sans); font-size:13px; color:var(--dim); display:flex; justify-content:space-between}
+  details.more > summary::-webkit-details-marker{display:none}
+  details.more > summary::after{content:"＋"; color:var(--gold)}
+  details.more[open] > summary::after{content:"−"}
+  details.more > summary:hover{color:var(--ink)}
+  details.more .inner{padding:2px 0 20px}
+
+  figure{margin:40px 0}
+  figure svg{width:100%; height:auto; display:block}
+  figcaption{font-family:var(--sans); font-size:12.5px; color:var(--faint); margin-top:12px; text-align:center}
+
+  footer{margin-top:90px; border-top:1px solid var(--line); padding:30px 22px 70px; font-family:var(--sans); font-size:12.5px; color:var(--faint); line-height:1.8}
+  code{font-family:var(--mono); font-size:.85em; color:var(--accent); background:#12161c; padding:1px 5px}
+
+  @media (max-width:860px){
+    .ep-body{grid-template-columns:1fr; gap:20px}
+    .topbar nav{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"></div>
+<div class="topbar">
+  <div class="mark">The Hollow <span>Men</span> · Breakdown</div>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#e1">1</a><a href="#e2">2</a><a href="#e3">3</a><a href="#e4">4</a>
+    <a href="#e5">5</a><a href="#e6">6</a><a href="#e7">7</a>
+    <a href="#risks">Risks</a>
+    <a href="history.html">The Story ↗</a>
+  </nav>
+</div>
+
+<header class="head">
+  <div class="eyebrow">Structure · Working Draft</div>
+  <h1>Story <em>Breakdown</em></h1>
+  <p>Seven episodes across two centuries of the same city. Each episode has a home century, so the
+  player always knows which game they are in — and the present never goes dark, because the one
+  party member who can never cross is working it the whole time.</p>
+  <div class="statusline">
+    <b>Provisional.</b> This arc was chosen so later design has something to push against — the
+    episode count, Vesper's slot and the position of several beats are explicitly unsettled. The
+    narrative itself lives in <a href="history.html">The Story</a>; the arguments live in
+    <code>docs/story/two-era/discussions/</code>.
+  </div>
+</header>
+
+<div class="wrap">
+
+<h2 class="sec" id="overview">At a glance</h2>
+
+<table>
+  <tr><th>#</th><th>Episode</th><th>Century</th><th>Function</th><th>Roster</th></tr>
+  <tr><td class="ep">01</td><td><strong>The Missing Woman</strong></td><td><span class="tag now">Present</span></td><td>The case. Ends on a door.</td><td>Karim · Iris · Margot</td></tr>
+  <tr><td class="ep">02</td><td><strong>The Festival of the Night's End</strong></td><td><span class="tag era">Era</span></td><td>First crossing. The truth, in public.</td><td>Āio</td></tr>
+  <tr><td class="ep">03</td><td><strong>Two Fronts</strong></td><td><span class="tag both">Both</span></td><td>The party breaks.</td><td>Soraya · Paz</td></tr>
+  <tr><td class="ep">04</td><td><strong>The Night of the Lamps</strong></td><td><span class="tag era">Era</span></td><td>The opera scene.</td><td>Thibault · Sabine <em>(guests)</em></td></tr>
+  <tr><td class="ep">05</td><td><strong>The Last Report</strong></td><td><span class="tag now">Present</span></td><td>The party re-forms around one man's defection.</td><td>Gideon</td></tr>
+  <tr><td class="ep">06</td><td><strong>The Signing</strong></td><td><span class="tag era">Era</span></td><td>The founding, watched. The one conversation.</td><td>—</td></tr>
+  <tr><td class="ep">07</td><td><strong>The Status Quo Ante</strong></td><td><span class="tag now">Present</span></td><td>The city is the dungeon.</td><td>Vesper <em>(unsettled)</em></td></tr>
+</table>
+
+<figure>
+<svg viewBox="0 0 1000 220" role="img" aria-label="Century alternation across seven episodes, with the reveal carried by each.">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5a8fd8" stop-opacity=".5"/><stop offset="100%" stop-color="#d2a94f" stop-opacity=".5"/>
+    </linearGradient>
+  </defs>
+  <text x="14" y="42" fill="#5a8fd8" font-family="Inter,sans-serif" font-size="10.5" letter-spacing="2.4">PRESENT</text>
+  <text x="14" y="152" fill="#d2a94f" font-family="Inter,sans-serif" font-size="10.5" letter-spacing="2.4">ERA</text>
+  <line x1="92" y1="60" x2="986" y2="60" stroke="#1d222a"/>
+  <line x1="92" y1="140" x2="986" y2="140" stroke="#1d222a"/>
+  <g font-family="Inter,sans-serif" font-size="11.5">
+    <!-- path -->
+    <path d="M128 60 L256 60 L256 140 L384 140 L384 100 L512 100 L512 140 L640 140 L640 60 L768 60 L768 140 L896 140 L896 60 L960 60"
+          fill="none" stroke="url(#fade)" stroke-width="2"/>
+    <!-- nodes -->
+    <g fill="#08090c" stroke="#5a8fd8"><circle cx="128" cy="60" r="7"/><circle cx="640" cy="60" r="7"/><circle cx="896" cy="60" r="7"/></g>
+    <g fill="#08090c" stroke="#d2a94f"><circle cx="256" cy="140" r="7"/><circle cx="512" cy="140" r="7"/><circle cx="768" cy="140" r="7"/></g>
+    <g fill="#08090c" stroke="#9aa3ad"><circle cx="384" cy="100" r="7"/></g>
+    <g fill="#98a1ae">
+      <text x="128" y="40" text-anchor="middle">1</text>
+      <text x="256" y="168" text-anchor="middle">2</text>
+      <text x="384" y="92" text-anchor="middle">3</text>
+      <text x="512" y="168" text-anchor="middle">4</text>
+      <text x="640" y="40" text-anchor="middle">5</text>
+      <text x="768" y="168" text-anchor="middle">6</text>
+      <text x="896" y="40" text-anchor="middle">7</text>
+    </g>
+    <g fill="#626b78" font-size="10.5">
+      <text x="128" y="200" text-anchor="middle">the door</text>
+      <text x="256" y="200" text-anchor="middle">the quarter</text>
+      <text x="384" y="200" text-anchor="middle">Paz's origin</text>
+      <text x="512" y="200" text-anchor="middle">the quieting</text>
+      <text x="640" y="200" text-anchor="middle">the leash</text>
+      <text x="768" y="200" text-anchor="middle">the charter</text>
+      <text x="896" y="200" text-anchor="middle">the ending</text>
+    </g>
+  </g>
+</svg>
+<figcaption>One reveal per episode. Episode 3 is the only one that straddles both centuries — which is why the party breaks there.</figcaption>
+</figure>
+
+<!-- ============ EPISODE 1 ============ -->
+<h2 class="sec">Episode by episode</h2>
+
+<section class="ep-block" id="e1" style="--c:#5a8fd8">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE ONE · <span class="tag now">Present</span> <span class="tag built">partly built</span></div>
+    <h3>The Missing Woman</h3>
+    <p class="logline">A disgraced enforcer takes a missing-person case and finds a hole in the
+    city that goes the wrong direction — not only deeper, but earlier.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>This is the existing Act 1, re-cut. Nothing in it is discarded; the ending changes. Where
+      the old structure closed on four open threads, the episode now closes on a <strong>door</strong>
+      — Soraya's map and Kos's knowledge converging on a wound whose signature predates its own
+      installation.</p>
+      <ol class="beats">
+        <li><b>Rooftop, 3AM.</b> Six beats before the case exists. A practitioner whose licensed sigil has been draining her in her sleep; a fixer lifting jailbroken sigils; a lobby terminal that pulses once, wrong, and goes dark.</li>
+        <li><b>Wandering Star.</b> A recovery job from a Gray with leverage, ending in a Sprawl clinic where Vesper's name is said twice in ten seconds.</li>
+        <li><b>She's Lost Control.</b> The abandoned apartment, Margot's document case, the bar fight, and the first descent into the Meridian. Iris joins; the hub opens.</li>
+        <li><b>Inside the cable temple.</b> Four zones down to an exposed ley wound. Kos surfaces and vanishes. <b>Vesper is glimpsed</b>, and whatever looks back is aware.</li>
+        <li><b>The Great Below.</b> Junction 9, forty years of a neighbourhood sleeping beside a pipeline, Gideon working the same blocks from the other side. Soraya signs the log: <i>I have the map.</i></li>
+        <li><b>The door.</b> New ending beat. The map and the Meridian agree on a place where the wrong geometry is wrong about <i>when</i>.</li>
+      </ol>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span class="new">Karim</span><span class="new">Iris</span><span class="new">Margot</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">The harvest is physical, and there is a hole in it.</p></div>
+      <div class="box"><h4>Build status</h4><p style="margin:0; color:var(--dim)">Intro beats shipped. Cases 1–4 designed. Roughly one third playable, one placeholder tileset.</p></div>
+      <div class="box"><h4>Threads opened</h4><ul><li>Kos — deep Meridian</li><li>Soraya — the map</li><li>Gideon — <i>investigation ongoing</i></li><li>Vesper — seen, unreachable</li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 2 ============ -->
+<section class="ep-block" id="e2" style="--c:#d2a94f">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE TWO · <span class="tag era">Era</span></div>
+    <h3>The Festival of the Night's End</h3>
+    <p class="logline">They cross, and arrive in a flooded square where the thing they have been
+    excavating for four cases is printed on a broadsheet and sold for coins.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The first crossing establishes the rules by breaking them gently: who can go, what the
+      between-space feels like, and the fact that nobody here is surprised by magic because nobody
+      here has been lied to about it yet.</p>
+      <p>The episode's engine is dramatic irony. The city is celebrating. The party knows how it
+      ends.</p>
+      <ol class="beats">
+        <li><b>The crossing.</b> Through the wound. Half the party cannot follow, and the reason is not yet understood by anyone.</li>
+        <li><b>The square.</b> THE POWER IS YOURS. IT ALWAYS WAS. Reid reads the sentence the Bureau spent two centuries burying. Karim is loud in a crowd that agrees with him.</li>
+        <li><b>The edges.</b> Iris reads the room and finds the Accountants' tables in the corners, taking names. Margot finds the first census.</li>
+        <li><b>The sealed quarter.</b> A blessed district nobody will discuss. Inside: a generation still standing around, breathing and blank. <b>The party coins the title.</b></li>
+        <li><b>The collapse.</b> A community coming apart under the new census — and one person staying. <b>Āio founds the school on screen</b> and then hands it to a student.</li>
+        <li><b>The criers.</b> The Office of Civic Output is announced mid-festival. The noose threads in real time, and the episode ends on the party realising what they are standing in.</li>
+      </ol>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span>Karim</span><span>Iris</span><span>Margot</span><span class="new">Āio</span><span class="out">Kos</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">The truth was once public — and the child tithe is why the revolution happened.</p></div>
+      <div class="box"><h4>Vesper</h4><p style="margin:0; color:var(--dim)">Glimpse only. A figure at a distance in the crowd; a witness who describes a woman who was not supposed to be there.</p></div>
+      <div class="box"><h4>Open</h4><ul><li>Thin party until Āio joins</li><li>Where the first door physically is</li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 3 ============ -->
+<section class="ep-block" id="e3" style="--c:#9aa3ad">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE THREE · <span class="tag both">Both centuries</span></div>
+    <h3>Two Fronts</h3>
+    <p class="logline">The party breaks. Half of them are arguing with a committee that is
+    inventing the Bureau; the other half are holding a city that is being eaten faster every week.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The FF6 scenario split, relocated into the episodic frame. The player moves between two
+      teams with different problems, different tools and no way to talk to each other.</p>
+      <p>It is also the episode where the party's own composition stops being neutral. Somebody
+      notices who can cross and who cannot, and the pattern is an exact inverse of the registry.</p>
+      <ol class="beats">
+        <li><b>Era-side: the Committee chambers.</b> Radicals and moderates both quoting the broadsheet. The Accountants writing both sets of minutes.</li>
+        <li><b>Era-side: the draft.</b> A young clerk writes the first consent form for the quieting, as mercy. Margot finds the oldest page in her own case file — signed by a man she has not met.</li>
+        <li><b>Present-side: holding.</b> Kos runs the case with whoever stayed. Disappearances accelerate; Kurtz is not slowing down for anyone's archaeology.</li>
+        <li><b>Present-side: the map.</b> Soraya surfaces at last — the terminals that predate their own install dates are the only reason the crossing was findable. <b>She joins.</b></li>
+        <li><b>The bridge.</b> What the era-side brings back is unreadable to everyone except one woman in a Sprawl bar. <b>Paz's silence breaks.</b> She knew. She has always known.</li>
+        <li><b>The reunion that isn't.</b> The teams reconverge, and the party is now carrying a secret about itself: being metered means being pinned.</li>
+      </ol>
+      <div class="warn"><b>Unsettled</b>What actually breaks Paz's silence is still open — see
+      <code>discussions/paz.md</code>. The current placeholder is that she is the only one who can
+      read what comes back, which forces her hand rather than letting her choose.</div>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Era-side</h4><div class="who"><span>Reid</span><span>Margot</span><span>Āio</span><span>Iris</span></div></div>
+      <div class="box"><h4>Present-side</h4><div class="who"><span>Kos</span><span>Karim</span><span class="new">Soraya</span><span class="new">Paz</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">Paz is from the revolution — and the tether rule is visible to anyone who looks at the roster.</p></div>
+      <div class="box"><h4>Vesper</h4><p style="margin:0; color:var(--dim)">A name in the Accountants' minutes that should not be there.</p></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 4 ============ -->
+<section class="ep-block" id="e4" style="--c:#d2a94f">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE FOUR · <span class="tag era">Era</span></div>
+    <h3>The Night of the Lamps</h3>
+    <p class="logline">Freedom was won. Then freedom produced a horror, and the horror wrote a
+    charter. The party watches both, and can prevent neither.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The era's set-piece and the iron rule's hardest test. Everything the party learns here is
+      evidence; none of it is leverage.</p>
+      <ol class="beats">
+        <li><b>The blank ones move in step.</b> The sealed quarter wakes. Whatever is unspooling out of one person is reaching the rest of their generation.</li>
+        <li><b>The cordon.</b> Varenne does everything correctly, against an enemy that occupies people rather than space. It holds for an hour.</li>
+        <li><b>The hour he loses.</b> Playable or witnessed — unsettled. His own troops, in a street they were told was safe.</li>
+        <li><b>The lamps.</b> Somebody fires the district. Burning rain, a quarter alight under a sky that never lightens, figures walking in step through it.</li>
+        <li><b>The survivor.</b> Spent, lucid, no longer dangerous. A few lines, never a monologue. Then Varenne kills them with an unregistered blade.</li>
+        <li><b>The mercy.</b> The Committee's answer: <i>the army could only kill it afterward; we will not be reduced to that again.</i> The quieting is drafted as the humane alternative, by a clerk sincerely preventing a murder.</li>
+      </ol>
+      <p><strong>Present-side, in parallel:</strong> the disappearance cohort file reaches Gideon's
+      desk as routine paperwork. The episode ends with him reading it.</p>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span>Iris</span><span>Margot</span><span>Āio</span><span>Karim</span><span class="new">Thibault</span><span class="new">Sabine</span></div><p style="margin:8px 0 0; color:var(--faint); font-size:12px">Guests, temporary — B4 approval pending.</p></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">Output Calibration was invented as a kindness, by people horrified at violence.</p></div>
+      <div class="box"><h4>Vesper</h4><p style="margin:0; color:var(--dim)">A door already open where none should be.</p></div>
+      <div class="box"><h4>Open</h4><ul><li>Playable or witnessed?</li><li>Who fires the district</li><li>The survivor's name</li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 5 ============ -->
+<section class="ep-block" id="e5" style="--c:#5a8fd8">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE FIVE · <span class="tag now">Present</span></div>
+    <h3>The Last Report</h3>
+    <p class="logline">A good man is asked to write the clean version of people being consumed,
+    and discovers that the truthful report and the correct report are different documents.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The single-character episode. The party re-forms around someone else's collapse, and the
+      game's quietest horror — a missing field on a form — does more damage than any dungeon.</p>
+      <ol class="beats">
+        <li><b>The file.</b> Calibrated Grade III+ practitioners. Transferred. No subsequent output readings. No assessments filed.</li>
+        <li><b>The order.</b> Bring in Margot. The institution asks for both things in the same week.</li>
+        <li><b>The attempt.</b> He writes it. Several times. Each version is either untrue or unfileable.</li>
+        <li><b>The exit.</b> He stops being Bureau. <i>How</i> is still open — resignation by the book is the current recommendation, surrendering badge and sigil across a desk.</li>
+        <li><b>The door.</b> It works for him. Nobody told him it would. <b>The leash is named out loud.</b></li>
+        <li><b>Kurtz.</b> With the party exposed and a Gold Coat no longer able to pretend they are archaeologists, the present stops being safe ground.</li>
+      </ol>
+      <div class="warn"><b>Unsettled</b>How his metering ends — resign, jailbreak, or be stripped —
+      is TBD. It changes what he carries into the endgame: a man with no sigil at all fights
+      unamplified for the rest of the game.</div>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span>Iris</span><span>Margot</span><span>Karim</span><span>Kos</span><span>Paz</span><span>Soraya</span><span>Āio</span><span class="new">Gideon</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">Metered output is a tether. The registry does not only drain people — it pins them to one century.</p></div>
+      <div class="box"><h4>Weight</h4><p style="margin:0; color:var(--dim)">Everyone the party failed to save was also being held still. Including the ones Gideon processed himself.</p></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 6 ============ -->
+<section class="ep-block" id="e6" style="--c:#d2a94f">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE SIX · <span class="tag era">Era</span></div>
+    <h3>The Signing</h3>
+    <p class="logline">The revolution ends with a quorum, not a battle — and the party is in the
+    room with the paperwork.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The era's last visit and its coldest. Everything that has been promised structurally gets
+      paid here: the acronym, the coat, the clause, the man who wrote the walls, and the woman the
+      whole case was about.</p>
+      <ol class="beats">
+        <li><b>The engrossed copy.</b> Thibault finds two sentences he did not write, in a hand he does not recognise. He wrote the walls; someone else wrote the lock.</li>
+        <li><b>The objection.</b> He fights it by the rules — files, requests review, appeals to a process that was never going to answer. The player already knows he loses.</li>
+        <li><b>The footnote.</b> <i>Neural Output eXchange</i> is proposed as neutral technical language and passes without comment. The great reveal, watched as administrative tidiness.</li>
+        <li><b>The one conversation.</b> They reach Vesper. It is genuinely her, briefly, and she talks about the century they are standing in rather than about herself. Then she is gone.</li>
+        <li><b>The quieting of the author.</b> Thibault refuses to sign. The first calibration in the city's history is performed on the man who drafted the document authorising it. He is polite afterward. He goes back to his desk.</li>
+        <li><b>The coat.</b> Gold, fitted, saluted. The receipt issued. The party goes home with the broadside, the first census and the draft consent form — the oldest pages of the case.</li>
+      </ol>
+      <p>Somewhere in here, a door the party has used before is <strong>attended</strong> when they
+      arrive. Nothing is being counted. It notices when it notices.</p>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span>Iris</span><span>Margot</span><span>Karim</span><span>Āio</span><span>Paz</span><span>Soraya</span><span class="new">Gideon</span><span class="out">Kos</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">The charter's own name is a confession — and the Gold Coat predates the institution that defers to it.</p></div>
+      <div class="box"><h4>Losses</h4><ul><li>Thibault — quieted</li><li>Sabine — stays, keeps working</li><li>Vesper — reached, then gone</li></ul></div>
+      <div class="box"><h4>Open</h4><ul><li>Does Act 3 keep any of the acronym reveal (B1)</li><li>Exact slot for the attended door</li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ EPISODE 7 ============ -->
+<section class="ep-block" id="e7" style="--c:#5a8fd8">
+  <div class="ep-head">
+    <div class="ep-no">EPISODE SEVEN · <span class="tag now">Present</span></div>
+    <h3>The Status Quo Ante</h3>
+    <p class="logline">Not a victory. The best available outcome is putting something back exactly
+    as it was before anyone settled here.</p>
+  </div>
+  <div class="ep-body">
+    <div class="main">
+      <p>The city is the dungeon. The party has two centuries of evidence, a Gold Coat accelerating
+      toward a manifestation he does not understand, and an institution that cannot be destroyed
+      because it is not a conspiracy — it is infrastructure.</p>
+      <ol class="beats">
+        <li><b>The case, filed.</b> What the era produced is evidence, and evidence has to be used on somebody. Who the party shows it to is the episode's first real choice.</li>
+        <li><b>Kurtz.</b> The same speech Varenne gave, by a man who does not know he is an echo — and a party that has already watched how it ends.</li>
+        <li><b>WARDEN.</b> Not a confrontation so much as a discovery: there is no room to storm, no face to beat. The handwriting is the whole organisation.</li>
+        <li><b>Vesper.</b> <i>Unsettled.</i> Recovered rather than rescued, present-side, late — or else she is not playable at all and the roster stands at nine.</li>
+        <li><b>The Ruins.</b> Down to the crash site. Where it has been stuck the whole time, and where the city has spent its existence working a splint loose.</li>
+        <li><b>The stranding.</b> Stop the crossing short. Nothing is destroyed, nothing is avenged. What people get back is only what was always theirs — which is the point, and which is harder.</li>
+      </ol>
+    </div>
+    <aside class="side">
+      <div class="box"><h4>Party</h4><div class="who"><span>Reid</span><span>Iris</span><span>Margot</span><span>Karim</span><span>Kos</span><span>Paz</span><span>Soraya</span><span>Āio</span><span>Gideon</span><span class="new">Vesper?</span></div></div>
+      <div class="box"><h4>Reveal</h4><p class="reveal" style="margin:0">The ending is the status quo ante — the best possible win is undoing first contact.</p></div>
+      <div class="box"><h4>Open</h4><ul><li>Vesper's slot</li><li>Does the era appear at all in Ep7</li><li>Whether Kos ever gets free</li></ul></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ RISKS ============ -->
+<h2 class="sec" id="risks">What this arc exposes</h2>
+
+<table>
+  <tr><th>Issue</th><th>Detail</th><th>Status</th></tr>
+  <tr><td><strong>Vesper's roster slot</strong></td><td>Listed as a permanent playable member recruited late, but a playable era stretch was rejected. Either she is recovered present-side in Episode 7, or she is cut from the ten and the roster sits at nine.</td><td>blocking</td></tr>
+  <tr><td><strong>Episode 2's thin party</strong></td><td>First crossing is four characters with no era-native guide until Āio joins mid-episode.</td><td>check in play</td></tr>
+  <tr><td><strong>Front-loaded recruitment</strong></td><td>Āio and Paz both arrive in era episodes; Episodes 5–7 gain only Gideon. Probably correct — late episodes should lose people — but it is a deliberate choice, not an accident.</td><td>accepted</td></tr>
+  <tr><td><strong>Gideon's exit method</strong></td><td>Resign, jailbreak, or be stripped. Determines whether he fights the endgame unamplified.</td><td>TBD</td></tr>
+  <tr><td><strong>The cheaper cut</strong></td><td>Merge Episode 5 into 4, making the break the present-side half of the Lamps episode. Six episodes — at the cost of the only episode that is Gideon's.</td><td>alternative</td></tr>
+  <tr><td><strong>Content footprint</strong></td><td>The era roughly doubles the game. Build order remains: finish Episode 1 end to end first. Scope the era by tileset count, not feature list.</td><td>settled</td></tr>
+</table>
+
+<details class="more">
+  <summary>Where each decision came from <span>source files</span></summary>
+  <div class="inner">
+    <table>
+      <tr><td><code>decisions.md</code></td><td>Era exists, is a past NOX, revisitable, iron rule, episodic structure, roster topology, who is past-native, Kos barred</td></tr>
+      <tr><td><code>discussions/travel-rules.md</code></td><td>Doors are wounds, the tether rule, who crosses, attended doors</td></tr>
+      <tr><td><code>discussions/first-contact.md</code></td><td>The stranded entity, the waking, WARDEN's method, the tithe's two movements</td></tr>
+      <tr><td><code>discussions/the-two-incidents.md</code></td><td>The child tithe, the Night of the Lamps, Varenne, where calibration comes from</td></tr>
+      <tr><td><code>discussions/paz.md</code> · <code>aio.md</code> · <code>kos.md</code> · <code>gideon.md</code> · <code>vesper-contact.md</code></td><td>Character deep dives</td></tr>
+      <tr><td><code>discussions/episode-map.md</code></td><td>This arc</td></tr>
+      <tr><td><code>approaches.md</code> · <code>roster.md</code></td><td>Approach 1's four visits, the full cast across four tiers</td></tr>
+    </table>
+  </div>
+</details>
+
+<footer>
+  <strong style="color:var(--dim)">The Hollow Men — Story Breakdown</strong><br>
+  Working draft. Nothing here is canon; the authoritative lore is <code>docs/lore/</code> and
+  <code>docs/story/</code>. · <a href="history.html">The Story ↗</a>
+</footer>
+
+</div>
+</body>
+</html>

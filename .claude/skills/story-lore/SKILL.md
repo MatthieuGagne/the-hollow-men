@@ -58,13 +58,13 @@ Every piece of writing should feel like it lives at the intersection of these fo
 ## 3. World Rules (non-negotiable)
 
 - **NOX is perpetually rainy and dark.** There is no daytime in the story. Establish this in any new location description.
-- **Magic = sigil system.** PP-fueled, Bureau-licensed, Grade I–V. Grade V is the threshold at which the Bureau calibrates (harvests the sigil entirely). See `docs/lore/bureau.md`.
+- **Magic = sigil system.** PP-fueled, Bureau-licensed, Grade I–V. Grade is a *Resonance Index* reading — sold as a measure of ability, actually a measure of how harvestable your output is. Grade V is not a calibration trigger; it is where the public record stops. **Output Calibration is a compliance instrument, not a Grade threshold** — it is applied to practitioners who refused and were caught, whose signature suggests jailbreaking or Meridian/Ruins exposure, or who asked the wrong questions persistently. See `docs/lore/bureau.md`.
 - **PP drain is the shared logic** of Bureau extraction AND entity corruption. This is a thematic spine — use it deliberately.
 - **The entity is ancient and non-Euclidean.** It predates NOX. It has been beneath the city for longer than the city has had a name. It is not a villain with goals.
 - **Entity-adjacent enemies were human.** Shades, Vessels, Blooms were Bureau-calibrated practitioners or Meridian residents. Margot's disappearance cohort are some of them. When writing combat flavor or lore, don't let this become abstract.
 - **The Bureau is banal.** Its horror is procedural, not cartoonish. Forms, assessments, compliance schedules, resource allocation language — it sounds like HR until you read what it's authorizing.
 - **Geography is vertical and stratified.** Heights → Sprawl → Meridian → Warrens → Ruins. Each layer has its own atmosphere. See `docs/lore/world.md` for full location details.
-- **Vesper is absent throughout.** She is the missing person at the story's center. She can only be known through others' descriptions, documents, and traces.
+- **Vesper is absent from the present day.** She is the missing person at the story's centre, and in present-day scenes she can only be known through others' descriptions, documents, and traces. *(Draft, two-era design: she went back to the revolution deliberately, so the era may give her back in person — how much is still open in `docs/story/two-era/discussions/vesper-contact.md`. Until that settles, write her as absent.)*
 
 ---
 
@@ -113,7 +113,39 @@ For all other characters (Iris, Margot, Gideon, Āio, Soraya, Paz, Crane, Kurtz,
 
 ---
 
-## 6. Dialogue Implementation
+## 6. The Story Document
+
+`docs/story/two-era/history.html` is the human-facing narrative document — the one shown to
+people outside the project. It is hand-edited like any other source file; nothing generates it.
+
+**When a story or lore decision settles, update it in the same session.** Not later, not when
+asked. The files in `docs/story/two-era/discussions/` hold the *arguments*; the HTML holds the
+*result*. A decision that only exists in a discussion file is invisible to everyone who matters.
+
+Structure, and why it is that way:
+
+- **Chapter flow is plain narrative prose** at reading width. No tables, no status badges, no
+  open questions on the reading surface — it is read start to finish by someone who does not
+  know the project.
+- **Reference material goes in a `<details class="more">` disclosure.** Grade tables, faction
+  breakdowns, the tether eligibility list, glossary, canon status, episode map.
+- **Per-character detail goes in a `<div class="modal">` overlay** keyed `#p-<name>`, opened from
+  its card in the cast grid. Pure CSS `:target` — no scripts anywhere in the document.
+- **Draft-vs-canon lives only in the Canon Status disclosure.** Never annotate the prose.
+- **New chapter** → add an entry to the `details.toc` menu in the top bar and renumber the
+  `.chapter .num` kickers (they are hand-written roman numerals).
+- **Sprites** live in `docs/story/two-era/portraits/` — frame 0 (16×24) of
+  `art/characters/<name>.png`, upscaled 8× nearest-neighbour. Characters without sprites use a
+  monogram `.sigil` with their dominant colour from `docs/art/image-prompts-characters.md`.
+- **Verify in a browser before claiming done.** Screenshot the section you changed; check that
+  TOC anchors still resolve and sprite `<img>` elements still load.
+
+Keep the registers separate: this document sells the story. `docs/lore/` and `docs/story/` remain
+the authoritative canon, and propagating a draft decision into them is a *separate, explicit* act.
+
+---
+
+## 7. Dialogue Implementation
 
 When the user approves a scene for implementation:
 - Prose narrative → write in GDScript (cutscene-style Godot scene or in-engine text)
@@ -123,6 +155,6 @@ Do not author `.yarn` directly from this skill — hand the full scene spec to t
 
 ---
 
-## 7. Open Questions
+## 8. Open Questions
 
 Before designing new story content, check `docs/design/questions.md` for open design questions in the relevant area. If your new content answers or contradicts an open question, flag it.
