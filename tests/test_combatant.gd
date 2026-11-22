@@ -178,9 +178,9 @@ func test_karim_loads_with_correct_stats() -> void:
 	assert_eq(karim.max_pp, 70)
 	assert_eq(karim.spd_stat, 22)
 	assert_true(karim.is_player_controlled)
-	assert_eq(karim.ability.ability_name, "Field Suture")
-	assert_eq(karim.ability.pp_cost, 10)
-	assert_eq(karim.ability.target_mode, Ability.TargetMode.ONE_ALLY)
+	assert_eq(karim.abilities[0].ability_name, "Field Suture")
+	assert_eq(karim.abilities[0].pp_cost, 10)
+	assert_eq(karim.abilities[0].target_mode, Ability.TargetMode.ONE_ALLY)
 
 
 func test_margot_loads_with_correct_stats() -> void:
@@ -190,9 +190,9 @@ func test_margot_loads_with_correct_stats() -> void:
 	assert_eq(margot.max_pp, 90)
 	assert_eq(margot.spd_stat, 40)
 	assert_true(margot.is_player_controlled)
-	assert_eq(margot.ability.ability_name, "Void Calculus")
-	assert_eq(margot.ability.pp_cost, 15)
-	assert_eq(margot.ability.target_mode, Ability.TargetMode.ONE_ENEMY)
+	assert_eq(margot.abilities[0].ability_name, "Void Calculus")
+	assert_eq(margot.abilities[0].pp_cost, 15)
+	assert_eq(margot.abilities[0].target_mode, Ability.TargetMode.ONE_ENEMY)
 
 
 func test_status_effect_fields_have_correct_defaults() -> void:
@@ -600,3 +600,22 @@ func test_security_rookie_loads_with_correct_stats() -> void:
 	assert_eq(rookie.spd_stat, 20)
 	assert_eq(rookie.xp_reward, 22)
 	assert_not_null(rookie.ai, "rookie must have an ai resource")
+
+
+func test_abilities_returns_empty_array_for_enemy_definition() -> void:
+	var d := EnemyDefinition.new()
+	var c := Combatant.from_definition(d)
+	assert_eq(c.abilities.size(), 0,
+		"Enemies have no CharacterDefinition, so abilities must be empty")
+
+
+func test_abilities_returns_all_character_abilities() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.abilities = [a1, a2] as Array[Ability]
+	var c := Combatant.from_definition(d)
+	assert_eq(c.abilities.size(), 2, "Both abilities must be exposed")
+	assert_eq(c.abilities[1].ability_name, "Second", "Order must be preserved")

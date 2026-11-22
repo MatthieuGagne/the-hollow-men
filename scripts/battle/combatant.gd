@@ -73,8 +73,10 @@ var spd_stat: int:
 var sigil_type: CombatantDefinition.SigilType:
 	get: return def.sigil_type
 
-var ability: Ability:
-	get: return (def as CharacterDefinition).ability if def is CharacterDefinition else null
+var abilities: Array[Ability]:
+	get:
+		var cd := _char_def()
+		return cd.abilities if cd != null else ([] as Array[Ability])
 
 var ai: EnemyAI:
 	get: return (def as EnemyDefinition).ai if def is EnemyDefinition else null

@@ -1,7 +1,7 @@
 class_name CharacterDefinition
 extends CombatantDefinition
 
-@export var ability: Ability = null
+@export var abilities: Array[Ability] = []
 
 # Per-level stat growth. Effective stat = base + growth * (level - 1); the .tres
 # base values are the level-1 stats. Default 0 keeps level-1 behavior unchanged.
