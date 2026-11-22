@@ -383,7 +383,7 @@ func _compute_damage_for(recipient: Combatant) -> int:
 	return dmg
 
 
-# Apply non-damage effects (heal/status/summon) to a recipient. Called at impact peak.
+# Apply non-damage effects (heal/status/summon/drain) to a recipient. Called at impact peak.
 func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 	for effect in _selected_ability.effects:
 		if effect is HealEffect:
@@ -396,6 +396,8 @@ func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 			var summoned: Combatant = effect.make_summon()
 			if summoned != null:
 				add_enemy(summoned)
+		elif effect is DrainEffect:
+			effect.resolve(_active, recipient)
 
 
 # SELF abilities resolve with no selection step and no lunge.
