@@ -162,7 +162,20 @@ func _base_stat(stat: StatusEffect.StatAxis) -> int:
 func tick_atb(delta: float) -> void:
 	if is_dead():
 		return
-	atb = minf(atb + float(spd_stat) * delta * ATB_FILL_RATE, ATB_MAX)
+	var gain: float = float(spd_stat) * delta * ATB_FILL_RATE * atb_fill_multiplier()
+	atb = minf(atb + gain, ATB_MAX)
+
+
+# Single composition point for every ATB fill-rate modifier. Each source
+# multiplies into `mult`, so adding another (Paz's Uptempo, Aio's Forms) is one
+# more `mult *= ...` line rather than a rewrite. Nothing else may scale the
+# fill rate.
+func atb_fill_multiplier() -> float:
+	var mult := 1.0
+	var cd := _char_def()
+	if cd != null and not is_equal_approx(cd.atb_desperation, 0.0):
+		mult *= 1.0 + cd.atb_desperation * (1.0 - hp_ratio())
+	return mult
 
 
 func atb_full() -> bool:

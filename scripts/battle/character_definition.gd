@@ -12,3 +12,8 @@ extends CombatantDefinition
 @export var psy_growth: int = 0
 @export var res_growth: int = 0
 @export var spd_growth: int = 0
+
+# How strongly missing HP accelerates the ATB gauge. 0.0 = no effect (everyone
+# except Reid). 1.0 = at 0 HP the gauge would fill at 2x. Data-driven so no
+# character id is ever hardcoded in combat logic.
+@export var atb_desperation: float = 0.0

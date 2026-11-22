@@ -121,6 +121,48 @@ func test_tick_atb_skips_downed_combatant() -> void:
 	assert_eq(c.atb, atb_before, "dead combatant ATB must not advance")
 
 
+func test_atb_fill_multiplier_is_one_by_default() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	var c := Combatant.from_definition(d)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
+		"Characters fill at base rate unless configured otherwise")
+
+
+func test_atb_fill_multiplier_scales_with_missing_hp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.atb_desperation = 1.0
+	var c := Combatant.from_definition(d)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001, "Full HP means no bonus")
+	c.current_hp = 25
+	assert_almost_eq(c.atb_fill_multiplier(), 1.75, 0.001,
+		"75% missing HP at desperation 1.0 means a 1.75x fill rate")
+
+
+func test_atb_fill_multiplier_is_one_for_enemies() -> void:
+	var e := EnemyDefinition.new()
+	e.max_hp = 100
+	var c := Combatant.from_definition(e)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
+		"Enemies have no CharacterDefinition, so they never accelerate")
+
+
+func test_tick_atb_honours_the_multiplier() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.spd_stat = 10
+	d.atb_desperation = 1.0
+	var fast := Combatant.from_definition(d)
+	fast.current_hp = 25
+	var slow := Combatant.from_definition(d)
+
+	fast.tick_atb(0.1)
+	slow.tick_atb(0.1)
+	assert_gt(fast.atb, slow.atb,
+		"The wounded combatant must gain more ATB over the same delta")
+
+
 func test_skip_cooldown_initial_value_is_zero() -> void:
 	var c := _make_combatant()
 	assert_eq(c.skip_cooldown, 0.0)
