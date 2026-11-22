@@ -619,3 +619,48 @@ func test_abilities_returns_all_character_abilities() -> void:
 	var c := Combatant.from_definition(d)
 	assert_eq(c.abilities.size(), 2, "Both abilities must be exposed")
 	assert_eq(c.abilities[1].ability_name, "Second", "Order must be preserved")
+
+
+func _ability_costing(pp: int, hp: int) -> Ability:
+	var ab := Ability.new()
+	ab.pp_cost = pp
+	ab.hp_cost = hp
+	return ab
+
+
+func test_can_pay_rejects_insufficient_pp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 10
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(_ability_costing(20, 0)), "20 PP is unaffordable at 10 PP")
+
+
+func test_can_pay_rejects_lethal_hp_cost() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(_ability_costing(0, 30)),
+		"An HP cost that would reduce the user to 0 is not payable")
+	assert_true(c.can_pay(_ability_costing(0, 29)),
+		"An HP cost leaving 1 HP is payable")
+
+
+func test_pay_cost_deducts_hp_not_pp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_true(c.pay_cost(_ability_costing(0, 10)), "Payment succeeds")
+	assert_eq(c.current_hp, 90, "HP is deducted")
+	assert_eq(c.current_pp, 50, "PP is untouched")
+
+
+func test_pay_cost_of_free_ability_changes_nothing() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_true(c.pay_cost(_ability_costing(0, 0)), "Free abilities are always payable")
+	assert_eq(c.current_hp, 100, "HP unchanged")
+	assert_eq(c.current_pp, 50, "PP unchanged")

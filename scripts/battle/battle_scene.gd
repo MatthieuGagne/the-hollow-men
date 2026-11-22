@@ -30,6 +30,8 @@ const DAMAGE_NUMBER_FLOAT_DIST:   float   = 20.0
 const DAMAGE_NUMBER_DURATION:     float   = 1.0
 const SKIP_COOLDOWN:              float   = 2.0
 const PP_COST_COLOR := Color(0.55, 0.20, 0.85)
+# HP paid for abilities reads as damage taken — the same white numbers.
+const HP_COST_COLOR := Color.WHITE
 const LUNGE_DISTANCE:      float = 20.0
 const LUNGE_DURATION:      float = 0.1
 const LUNGE_RETURN_DUR:    float = 0.15
@@ -398,15 +400,12 @@ func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 
 # SELF abilities resolve with no selection step and no lunge.
 func _cast_self() -> void:
-	if not _active.spend_pp(_selected_ability.pp_cost):
+	if not _active.pay_cost(_selected_ability):
 		_end_turn()
 		return
 	_apply_nondamage_effects_to(_active)
 	combatant_updated.emit(_active)
-	var idx: int = party.find(_active)
-	if idx >= 0:
-		_spawn_damage_number(-_selected_ability.pp_cost,
-			$PartyContainer.get_child(idx), PP_COST_COLOR)
+	_spawn_ability_cost_numbers(party.find(_active))
 	_end_turn()
 	_check_win_loss()
 
@@ -422,7 +421,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 		_end_turn()
 		_check_win_loss()
 		return
-	if not _active.spend_pp(_selected_ability.pp_cost):
+	if not _active.pay_cost(_selected_ability):
 		_end_turn()
 		_check_win_loss()
 		return
@@ -458,8 +457,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 				var rsprite: Sprite2D = $EnemyContainer.get_child(ridx)
 				_spawn_damage_number(dmg[r], rsprite)
 				_start_enemy_flash(rsprite)
-		_spawn_damage_number(-_selected_ability.pp_cost,
-			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+		_spawn_ability_cost_numbers(attacker_idx)
 
 		var return_tween := create_tween()
 		return_tween.tween_property(attacker_sprite, "position:x",
@@ -472,9 +470,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 		for r: Combatant in recipients:
 			_apply_nondamage_effects_to(r)
 			combatant_updated.emit(r)
-		if attacker_idx >= 0:
-			_spawn_damage_number(-_selected_ability.pp_cost,
-				$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+		_spawn_ability_cost_numbers(attacker_idx)
 
 	_end_turn()
 	_check_win_loss()
@@ -518,7 +514,7 @@ func confirm_party_target(target: Combatant) -> void:
 		return
 	if _active == null or _selected_ability == null:
 		return
-	if not _active.spend_pp(_selected_ability.pp_cost):
+	if not _active.pay_cost(_selected_ability):
 		return
 	var living_party: Array[Combatant] = party.filter(
 		func(p: Combatant) -> bool: return p.is_alive())
@@ -530,10 +526,7 @@ func confirm_party_target(target: Combatant) -> void:
 		_apply_nondamage_effects_to(r)
 		combatant_updated.emit(r)
 	combatant_updated.emit(_active)
-	var attacker_idx: int = party.find(_active)
-	if attacker_idx >= 0:
-		_spawn_damage_number(-_selected_ability.pp_cost,
-			$PartyContainer.get_child(attacker_idx), PP_COST_COLOR)
+	_spawn_ability_cost_numbers(party.find(_active))
 	_end_turn()
 	_check_win_loss()
 
@@ -748,6 +741,19 @@ func _on_party_group_cursor(active: bool) -> void:
 		for i in range(mini(party.size(), $PartyContainer.get_child_count())):
 			if party[i].is_alive():
 				_add_target_cursor($PartyContainer, i)
+
+
+# Spawns the ability's cost numbers above the caster. Each cost is drawn only
+# when non-zero, so a free ability shows nothing and a PP-only ability shows no
+# phantom HP 0.
+func _spawn_ability_cost_numbers(attacker_idx: int) -> void:
+	if attacker_idx < 0:
+		return
+	var sprite: Node2D = $PartyContainer.get_child(attacker_idx)
+	if _selected_ability.pp_cost > 0:
+		_spawn_damage_number(-_selected_ability.pp_cost, sprite, PP_COST_COLOR)
+	if _selected_ability.hp_cost > 0:
+		_spawn_damage_number(-_selected_ability.hp_cost, sprite, HP_COST_COLOR)
 
 
 func _spawn_damage_number(amount: int, container: Node2D, color: Color = Color.WHITE) -> void:

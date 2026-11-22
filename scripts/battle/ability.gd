@@ -5,6 +5,7 @@ enum TargetMode { SELF, ONE_ALLY, ALL_ALLIES, ONE_ENEMY, ALL_ENEMIES }
 
 @export var ability_name: String = ""
 @export var pp_cost: int = 0
+@export var hp_cost: int = 0
 @export var target_mode: TargetMode = TargetMode.ONE_ENEMY
 @export var switchable: bool = false
 @export var effects: Array[AbilityEffect] = []

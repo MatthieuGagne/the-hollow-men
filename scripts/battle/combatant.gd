@@ -220,6 +220,28 @@ func spend_pp(cost: int) -> bool:
 	return true
 
 
+# True when the user can pay both costs. An HP cost is never allowed to kill
+# the user — Reid bleeds for his abilities, he does not die for them.
+func can_pay(ability: Ability) -> bool:
+	if ability == null:
+		return false
+	if current_pp < ability.pp_cost:
+		return false
+	if ability.hp_cost > 0 and current_hp - ability.hp_cost < 1:
+		return false
+	return true
+
+
+# Deducts both costs atomically. Returns false and changes nothing when the
+# cost cannot be met.
+func pay_cost(ability: Ability) -> bool:
+	if not can_pay(ability):
+		return false
+	current_pp -= ability.pp_cost
+	current_hp -= ability.hp_cost
+	return true
+
+
 func hp_ratio() -> float:
 	return float(current_hp) / float(max_hp)
 

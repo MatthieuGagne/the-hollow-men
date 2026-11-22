@@ -42,7 +42,7 @@ func setup(combatant: Combatant) -> void:
 		var ab: Ability = list[i]
 		var row: Label = _rows[i + 1]
 		row.text = ab.ability_name
-		var affordable: bool = combatant.current_pp >= ab.pp_cost
+		var affordable: bool = combatant.can_pay(ab)
 		_row_affordable.append(affordable)
 		row.modulate.a = 1.0 if affordable else GREY_ALPHA
 		_row_count += 1
