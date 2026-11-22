@@ -286,6 +286,49 @@ func _add_karim_to_party() -> Combatant:
 	return karim
 
 
+# Party member whose only ability is a data-driven Psychic Drain on an ally —
+# exercises effect dispatch rather than calling DrainEffect.resolve() directly.
+func _add_drainer_to_party() -> Combatant:
+	var drain := DrainEffect.new()
+	drain.amount = 10
+	var ability := Ability.new()
+	ability.ability_name = "Psychic Drain"
+	ability.target_mode = Ability.TargetMode.ONE_ALLY
+	var effects: Array[AbilityEffect] = [drain]
+	ability.effects = effects
+
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 30
+	d.sprite_path = "res://assets/sprites/characters/karim.png"
+	d.sprite_vframes = 8
+	var abilities: Array[Ability] = [ability]
+	d.abilities = abilities
+
+	var c: Combatant = Combatant.from_definition(d)
+	_scene.party.append(c)
+	var sprite := Sprite2D.new()
+	sprite.vframes = c.sprite_vframes
+	sprite.frame = 2
+	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[_scene.party.size() - 1])
+	sprite.texture = load(c.sprite_path)
+	sprite.modulate = Color.WHITE
+	_scene.get_node("PartyContainer").add_child(sprite)
+	return c
+
+
+func test_drain_effect_dispatches_through_party_target_resolution() -> void:
+	var drainer := _add_drainer_to_party()
+	var reid: Combatant = _scene.party[0]
+	var pp_before: int = reid.current_pp
+	assert_gt(pp_before, 10, "fixture requires Reid to have PP to drain")
+	_scene._begin_player_turn(drainer)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.current_pp, pp_before - 10,
+		"data-driven DrainEffect must drain PP through _apply_nondamage_effects_to")
+
+
 func test_party_targeting_ability_sets_selecting_ally() -> void:
 	var karim := _add_karim_to_party()
 	_scene._begin_player_turn(karim)
