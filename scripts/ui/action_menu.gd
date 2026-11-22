@@ -31,9 +31,10 @@ func setup(combatant: Combatant) -> void:
 	_row_count = 1
 	_ability_affordable = false
 
-	if combatant.ability != null:
-		_rows[1].text = combatant.ability.ability_name
-		_ability_affordable = combatant.current_pp >= combatant.ability.pp_cost
+	var ab: Ability = combatant.abilities[0] if not combatant.abilities.is_empty() else null
+	if ab != null:
+		_rows[1].text = ab.ability_name
+		_ability_affordable = combatant.current_pp >= ab.pp_cost
 		_rows[1].modulate.a = 1.0 if _ability_affordable else GREY_ALPHA
 		_row_count = 2
 

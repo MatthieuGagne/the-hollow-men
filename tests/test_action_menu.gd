@@ -16,7 +16,7 @@ func _make_combatant(pp_cost: int, current_pp: int) -> Combatant:
 	ab.pp_cost = pp_cost
 	var d := CharacterDefinition.new()
 	d.max_pp = 100
-	d.ability = ab
+	d.abilities = [ab] as Array[Ability]
 	var c := Combatant.from_definition(d)
 	c.current_pp = current_pp
 	return c

@@ -30,4 +30,4 @@ spd_stat = 35
 sigil_type = 0
 sprite_path = "res://assets/sprites/characters/reid.png"
 sprite_vframes = 8
-ability = SubResource("ability_aoe")
+abilities = Array[Ability]([SubResource("ability_aoe")])

@@ -75,7 +75,7 @@ func test_ability_holds_effects_array() -> void:
 
 func _ability_of(path: String) -> Ability:
 	var c: Combatant = Combatant.from_definition(load(path))
-	return c.ability
+	return c.abilities[0]
 
 
 func test_reid_ability_has_piercing_effect() -> void:
