@@ -252,8 +252,12 @@ func hp_ratio() -> float:
 	return float(current_hp) / float(max_hp)
 
 
+func uses_pp() -> bool:
+	return max_pp > 0
+
+
 func pp_ratio() -> float:
-	return float(current_pp) / float(max_pp)
+	return float(current_pp) / float(max_pp) if uses_pp() else 0.0
 
 
 func atb_ratio() -> float:

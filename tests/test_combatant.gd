@@ -734,3 +734,20 @@ func test_can_pay_null_is_false() -> void:
 	var d := CharacterDefinition.new()
 	var c := Combatant.from_definition(d)
 	assert_false(c.can_pay(null), "No ability means no payable cost")
+
+
+func test_pp_ratio_is_zero_for_a_zero_pp_character() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 0
+	var c := Combatant.from_definition(d)
+	assert_eq(c.pp_ratio(), 0.0,
+		"A character with no PP bar must report 0.0, never NaN or INF")
+
+
+func test_uses_pp_is_false_for_a_zero_pp_character() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 0
+	var c := Combatant.from_definition(d)
+	assert_false(c.uses_pp(), "max_pp 0 means the character has no PP bar")

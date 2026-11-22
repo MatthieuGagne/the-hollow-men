@@ -87,6 +87,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	pp_label.modulate = COLOR_PP
+	pp_label.visible = combatant.uses_pp()
 	pp_label.add_theme_font_size_override("font_size", 6)
 	row.add_child(pp_label)
 
@@ -215,6 +216,7 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 
 	pp_label.text = str(combatant.current_pp)
 	pp_label.modulate = COLOR_PP
+	pp_label.visible = combatant.uses_pp()
 
 	var target_atb: float = combatant.atb_ratio() * 100.0
 	if not _draining.get(panel, false) and atb_bar.value > target_atb + ATB_DRAIN_THRESHOLD:
