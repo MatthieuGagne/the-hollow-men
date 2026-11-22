@@ -15,25 +15,39 @@ func before_each() -> void:
 	_hud = _scene.get_node("UI/HUD")
 
 
-func test_panel_hides_pp_label_for_zero_pp_character() -> void:
+func _combatant(pp: int) -> Combatant:
 	var d := CharacterDefinition.new()
-	d.character_name = "NoPP"
+	d.character_name = "PP%d" % pp
 	d.max_hp = 100
-	d.max_pp = 0
-	var c := Combatant.from_definition(d)
-	var panel: Control = _hud._make_panel(c)
+	d.max_pp = pp
+	return Combatant.from_definition(d)
+
+
+func test_panel_blanks_pp_text_for_zero_pp_character() -> void:
+	var panel: Control = _hud._make_panel(_combatant(0))
 	add_child_autofree(panel)
-	assert_false(panel.get_node("PPLabel").visible,
+	assert_eq(panel.get_node("PPLabel").text, "",
 		"A character with no PP bar shows no PP value")
 
 
-func test_panel_shows_pp_label_for_a_normal_character() -> void:
-	var d := CharacterDefinition.new()
-	d.character_name = "HasPP"
-	d.max_hp = 100
-	d.max_pp = 40
-	var c := Combatant.from_definition(d)
-	var panel: Control = _hud._make_panel(c)
+func test_panel_shows_pp_text_for_a_normal_character() -> void:
+	var panel: Control = _hud._make_panel(_combatant(40))
 	add_child_autofree(panel)
-	assert_true(panel.get_node("PPLabel").visible,
+	assert_eq(panel.get_node("PPLabel").text, "40",
 		"A character with a PP bar still shows its PP value")
+
+
+func test_update_panel_blanks_pp_text_when_rebound_to_zero_pp() -> void:
+	var panel: Control = _hud._make_panel(_combatant(40))
+	add_child_autofree(panel)
+	_hud._update_panel(panel, _combatant(0))
+	assert_eq(panel.get_node("PPLabel").text, "",
+		"Rebinding a PP panel to a zero-PP character must clear the value")
+
+
+func test_update_panel_restores_pp_text_when_rebound_to_pp_character() -> void:
+	var panel: Control = _hud._make_panel(_combatant(0))
+	add_child_autofree(panel)
+	_hud._update_panel(panel, _combatant(40))
+	assert_eq(panel.get_node("PPLabel").text, "40",
+		"Rebinding a blank PP panel to a PP character must show the value")

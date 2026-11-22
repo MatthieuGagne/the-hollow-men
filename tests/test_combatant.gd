@@ -751,3 +751,9 @@ func test_uses_pp_is_false_for_a_zero_pp_character() -> void:
 	d.max_pp = 0
 	var c := Combatant.from_definition(d)
 	assert_false(c.uses_pp(), "max_pp 0 means the character has no PP bar")
+
+
+func test_pp_ratio_is_one_for_a_full_pp_character() -> void:
+	var c := _make_combatant(100, 50)
+	assert_almost_eq(c.pp_ratio(), 1.0, 0.001,
+		"A full PP bar still reports 1.0, so the guard cannot invert")
