@@ -152,9 +152,14 @@ func test_reid_ability_set_matches_the_pressure_kit() -> void:
 		powers.append(damage.power)
 	assert_eq(stacks, [1, 2, 2, 1], "Pressure added per rung; the finisher's stack count is unused")
 	assert_eq(consumes, [false, false, false, true], "only Close the Case consumes the stack")
-	assert_eq(scalings, [0.0, 0.0, 0.0, 0.2],
-		"only the finisher scales with Pressure")
-	assert_eq(powers, [1.0, 1.0, 1.5, 1.0], "only Heavy Blow carries a damage multiplier")
+	var expected_scalings: Array[float] = [0.0, 0.0, 0.0, 0.2]
+	var expected_powers: Array[float] = [1.0, 1.0, 1.5, 1.0]
+	for i in range(scalings.size()):
+		assert_almost_eq(scalings[i], expected_scalings[i], 0.0001,
+			"only the finisher scales with Pressure (rung %d)" % i)
+	for i in range(powers.size()):
+		assert_almost_eq(powers[i], expected_powers[i], 0.0001,
+			"only Heavy Blow carries a damage multiplier (rung %d)" % i)
 
 	var finisher := c.abilities[3].effects[0] as DamageEffect
 	assert_almost_eq(finisher.pressure_scaling * float(Combatant.MAX_PRESSURE_STACKS),

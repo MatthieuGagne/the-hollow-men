@@ -38,6 +38,9 @@ func setup(combatant: Combatant) -> void:
 
 	var list: Array[Ability] = combatant.abilities
 	var usable: int = mini(list.size(), _rows.size() - 1)
+	if list.size() > usable:
+		push_warning("ActionMenu shows %d of %d abilities for %s; the menu has Attack + %d rows"
+			% [usable, list.size(), combatant.character_name, usable])
 	for i in range(usable):
 		var ab: Ability = list[i]
 		var row: Label = _rows[i + 1]

@@ -12,7 +12,7 @@ extends AbilityEffect
 @export var amount: int = 0
 
 
-func resolve(_user: Combatant, target: Combatant) -> void:
+func resolve(target: Combatant) -> void:
 	if target.uses_pp():
 		target.drain_pp(amount)
 	else:

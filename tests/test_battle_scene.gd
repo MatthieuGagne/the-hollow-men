@@ -1193,10 +1193,15 @@ func test_select_ability_by_index_picks_from_the_array() -> void:
 
 
 func test_select_ability_out_of_range_selects_nothing() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "Only"
 	var d := CharacterDefinition.new()
 	d.max_hp = 100
-	d.abilities = [] as Array[Ability]
+	d.abilities = [a1] as Array[Ability]
 	_scene._active = Combatant.from_definition(d)
+	_scene.select_ability(0)
+	assert_not_null(_scene._selected_ability,
+		"fixture requires a live selection so the bounds check has something to clear")
 
 	_scene.select_ability(3)
 	assert_null(_scene._selected_ability,
@@ -1216,6 +1221,8 @@ func test_execute_action_ability_uses_the_menu_selected_row() -> void:
 	_scene._action_menu._selected_idx = 2  # row 2 = abilities[1]
 
 	_scene.execute_action("ability")
+	assert_not_null(_scene._selected_ability,
+		"the menu's selected row must map to an ability before it is dereferenced")
 	assert_eq(_scene._selected_ability.ability_name, "Second",
 		"execute_action must cast the ability on the menu's selected row")
 
@@ -1230,3 +1237,99 @@ func test_end_turn_clears_the_selected_ability() -> void:
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_null(_scene._selected_ability,
 		"_end_turn must clear the selection so it cannot leak into the next turn")
+
+
+func test_skip_turn_clears_the_selected_ability() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.select_ability(0)
+	assert_not_null(_scene._selected_ability, "fixture requires a live selection")
+
+	_scene.skip_turn()
+	assert_null(_scene._selected_ability,
+		"skip_turn must clear the selection so it cannot leak into the next turn")
+
+
+# --- Cost checked after the menu cached affordability ---
+
+func _make_scene_with_self_hp_cost() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleContext.configure()
+	var ab := Ability.new()
+	ab.ability_name = "Bleed Guard"
+	ab.hp_cost = 20
+	ab.target_mode = Ability.TargetMode.SELF
+	var d := CharacterDefinition.new()
+	d.id = "self_hp_cost"
+	d.character_name = "Self HP Cost"
+	d.max_hp = 100
+	d.max_pp = 0
+	d.spd_stat = 30
+	d.sprite_path = "res://assets/sprites/characters/reid.png"
+	d.sprite_vframes = 8
+	d.abilities = [ab] as Array[Ability]
+	PartyManager._permanent_members.append(Combatant.from_definition(d))
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	return s
+
+
+func test_ability_cost_failure_at_confirmation_keeps_the_turn() -> void:
+	var reid: Combatant = _scene.party[0]
+	var shade: Combatant = _scene.enemies[0]
+	reid.current_hp = 20          # Heavy Blow (12 HP) is affordable at setup
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	assert_true(_scene._action_menu._row_affordable[3],
+		"fixture requires Heavy Blow to render affordable when the menu opens")
+	_scene._action_menu._selected_idx = 3   # row 3 = abilities[2] = Heavy Blow
+
+	# An enemy attack lands while the menu is up: HP falls below the cost AFTER
+	# setup() cached affordability but BEFORE confirmation.
+	reid.current_hp = 5
+	var shade_hp_before: int = shade.current_hp
+
+	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
+
+	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
+		"a failed cost check must return to the menu, not end the turn")
+	assert_eq(_scene._active, reid, "the turn must be retained")
+	assert_eq(reid.atb, Combatant.ATB_MAX,
+		"ATB must not be consumed by a cast that never resolved")
+	assert_eq(shade.current_hp, shade_hp_before,
+		"nothing may resolve when the cost cannot be paid")
+	assert_true(_scene._action_menu.visible, "the action menu must come back")
+	assert_false(_scene._action_menu._row_affordable[3],
+		"Heavy Blow's row must be re-evaluated against current HP")
+	assert_almost_eq(_scene._action_menu._rows[3].modulate.a, ActionMenu.GREY_ALPHA, 0.001,
+		"the unaffordable row must visibly grey")
+
+
+func test_self_ability_cost_failure_keeps_the_turn() -> void:
+	var s := _make_scene_with_self_hp_cost()
+	var caster: Combatant = s.party[0]
+	caster.current_hp = 30
+	caster.atb = Combatant.ATB_MAX
+	s._begin_player_turn(caster)
+	assert_true(s._action_menu._row_affordable[1],
+		"fixture requires the SELF ability to render affordable when the menu opens")
+	s._action_menu._selected_idx = 1
+
+	# Enemies keep ticking during AWAITING_INPUT, so HP can fall before confirm.
+	caster.current_hp = 10
+	s.execute_action("ability")   # SELF resolves with no target picker
+
+	assert_eq(s._state, s.BattleState.AWAITING_INPUT,
+		"a failed SELF cost check must return to the menu, not end the turn")
+	assert_eq(s._active, caster, "the turn must be retained")
+	assert_eq(caster.atb, Combatant.ATB_MAX,
+		"ATB must not be consumed by a cast that never resolved")
+	assert_eq(caster.current_hp, 10,
+		"a failed cost check must not deduct HP")
+	assert_true(s._action_menu.visible, "the action menu must come back")
+	assert_false(s._action_menu._row_affordable[1],
+		"the SELF ability's row must be re-evaluated against current HP")
+	assert_almost_eq(s._action_menu._rows[1].modulate.a, ActionMenu.GREY_ALPHA, 0.001,
+		"the unaffordable row must visibly grey")

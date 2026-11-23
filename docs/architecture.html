@@ -1044,7 +1044,7 @@ flowchart TD
         <div class="item-list">
           <div class="item"><span class="item-name">character_name</span><span class="item-type">String</span></div>
           <div class="item"><span class="item-name">is_player_controlled</span><span class="item-type">bool</span></div>
-          <div class="item"><span class="item-name">ability</span><span class="item-type">Ability</span></div>
+          <div class="item"><span class="item-name">abilities</span><span class="item-type">Array[Ability]</span></div>
           <div class="item"><span class="item-name">max_hp, max_pp</span><span class="item-type">int</span></div>
           <div class="item"><span class="item-name">str_stat, def_stat, psy_stat, res_stat, spd_stat</span><span class="item-type">int</span></div>
           <div class="item"><span class="item-name">sigil_type</span><span class="item-type">SigilType</span></div>
@@ -1063,8 +1063,13 @@ flowchart TD
       <div class="detail-block">
         <div class="detail-block-title">Key methods</div>
         <div class="item-list">
-          <div class="item method"><span class="item-name">tick_atb(delta)</span><span class="item-desc"> — fills ATB by <code>spd_stat × ATB_FILL_RATE × delta</code></span></div>
-          <div class="item method"><span class="item-name">take_damage(amount) / heal(amount) / spend_pp(cost)</span></div>
+          <div class="item method"><span class="item-name">tick_atb(delta)</span><span class="item-desc"> — fills ATB by <code>spd_stat × ATB_FILL_RATE × atb_fill_multiplier() × delta</code></span></div>
+          <div class="item method"><span class="item-name">take_damage(amount) / heal(amount)</span></div>
+          <div class="item method"><span class="item-name">can_pay(ability) / pay_cost(ability) → bool</span><span class="item-desc"> — atomic HP + PP cost check; an HP cost never kills</span></div>
+          <div class="item method"><span class="item-name">uses_pp() → bool</span><span class="item-desc"> — false for Reid, whose only bar is HP</span></div>
+          <div class="item method"><span class="item-name">add_pressure(stacks) / consume_pressure() → int</span><span class="item-desc"> — capped at MAX_PRESSURE_STACKS (5)</span></div>
+          <div class="item method"><span class="item-name">defense_reduction() → float</span><span class="item-desc"> — 20% of DEF/RES per Pressure stack, additive to 100%</span></div>
+          <div class="item method"><span class="item-name">atb_fill_multiplier() → float</span><span class="item-desc"> — the single composition point for fill-rate modifiers (Reid's desperation)</span></div>
           <div class="item method"><span class="item-name">hp_ratio() / pp_ratio() / atb_ratio() / limit_ratio() → float</span><span class="item-desc"> — for UI bars</span></div>
           <div class="item method"><span class="item-name">calculate_damage(attacker, defender) → int</span><span class="item-desc"> — static, STR vs DEF formula</span></div>
         </div>
@@ -1078,15 +1083,18 @@ flowchart TD
       </div>
       <div class="card-path">scripts/battle/ability.gd — extends Resource</div>
       <div class="card-desc">
-        Simple data container for an ability. Each Combatant can have one <code>Ability</code>
-        assigned. The ability name is used to look up behavior in <code>BattleScene.execute_action()</code>.
+        A data container for one ability. Each Combatant can carry a list of them;
+        BattleScene routes by <code>target_mode</code> and applies the ability's
+        <code>effects</code>, so behaviour is data-driven rather than looked up by name.
       </div>
       <div class="detail-block">
         <div class="detail-block-title">Exported properties</div>
         <div class="item-list">
           <div class="item"><span class="item-name">ability_name</span><span class="item-type">String</span></div>
-          <div class="item"><span class="item-name">pp_cost</span><span class="item-type">int</span></div>
-          <div class="item"><span class="item-name">targets_party</span><span class="item-type">bool</span><span class="item-desc"> — true for ally-targeting abilities (triggers target selection mode)</span></div>
+          <div class="item"><span class="item-name">pp_cost, hp_cost</span><span class="item-type">int</span></div>
+          <div class="item"><span class="item-name">target_mode</span><span class="item-type">TargetMode</span><span class="item-desc"> — SELF / ONE_ALLY / ALL_ALLIES / ONE_ENEMY / ALL_ENEMIES</span></div>
+          <div class="item"><span class="item-name">switchable</span><span class="item-type">bool</span><span class="item-desc"> — ONE_* abilities can expand to their ALL_* form during selection</span></div>
+          <div class="item"><span class="item-name">effects</span><span class="item-type">Array[AbilityEffect]</span></div>
         </div>
       </div>
     </div>
@@ -1443,8 +1451,8 @@ flowchart TD
       </div>
       <div class="card-path">scenes/ui/ActionMenu.tscn · scripts/ui/action_menu.gd — extends Control</div>
       <div class="card-desc">
-        The battle action picker. Shows "Attack" plus the active combatant's ability (grayed out
-        if they can't afford the PP cost). Cursor navigated with move_up/move_down; confirmed
+        The battle action picker. Shows "Attack" plus the active combatant's abilities (grayed out
+        if they can't afford the HP/PP cost). Cursor navigated with move_up/move_down; confirmed
         with interact. Emits <code>action_selected</code> which BattleScene connects to.
       </div>
       <div class="detail-block">

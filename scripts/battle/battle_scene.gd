@@ -352,8 +352,8 @@ func execute_action(action_name: String) -> void:
 	# Abilities route by target_mode through the unified resolution path
 	if action_name == "ability":
 		var index: int = _action_menu.selected_ability_index
-		# A direct invocation (tests, scripted actions) has no ability row
-		# selected, so it uses the first ability.
+		# An ability action with no selected row (a synthetic invocation) falls
+		# back to the first ability in the combatant's list.
 		if index < 0:
 			index = 0
 		select_ability(index)
@@ -398,15 +398,27 @@ func _apply_nondamage_effects_to(recipient: Combatant) -> void:
 			if summoned != null:
 				add_enemy(summoned)
 		elif effect is DrainEffect:
-			effect.resolve(_active, recipient)
+			effect.resolve(recipient)
 		elif effect is PressureEffect:
 			effect.resolve(recipient)
+
+
+# The menu caches affordability at setup(), but enemies keep attacking while the
+# menu or the target cursor is open, so HP/PP can fall before confirmation. A
+# failed cost check is not a spent turn: restore the picker with affordability
+# recomputed against current HP/PP instead of consuming the combatant's ATB.
+func _return_to_action_menu() -> void:
+	_target_all = false
+	_clear_target_cursors()
+	_state = BattleState.AWAITING_INPUT
+	_action_menu.setup(_active)
+	_action_menu.show()
 
 
 # SELF abilities resolve with no selection step and no lunge.
 func _cast_self() -> void:
 	if not _active.pay_cost(_selected_ability):
-		_end_turn()
+		_return_to_action_menu()
 		return
 	_apply_nondamage_effects_to(_active)
 	combatant_updated.emit(_active)
@@ -427,8 +439,7 @@ func _perform_ability_on(recipients: Array[Combatant]) -> void:
 		_check_win_loss()
 		return
 	if not _active.pay_cost(_selected_ability):
-		_end_turn()
-		_check_win_loss()
+		_return_to_action_menu()
 		return
 	combatant_updated.emit(_active)
 
@@ -520,6 +531,7 @@ func confirm_party_target(target: Combatant) -> void:
 	if _active == null or _selected_ability == null:
 		return
 	if not _active.pay_cost(_selected_ability):
+		_return_to_action_menu()
 		return
 	var living_party: Array[Combatant] = party.filter(
 		func(p: Combatant) -> bool: return p.is_alive())
@@ -653,6 +665,7 @@ func skip_turn() -> void:
 		return
 	_active.skip_cooldown = SKIP_COOLDOWN
 	_active = null
+	_selected_ability = null
 	_action_menu.hide()
 	_state = BattleState.TICKING
 	player_turn_ended.emit()

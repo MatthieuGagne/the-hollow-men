@@ -130,8 +130,8 @@ func restore_roster(ids: Array) -> void:
 
 
 # Snapshot volatile runtime state (HP/PP/limit/status) for each permanent member.
-# Ephemeral fields (atb, skip_cooldown, ai_state) are intentionally excluded, so
-# they reset to defaults on the next load.
+# Ephemeral fields (atb, skip_cooldown, ai_state, pressure) are intentionally
+# excluded, so they reset to defaults on the next load.
 func snapshot_party_runtime() -> Array[PartyMemberSave]:
 	var result: Array[PartyMemberSave] = []
 	for m: Combatant in _permanent_members:

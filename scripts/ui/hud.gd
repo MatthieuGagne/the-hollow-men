@@ -230,6 +230,9 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 		panel.get_node("EffectsLabel").text = _format_effects(combatant)
 
 
+# Shared by the party and enemy panels. No party member can be pressured today
+# (all four Reid abilities are ONE_ENEMY), so the PRESSURE line is enemy-facing
+# for now but stays in the shared formatter rather than duplicating it.
 func _format_effects(combatant: Combatant) -> String:
 	var parts: Array = []
 	if combatant.pressure > 0:

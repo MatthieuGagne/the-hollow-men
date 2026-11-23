@@ -28,6 +28,9 @@ const PRESSURE_REDUCTION_PER_STACK: float = 0.2
 # Additive cap: defences can never be reduced by more than 100%.
 const MAX_DEFENSE_REDUCTION: float = 1.0
 # Additive cap: a single damage-amplification source can never exceed +100%.
+# Composition is per-source, not shared — a second amplification source must
+# first move this clamp to one additive accumulator across all sources, or two
+# independently clamped sources will multiply to +300% with nothing failing.
 const MAX_DAMAGE_AMPLIFICATION: float = 1.0
 
 # --- Delegating properties ---

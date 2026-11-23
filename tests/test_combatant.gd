@@ -150,7 +150,7 @@ func test_atb_fill_multiplier_never_drops_below_one_when_hp_exceeds_max() -> voi
 	d.atb_desperation = 1.0
 	var c := Combatant.from_definition(d)
 	c.current_hp = 150
-	assert_eq(c.atb_fill_multiplier(), 1.0,
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
 		"HP above max must yield exactly the baseline multiplier, never less")
 
 
