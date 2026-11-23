@@ -95,3 +95,31 @@ func test_margot_ability_has_psychic_effect() -> void:
 	var a := _ability_of("res://characters/margot.tres")
 	assert_eq(a.effects.size(), 1)
 	assert_eq(a.effects[0].kind, DamageEffect.Kind.PSYCHIC)
+
+
+func test_pressure_scaled_damage_grows_with_the_stack() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PIERCING
+	e.pressure_scaling = 0.5
+
+	var user := Combatant.from_definition(CharacterDefinition.new())
+	user.def.str_stat = 100
+
+	var unpressured := Combatant.from_definition(EnemyDefinition.new())
+	var pressured := Combatant.from_definition(EnemyDefinition.new())
+	pressured.add_pressure(2)
+
+	assert_gt(e.compute(user, pressured), e.compute(user, unpressured),
+		"Consumed Pressure must increase the finisher's damage")
+
+
+func test_pressure_scaling_defaults_to_no_effect() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PIERCING
+	var user := Combatant.from_definition(CharacterDefinition.new())
+	user.def.str_stat = 100
+	var pressured := Combatant.from_definition(EnemyDefinition.new())
+	pressured.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	var plain := Combatant.from_definition(EnemyDefinition.new())
+	assert_eq(e.compute(user, pressured), e.compute(user, plain),
+		"Abilities without pressure_scaling are unaffected by the stack")
