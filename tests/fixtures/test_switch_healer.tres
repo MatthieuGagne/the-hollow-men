@@ -31,4 +31,4 @@ spd_stat = 32
 sigil_type = 0
 sprite_path = "res://assets/sprites/characters/karim.png"
 sprite_vframes = 8
-ability = SubResource("ability_switch_heal")
+abilities = Array[Ability]([SubResource("ability_switch_heal")])

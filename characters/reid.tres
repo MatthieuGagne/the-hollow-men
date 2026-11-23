@@ -1,19 +1,68 @@
-[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle/character_definition.gd" id="1_chardef"]
 [ext_resource type="Script" path="res://scripts/battle/ability.gd" id="2_ability"]
 [ext_resource type="Script" path="res://scripts/battle/damage_effect.gd" id="3_dmg"]
+[ext_resource type="Script" path="res://scripts/battle/pressure_effect.gd" id="4_pressure"]
 
-[sub_resource type="Resource" id="dmg_reid"]
+[sub_resource type="Resource" id="dmg_piercing_strike"]
 script = ExtResource("3_dmg")
 kind = 1
 
-[sub_resource type="Resource" id="ability_reid"]
+[sub_resource type="Resource" id="dmg_work_the_body"]
+script = ExtResource("3_dmg")
+
+[sub_resource type="Resource" id="dmg_heavy_blow"]
+script = ExtResource("3_dmg")
+power = 1.5
+
+[sub_resource type="Resource" id="dmg_close_the_case"]
+script = ExtResource("3_dmg")
+kind = 1
+pressure_scaling = 0.2
+
+[sub_resource type="Resource" id="pressure_piercing_strike"]
+script = ExtResource("4_pressure")
+stacks = 1
+
+[sub_resource type="Resource" id="pressure_work_the_body"]
+script = ExtResource("4_pressure")
+stacks = 2
+
+[sub_resource type="Resource" id="pressure_heavy_blow"]
+script = ExtResource("4_pressure")
+stacks = 2
+
+[sub_resource type="Resource" id="pressure_close_the_case"]
+script = ExtResource("4_pressure")
+consumes = true
+
+[sub_resource type="Resource" id="ability_piercing_strike"]
 script = ExtResource("2_ability")
 ability_name = "Piercing Strike"
-pp_cost = 3
+hp_cost = 6
 target_mode = 3
-effects = Array[AbilityEffect]([SubResource("dmg_reid")])
+effects = Array[AbilityEffect]([SubResource("dmg_piercing_strike"), SubResource("pressure_piercing_strike")])
+
+[sub_resource type="Resource" id="ability_work_the_body"]
+script = ExtResource("2_ability")
+ability_name = "Work the Body"
+target_mode = 3
+effects = Array[AbilityEffect]([SubResource("dmg_work_the_body"), SubResource("pressure_work_the_body")])
+
+[sub_resource type="Resource" id="ability_heavy_blow"]
+script = ExtResource("2_ability")
+ability_name = "Heavy Blow"
+hp_cost = 12
+target_mode = 3
+effects = Array[AbilityEffect]([SubResource("dmg_heavy_blow"), SubResource("pressure_heavy_blow")])
+
+[sub_resource type="Resource" id="ability_close_the_case"]
+script = ExtResource("2_ability")
+ability_name = "Close the Case"
+hp_cost = 18
+target_mode = 3
+effects = Array[AbilityEffect]([SubResource("dmg_close_the_case"), SubResource("pressure_close_the_case")])
 
 [resource]
 script = ExtResource("1_chardef")
@@ -21,7 +70,7 @@ id = "reid"
 character_name = "Reid"
 is_player_controlled = true
 max_hp = 350
-max_pp = 20
+max_pp = 0
 str_stat = 45
 def_stat = 30
 psy_stat = 15
@@ -30,9 +79,10 @@ spd_stat = 30
 sigil_type = 0
 sprite_path = "res://assets/sprites/characters/reid.png"
 sprite_vframes = 8
-ability = SubResource("ability_reid")
+atb_desperation = 1.0
+abilities = Array[Ability]([SubResource("ability_piercing_strike"), SubResource("ability_work_the_body"), SubResource("ability_heavy_blow"), SubResource("ability_close_the_case")])
 hp_growth = 35
-pp_growth = 2
+pp_growth = 0
 str_growth = 5
 def_growth = 3
 psy_growth = 1

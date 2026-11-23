@@ -10,8 +10,13 @@ var _cursor: Label
 var _rows: Array[Label] = []
 var _selected_idx: int = 0
 var _row_count: int = 1
-var _ability_affordable: bool = false
+var _row_affordable: Array[bool] = []
 var _is_paused: bool = false
+
+# Maps the cursor row to an index into the combatant's abilities array.
+# Row 0 is Attack, so ability i lives on row i + 1.
+var selected_ability_index: int:
+	get: return _selected_idx - 1
 
 
 func _ready() -> void:
@@ -29,13 +34,21 @@ func _ready() -> void:
 func setup(combatant: Combatant) -> void:
 	_selected_idx = 0
 	_row_count = 1
-	_ability_affordable = false
+	_row_affordable = [true]
 
-	if combatant.ability != null:
-		_rows[1].text = combatant.ability.ability_name
-		_ability_affordable = combatant.current_pp >= combatant.ability.pp_cost
-		_rows[1].modulate.a = 1.0 if _ability_affordable else GREY_ALPHA
-		_row_count = 2
+	var list: Array[Ability] = combatant.abilities
+	var usable: int = mini(list.size(), _rows.size() - 1)
+	if list.size() > usable:
+		push_warning("ActionMenu shows %d of %d abilities for %s; the menu has Attack + %d rows"
+			% [usable, list.size(), combatant.character_name, usable])
+	for i in range(usable):
+		var ab: Ability = list[i]
+		var row: Label = _rows[i + 1]
+		row.text = ab.ability_name
+		var affordable: bool = combatant.can_pay(ab)
+		_row_affordable.append(affordable)
+		row.modulate.a = 1.0 if affordable else GREY_ALPHA
+		_row_count += 1
 
 	for i in range(_rows.size()):
 		_rows[i].visible = i < _row_count
@@ -69,7 +82,7 @@ func _navigate(delta: int) -> void:
 func _confirm_selection() -> void:
 	if _selected_idx == 0:
 		action_selected.emit("attack")
-	elif _ability_affordable:
+	elif _row_affordable[_selected_idx]:
 		action_selected.emit("ability")
 
 

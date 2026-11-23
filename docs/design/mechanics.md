@@ -104,7 +104,8 @@ For the Black Mage, swapping mid-game *is* their arc — the moment they defect 
 - **ATB** — every unit has a gauge that fills based on SPD. When full, they act. No pause when in menus.
 - **4 active party members** at a time.
 - **Command menu** — uniform across all characters: Attack / Abilities / Item / Limit. Differentiation lives inside the Abilities list. Forms, Sets, devices and overdrawn casts are all *entries in that list*, never new top-level menus.
-- **Damage amplification is additive, with a cap.** Pressure, Overdraw, Distortion and exposure effects sum rather than multiply; total amplification from all sources is capped (target: +100%). Multiplicative stacking trivializes bosses.
+- **Damage amplification is additive, with a cap.** Pressure, Overdraw, Distortion and exposure effects are meant to sum rather than multiply, with total amplification capped at +100%. Implemented today is the per-source clamp: each individual source adds at most +100% (`DamageEffect.pressure_scaling × stacks ≤ 1.0`). The shared additive accumulator is a prerequisite for shipping a second amplification source.
+- **Pressure** — max **5 stacks** per target. Each stack erodes **20% of DEF and RES** for the whole party (additive), so a full 5-stack erases both: further Pressure is wasted until the stack is consumed or the target dies.
 
 ### Physical Attack
 - Damage formula: **(STR - enemy DEF) × random(0.9–1.1)**
@@ -150,14 +151,14 @@ Single-target attrition. He builds a case against one enemy and closes it. Crit 
 
 **His gauge fills faster the lower his HP is.** Combined with HP-costed abilities, playing Reid well means deliberately running low.
 
-**Pressure** stacks on a target, eroding its DEF and RES **for the whole party** — "who is Reid working on" organizes every fight. Stacks persist on that enemy for the entire battle.
+**Pressure** stacks on a target, eroding its DEF and RES **for the whole party** — "who is Reid working on" organizes every fight. Max **5 stacks**; each stack removes **20% of DEF and RES**, so a full stack reduces both to zero. Stacks persist on that enemy for the entire battle.
 
 | Ability | Cost | Effect | Unlock |
 |---------|------|--------|--------|
 | **Piercing Strike** | HP | Single target, ignores enemy DEF, +1 Pressure | Level 1 |
 | **Work the Body** | free | Low damage, fast, +2 Pressure | TBD |
-| **Heavy Blow** | HP | High STR multiplier, +2 Pressure | TBD |
-| **Close the Case** | HP | Consumes all Pressure; damage scales brutally with the stack | TBD |
+| **Heavy Blow** | HP | **×1.5 damage**, +2 Pressure | TBD |
+| **Close the Case** | HP | Consumes all Pressure; **+20% damage per stack** (capped at +100%) | TBD |
 
 **Late-game:** when Reid finally takes a sigil, he gains a PP bar. After thirty hours of knowing what that bar means in this world, it reads as a loss, not an upgrade.
 

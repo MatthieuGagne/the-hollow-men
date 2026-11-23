@@ -56,7 +56,7 @@ func test_compute_heal_uses_effective_psy() -> void:
 
 func test_karim_ability_has_heal_effect() -> void:
 	var karim: Combatant = Combatant.from_definition(load("res://characters/karim.tres"))
-	var a := karim.ability
+	var a := karim.abilities[0]
 	assert_eq(a.ability_name, "Field Suture")
 	assert_eq(a.target_mode, Ability.TargetMode.ONE_ALLY, "Field Suture targets one ally")
 	assert_eq(a.effects.size(), 1, "exactly one effect")
@@ -66,6 +66,6 @@ func test_karim_ability_has_heal_effect() -> void:
 
 func test_karim_heals_60_at_current_psy() -> void:
 	var karim: Combatant = Combatant.from_definition(load("res://characters/karim.tres"))
-	var heal: HealEffect = karim.ability.effects[0]
+	var heal: HealEffect = karim.abilities[0].effects[0]
 	assert_eq(heal.compute_heal(karim, karim), 60,
 		"behavior-preserving: Karim still heals 60 at PSY 45")

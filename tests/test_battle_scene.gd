@@ -242,13 +242,16 @@ func test_ability_damages_enemy_as_iris() -> void:
 	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
 
 
-func test_ability_spends_pp() -> void:
+func test_ability_costs_hp_not_pp() -> void:
 	var reid: Combatant = _scene.party[0]
+	var hp_before: int = reid.current_hp
 	var pp_before: int = reid.current_pp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
-	assert_lt(reid.current_pp, pp_before, "Piercing Strike must spend PP")
+	assert_lt(reid.current_hp, hp_before, "Piercing Strike must cost HP")
+	assert_eq(reid.current_pp, pp_before, "Reid has no PP to spend")
+	assert_eq(reid.current_pp, 0, "Reid is the zero-PP character")
 
 
 func test_ability_returns_to_ticking() -> void:
@@ -260,15 +263,17 @@ func test_ability_returns_to_ticking() -> void:
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
 
-func test_ability_does_not_damage_when_pp_insufficient() -> void:
+func test_ability_does_not_damage_when_hp_cost_unaffordable() -> void:
 	var reid: Combatant = _scene.party[0]
-	reid.current_pp = 0
+	# Piercing Strike costs 6 HP and may never leave the caster below 1 HP.
+	reid.current_hp = 5
 	var shade: Combatant = _scene.enemies[0]
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
-	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when PP is 0")
+	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when the HP cost is unaffordable")
+	assert_eq(reid.current_hp, 5, "a rejected cost takes nothing")
 
 
 func _add_karim_to_party() -> Combatant:
@@ -284,6 +289,91 @@ func _add_karim_to_party() -> Combatant:
 	sprite.modulate = Color.WHITE
 	_scene.get_node("PartyContainer").add_child(sprite)
 	return karim
+
+
+# Party member whose only ability is a data-driven Psychic Drain on an ally —
+# exercises effect dispatch rather than calling DrainEffect.resolve() directly.
+func _add_drainer_to_party() -> Combatant:
+	var drain := DrainEffect.new()
+	drain.amount = 10
+	var ability := Ability.new()
+	ability.ability_name = "Psychic Drain"
+	ability.target_mode = Ability.TargetMode.ONE_ALLY
+	var effects: Array[AbilityEffect] = [drain]
+	ability.effects = effects
+
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 30
+	d.sprite_path = "res://assets/sprites/characters/karim.png"
+	d.sprite_vframes = 8
+	var abilities: Array[Ability] = [ability]
+	d.abilities = abilities
+
+	var c: Combatant = Combatant.from_definition(d)
+	_scene.party.append(c)
+	var sprite := Sprite2D.new()
+	sprite.vframes = c.sprite_vframes
+	sprite.frame = 2
+	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[_scene.party.size() - 1])
+	sprite.texture = load(c.sprite_path)
+	sprite.modulate = Color.WHITE
+	_scene.get_node("PartyContainer").add_child(sprite)
+	return c
+
+
+func test_drain_effect_dispatches_through_party_target_resolution() -> void:
+	var drainer := _add_drainer_to_party()
+	var karim := _add_karim_to_party()
+	var pp_before: int = karim.current_pp
+	assert_gt(pp_before, 10, "fixture requires Karim to have PP to drain")
+	_scene._begin_player_turn(drainer)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(karim)
+	assert_eq(karim.current_pp, pp_before - 10,
+		"data-driven DrainEffect must drain PP through _apply_nondamage_effects_to")
+
+
+# Party member whose only ability applies Pressure to an ally — proves the
+# PressureEffect branch in _apply_nondamage_effects_to actually fires.
+func _add_pressurer_to_party() -> Combatant:
+	var pressure := PressureEffect.new()
+	pressure.stacks = 2
+	var ability := Ability.new()
+	ability.ability_name = "Pressure"
+	ability.target_mode = Ability.TargetMode.ONE_ALLY
+	var effects: Array[AbilityEffect] = [pressure]
+	ability.effects = effects
+
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 30
+	d.sprite_path = "res://assets/sprites/characters/karim.png"
+	d.sprite_vframes = 8
+	var abilities: Array[Ability] = [ability]
+	d.abilities = abilities
+
+	var c: Combatant = Combatant.from_definition(d)
+	_scene.party.append(c)
+	var sprite := Sprite2D.new()
+	sprite.vframes = c.sprite_vframes
+	sprite.frame = 2
+	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[_scene.party.size() - 1])
+	sprite.texture = load(c.sprite_path)
+	sprite.modulate = Color.WHITE
+	_scene.get_node("PartyContainer").add_child(sprite)
+	return c
+
+
+func test_pressure_effect_dispatches_through_party_target_resolution() -> void:
+	var pressurer := _add_pressurer_to_party()
+	var reid: Combatant = _scene.party[0]
+	assert_eq(reid.pressure, 0, "fixture requires an unpressured recipient")
+	_scene._begin_player_turn(pressurer)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.pressure, 2,
+		"data-driven PressureEffect must apply through _apply_nondamage_effects_to")
 
 
 func test_party_targeting_ability_sets_selecting_ally() -> void:
@@ -467,7 +557,7 @@ func test_enemies_tick_during_selecting_ally() -> void:
 		"enemy ATB must advance during SELECTING_ALLY so enemies can still attack")
 
 
-func test_ability_spawns_pp_cost_label_over_attacker() -> void:
+func test_ability_spawns_cost_label_over_attacker() -> void:
 	var reid: Combatant = _scene.party[0]
 	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
 	var child_count_before: int = reid_sprite.get_child_count()
@@ -476,7 +566,7 @@ func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_gt(reid_sprite.get_child_count(), child_count_before,
-		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
+		"a floating HP cost label must be spawned over the attacker's sprite after ability use")
 
 
 func test_party_ability_spawns_pp_cost_label_over_attacker() -> void:
@@ -1026,17 +1116,17 @@ func test_ability_uses_effects_data_not_character_name() -> void:
 	# Reid with his piercing effect removed deals no ability damage,
 	# proving _resolve_ability reads effects (data), not character_name.
 	# Save and restore effects to avoid polluting the shared CharacterDefinition
-	# cache (ability is a getter that returns def.ability directly — no setter).
+	# cache (abilities is a getter that returns def.abilities directly — no setter).
 	var reid: Combatant = _scene.party[0]
-	var saved_effects := reid.ability.effects.duplicate()
-	reid.ability.effects = []
+	var saved_effects := reid.abilities[0].effects.duplicate()
+	reid.abilities[0].effects = []
 	var shade: Combatant = _scene.enemies[0]
 	var hp_before := shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
-	reid.ability.effects = saved_effects
+	reid.abilities[0].effects = saved_effects
 	assert_eq(shade.current_hp, hp_before,
 		"with no DamageEffect, ability deals no damage — dispatch is data-driven, not name-driven")
 
@@ -1080,3 +1170,166 @@ func test_build_victory_text_multiple_levelups() -> void:
 		[{"name": "Reid", "to": 2}, {"name": "Iris", "to": 2}])
 	assert_eq(text,
 		"Victory!\nGained 105 XP\nReid reached Lv 2!\nIris reached Lv 2!")
+
+
+func test_selected_ability_defaults_to_null_between_turns() -> void:
+	assert_null(_scene._selected_ability,
+		"No ability is selected before the player picks one")
+
+
+func test_select_ability_by_index_picks_from_the_array() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [a1, a2] as Array[Ability]
+	_scene._active = Combatant.from_definition(d)
+
+	_scene.select_ability(1)
+	assert_eq(_scene._selected_ability.ability_name, "Second",
+		"select_ability(i) must pick abilities[i]")
+
+
+func test_select_ability_out_of_range_selects_nothing() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "Only"
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [a1] as Array[Ability]
+	_scene._active = Combatant.from_definition(d)
+	_scene.select_ability(0)
+	assert_not_null(_scene._selected_ability,
+		"fixture requires a live selection so the bounds check has something to clear")
+
+	_scene.select_ability(3)
+	assert_null(_scene._selected_ability,
+		"An out-of-range index must not crash and must select nothing")
+
+
+func test_execute_action_ability_uses_the_menu_selected_row() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.abilities = [a1, a2] as Array[Ability]
+	var c := Combatant.from_definition(d)
+	_scene._begin_player_turn(c)
+	_scene._action_menu._selected_idx = 2  # row 2 = abilities[1]
+
+	_scene.execute_action("ability")
+	assert_not_null(_scene._selected_ability,
+		"the menu's selected row must map to an ability before it is dereferenced")
+	assert_eq(_scene._selected_ability.ability_name, "Second",
+		"execute_action must cast the ability on the menu's selected row")
+
+
+func test_end_turn_clears_the_selected_ability() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.execute_action("ability")
+	assert_not_null(_scene._selected_ability,
+		"an ability is selected once the player chooses it")
+	_scene.confirm_enemy_target()
+	await wait_for_signal(_scene.player_turn_ended, 2.0)
+	assert_null(_scene._selected_ability,
+		"_end_turn must clear the selection so it cannot leak into the next turn")
+
+
+func test_skip_turn_clears_the_selected_ability() -> void:
+	var reid: Combatant = _scene.party[0]
+	_scene._begin_player_turn(reid)
+	_scene.select_ability(0)
+	assert_not_null(_scene._selected_ability, "fixture requires a live selection")
+
+	_scene.skip_turn()
+	assert_null(_scene._selected_ability,
+		"skip_turn must clear the selection so it cannot leak into the next turn")
+
+
+# --- Cost checked after the menu cached affordability ---
+
+func _make_scene_with_self_hp_cost() -> BattleScene:
+	PartyManager._permanent_members.clear()
+	PartyManager._temporary_members.clear()
+	BattleContext.configure()
+	var ab := Ability.new()
+	ab.ability_name = "Bleed Guard"
+	ab.hp_cost = 20
+	ab.target_mode = Ability.TargetMode.SELF
+	var d := CharacterDefinition.new()
+	d.id = "self_hp_cost"
+	d.character_name = "Self HP Cost"
+	d.max_hp = 100
+	d.max_pp = 0
+	d.spd_stat = 30
+	d.sprite_path = "res://assets/sprites/characters/reid.png"
+	d.sprite_vframes = 8
+	d.abilities = [ab] as Array[Ability]
+	PartyManager._permanent_members.append(Combatant.from_definition(d))
+	var s: BattleScene = load("res://scenes/battle/BattleScene.tscn").instantiate()
+	add_child_autofree(s)
+	return s
+
+
+func test_ability_cost_failure_at_confirmation_keeps_the_turn() -> void:
+	var reid: Combatant = _scene.party[0]
+	var shade: Combatant = _scene.enemies[0]
+	reid.current_hp = 20          # Heavy Blow (12 HP) is affordable at setup
+	reid.atb = Combatant.ATB_MAX
+	_scene._begin_player_turn(reid)
+	assert_true(_scene._action_menu._row_affordable[3],
+		"fixture requires Heavy Blow to render affordable when the menu opens")
+	_scene._action_menu._selected_idx = 3   # row 3 = abilities[2] = Heavy Blow
+
+	# An enemy attack lands while the menu is up: HP falls below the cost AFTER
+	# setup() cached affordability but BEFORE confirmation.
+	reid.current_hp = 5
+	var shade_hp_before: int = shade.current_hp
+
+	_scene.execute_action("ability")
+	_scene.confirm_enemy_target()
+
+	assert_eq(_scene._state, _scene.BattleState.AWAITING_INPUT,
+		"a failed cost check must return to the menu, not end the turn")
+	assert_eq(_scene._active, reid, "the turn must be retained")
+	assert_eq(reid.atb, Combatant.ATB_MAX,
+		"ATB must not be consumed by a cast that never resolved")
+	assert_eq(shade.current_hp, shade_hp_before,
+		"nothing may resolve when the cost cannot be paid")
+	assert_true(_scene._action_menu.visible, "the action menu must come back")
+	assert_false(_scene._action_menu._row_affordable[3],
+		"Heavy Blow's row must be re-evaluated against current HP")
+	assert_almost_eq(_scene._action_menu._rows[3].modulate.a, ActionMenu.GREY_ALPHA, 0.001,
+		"the unaffordable row must visibly grey")
+
+
+func test_self_ability_cost_failure_keeps_the_turn() -> void:
+	var s := _make_scene_with_self_hp_cost()
+	var caster: Combatant = s.party[0]
+	caster.current_hp = 30
+	caster.atb = Combatant.ATB_MAX
+	s._begin_player_turn(caster)
+	assert_true(s._action_menu._row_affordable[1],
+		"fixture requires the SELF ability to render affordable when the menu opens")
+	s._action_menu._selected_idx = 1
+
+	# Enemies keep ticking during AWAITING_INPUT, so HP can fall before confirm.
+	caster.current_hp = 10
+	s.execute_action("ability")   # SELF resolves with no target picker
+
+	assert_eq(s._state, s.BattleState.AWAITING_INPUT,
+		"a failed SELF cost check must return to the menu, not end the turn")
+	assert_eq(s._active, caster, "the turn must be retained")
+	assert_eq(caster.atb, Combatant.ATB_MAX,
+		"ATB must not be consumed by a cast that never resolved")
+	assert_eq(caster.current_hp, 10,
+		"a failed cost check must not deduct HP")
+	assert_true(s._action_menu.visible, "the action menu must come back")
+	assert_false(s._action_menu._row_affordable[1],
+		"the SELF ability's row must be re-evaluated against current HP")
+	assert_almost_eq(s._action_menu._rows[1].modulate.a, ActionMenu.GREY_ALPHA, 0.001,
+		"the unaffordable row must visibly grey")

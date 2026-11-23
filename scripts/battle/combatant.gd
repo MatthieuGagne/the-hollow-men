@@ -11,6 +11,7 @@ var atb: float = 0.0
 var limit_gauge: float = 0.0
 var skip_cooldown: float = 0.0
 var active_effects: Array[StatusEffect] = []
+var pressure: int = 0
 var ai_state: Dictionary = {}
 
 const ATB_MAX: float = 100.0
@@ -19,6 +20,18 @@ const LIMIT_MAX: float = 100.0
 const LIMIT_CAP_BUREAU: float = 80.0
 # ATB fill rate multiplier — spd_stat=10 fills ATB in ~6.67 s (within the 6–8 s design target)
 const ATB_FILL_RATE: float = 1.5
+
+# Pressure — Reid's verb. Stacks erode the target's defences for every
+# attacker, not just Reid, and persist for the whole battle.
+const MAX_PRESSURE_STACKS: int = 5
+const PRESSURE_REDUCTION_PER_STACK: float = 0.2
+# Additive cap: defences can never be reduced by more than 100%.
+const MAX_DEFENSE_REDUCTION: float = 1.0
+# Additive cap: a single damage-amplification source can never exceed +100%.
+# Composition is per-source, not shared — a second amplification source must
+# first move this clamp to one additive accumulator across all sources, or two
+# independently clamped sources will multiply to +300% with nothing failing.
+const MAX_DAMAGE_AMPLIFICATION: float = 1.0
 
 # --- Delegating properties ---
 
@@ -73,8 +86,10 @@ var spd_stat: int:
 var sigil_type: CombatantDefinition.SigilType:
 	get: return def.sigil_type
 
-var ability: Ability:
-	get: return (def as CharacterDefinition).ability if def is CharacterDefinition else null
+var abilities: Array[Ability]:
+	get:
+		var cd := _char_def()
+		return cd.abilities if cd != null else ([] as Array[Ability])
 
 var ai: EnemyAI:
 	get: return (def as EnemyDefinition).ai if def is EnemyDefinition else null
@@ -110,6 +125,7 @@ func reset_runtime_state() -> void:
 	limit_gauge = 0.0
 	skip_cooldown = 0.0
 	active_effects = []
+	pressure = 0
 	ai_state = {}
 
 
@@ -129,6 +145,21 @@ func apply_effect(effect: StatusEffect) -> void:
 	active_effects.append(effect)
 
 
+func add_pressure(stacks: int) -> void:
+	pressure = mini(pressure + stacks, MAX_PRESSURE_STACKS)
+
+
+func consume_pressure() -> int:
+	var held := pressure
+	pressure = 0
+	return held
+
+
+# Fraction of DEF/RES removed by the current stack, clamped to the additive cap.
+func defense_reduction() -> float:
+	return minf(float(pressure) * PRESSURE_REDUCTION_PER_STACK, MAX_DEFENSE_REDUCTION)
+
+
 func tick_effects() -> void:
 	var i := active_effects.size() - 1
 	while i >= 0:
@@ -143,6 +174,8 @@ func get_effective_stat(stat: StatusEffect.StatAxis) -> int:
 	for effect in active_effects:
 		if effect.stat == stat:
 			base += effect.modifier
+	if pressure > 0 and (stat == StatusEffect.StatAxis.DEF or stat == StatusEffect.StatAxis.RES):
+		base = int(round(float(base) * (1.0 - defense_reduction())))
 	return maxi(0, base)
 
 
@@ -160,7 +193,22 @@ func _base_stat(stat: StatusEffect.StatAxis) -> int:
 func tick_atb(delta: float) -> void:
 	if is_dead():
 		return
-	atb = minf(atb + float(spd_stat) * delta * ATB_FILL_RATE, ATB_MAX)
+	var gain: float = float(spd_stat) * delta * ATB_FILL_RATE * atb_fill_multiplier()
+	atb = minf(atb + gain, ATB_MAX)
+
+
+# Single composition point for every ATB fill-rate modifier. Each source
+# multiplies into `mult`, so adding another (Paz's Uptempo, Aio's Forms) is one
+# more `mult *= ...` line rather than a rewrite. Nothing else may scale the
+# fill rate.
+func atb_fill_multiplier() -> float:
+	var mult := 1.0
+	var cd := _char_def()
+	if cd != null and not is_equal_approx(cd.atb_desperation, 0.0):
+		# Clamp the missing-HP fraction: a stale current_hp above max_hp must
+		# never make the gauge slower than baseline.
+		mult *= 1.0 + cd.atb_desperation * maxf(0.0, 1.0 - hp_ratio())
+	return mult
 
 
 func atb_full() -> bool:
@@ -211,10 +259,25 @@ func heal(amount: int) -> void:
 	current_hp = mini(current_hp + amount, max_hp)
 
 
-func spend_pp(cost: int) -> bool:
-	if current_pp < cost:
+# True when the user can pay both costs. An HP cost is never allowed to kill
+# the user — Reid bleeds for his abilities, he does not die for them.
+func can_pay(ability: Ability) -> bool:
+	if ability == null:
 		return false
-	current_pp -= cost
+	if current_pp < ability.pp_cost:
+		return false
+	if ability.hp_cost > 0 and current_hp - ability.hp_cost < 1:
+		return false
+	return true
+
+
+# Deducts both costs atomically. Returns false and changes nothing when the
+# cost cannot be met.
+func pay_cost(ability: Ability) -> bool:
+	if not can_pay(ability):
+		return false
+	current_pp -= ability.pp_cost
+	current_hp -= ability.hp_cost
 	return true
 
 
@@ -222,8 +285,12 @@ func hp_ratio() -> float:
 	return float(current_hp) / float(max_hp)
 
 
+func uses_pp() -> bool:
+	return max_pp > 0
+
+
 func pp_ratio() -> float:
-	return float(current_pp) / float(max_pp)
+	return float(current_pp) / float(max_pp) if uses_pp() else 0.0
 
 
 func atb_ratio() -> float:

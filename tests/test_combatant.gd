@@ -36,8 +36,10 @@ func test_reid_loads_with_correct_stats() -> void:
 	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	assert_eq(reid.character_name, "Reid")
 	assert_eq(reid.max_hp, 350)
-	assert_eq(reid.max_pp, 20)
+	assert_eq(reid.max_pp, 0, "Reid pays HP, never PP")
 	assert_eq(reid.spd_stat, 30)
+	assert_almost_eq((reid.def as CharacterDefinition).atb_desperation, 1.0, 0.0001,
+		"Reid's gauge accelerates as he loses HP")
 	assert_eq(reid.current_hp, 350)
 	assert_true(reid.is_player_controlled)
 
@@ -121,6 +123,60 @@ func test_tick_atb_skips_downed_combatant() -> void:
 	assert_eq(c.atb, atb_before, "dead combatant ATB must not advance")
 
 
+func test_atb_fill_multiplier_is_one_by_default() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	var c := Combatant.from_definition(d)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
+		"Characters fill at base rate unless configured otherwise")
+
+
+func test_atb_fill_multiplier_scales_with_missing_hp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.atb_desperation = 1.0
+	var c := Combatant.from_definition(d)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001, "Full HP means no bonus")
+	c.current_hp = 25
+	assert_almost_eq(c.atb_fill_multiplier(), 1.75, 0.001,
+		"75% missing HP at desperation 1.0 means a 1.75x fill rate")
+
+
+func test_atb_fill_multiplier_never_drops_below_one_when_hp_exceeds_max() -> void:
+	# A save restored against a retuned-down max_hp can leave current_hp above
+	# max_hp. hp_ratio() then exceeds 1.0; the gauge must not run slower.
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.atb_desperation = 1.0
+	var c := Combatant.from_definition(d)
+	c.current_hp = 150
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
+		"HP above max must yield exactly the baseline multiplier, never less")
+
+
+func test_atb_fill_multiplier_is_one_for_enemies() -> void:
+	var e := EnemyDefinition.new()
+	e.max_hp = 100
+	var c := Combatant.from_definition(e)
+	assert_almost_eq(c.atb_fill_multiplier(), 1.0, 0.001,
+		"Enemies have no CharacterDefinition, so they never accelerate")
+
+
+func test_tick_atb_honours_the_multiplier() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.spd_stat = 10
+	d.atb_desperation = 1.0
+	var fast := Combatant.from_definition(d)
+	fast.current_hp = 25
+	var slow := Combatant.from_definition(d)
+
+	fast.tick_atb(0.1)
+	slow.tick_atb(0.1)
+	assert_gt(fast.atb, slow.atb,
+		"The wounded combatant must gain more ATB over the same delta")
+
+
 func test_skip_cooldown_initial_value_is_zero() -> void:
 	var c := _make_combatant()
 	assert_eq(c.skip_cooldown, 0.0)
@@ -178,9 +234,9 @@ func test_karim_loads_with_correct_stats() -> void:
 	assert_eq(karim.max_pp, 70)
 	assert_eq(karim.spd_stat, 22)
 	assert_true(karim.is_player_controlled)
-	assert_eq(karim.ability.ability_name, "Field Suture")
-	assert_eq(karim.ability.pp_cost, 10)
-	assert_eq(karim.ability.target_mode, Ability.TargetMode.ONE_ALLY)
+	assert_eq(karim.abilities[0].ability_name, "Field Suture")
+	assert_eq(karim.abilities[0].pp_cost, 10)
+	assert_eq(karim.abilities[0].target_mode, Ability.TargetMode.ONE_ALLY)
 
 
 func test_margot_loads_with_correct_stats() -> void:
@@ -190,9 +246,9 @@ func test_margot_loads_with_correct_stats() -> void:
 	assert_eq(margot.max_pp, 90)
 	assert_eq(margot.spd_stat, 40)
 	assert_true(margot.is_player_controlled)
-	assert_eq(margot.ability.ability_name, "Void Calculus")
-	assert_eq(margot.ability.pp_cost, 15)
-	assert_eq(margot.ability.target_mode, Ability.TargetMode.ONE_ENEMY)
+	assert_eq(margot.abilities[0].ability_name, "Void Calculus")
+	assert_eq(margot.abilities[0].pp_cost, 15)
+	assert_eq(margot.abilities[0].target_mode, Ability.TargetMode.ONE_ENEMY)
 
 
 func test_status_effect_fields_have_correct_defaults() -> void:
@@ -600,3 +656,234 @@ func test_security_rookie_loads_with_correct_stats() -> void:
 	assert_eq(rookie.spd_stat, 20)
 	assert_eq(rookie.xp_reward, 22)
 	assert_not_null(rookie.ai, "rookie must have an ai resource")
+
+
+func test_abilities_returns_empty_array_for_enemy_definition() -> void:
+	var d := EnemyDefinition.new()
+	var c := Combatant.from_definition(d)
+	assert_eq(c.abilities.size(), 0,
+		"Enemies have no CharacterDefinition, so abilities must be empty")
+
+
+func test_abilities_returns_all_character_abilities() -> void:
+	var a1 := Ability.new()
+	a1.ability_name = "First"
+	var a2 := Ability.new()
+	a2.ability_name = "Second"
+	var d := CharacterDefinition.new()
+	d.abilities = [a1, a2] as Array[Ability]
+	var c := Combatant.from_definition(d)
+	assert_eq(c.abilities.size(), 2, "Both abilities must be exposed")
+	assert_eq(c.abilities[1].ability_name, "Second", "Order must be preserved")
+
+
+func _ability_costing(pp: int, hp: int) -> Ability:
+	var ab := Ability.new()
+	ab.pp_cost = pp
+	ab.hp_cost = hp
+	return ab
+
+
+func test_can_pay_rejects_insufficient_pp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 10
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(_ability_costing(20, 0)), "20 PP is unaffordable at 10 PP")
+
+
+func test_can_pay_rejects_lethal_hp_cost() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(_ability_costing(0, 30)),
+		"An HP cost that would reduce the user to 0 is not payable")
+	assert_true(c.can_pay(_ability_costing(0, 29)),
+		"An HP cost leaving 1 HP is payable")
+
+
+func test_pay_cost_deducts_hp_not_pp() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_true(c.pay_cost(_ability_costing(0, 10)), "Payment succeeds")
+	assert_eq(c.current_hp, 90, "HP is deducted")
+	assert_eq(c.current_pp, 50, "PP is untouched")
+
+
+func test_pay_cost_of_free_ability_changes_nothing() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_true(c.pay_cost(_ability_costing(0, 0)), "Free abilities are always payable")
+	assert_eq(c.current_hp, 100, "HP unchanged")
+	assert_eq(c.current_pp, 50, "PP unchanged")
+
+
+func test_pay_cost_is_atomic_when_hp_leg_is_lethal() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_false(c.pay_cost(_ability_costing(10, 30)),
+		"A lethal HP leg fails the whole payment")
+	assert_eq(c.current_pp, 50, "PP must not be spent when the HP leg is rejected")
+	assert_eq(c.current_hp, 30, "HP must not be spent when the HP leg is rejected")
+
+
+func test_pay_cost_is_atomic_when_pp_leg_is_short() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 30
+	d.max_pp = 50
+	var c := Combatant.from_definition(d)
+	assert_false(c.pay_cost(_ability_costing(60, 5)),
+		"An unaffordable PP leg fails the whole payment")
+	assert_eq(c.current_pp, 50, "PP must not be spent when the PP leg is rejected")
+	assert_eq(c.current_hp, 30, "HP must not be spent when the PP leg is rejected")
+
+
+func test_can_pay_null_is_false() -> void:
+	var d := CharacterDefinition.new()
+	var c := Combatant.from_definition(d)
+	assert_false(c.can_pay(null), "No ability means no payable cost")
+
+
+func test_pp_ratio_is_zero_for_a_zero_pp_character() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 0
+	var c := Combatant.from_definition(d)
+	assert_eq(c.pp_ratio(), 0.0,
+		"A character with no PP bar must report 0.0, never NaN or INF")
+
+
+func test_uses_pp_is_false_for_a_zero_pp_character() -> void:
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 0
+	var c := Combatant.from_definition(d)
+	assert_false(c.uses_pp(), "max_pp 0 means the character has no PP bar")
+
+
+func test_pp_ratio_is_one_for_a_full_pp_character() -> void:
+	var c := _make_combatant(100, 50)
+	assert_almost_eq(c.pp_ratio(), 1.0, 0.001,
+		"A full PP bar still reports 1.0, so the guard cannot invert")
+
+
+func test_pressure_starts_at_zero() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	assert_eq(c.pressure, 0, "Enemies start unpressured")
+
+
+func test_add_pressure_caps_at_max_stacks() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(99)
+	assert_eq(c.pressure, Combatant.MAX_PRESSURE_STACKS,
+		"Pressure never exceeds the stack cap")
+
+
+func test_pressure_reduces_def_and_res() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	d.res_stat = 100
+	var c := Combatant.from_definition(d)
+	c.add_pressure(1)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 80,
+		"One stack removes 20% of DEF")
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.RES), 80,
+		"One stack removes 20% of RES")
+
+
+func test_pressure_reduction_never_exceeds_the_cap() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	c.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 0,
+		"Full stacks remove at most 100% of DEF, never more")
+
+
+func test_pressure_does_not_affect_other_stats() -> void:
+	var d := EnemyDefinition.new()
+	d.str_stat = 50
+	var c := Combatant.from_definition(d)
+	c.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.STR), 50,
+		"Pressure erodes defences only")
+
+
+func test_consume_pressure_returns_and_clears_the_stack() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(3)
+	assert_eq(c.consume_pressure(), 3, "Returns the stack that was held")
+	assert_eq(c.pressure, 0, "Stack is cleared")
+
+
+func test_pressure_survives_tick_effects() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(2)
+	c.tick_effects()
+	c.tick_effects()
+	assert_eq(c.pressure, 2, "Pressure persists for the whole battle")
+
+
+func test_reset_runtime_state_clears_pressure() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	c.add_pressure(2)
+	c.reset_runtime_state()
+	assert_eq(c.pressure, 0, "Pressure does not leak between battles")
+
+
+func test_pressure_reduction_steps_down_per_stack() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	var expected := [80, 60, 40, 20, 0]
+	for i in range(Combatant.MAX_PRESSURE_STACKS):
+		c.add_pressure(1)
+		assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), expected[i],
+			"%d stacks must remove %d%% of DEF" % [i + 1, (i + 1) * 20])
+
+
+func test_consume_pressure_on_empty_stack_returns_zero() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	assert_eq(c.consume_pressure(), 0, "Nothing held means nothing returned")
+	assert_eq(c.pressure, 0, "Consuming an empty stack leaves it empty")
+
+
+func test_pressure_composes_multiplicatively_with_a_def_debuff() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	var debuff := StatusEffect.new()
+	debuff.effect_name = "sunder"
+	debuff.stat = StatusEffect.StatAxis.DEF
+	debuff.modifier = -50
+	debuff.duration = 3
+	c.apply_effect(debuff)
+	c.add_pressure(3)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 20,
+		"additive debuff lands first (100-50), then 3 stacks remove 60% -> 20")
+
+
+func test_pressure_applied_to_a_target_raises_every_attackers_damage() -> void:
+	var unpressured := _make_combatant_with_stats(0, 30, 0, 30)
+	var pressured := _make_combatant_with_stats(0, 30, 0, 30)
+	var pressure := PressureEffect.new()
+	pressure.resolve(pressured)
+	assert_eq(pressured.pressure, 1, "fixture requires one stack of Pressure")
+
+	var physical := DamageEffect.new()
+	physical.kind = DamageEffect.Kind.PHYSICAL
+	var psychic := DamageEffect.new()
+	psychic.kind = DamageEffect.Kind.PSYCHIC
+	var bruiser := _make_combatant_with_stats(45, 0, 0, 0)
+	var caster := _make_combatant_with_stats(0, 0, 45, 0)
+
+	assert_gt(physical.compute(bruiser, pressured), physical.compute(bruiser, unpressured),
+		"an attacker that applied no Pressure still hits harder through DEF")
+	assert_gt(psychic.compute(caster, pressured), psychic.compute(caster, unpressured),
+		"a different attacker hits harder through RES")

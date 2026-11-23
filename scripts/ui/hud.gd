@@ -83,7 +83,7 @@ func _make_panel(combatant: Combatant) -> HBoxContainer:
 
 	var pp_label := Label.new()
 	pp_label.name = "PPLabel"
-	pp_label.text = str(combatant.max_pp)
+	pp_label.text = str(combatant.max_pp) if combatant.uses_pp() else ""
 	pp_label.custom_minimum_size = Vector2(STAT_NUM_WIDTH, 0)
 	pp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	pp_label.modulate = COLOR_PP
@@ -213,7 +213,7 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 	hp_label.text = str(combatant.current_hp)
 	hp_label.modulate = COLOR_HP_FULL.lerp(COLOR_HP_LOW, 1.0 - combatant.hp_ratio())
 
-	pp_label.text = str(combatant.current_pp)
+	pp_label.text = str(combatant.current_pp) if combatant.uses_pp() else ""
 	pp_label.modulate = COLOR_PP
 
 	var target_atb: float = combatant.atb_ratio() * 100.0
@@ -230,8 +230,13 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 		panel.get_node("EffectsLabel").text = _format_effects(combatant)
 
 
+# Shared by the party and enemy panels. No party member can be pressured today
+# (all four Reid abilities are ONE_ENEMY), so the PRESSURE line is enemy-facing
+# for now but stays in the shared formatter rather than duplicating it.
 func _format_effects(combatant: Combatant) -> String:
 	var parts: Array = []
+	if combatant.pressure > 0:
+		parts.append("PRESSURE %d" % combatant.pressure)
 	for effect in combatant.active_effects:
 		var axis_name: String = StatusEffect.StatAxis.keys()[effect.stat]
 		var sign: String = "+" if effect.modifier >= 0 else ""
