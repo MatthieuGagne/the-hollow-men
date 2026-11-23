@@ -273,6 +273,7 @@ func test_ability_does_not_damage_when_hp_cost_unaffordable() -> void:
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
 	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when the HP cost is unaffordable")
+	assert_eq(reid.current_hp, 5, "a rejected cost takes nothing")
 
 
 func _add_karim_to_party() -> Combatant:

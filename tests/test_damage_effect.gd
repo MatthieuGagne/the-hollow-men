@@ -89,6 +89,43 @@ func test_reid_ability_has_piercing_effect() -> void:
 	assert_eq(a.effects[1].stacks, 1)
 
 
+func test_damage_power_defaults_to_one_and_is_identity() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PHYSICAL
+	var user := _stats(45, 0)
+	var target := _stats(0, 30)
+	assert_almost_eq(e.power, 1.0, 0.0001, "ordinary attacks carry no multiplier")
+	assert_eq(e.compute(user, target), 15,
+		"default power leaves STR 45 - DEF 30 bit-identical")
+
+
+func test_damage_power_multiplies_base_before_pressure() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PHYSICAL
+	e.power = 1.5
+	var user := _stats(45, 0)
+	var target := _stats(0, 30)
+	assert_eq(e.compute(user, target), 23, "base 15 x1.5 = 22.5 rounds to 23")
+	e.kind = DamageEffect.Kind.PIERCING
+	e.pressure_scaling = 0.5
+	target.add_pressure(1)
+	assert_eq(e.compute(user, target), 101,
+		"power lands first (45 x1.5 = 67.5), then x1.5 Pressure = 101.25 rounds to 101")
+
+
+func test_heavy_blow_out_damages_work_the_body() -> void:
+	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
+	var target: Combatant = Combatant.from_definition(load("res://characters/enemies/shade.tres"))
+	var work := reid.abilities[1].effects[0] as DamageEffect
+	var heavy := reid.abilities[2].effects[0] as DamageEffect
+	assert_almost_eq(work.power, 1.0, 0.0001, "Work the Body has no multiplier")
+	assert_almost_eq(heavy.power, 1.5, 0.0001, "Heavy Blow pays for a 1.5x multiplier")
+	assert_eq(work.compute(reid, target), 30, "STR 45 - Shade DEF 15")
+	assert_eq(heavy.compute(reid, target), 45, "30 x1.5")
+	assert_gt(heavy.compute(reid, target), work.compute(reid, target),
+		"Heavy Blow's extra 12 HP must buy extra damage")
+
+
 func test_reid_ability_set_matches_the_pressure_kit() -> void:
 	var c: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	var names: Array[String] = []
@@ -101,7 +138,8 @@ func test_reid_ability_set_matches_the_pressure_kit() -> void:
 	assert_eq(costs, [6, 0, 12, 18], "each rung costs more HP")
 	var stacks: Array[int] = []
 	var consumes: Array[bool] = []
-	var finisher: DamageEffect = null
+	var scalings: Array[float] = []
+	var powers: Array[float] = []
 	for a: Ability in c.abilities:
 		assert_eq(a.target_mode, Ability.TargetMode.ONE_ENEMY)
 		var pressure := a.effects[1] as PressureEffect
@@ -110,13 +148,22 @@ func test_reid_ability_set_matches_the_pressure_kit() -> void:
 		consumes.append(pressure.consumes)
 		var damage := a.effects[0] as DamageEffect
 		assert_not_null(damage, "every rung carries a DamageEffect first")
-		if not is_equal_approx(damage.pressure_scaling, 0.0):
-			finisher = damage
+		scalings.append(damage.pressure_scaling)
+		powers.append(damage.power)
 	assert_eq(stacks, [1, 2, 2, 1], "Pressure added per rung; the finisher's stack count is unused")
 	assert_eq(consumes, [false, false, false, true], "only Close the Case consumes the stack")
-	assert_not_null(finisher, "only the finisher scales with Pressure")
-	assert_almost_eq(finisher.pressure_scaling, 0.2, 0.0001,
-		"0.2 reaches the +100% cap exactly at MAX_PRESSURE_STACKS")
+	assert_eq(scalings, [0.0, 0.0, 0.0, 0.2],
+		"only the finisher scales with Pressure")
+	assert_eq(powers, [1.0, 1.0, 1.5, 1.0], "only Heavy Blow carries a damage multiplier")
+
+	var finisher := c.abilities[3].effects[0] as DamageEffect
+	assert_almost_eq(finisher.pressure_scaling * float(Combatant.MAX_PRESSURE_STACKS),
+		Combatant.MAX_DAMAGE_AMPLIFICATION, 0.0001,
+		"the authored 0.2 must land exactly on the +100% cap at max stacks")
+	var capped_target := Combatant.from_definition(EnemyDefinition.new())
+	capped_target.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(finisher.compute(c, capped_target), c.str_stat * 2,
+		"at 5 stacks the PIERCING finisher deals exactly twice its STR")
 
 
 func test_iris_ability_has_psychic_effect() -> void:

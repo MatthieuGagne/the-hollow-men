@@ -14,6 +14,7 @@ script = ExtResource("3_dmg")
 
 [sub_resource type="Resource" id="dmg_heavy_blow"]
 script = ExtResource("3_dmg")
+power = 1.5
 
 [sub_resource type="Resource" id="dmg_close_the_case"]
 script = ExtResource("3_dmg")

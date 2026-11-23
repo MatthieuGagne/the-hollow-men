@@ -38,7 +38,7 @@ func test_reid_loads_with_correct_stats() -> void:
 	assert_eq(reid.max_hp, 350)
 	assert_eq(reid.max_pp, 0, "Reid pays HP, never PP")
 	assert_eq(reid.spd_stat, 30)
-	assert_almost_eq(reid.def.atb_desperation, 1.0, 0.0001,
+	assert_almost_eq((reid.def as CharacterDefinition).atb_desperation, 1.0, 0.0001,
 		"Reid's gauge accelerates as he loses HP")
 	assert_eq(reid.current_hp, 350)
 	assert_true(reid.is_player_controlled)
