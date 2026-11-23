@@ -169,7 +169,7 @@ func get_effective_stat(stat: StatusEffect.StatAxis) -> int:
 	for effect in active_effects:
 		if effect.stat == stat:
 			base += effect.modifier
-	if pressure > 0 and stat in [StatusEffect.StatAxis.DEF, StatusEffect.StatAxis.RES]:
+	if pressure > 0 and (stat == StatusEffect.StatAxis.DEF or stat == StatusEffect.StatAxis.RES):
 		base = int(round(float(base) * (1.0 - defense_reduction())))
 	return maxi(0, base)
 

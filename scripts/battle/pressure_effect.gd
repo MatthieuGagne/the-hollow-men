@@ -1,3 +1,4 @@
+# scripts/battle/pressure_effect.gd
 class_name PressureEffect
 extends AbilityEffect
 

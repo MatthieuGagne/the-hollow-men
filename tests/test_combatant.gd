@@ -821,3 +821,55 @@ func test_reset_runtime_state_clears_pressure() -> void:
 	c.add_pressure(2)
 	c.reset_runtime_state()
 	assert_eq(c.pressure, 0, "Pressure does not leak between battles")
+
+
+func test_pressure_reduction_steps_down_per_stack() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	var expected := [80, 60, 40, 20, 0]
+	for i in range(Combatant.MAX_PRESSURE_STACKS):
+		c.add_pressure(1)
+		assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), expected[i],
+			"%d stacks must remove %d%% of DEF" % [i + 1, (i + 1) * 20])
+
+
+func test_consume_pressure_on_empty_stack_returns_zero() -> void:
+	var c := Combatant.from_definition(EnemyDefinition.new())
+	assert_eq(c.consume_pressure(), 0, "Nothing held means nothing returned")
+	assert_eq(c.pressure, 0, "Consuming an empty stack leaves it empty")
+
+
+func test_pressure_composes_multiplicatively_with_a_def_debuff() -> void:
+	var d := EnemyDefinition.new()
+	d.def_stat = 100
+	var c := Combatant.from_definition(d)
+	var debuff := StatusEffect.new()
+	debuff.effect_name = "sunder"
+	debuff.stat = StatusEffect.StatAxis.DEF
+	debuff.modifier = -50
+	debuff.duration = 3
+	c.apply_effect(debuff)
+	c.add_pressure(3)
+	assert_eq(c.get_effective_stat(StatusEffect.StatAxis.DEF), 20,
+		"additive debuff lands first (100-50), then 3 stacks remove 60% -> 20")
+
+
+func test_pressure_applied_to_a_target_raises_every_attackers_damage() -> void:
+	var unpressured := _make_combatant_with_stats(0, 30, 0, 30)
+	var pressured := _make_combatant_with_stats(0, 30, 0, 30)
+	var pressure := PressureEffect.new()
+	pressure.resolve(pressured)
+	assert_eq(pressured.pressure, 1, "fixture requires one stack of Pressure")
+
+	var physical := DamageEffect.new()
+	physical.kind = DamageEffect.Kind.PHYSICAL
+	var psychic := DamageEffect.new()
+	psychic.kind = DamageEffect.Kind.PSYCHIC
+	var bruiser := _make_combatant_with_stats(45, 0, 0, 0)
+	var caster := _make_combatant_with_stats(0, 0, 45, 0)
+
+	assert_gt(physical.compute(bruiser, pressured), physical.compute(bruiser, unpressured),
+		"an attacker that applied no Pressure still hits harder through DEF")
+	assert_gt(psychic.compute(caster, pressured), psychic.compute(caster, unpressured),
+		"a different attacker hits harder through RES")

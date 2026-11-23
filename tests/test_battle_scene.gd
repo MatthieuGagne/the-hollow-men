@@ -329,6 +329,48 @@ func test_drain_effect_dispatches_through_party_target_resolution() -> void:
 		"data-driven DrainEffect must drain PP through _apply_nondamage_effects_to")
 
 
+# Party member whose only ability applies Pressure to an ally — proves the
+# PressureEffect branch in _apply_nondamage_effects_to actually fires.
+func _add_pressurer_to_party() -> Combatant:
+	var pressure := PressureEffect.new()
+	pressure.stacks = 2
+	var ability := Ability.new()
+	ability.ability_name = "Pressure"
+	ability.target_mode = Ability.TargetMode.ONE_ALLY
+	var effects: Array[AbilityEffect] = [pressure]
+	ability.effects = effects
+
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.max_pp = 30
+	d.sprite_path = "res://assets/sprites/characters/karim.png"
+	d.sprite_vframes = 8
+	var abilities: Array[Ability] = [ability]
+	d.abilities = abilities
+
+	var c: Combatant = Combatant.from_definition(d)
+	_scene.party.append(c)
+	var sprite := Sprite2D.new()
+	sprite.vframes = c.sprite_vframes
+	sprite.frame = 2
+	sprite.position = Vector2(0, BattleScene.SLOT_POSITIONS[_scene.party.size() - 1])
+	sprite.texture = load(c.sprite_path)
+	sprite.modulate = Color.WHITE
+	_scene.get_node("PartyContainer").add_child(sprite)
+	return c
+
+
+func test_pressure_effect_dispatches_through_party_target_resolution() -> void:
+	var pressurer := _add_pressurer_to_party()
+	var reid: Combatant = _scene.party[0]
+	assert_eq(reid.pressure, 0, "fixture requires an unpressured recipient")
+	_scene._begin_player_turn(pressurer)
+	_scene.execute_action("ability")
+	_scene.confirm_party_target(reid)
+	assert_eq(reid.pressure, 2,
+		"data-driven PressureEffect must apply through _apply_nondamage_effects_to")
+
+
 func test_party_targeting_ability_sets_selecting_ally() -> void:
 	var karim := _add_karim_to_party()
 	_scene._begin_player_turn(karim)
