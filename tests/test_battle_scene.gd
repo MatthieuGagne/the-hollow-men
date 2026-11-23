@@ -242,13 +242,16 @@ func test_ability_damages_enemy_as_iris() -> void:
 	assert_lt(shade.current_hp, hp_before, "Static Touch must deal damage to Shade")
 
 
-func test_ability_spends_pp() -> void:
+func test_ability_costs_hp_not_pp() -> void:
 	var reid: Combatant = _scene.party[0]
+	var hp_before: int = reid.current_hp
 	var pp_before: int = reid.current_pp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
-	assert_lt(reid.current_pp, pp_before, "Piercing Strike must spend PP")
+	assert_lt(reid.current_hp, hp_before, "Piercing Strike must cost HP")
+	assert_eq(reid.current_pp, pp_before, "Reid has no PP to spend")
+	assert_eq(reid.current_pp, 0, "Reid is the zero-PP character")
 
 
 func test_ability_returns_to_ticking() -> void:
@@ -260,15 +263,16 @@ func test_ability_returns_to_ticking() -> void:
 	assert_eq(_scene._state, _scene.BattleState.TICKING)
 
 
-func test_ability_does_not_damage_when_pp_insufficient() -> void:
+func test_ability_does_not_damage_when_hp_cost_unaffordable() -> void:
 	var reid: Combatant = _scene.party[0]
-	reid.current_pp = 0
+	# Piercing Strike costs 6 HP and may never leave the caster below 1 HP.
+	reid.current_hp = 5
 	var shade: Combatant = _scene.enemies[0]
 	var hp_before: int = shade.current_hp
 	_scene._begin_player_turn(reid)
 	_scene.execute_action("ability")
 	_scene.confirm_enemy_target()
-	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when PP is 0")
+	assert_eq(shade.current_hp, hp_before, "ability must not deal damage when the HP cost is unaffordable")
 
 
 func _add_karim_to_party() -> Combatant:
@@ -319,13 +323,13 @@ func _add_drainer_to_party() -> Combatant:
 
 func test_drain_effect_dispatches_through_party_target_resolution() -> void:
 	var drainer := _add_drainer_to_party()
-	var reid: Combatant = _scene.party[0]
-	var pp_before: int = reid.current_pp
-	assert_gt(pp_before, 10, "fixture requires Reid to have PP to drain")
+	var karim := _add_karim_to_party()
+	var pp_before: int = karim.current_pp
+	assert_gt(pp_before, 10, "fixture requires Karim to have PP to drain")
 	_scene._begin_player_turn(drainer)
 	_scene.execute_action("ability")
-	_scene.confirm_party_target(reid)
-	assert_eq(reid.current_pp, pp_before - 10,
+	_scene.confirm_party_target(karim)
+	assert_eq(karim.current_pp, pp_before - 10,
 		"data-driven DrainEffect must drain PP through _apply_nondamage_effects_to")
 
 
@@ -552,7 +556,7 @@ func test_enemies_tick_during_selecting_ally() -> void:
 		"enemy ATB must advance during SELECTING_ALLY so enemies can still attack")
 
 
-func test_ability_spawns_pp_cost_label_over_attacker() -> void:
+func test_ability_spawns_cost_label_over_attacker() -> void:
 	var reid: Combatant = _scene.party[0]
 	var reid_sprite: Node2D = _scene.get_node("PartyContainer").get_child(0)
 	var child_count_before: int = reid_sprite.get_child_count()
@@ -561,7 +565,7 @@ func test_ability_spawns_pp_cost_label_over_attacker() -> void:
 	_scene.confirm_enemy_target()
 	await wait_for_signal(_scene.player_turn_ended, 2.0)
 	assert_gt(reid_sprite.get_child_count(), child_count_before,
-		"a floating PP cost label must be spawned over the attacker's sprite after ability use")
+		"a floating HP cost label must be spawned over the attacker's sprite after ability use")
 
 
 func test_party_ability_spawns_pp_cost_label_over_attacker() -> void:

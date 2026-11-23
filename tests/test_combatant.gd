@@ -36,8 +36,10 @@ func test_reid_loads_with_correct_stats() -> void:
 	var reid: Combatant = Combatant.from_definition(load("res://characters/reid.tres"))
 	assert_eq(reid.character_name, "Reid")
 	assert_eq(reid.max_hp, 350)
-	assert_eq(reid.max_pp, 20)
+	assert_eq(reid.max_pp, 0, "Reid pays HP, never PP")
 	assert_eq(reid.spd_stat, 30)
+	assert_almost_eq(reid.def.atb_desperation, 1.0, 0.0001,
+		"Reid's gauge accelerates as he loses HP")
 	assert_eq(reid.current_hp, 350)
 	assert_true(reid.is_player_controlled)
 
@@ -138,6 +140,18 @@ func test_atb_fill_multiplier_scales_with_missing_hp() -> void:
 	c.current_hp = 25
 	assert_almost_eq(c.atb_fill_multiplier(), 1.75, 0.001,
 		"75% missing HP at desperation 1.0 means a 1.75x fill rate")
+
+
+func test_atb_fill_multiplier_never_drops_below_one_when_hp_exceeds_max() -> void:
+	# A save restored against a retuned-down max_hp can leave current_hp above
+	# max_hp. hp_ratio() then exceeds 1.0; the gauge must not run slower.
+	var d := CharacterDefinition.new()
+	d.max_hp = 100
+	d.atb_desperation = 1.0
+	var c := Combatant.from_definition(d)
+	c.current_hp = 150
+	assert_eq(c.atb_fill_multiplier(), 1.0,
+		"HP above max must yield exactly the baseline multiplier, never less")
 
 
 func test_atb_fill_multiplier_is_one_for_enemies() -> void:

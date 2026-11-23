@@ -202,7 +202,9 @@ func atb_fill_multiplier() -> float:
 	var mult := 1.0
 	var cd := _char_def()
 	if cd != null and not is_equal_approx(cd.atb_desperation, 0.0):
-		mult *= 1.0 + cd.atb_desperation * (1.0 - hp_ratio())
+		# Clamp the missing-HP fraction: a stale current_hp above max_hp must
+		# never make the gauge slower than baseline.
+		mult *= 1.0 + cd.atb_desperation * maxf(0.0, 1.0 - hp_ratio())
 	return mult
 
 
