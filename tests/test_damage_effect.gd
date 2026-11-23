@@ -111,6 +111,8 @@ func test_pressure_scaled_damage_grows_with_the_stack() -> void:
 
 	assert_gt(e.compute(user, pressured), e.compute(user, unpressured),
 		"Consumed Pressure must increase the finisher's damage")
+	assert_eq(e.compute(user, pressured), 200,
+		"STR 100 at 2 stacks x0.5 is exactly x2.0")
 
 
 func test_pressure_scaling_defaults_to_no_effect() -> void:
@@ -123,3 +125,31 @@ func test_pressure_scaling_defaults_to_no_effect() -> void:
 	var plain := Combatant.from_definition(EnemyDefinition.new())
 	assert_eq(e.compute(user, pressured), e.compute(user, plain),
 		"Abilities without pressure_scaling are unaffected by the stack")
+
+
+func test_pressure_scaling_is_capped_at_one_hundred_percent() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PIERCING
+	e.pressure_scaling = 0.5
+	var user := Combatant.from_definition(CharacterDefinition.new())
+	user.def.str_stat = 100
+	var target := Combatant.from_definition(EnemyDefinition.new())
+	target.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(e.compute(user, target), 200,
+		"0.5 x 5 stacks would be x3.5; the cap holds it at x2.0")
+
+
+func test_physical_pressure_scaling_compounds_with_defence_reduction() -> void:
+	var e := DamageEffect.new()
+	e.kind = DamageEffect.Kind.PHYSICAL
+	e.pressure_scaling = 0.5
+	var user := Combatant.from_definition(CharacterDefinition.new())
+	user.def.str_stat = 100
+	var target := Combatant.from_definition(EnemyDefinition.new())
+	target.def.def_stat = 50
+	target.add_pressure(Combatant.MAX_PRESSURE_STACKS)
+	assert_eq(target.get_effective_stat(StatusEffect.StatAxis.DEF), 0,
+		"5 stacks must erase the target's 50 DEF")
+	# Base is 100 - 0 after DEF erosion; the amplifier then caps at +100%.
+	assert_eq(e.compute(user, target), 200,
+		"reduced DEF and the capped amplifier apply in the same hit")

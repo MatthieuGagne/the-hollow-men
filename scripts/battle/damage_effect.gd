@@ -10,15 +10,19 @@ enum Kind { PHYSICAL, PIERCING, PSYCHIC }
 # 0.0 for every ability except Reid's finisher.
 @export var pressure_scaling: float = 0.0
 
-# Deterministic base magnitude (pure; no RNG). Variance is applied separately
-# by Combatant.apply_damage_variance at resolution time. May be negative.
+# Base damage amplified by Pressure, capped additively at
+# Combatant.MAX_DAMAGE_AMPLIFICATION so no single source can exceed +100%.
 func compute(user: Combatant, target: Combatant) -> int:
 	var base: int = _base_damage(user, target)
 	if is_equal_approx(pressure_scaling, 0.0) or target.pressure <= 0:
 		return base
-	return int(round(float(base) * (1.0 + pressure_scaling * float(target.pressure))))
+	var amplification: float = minf(pressure_scaling * float(target.pressure),
+		Combatant.MAX_DAMAGE_AMPLIFICATION)
+	return int(round(float(base) * (1.0 + amplification)))
 
 
+# Deterministic base magnitude (pure; no RNG). Variance is applied separately
+# by Combatant.apply_damage_variance at resolution time. May be negative.
 func _base_damage(user: Combatant, target: Combatant) -> int:
 	match kind:
 		Kind.PHYSICAL:
