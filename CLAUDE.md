@@ -20,8 +20,8 @@ SceneManager (`scripts/autoload/scene_manager.gd`) is the scene-transition autol
 
 ## Dev Workflow
 - Feature branches in worktrees: `feat/issue-<N>-<description>`
-- Worktree creation goes through Orca: invoke the `orca-cli` skill (exact commands from `ORCA skills get orca-cli` — never guess flags). Orca worktrees live under `~\orca\workspaces\<repo>\<name>`. Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories.
-- **After creating a new worktree**, run `make worktree-init` (inside the new Orca worktree) before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
+- Worktrees live at `.worktrees/<branch>` (gitignored), created with `git worktree add .worktrees/<branch> -b feat/issue-<N>-<description>` from the repo root.
+- **After creating a new worktree**, run `make worktree-init` (inside it) before launching the game — this copies gitignored build artifacts (e.g. `placeholder.png`) from the main repo and runs a full headless reimport. Without it, the map renders empty.
 - TDD for all GDScript logic: write failing GUT test first
 - Run GUT: `$godot = & ./scripts/godot_path.ps1; & $godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/`
 - **Never invoke `godot_console` directly** — launching it via its install symlink dies with `.NET: Assemblies not found` + signal 11. Always resolve the real Godot path via `scripts/godot_path.ps1` first.
@@ -37,7 +37,7 @@ idea → brainstorm → PRD (GitHub issue) → plan → worktree → implement �
 1. `brainstorming` skill — explore the idea
 2. `prd` skill — write a GitHub issue spec
 3. `writing-plans` skill — turn spec into step-by-step tasks
-4. Create worktree via Orca (`orca-cli` skill), then `make worktree-init` inside it
+4. Create the worktree (`git worktree add .worktrees/<branch> -b <branch>`), then `make worktree-init` inside it
 5. `executing-plans` skill — implement with checkpoints
 6. `finishing-a-development-branch` skill — tests, smoketest, PR, cleanup
 

@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: The Hollow Men's fork of executing-plans — use instead of superpowers:executing-plans in this project. Executes a written implementation plan in batches with review checkpoints, worktree setup, GUT test gates after every GDScript task, and a lessons-learned gate. Use when you have a written implementation plan to execute.
+description: Executes a written implementation plan in batches with review checkpoints, worktree setup, GUT test gates after every GDScript task, and a lessons-learned gate.
 ---
 
 # Executing Plans
@@ -27,9 +27,9 @@ git rev-parse --git-dir
 git rev-parse --git-common-dir
 ```
 
-If `--git-dir` and `--git-common-dir` differ, you are inside a linked worktree — skip to Step 2. Don't path-match: Orca worktrees live under `~\orca\workspaces\<repo>\<name>`, not inside the repo.
+If `--git-dir` and `--git-common-dir` differ, you are inside a linked worktree — skip to Step 2.
 
-Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number). Then create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories.
+Otherwise, determine the feature branch name from the plan (use `feat/issue-<N>-<short-description>` convention, where `<N>` is the GitHub issue number), then create it from the repo root: `git worktree add .worktrees/<branch> -b <branch>`.
 
 After creating any new worktree, run `make worktree-init` inside it before launching the game.
 
@@ -129,4 +129,4 @@ Do not push or open the PR until you have received an explicit answer to this qu
 **Required workflow skills:**
 - **writing-plans** (project fork) — creates the plan this skill executes
 - **finishing-a-development-branch** (project fork) — complete development after all tasks
-- **superpowers:dispatching-parallel-agents** — consult before any agent dispatch decision
+- Agent dispatch rules live in the global `AGENTS.md` (concurrent only for independent, non-conflicting tasks)

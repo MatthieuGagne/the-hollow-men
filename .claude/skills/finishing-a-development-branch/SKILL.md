@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: The Hollow Men's fork of finishing-a-development-branch — use instead of superpowers:finishing-a-development-branch in this project. Use when implementation is complete — verifies GUT tests headlessly, runs the visual smoketest, presents PR/keep/discard options (PR-only integration), and cleans up the worktree.
+description: Use when implementation is complete — verifies GUT tests headlessly, runs the visual smoketest, presents PR/keep/discard options (PR-only integration), and cleans up the worktree.
 ---
 
 # Finishing a Development Branch
@@ -62,7 +62,7 @@ Which option?
 
 ### Step 5: Execute Choice
 
-First determine the worktree path with `git worktree list` (Orca-managed worktrees live under `~\orca\workspaces\<repo>\<name>`; legacy pre-Orca worktrees may still sit at `.worktrees\<branch>` or `.claude\worktrees\`). Use that path wherever `<worktree-path>` appears below.
+First determine the worktree path with `git worktree list` (worktrees live at `.worktrees\<branch>`). Use that path wherever `<worktree-path>` appears below.
 
 #### Option 1: Push and Create PR
 
@@ -140,20 +140,7 @@ else
 fi
 ```
 
-**Step 6a: Remove Orca-managed worktree via the Orca CLI**
-
-If the worktree is Orca-managed (lives under `~\orca\workspaces\`), remove it through the Orca CLI — from the repo root, never from inside the directory being removed:
-
-```bash
-cd C:\Code\the-hollow-men
-orca worktree rm --worktree path:<absoluteWorktreePath> --force --json
-```
-
-After Orca removes it, skip to Step 6d.
-
-Only for a legacy pre-Orca worktree (`.worktrees\` or `.claude\worktrees\`), continue to Step 6b.
-
-**Step 6b: cd to main repo root**
+**Step 6a: cd to main repo root**
 
 Always `cd` OUT of the worktree first, before any remove command — if the session CWD is inside a deleted worktree, git panics with "Unable to read current working directory":
 
@@ -161,7 +148,7 @@ Always `cd` OUT of the worktree first, before any remove command — if the sess
 cd C:\Code\the-hollow-men
 ```
 
-**Step 6c: Remove the worktree (legacy pre-Orca worktrees only)**
+**Step 6b: Remove the worktree**
 
 Use the path from `git worktree list`:
 
@@ -181,15 +168,15 @@ Remove-Item -Recurse -Force <worktree-path>
 git worktree prune
 # Note: "Worktree directory was already gone — pruned stale ref."
 ```
-Skip Step 6d in this case (prune already ran).
+Skip Step 6c in this case (prune already ran).
 
-**Step 6d: Prune stale refs**
+**Step 6c: Prune stale refs**
 
 ```bash
 git worktree prune
 ```
 
-**Step 6e: Delete local branch**
+**Step 6d: Delete local branch**
 
 ```bash
 git branch -d <feature-branch>
@@ -205,7 +192,7 @@ Report: "Worktree and branch cleaned up. Back on master."
 
 #### Immediately after discard (Option 3)
 
-Run Step 6a → 6b → 6c → 6d in sequence. Skip 6e (branch already deleted with `-D` in Step 5).
+Run Step 6a → 6b → 6c in sequence. Skip 6d (branch already deleted with `-D` in Step 5).
 
 #### Option 2: Keep As-Is
 
