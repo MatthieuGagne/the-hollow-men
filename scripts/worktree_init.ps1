@@ -35,4 +35,13 @@ Copy-Item -Path "$mainRepo/.godot/imported/*yarn-*"        -Destination .godot/i
 Remove-Item -Path .godot/imported/*.tmx-*.md5  -Force -ErrorAction SilentlyContinue
 Remove-Item -Path .godot/imported/*.tmx-*.tscn -Force -ErrorAction SilentlyContinue
 
+# The shared skill junctions (.omp/skills mirror, godot-dev tier) are gitignored,
+# so they never survive a fresh worktree — relink or the skills resolve wrong.
+$linker = 'C:/Code/dotfiles/skills/link-project-skills.ps1'
+if (Test-Path -LiteralPath $linker) {
+    & $linker -Path (Get-Location).Path
+} else {
+    Write-Warning "skill linker not found at $linker — project skills may be shadowed by user-level ones here"
+}
+
 Write-Host "worktree-init: copied build artifacts from $mainRepo"

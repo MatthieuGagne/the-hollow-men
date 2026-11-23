@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: The Hollow Men's fork of writing-plans — use instead of superpowers:writing-plans in this project. Turns a spec or GitHub-issue PRD into bite-sized tasks with GUT test gates, smoketest checkpoints, and worktree setup. Use when you have a spec or requirements for a multi-step task, before touching code; works with or without a prior brainstorming session.
+description: Turns a spec or GitHub-issue PRD into bite-sized tasks with GUT test gates, smoketest checkpoints, and worktree setup. Use when you have a spec or requirements for a multi-step task, before touching code.
 ---
 
 # Writing Plans
@@ -23,12 +23,12 @@ Resolve any conflicts before proceeding.
 
 **Second: run grilling.** Always invoke the `grilling` skill before writing — it surfaces requirements, acceptance criteria, scope, and constraints. Once grilling is satisfied, continue below.
 
-**Third: create a git worktree.** After grilling and before writing the plan file, create the worktree through Orca: invoke the `orca-cli` skill (exact commands come from `ORCA skills get orca-cli` — never guess flags). Name it after the feature branch:
+**Third: create a git worktree.** After grilling and before writing the plan file, run `git worktree add .worktrees/<branch> -b <branch>` from the repo root. Name it after the feature branch:
 
 - **With issue number:** branch = `feat/issue-<N>-<short-description>` — use the GitHub issue number from the arguments; derive the short description from the issue title or grilling output.
 - **Without issue number:** branch = `feat/<short-description>` — derive the slug from grilling output.
 
-Orca worktrees live under `~\orca\workspaces\<repo>\<name>`. Never use `git worktree add`, the `EnterWorktree` tool, or `.worktrees/`/`.claude/worktrees/` directories. All subsequent work — including saving the plan file — happens inside the worktree.
+Worktrees live in-repo at `.worktrees/<branch>` (gitignored). All subsequent work — including saving the plan file — happens inside the worktree, and `make worktree-init` runs there first.
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md` (inside the worktree)
 
@@ -130,12 +130,12 @@ Only after explicit affirmative, offer execution choice:
 **Which approach?"**
 
 **If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
+- Dispatch one fresh subagent per task; never parallelize tasks touching the same file or sharing git state
 - Stay in this session
 - Fresh subagent per task + code review
 
 **If Parallel Session chosen:**
 - Guide them to open new session
-- **REQUIRED SUB-SKILL:** New session uses the project `executing-plans` skill (NOT superpowers:executing-plans)
+- **REQUIRED SUB-SKILL:** New session uses the project `executing-plans` skill
 
-**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (through Orca via the `orca-cli` skill, after grilling) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.
+**Both execution paths work inside a git worktree.** The worktree is created by `writing-plans` (after grilling) so the plan file lives on the feature branch from day one. Cleanup is handled by `finishing-a-development-branch` after the PR is merged.

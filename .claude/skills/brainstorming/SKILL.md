@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "The Hollow Men's fork of brainstorming — use instead of superpowers:brainstorming in this project. Standalone exploration tool for turning ideas into designs (PRD writing, plan writing, debugging, or standalone exploration), with a Godot constraint checklist and a grilling gate feeding GitHub-issue PRDs. Explores user intent, requirements and design before implementation."
+description: "Turns ideas into designs (PRD writing, plan writing, debugging, standalone exploration), with a Godot constraint checklist and a grilling gate feeding GitHub-issue PRDs. Use before implementation."
 ---
 
 # Brainstorming Ideas Into Designs
