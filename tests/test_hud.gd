@@ -51,3 +51,54 @@ func test_update_panel_restores_pp_text_when_rebound_to_pp_character() -> void:
 	_hud._update_panel(panel, _combatant(40))
 	assert_eq(panel.get_node("PPLabel").text, "40",
 		"Rebinding a blank PP panel to a PP character must show the value")
+
+
+func test_enemy_panel_shows_pressure_stacks() -> void:
+	var enemy := Combatant.from_definition(EnemyDefinition.new())
+	enemy.add_pressure(3)
+	var panel: Control = _hud._make_enemy_panel(enemy)
+	add_child_autofree(panel)
+	_hud._update_enemy_panel(panel, enemy)
+	assert_true(panel.get_node("EffectsLabel").text.contains("PRESSURE 3"),
+		"The enemy panel must show the current Pressure stack")
+
+
+func test_enemy_panel_omits_pressure_when_unpressured() -> void:
+	var enemy := Combatant.from_definition(EnemyDefinition.new())
+	var panel: Control = _hud._make_enemy_panel(enemy)
+	add_child_autofree(panel)
+	_hud._update_enemy_panel(panel, enemy)
+	assert_false(panel.get_node("EffectsLabel").text.contains("PRESSURE"),
+		"No Pressure line when the stack is empty")
+
+
+func test_enemy_panel_shows_pressure_alongside_status_effects() -> void:
+	var enemy := Combatant.from_definition(EnemyDefinition.new())
+	enemy.add_pressure(2)
+	var effect := StatusEffect.new()
+	effect.effect_name = "Bleed"
+	effect.stat = StatusEffect.StatAxis.DEF
+	effect.modifier = -2
+	effect.duration = 3
+	enemy.apply_effect(effect)
+	var panel: Control = _hud._make_enemy_panel(enemy)
+	add_child_autofree(panel)
+	_hud._update_enemy_panel(panel, enemy)
+	var text: String = panel.get_node("EffectsLabel").text
+	assert_true(text.contains("PRESSURE 2"), "Pressure line is present")
+	assert_true(text.contains("Bleed"), "Status-effect line is still rendered alongside Pressure")
+
+
+func test_enemy_panel_reads_pressure_live_on_each_update() -> void:
+	var enemy := Combatant.from_definition(EnemyDefinition.new())
+	var panel: Control = _hud._make_enemy_panel(enemy)
+	add_child_autofree(panel)
+	_hud._update_enemy_panel(panel, enemy)
+	var label: Label = panel.get_node("EffectsLabel")
+	assert_false(label.text.contains("PRESSURE"), "Starts with no Pressure line")
+	enemy.add_pressure(4)
+	_hud._update_enemy_panel(panel, enemy)
+	assert_true(label.text.contains("PRESSURE 4"), "A later update reflects the new stack count")
+	enemy.consume_pressure()
+	_hud._update_enemy_panel(panel, enemy)
+	assert_false(label.text.contains("PRESSURE"), "Cleared stacks drop the line on the next update")

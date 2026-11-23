@@ -232,6 +232,8 @@ func _update_panel(panel: Control, combatant: Combatant) -> void:
 
 func _format_effects(combatant: Combatant) -> String:
 	var parts: Array = []
+	if combatant.pressure > 0:
+		parts.append("PRESSURE %d" % combatant.pressure)
 	for effect in combatant.active_effects:
 		var axis_name: String = StatusEffect.StatAxis.keys()[effect.stat]
 		var sign: String = "+" if effect.modifier >= 0 else ""
